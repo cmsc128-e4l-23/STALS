@@ -30,6 +30,8 @@ function Header() {
         // If Login:
         if(!isSignedIn){
             handleOptions("Logout","/log-out");
+            delete availableOptions['Register'];
+            delete availableOptions['Login'];
         } else{
             // For logouts
             delete availableOptions["Logout"];
@@ -65,9 +67,11 @@ function Header() {
         if(window.innerWidth<1200){
 
             if(!isSignedIn){
+                console.log("Adding register...")
                 handleOptions("Register","/register")
-                delete availableOptions['Login'];
             }
+
+            delete availableOptions['Login'];
 
         } 
         if (window.innerWidth<640){
