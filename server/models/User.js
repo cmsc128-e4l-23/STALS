@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const  UserSchema = new mongoose.Schema(
     {
+        userType: {
+            type: String,
+            required: true
+        },
         firstName: {
             type: String,
             required: true,
@@ -19,6 +24,11 @@ const  UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
+        },
+        phoneNumber: {
+            type: String,
+            required: true,
+            unique: true
         }
     },
     {
@@ -26,5 +36,6 @@ const  UserSchema = new mongoose.Schema(
     }
 );
 
+UserSchema.pre("save")
 const User = mongoose.model("User", UserSchema);
 export default User;
