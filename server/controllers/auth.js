@@ -28,3 +28,11 @@ export const register = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+export const login = async (req, res) => {
+
+}
+
+export const checkIfLoggedIn = async (req, res) => {
+    
+}
