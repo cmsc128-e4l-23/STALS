@@ -9,7 +9,7 @@ export const register = async (req, res) => {
             firstName,
             lastName,
             email,
-            password
+            password,
         } = req.body;
 
         const salt = await bcrypt.genSalt();
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
             firstName,
             lastName,
             email,
-            password : passwordHash
+            password : passwordHash,
         });
 
         const savedUser = await newUser.save();
@@ -29,10 +29,16 @@ export const register = async (req, res) => {
     }
 }
 
-export const login = async (req, res) => {
-
+const logIn = async (req, res) => {
+    res.send("I am logging in");
 }
 
-export const checkIfLoggedIn = async (req, res) => {
-    
+const checkIfLoggedIn = async (req, res) => {
+    res.send("I am checking if I am logged in");
 }
+
+export default {
+    register,
+    logIn,
+    checkIfLoggedIn
+};
