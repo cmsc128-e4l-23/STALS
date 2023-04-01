@@ -2,6 +2,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+
+
+
 /* Register */
 export const register = async (req, res) => {
     try{
@@ -30,7 +33,23 @@ export const register = async (req, res) => {
 }
 
 const logIn = async (req, res) => {
-    res.send("I am logging in");
+    const email = req.body.email.trim();
+    const password = req.body.password;
+
+    // const salt = await bcrypt.genSalt();
+    // const passwordHash = await bcrypt.hash(password, salt);
+
+
+    User.find({email: email})
+        .then((results) => {
+            bcrypt.compare(password, results[0].password, function(err, result){
+                console.log("hellow");
+            });
+
+
+        })
+        .catch((error) => res.status(400).json({error}))
+
 }
 
 const checkIfLoggedIn = async (req, res) => {

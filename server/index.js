@@ -14,19 +14,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 // /* DB SETUP */
-const PORT = process.env.PORT || 6001;
-mongoose.connect(process.env.MONGO_URL, {
+const PORT = 6001;
+mongoose.connect("mongodb://localhost:27017/users", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
-    app.listen(PORT, () => console.log(`SERVER PORT: ${PORT}`));
+    app.listen(PORT, () => console.log(`DB SERVER PORT: ${PORT}`));
 }).catch((error) => console.log(`${error} DID NOT CONNECT`));
 
 /* ROUTES */
 app.use(routes);
 
 /* SERVER START */
-app.listen(process.env.PORT, (err) => {
+app.listen(3001, (err) => {
     if (err){ console.log(err); }
-    else { console.log ("Server listening at port", process.env.PORT); }
+    else { console.log ("Server listening at port", 3001); }
 });
