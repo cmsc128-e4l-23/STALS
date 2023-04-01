@@ -36,6 +36,6 @@ const  UserSchema = new mongoose.Schema(
     }
 );
 
-UserSchema.pre("save")
+// UserSchema.pre("save")
 const User = mongoose.model("User", UserSchema);
 export default User;

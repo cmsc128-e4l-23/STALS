@@ -1,19 +1,27 @@
-export const addAccomm = async (req, res) => {
-    
+const addAccomm = async (req, res) => {
+    res.send("I am adding accommodation");
 }
 
-export const archiveAccomm = async (req, res) => {
-    
+const archiveAccomm = async (req, res) => {
+    res.send("I am archiving accommodation");
 }
 
-export const deleteAccomm = async (req, res) => {
-    
+const deleteAccomm = async (req, res) => {
+    res.send("I am delete accommodation");
 }
 
-export const searchAccomm = async (req, res) => {
-    
+const searchAccomm = async (req, res) => {
+    res.send("I am searching accommodation");
 }
 
-export const generateRep = async (req, res) => {
-    
+const generateRep = async (req, res) => {
+    res.send("I am generating report");
+}
+
+export default {
+    addAccomm,
+    archiveAccomm,
+    deleteAccomm,
+    searchAccomm,
+    generateRep
 }
