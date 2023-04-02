@@ -18,10 +18,24 @@ needle.post("http://localhost:3001/login",
         firstName: "Drey",
         lastName: "Tuazon",
         email: "dreytuaz@gmail.com",
+        password: "password",
+        phoneNumber: "09999999"
+    },
+    (err, res) =>{
+        console.log(res.body);
+    }
+);
+
+needle.post("http://localhost:3001/checkifloggedin",
+    {
+        userType: "Student",
+        firstName: "Drey",
+        lastName: "Tuazon",
+        email: "dreytuaz@gmail.com",
         password: "$2b$10$i26n2rL7/mf//kiJ.w4L4OqMGvxY0fTvS7k1LBSCfTr4zeSaQaZfa",
         phoneNumber: "09999999"
     },
     (err, res) =>{
-        // console.log(res.body);
+        console.log(res.body);
     }
 );
