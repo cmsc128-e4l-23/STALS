@@ -83,7 +83,7 @@ function Header() {
     };
     window.addEventListener('resize',windowResize);
 
-  return (
+    return (
     <div id='header'>
         
         {/* TODO: ADD ONCLICK FUNCTION */}
@@ -120,7 +120,7 @@ function Header() {
         <button onClick={handleAuth}>simulate authentication</button>
 
     </div>
-  )
+    )
 }
 
 export default Header
