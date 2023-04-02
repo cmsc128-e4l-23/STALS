@@ -1,7 +1,19 @@
+
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const  UserSchema = new mongoose.Schema(
+
+const OwnerSchema = new mongoose.Schema({
+    propertiesList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
+    archivedList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
+    status:{type: String, enum: ['pending', 'active', 'inactive'], required: true}
+});
+
+const AdminSchema = new mongoose.Schema({
+    pendingApplications: [{type: mongoose.Schema.Types.ObjectID, ref: 'Application'}],
+    pendingReports: [{type: mongoose.Schema.Types.ObjectID, ref: "Report"}]
+})
+const UserSchema = new mongoose.Schema(
     {
         userType: {
             type: String,
@@ -29,7 +41,25 @@ const  UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true
-        }
+        },
+        birthday: { //need to check this.
+            type: String,
+            required: true
+        },
+        profilePhoto: {
+            type: String
+        },
+        sex: { //need to check this.
+            type: String,
+            enum: ["Male", "Female", "Prefer Not To Disclose"],
+            required: true
+        },
+        verificationFiles: [{type: String, required: true}], //confirm this
+        reviews: [{type: mongoose.Schema.Types.ObjectID, ref:"Review"}],
+        reports: [{type: mongoose.Schema.Types.ObjectID, ref:"Report"}],
+        bookmarks: [{type: mongoose.Schema.Types.ObjectID, ref:"Bookmark"}],
+        owner: OwnerSchema,
+        admin: AdminSchema
     },
     {
         timestamps: true,
