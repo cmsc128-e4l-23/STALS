@@ -1,0 +1,189 @@
+#header{
+    background-color: rgb(18, 18, 18);
+    height: 70px;
+    width: 100%;
+    /* sticky header */
+    position: fixed;
+    top: 0%;
+    z-index: 1000; /* on top of all elements */
+}
+
+#logo{
+    width: 25%;
+    float: left;
+    height: 100%;
+}
+
+#logo h1{
+    cursor: pointer;
+    color: white;
+    font-size: 3em;
+    line-height: 7px;
+    font-weight: 600;
+    user-select: none;
+}
+
+#search-section{
+    width: calc(25% + 60px);
+    height: 100%;
+    float: left;
+    margin-left: calc((100% - 50% - 25% - 60px)/2);
+    margin-right: calc((100% - 50% - 25% - 60px)/2);
+}
+
+#search-text{
+    border-radius: 20em 0 0 20em;
+    height: 20px;
+    width: calc(100% - 70px);
+    margin-top: 15px;
+    padding: 10px;
+    border:none;
+}
+
+#search-text:focus{
+    outline: none;
+}
+
+#search-submit{
+    border-radius: 0em 20em 20em 0em;
+    height: 40px;
+    width: 50px;
+    margin-top: 15px;
+    border: none;
+}
+
+#right-side-btns{
+    float: right;
+    width: 25%;
+    height: 100%;
+}
+
+#btn-container{
+    margin-top: 15px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#add-accom{
+    border-radius: 100px;
+    border: none;
+    height: 40px;
+    padding: 1px;
+    float: left;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 40%;
+}
+
+.auth-sect{
+    float: right;
+    line-height: 40px;
+    color: white;
+}
+
+.auth-sect button{
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 100px;
+    border: none;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+
+#auth-confirmed:hover ul{
+    margin-top: 10px;
+    display: block;
+    list-style-type: none;
+    background-color: rgb(18, 18, 18);;
+    text-align: center;
+    padding: 0px 10px 10px 10px;
+    border-radius: 0 0px 10px 10px;
+    width: 100%;
+}
+
+#auth-confirmed:hover li{
+    text-align: center;
+    margin-left: 0;
+    margin-top: 2px;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#auth-confirmed:hover li:hover{
+    background-color: rgb(101, 101, 101);
+}
+
+#auth-confirmed ul{
+    display: none;
+}
+
+#auth-confirmed{
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    user-select: none;
+
+}
+
+#more-options{
+    display: none;
+}
+
+#options-menu{
+    background-color: rgb(18, 18, 18);;
+    position: absolute;
+    right: 1%;
+    margin-top: 55px;
+    border-radius: 0 0px 10px 10px;
+}
+
+#options-menu ul{
+    list-style-type: none;
+    padding: 0 10px 0px 10px;
+}
+
+#options-menu li{
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    user-select: none;
+}
+
+#options-menu li:hover{
+    background-color: rgb(101, 101, 101);
+    cursor: pointer;
+
+}
+
+@media only screen and (max-width: 1550px) {
+    #add-accom, #auth-confirmed:hover ul{
+        display: none;
+    }
+    #more-options{
+        display: block;
+        margin-left: 10px;
+        float: right;
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+        border: none;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    #auth-confirmed, #btn-register{
+        display: none;
+    }
+
+}
+
+@media only screen and (max-width: 640px) {
+    #btn-login{
+        display: none;
+    }
+}
