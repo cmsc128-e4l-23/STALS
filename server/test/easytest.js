@@ -41,27 +41,26 @@ const populateDatabase = async() => {
     console.log("Database Populated!");
 }
 
-///////////////////////// NEEDLE FUNCTIONS ///////////////////////////
+// ///////////////////////// NEEDLE FUNCTIONS ///////////////////////////
 
-const url = "http://localhost:" + str(process.env.port) + "/";
-// const data = { name: "John Doe", email: "johndoe@example.com"};
+// const url = "http://localhost:" + str(process.env.port) + "/";
+// // const data = { name: "John Doe", email: "johndoe@example.com"};
 
-/*
-Add accommodation, input which index of additionalAccomms from testdata.js
-would you like to input.
-*/
-const addAccommodation = (sampleidx) => {
-    const data = testdata.additionalAccomms[sampleidx];
-    needle.post(url+"addAccomm", data, {json: true}, (err, res, body) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log(body);
-        }
-    });
-}
+// /*
+// Add accommodation, input which index of additionalAccomms from testdata.js
+// would you like to input.
+// */
+// const addAccommodation = (sampleidx) => {
+//     const data = testdata.additionalAccomms[sampleidx];
+//     needle.post(url+"addAccomm", data, {json: true}, (err, res, body) => {
+//         if (err) {
+//             console.error(err);
+//         } else {
+//             console.log(body);
+//         }
+//     });
+// }
 
 export default {
     clearDatabase, populateDatabase,
-    addAccommodation,
 }
