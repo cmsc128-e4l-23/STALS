@@ -42,13 +42,16 @@ const populateDatabase = async() => {
 }
 
 ///////////////////////// NEEDLE FUNCTIONS ///////////////////////////
-/*
-Add accommodation
-*/
+
 const url = "http://localhost:" + str(process.env.port) + "/";
 // const data = { name: "John Doe", email: "johndoe@example.com"};
 
-const addAccommodation = () => {
+/*
+Add accommodation, input which index of additionalAccomms from testdata.js
+would you like to input.
+*/
+const addAccommodation = (sampleidx) => {
+    const data = testdata.additionalAccomms[sampleidx];
     needle.post(url+"addAccomm", data, {json: true}, (err, res, body) => {
         if (err) {
             console.error(err);
@@ -60,5 +63,5 @@ const addAccommodation = () => {
 
 export default {
     clearDatabase, populateDatabase,
-
+    addAccommodation,
 }
