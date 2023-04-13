@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
+import needle from "needle";
 import Accommodation from "../models/Accommodation.js"
 import User from "../models/User.js";
 import testdata from "./testdata.js";
+
+// import dotenv from 'dotenv';
+// dotenv.config({ path: '../' })
 
 //FOR EASIER TESTING
 //NOTE: THIS ONLY CONTAINS THE FUNCTIONS, CALL THEM IN SOME OTHER FILE
@@ -50,17 +54,28 @@ const populateDatabase = async() => {
 
 /////////////////////////// NEEDLE FUNCTIONS ///////////////////////////
 
-const url = "http://localhost:" + (process.env.port) + "/";
+const url = "http://localhost:3001/"; // IDRK HOW TO SET THIS
+console.log(url);
 
 // PRACTICALLY VARIOUS TESTS WHETHER THE FUNCTIONALITIES WORK OR NOT
 /*
 Checks if an already existing user could enter
+Uses the first input of testdata.users
+WHICH SHOULD NOT BE DELETED to test this functionality
 */
-
+const loginTest = async () => {
+    needle.post(url + "login", testdata.users[0],
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else console.log(body);
+    }
+);
+}
 /*
 Checks if 
 */
 
 export default {
     clearDatabase, populateDatabase,
+    loginTest
 }
