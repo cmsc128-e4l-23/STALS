@@ -66,11 +66,20 @@ import needle from "needle";
 // );
 
 //Unarchive Accommodation
-needle.post("http://localhost:3001/unarchiveAccomm",
+// needle.post("http://localhost:3001/unarchiveAccomm",
+//     {
+//         _id: "643665dccee7fa1d7dd408ea"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
+
+needle.post("http://localhost:3001/searchAccomm",
     {
-        _id: "643665dccee7fa1d7dd408ea"
+        searchString: "San Tomas"
     },
     (err, res) => {
-        console.log(res.body);
+        console.log(res.body.result[0].address);
     }
 );
