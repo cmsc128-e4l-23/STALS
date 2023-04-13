@@ -14,7 +14,7 @@ function Header() {
     }
     
     // Format for Options: {<displaytext>:<link>}
-    const [availableOptions, setOptions] = useState({"Add an Accomodation":'/add-accom'});
+    const [availableOptions, setOptions] = useState({"Add an Accommodation":'/add-accom'});
     // Parameter "option" must be an object and has the format: {Key:"link"}
     const handleOptions = (option,link) => {
         var new_obj;
@@ -102,7 +102,7 @@ function Header() {
 
         <div id='right-side-btns'>
             <div id='btn-container'>
-                <button id='add-accom'>ADD ACCOMODATION</button>
+                <button id='add-accom'>ADD ACCOMMODATION</button>
                 
                 <button id='more-options' onClick={handleClickOptions}> <FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsclick ? <div id='options-menu'>
