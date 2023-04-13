@@ -1,5 +1,4 @@
-import needle from "needle";
-import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 import Accommodation from "../models/Accommodation.js"
 import User from "../models/User.js";
 import testdata from "./testdata.js";
@@ -30,36 +29,37 @@ const clearDatabase = async() => {
 Populates the database
 */
 const populateDatabase = async() => {
+    
     Accommodation.insertMany(testdata.accommodations)
         .catch((err) => {
             console.log("Accommodations insertion error\n" + err);
         });
-    User.insertMany(testdata.users)
+    
+    //Encrypting the password
+    for (let user of testdata.users) {
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(user.password, salt);
+        user.password = passwordHash;
+        await User.create(user)
         .catch((err) => {
             console.log("Users insertion error\n" + err);
         });
+    }
     console.log("Database Populated!");
 }
 
-// ///////////////////////// NEEDLE FUNCTIONS ///////////////////////////
+/////////////////////////// NEEDLE FUNCTIONS ///////////////////////////
 
-// const url = "http://localhost:" + str(process.env.port) + "/";
-// // const data = { name: "John Doe", email: "johndoe@example.com"};
+const url = "http://localhost:" + (process.env.port) + "/";
 
-// /*
-// Add accommodation, input which index of additionalAccomms from testdata.js
-// would you like to input.
-// */
-// const addAccommodation = (sampleidx) => {
-//     const data = testdata.additionalAccomms[sampleidx];
-//     needle.post(url+"addAccomm", data, {json: true}, (err, res, body) => {
-//         if (err) {
-//             console.error(err);
-//         } else {
-//             console.log(body);
-//         }
-//     });
-// }
+// PRACTICALLY VARIOUS TESTS WHETHER THE FUNCTIONALITIES WORK OR NOT
+/*
+Checks if an already existing user could enter
+*/
+
+/*
+Checks if 
+*/
 
 export default {
     clearDatabase, populateDatabase,

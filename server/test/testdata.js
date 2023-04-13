@@ -2,6 +2,9 @@
 import mongoose from "mongoose";
 
 // FOR USERS
+// THE PASSWORD IS THE NON-HASHED VERSION
+// WHICH IS AUTOMATICALLY HANDLED BY THE populateDatabase FUNCTION
+// IN easytest.js
 const users = [
 {
     userType: "student",
