@@ -1,5 +1,7 @@
+// DATA FOR TESTING
+
 // FOR USERS
-db.users.insertMany([
+const users = [
 {
     userType: "student",
     firstName: "Lorina",
@@ -110,10 +112,10 @@ db.users.insertMany([
     sex: "Male",
     verificationFiles: ["VISA"],
 },
-])
+]
 
 // FOR ACCOMMODATION
-db.accommodations.insertMany([
+const accommodations = [
 {
     accommodationID: ObjectId(),
     name: "Nawawalang Paraiso",
@@ -222,4 +224,6 @@ db.accommodations.insertMany([
         phoneSignal: 'Strong'
     },
 },
-])
+]
+
+export default {users, accommodations}

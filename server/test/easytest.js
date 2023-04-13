@@ -2,6 +2,7 @@ import needle from "needle";
 import mongoose from "mongoose";
 import Accommodation from "../models/Accommodation";
 import User from "../models/User";
+import {users, accommodations} from "./testdata";
 
 //FOR EASIER TESTING
 //NOTE: THIS ONLY CONTAINS THE FUNCTIONS, CALL THEM IN SOME OTHER FILE
@@ -23,4 +24,24 @@ const clearDatabase = async() => {
             console.log("User collection deletion error\n", err);
         });
     console.log("Database Cleared!")
+}
+
+/*
+Populates the database
+*/
+const populateDatabase = async() => {
+    Accommodation.insertMany(accommodations)
+        .catch((err) => {
+            console.log("Accommodations insertion error\n" + err);
+        });
+    User.insertMany(users)
+        .catch((err) => {
+            console.log("Users insertion error\n" + err);
+        });
+    console.log("Database Populated!");
+}
+
+export default {
+    clearDatabase, populateDatabase,
+    
 }
