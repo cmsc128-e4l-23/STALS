@@ -47,8 +47,8 @@ const deleteAccomm = async (req, res) => {
 
 
 //search functionality
-//req body is an object that should have a key named "searchString"
-//that contains the string to be searched in the database
+//req.body is an object that should have:
+//      - a key named "searchString" that contains a string to be searched in the database
 
 //A successful search will result to a res.body that contains
 //  - a key "success" with a value true
