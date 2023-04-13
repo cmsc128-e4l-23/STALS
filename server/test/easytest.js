@@ -62,6 +62,7 @@ console.log(url);
 Checks if an already existing user could enter
 Uses the first input of testdata.users
 WHICH SHOULD NOT BE DELETED to test this functionality
+(Where's logout though?)
 */
 const loginTest = async () => {
     needle.post(url + "login", testdata.users[0],
@@ -71,9 +72,8 @@ const loginTest = async () => {
     }
 );
 }
-/*
-Checks if 
-*/
+// YOU MAY ADD ADDITIONAL FUNCTIONS HERE SO THAT TESTING WOULD
+// LOOK CLEANER
 
 export default {
     clearDatabase, populateDatabase,

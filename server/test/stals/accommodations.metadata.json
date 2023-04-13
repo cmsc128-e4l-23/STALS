@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"384fc66ddc81430a88316b72e72c81b3","collectionName":"accommodations","type":"collection"}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"accommodationID":{"$numberInt":"1"}},"name":"accommodationID_1","background":true,"unique":true}],"uuid":"e9a769c5e0aa4138a4a12ebf9349edec","collectionName":"accommodations","type":"collection"}
