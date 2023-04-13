@@ -44,8 +44,36 @@ const deleteAccomm = async (req, res) => {
     res.send("I am delete accommodation");
 }
 
+
+
+//search functionality
+//req body is an object that should have a key named "searchString"
+//that contains the string to be searched in the database
+
+//A successful search will result to a res.body that contains
+//  - a key "success" with a value true
+//  - a key result with an array of the documents being searched by the user
+
+//A unsuccessful search will result to a res.body that contains
+//  - a key "success" with a value false
+//  - a key error with a value "Search Failed"
 const searchAccomm = async (req, res) => {
-    res.send("I am searching accommodation");
+    
+    const searchString = {"$regex": req.body.searchString};
+    
+    
+    Accommodation.find({$or: [{name: searchString}, {"address.postCode": searchString}, {"address.street": searchString}, {"address.barangay": searchString}, {"address.city": searchString}, {"address.province": searchString}, {"address.region": searchString} ]})
+    .then((result) =>{
+        res.send({success: true, result: result});
+    })
+    .catch((error) => {
+        console.log(err);
+        res.send({success: false, error: "Search Failed"});
+    })
+
+
+
+    // res.send("I am searching accommodation");
 }
 
 const generateRep = async (req, res) => {

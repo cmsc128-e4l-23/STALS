@@ -1,3 +1,4 @@
 /node_modules
 .env
 ./PageTest
+dummy_data.txt
