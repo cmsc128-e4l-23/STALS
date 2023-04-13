@@ -226,5 +226,62 @@ const accommodations = [
     },
 },
 ]
+// ADDITIONAL SAMPLE INPUT DATA
+const additionalAccomms = [
+{
+    accommodationID: new mongoose.Types.ObjectId(),
+    name: "Apartment d'Bourgeois",
+    address: {
+        postCode: "8888",
+        street: "Golden",
+        barangay: "Kaharian",
+        city: "Baguio",
+        province: "Benguet",
+        region: "CAR"
+    },
+    accommodationType: 'Dorm',
+    priceRange: {
+        minPrice: 28000,
+        maxPrice: 65000
+    },
+    description: "An extravagant luxurious lifestyle. Make study classy.",
+    restrictions: {
+        curfew: "7 PM - 7 AM",
+        pets: 'Allowed',
+        cooking: 'Allowed',
+        visitors: 'Allowed',
+        coedStatus: 'No',
+        wifi: 'With WiFi',
+        phoneSignal: 'Strong'
+    },
+},
+{
+    accommodationID: new mongoose.Types.ObjectId(),
+    name: "Normality Dorm",
+    address: {
+        postCode: "5555",
+        street: "Normal St.",
+        barangay: "Okaylang",
+        city: "Los Baños",
+        province: "Laguna",
+        region: "CALABARZON"
+    },
+    accommodationType: 'Dorm',
+    priceRange: {
+        minPrice: 2500,
+        maxPrice: 3500
+    },
+    description: "A normal dorm.",
+    restrictions: {
+        curfew: "12 AM - 5 AM",
+        pets: 'Not Allowed',
+        cooking: 'Not Allowed',
+        visitors: 'Not Allowed',
+        coedStatus: 'No',
+        wifi: 'With WiFi',
+        phoneSignal: 'Poor'
+    },
+},
+]
 
-export default {users, accommodations}
+export default {users, accommodations, additionalAccomms}

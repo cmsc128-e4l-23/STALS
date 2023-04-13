@@ -41,6 +41,23 @@ const populateDatabase = async() => {
     console.log("Database Populated!");
 }
 
+///////////////////////// NEEDLE FUNCTIONS ///////////////////////////
+/*
+Add accommodation
+*/
+const url = "http://localhost:" + str(process.env.port) + "/";
+// const data = { name: "John Doe", email: "johndoe@example.com"};
+
+const addAccommodation = () => {
+    needle.post(url+"addAccomm", data, {json: true}, (err, res, body) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log(body);
+        }
+    });
+}
+
 export default {
     clearDatabase, populateDatabase,
 
