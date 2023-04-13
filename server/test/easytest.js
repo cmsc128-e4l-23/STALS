@@ -1,8 +1,8 @@
 import needle from "needle";
 import mongoose from "mongoose";
-import Accommodation from "../models/Accommodation";
-import User from "../models/User";
-import {users, accommodations} from "./testdata";
+import Accommodation from "../models/Accommodation.js"
+import User from "../models/User.js";
+import testdata from "./testdata.js";
 
 //FOR EASIER TESTING
 //NOTE: THIS ONLY CONTAINS THE FUNCTIONS, CALL THEM IN SOME OTHER FILE
@@ -15,11 +15,11 @@ import {users, accommodations} from "./testdata";
 Clears the contents of the database
 */
 const clearDatabase = async() => {
-    await Accommodation.dropCollection()
+    await Accommodation.deleteMany({})
         .catch((error) => {
             console.log("Accommodation collection deletion error\n", err);
         });
-    await User.dropCollection()
+    await User.deleteMany({})
         .catch((error) => {
             console.log("User collection deletion error\n", err);
         });
@@ -30,11 +30,11 @@ const clearDatabase = async() => {
 Populates the database
 */
 const populateDatabase = async() => {
-    Accommodation.insertMany(accommodations)
+    Accommodation.insertMany(testdata.accommodations)
         .catch((err) => {
             console.log("Accommodations insertion error\n" + err);
         });
-    User.insertMany(users)
+    User.insertMany(testdata.users)
         .catch((err) => {
             console.log("Users insertion error\n" + err);
         });
@@ -43,5 +43,5 @@ const populateDatabase = async() => {
 
 export default {
     clearDatabase, populateDatabase,
-    
+
 }

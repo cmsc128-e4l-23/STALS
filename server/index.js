@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import routes from "./routes.js";
 import cookieParser from "cookie-parser";
+import easytest from "./test/easytest.js";
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -33,6 +34,11 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(() => {
     app.listen(PORT, () => console.log(`SERVER PORT: ${PORT}`));
 }).catch((error) => console.log(`${error} DID NOT CONNECT`));
+
+// include the testing setup here
+await easytest.clearDatabase();
+await easytest.populateDatabase();
+
 // mongoose.connect(
 //     "mongodb://localhost:27017/users",
 //     { useNewUrlParser: true, useUnifiedTopology: true },

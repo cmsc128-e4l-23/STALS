@@ -1,4 +1,5 @@
 // DATA FOR TESTING
+import mongoose from "mongoose";
 
 // FOR USERS
 const users = [
@@ -117,7 +118,7 @@ const users = [
 // FOR ACCOMMODATION
 const accommodations = [
 {
-    accommodationID: ObjectId(),
+    accommodationID: new mongoose.Types.ObjectId(),
     name: "Nawawalang Paraiso",
     address: {
         postCode: "4030",
@@ -144,7 +145,7 @@ const accommodations = [
     },
 },
 {
-    accommodationID: ObjectId(),
+    accommodationID: new mongoose.Types.ObjectId(),
     name: "Four Sisters",
     address: {
         postCode: "4030",
@@ -171,7 +172,7 @@ const accommodations = [
     },
 },
 {
-    accommodationID: ObjectId(),
+    accommodationID: new mongoose.Types.ObjectId(),
     name: "Mayfair Apartments",
     address: {
         postCode: "1234",
@@ -198,7 +199,7 @@ const accommodations = [
     },
 },
 {
-    accommodationID: ObjectId(),
+    accommodationID: new mongoose.Types.ObjectId(),
     name: "100% very VERY GOOD rentspACe NO CAP frfr :OOOOO!!1!!",
     address: {
         postCode: "6666",
