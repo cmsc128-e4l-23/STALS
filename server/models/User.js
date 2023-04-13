@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 
 
 const OwnerSchema = new mongoose.Schema({
-    propertiesList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
-    archivedList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
+    propertiesList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accommodation'}],
+    archivedList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accommodation'}],
     status:{type: String, enum: ['pending', 'active', 'inactive'], required: true}
 });
 
