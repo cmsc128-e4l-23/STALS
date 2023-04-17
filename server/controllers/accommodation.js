@@ -40,9 +40,12 @@ const unarchiveAccomm = async (req, res) => {
         })
 }
 
+//Function for delete accomodation
+//returns a success value of true if the accommodation is successfully deleted
+//else, the success value is false
 const deleteAccomm = async (req, res) => {
     const accomm_details = req.body;
-
+    //delete the accomodation with the id
     Accommodation.deleteOne(
         { _id: accomm_details._id }
     )
@@ -53,8 +56,6 @@ const deleteAccomm = async (req, res) => {
             console.log(err);
             res.send({ success: false, error: "Deletion Failed" });
         })
-
-    // res.send("I am deleting an accommodation");
 }
 
 
