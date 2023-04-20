@@ -86,15 +86,29 @@ import needle from "needle";
 // );
 
 // try to report an owner
-needle.post("http://localhost:3001/reportAccomm",
-    {
-        user_id: new mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
-        reported_id: new mongoose.Types.ObjectId("6440de1c68cbace501aab480"), // Ms dimasalang
-        classification: 'User',
-        content: "i just wanna know what happens teehee",
-    }, {json: true},
-    (err, res, body) => {
-        if (err) console.error(err);
-        else console.log(body);
-    }
-);
+// needle.post("http://localhost:3001/reportAccomm",
+//     {
+//         user_id: new mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
+//         reported_id: new mongoose.Types.ObjectId("6440de1c68cbace501aab480"), // Ms dimasalang
+//         classification: 'User',
+//         content: "i just wanna know what happens teehee",
+//     }, {json: true},
+//     (err, res, body) => {
+//         if (err) console.error(err);
+//         else console.log(body);
+//     }
+// );
+
+// reporting an accommodation
+// needle.post("http://localhost:3001/reportAccomm",
+//     {
+//         user_id: new mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
+//         reported_id: new mongoose.Types.ObjectId("6440de1c68cbace501aab471"), // that one suspicious definitely not a cartel "dorm"
+//         classification: 'Accommodation',
+//         content: "i just wanna know what happens teehee",
+//     }, {json: true},
+//     (err, res, body) => {
+//         if (err) console.error(err);
+//         else console.log(body);
+//     }
+// );
