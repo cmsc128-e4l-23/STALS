@@ -92,6 +92,10 @@ const viewAccomm = async (req, res) => {
         });
 }
 
+/*
+The req.body should simply contain what's in the report schema
+You may refer to test.js to check how it is used
+*/
 const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
@@ -105,7 +109,6 @@ const reportAccomm = async (req, res) => {
         });
         const savedreport = await report.save();
         res.status(201).json(savedreport);
-        console.log("Done!");
     }  catch (err) {
         res.status(500).json({error: err.message});
         console.error(err);

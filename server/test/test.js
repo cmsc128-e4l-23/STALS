@@ -112,3 +112,14 @@ import needle from "needle";
 //         else console.log(body);
 //     }
 // );
+
+// resolving a report
+needle.post("http://localhost:3001/resolveReport",
+    {
+        _id: new mongoose.Types.ObjectId("6440ea44c089048ac31c5c61")
+    }, {json: true},
+    (err, res, body) => {
+        if (err) console.error(err);
+        else console.log(body);
+    }
+);
