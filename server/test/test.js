@@ -114,12 +114,21 @@ import needle from "needle";
 // );
 
 // resolving a report
-needle.post("http://localhost:3001/resolveReport",
+// needle.post("http://localhost:3001/resolveReport",
+//     {
+//         _id: new mongoose.Types.ObjectId("6440ea44c089048ac31c5c61")
+//     }, {json: true},
+//     (err, res, body) => {
+//         if (err) console.error(err);
+//         else console.log(body);
+//     }
+// );
+
+// getting all reports
+needle('get', "http://localhost:3001/viewReports",
     {
-        _id: new mongoose.Types.ObjectId("6440ea44c089048ac31c5c61")
-    }, {json: true},
-    (err, res, body) => {
-        if (err) console.error(err);
-        else console.log(body);
-    }
-);
+        onlyPending: false,
+        onlyResolved: false
+    }, {json: true})
+    .then((res)=>console.log(res.body))
+    .catch((err)=>console.error(err));

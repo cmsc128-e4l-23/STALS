@@ -1,3 +1,5 @@
+import Report from "../models/Report.js";
+
 /*
 Marks the report as resolved
 */
@@ -29,14 +31,16 @@ const viewReports = async (req, res) => {
     let query = []
     if (body.onlyPending===true)  query.push({status: 'Pending'});
     if (body.onlyResolved===true) query.push({status: 'Resolved'});
-    Report.find({$or: query})
-    .then((result) =>{
-        res.send({success: true, result: result});
-    })
-    .catch((error) => {
-        console.log(err);
-        res.send({success: false, error: "Viewing Failed"});
-    })
+    if (query.length>0) {
+        Report.find({$or: query})
+        .then((result) =>{
+            res.send({success: true, result: result});
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({success: false, error: "Viewing Failed"});
+        });
+    }else res.send({success: true, result: {}});
 
 }
 
