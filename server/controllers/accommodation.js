@@ -50,7 +50,7 @@ const deleteAccomm = async (req, res) => {
         { _id: accomm_details._id }
     )
         .then((result) => {
-            res.send("Successfully deleted accommodation");
+            res.send({success: true, message:"Successfully deleted accommodation"});
         })
         .catch((err) => {
             console.log(err);
