@@ -75,11 +75,19 @@ import needle from "needle";
 //     }
 // );
 
-needle.post("http://localhost:3001/searchAccomm",
-    {
-        searchString: "San Tomas"
-    },
+// needle.post("http://localhost:3001/searchAccomm",
+//     {
+//         searchString: "San Tomas"
+//     },
+//     (err, res) => {
+//         console.log(res.body.result[0].address);
+//     }
+// );
+
+needle.post("http://localhost:3001/reportAccomm",
+    {},
     (err, res) => {
-        console.log(res.body.result[0].address);
+        if (err) console.log(err);
+        else console.log("ok");
     }
 );

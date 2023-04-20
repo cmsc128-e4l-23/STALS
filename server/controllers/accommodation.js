@@ -91,6 +91,10 @@ const viewAccomm = async (req, res) => {
         });
 }
 
+const reportAccom = async (req, res) => {
+    res.send("I am reporting an accommodation");
+}
+
 export default {
     addAccomm,
     archiveAccomm,
@@ -98,5 +102,6 @@ export default {
     deleteAccomm,
     searchAccomm,
     generateRep,
-    viewAccomm
+    viewAccomm,
+    reportAccom
 }

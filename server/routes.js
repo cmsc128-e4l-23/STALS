@@ -19,5 +19,6 @@ router.get("/generateRep", accommodation.generateRep);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
+router.get("/reportAccom", accommodation.reportAccom);
 
 export default router;
