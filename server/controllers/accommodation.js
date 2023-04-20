@@ -13,7 +13,7 @@ const archiveAccomm = async (req, res) => {
         { $set: { archived: true } }
     )
         .then((result) => {
-            res.send("Successfully archived accommodation");
+            res.send({ success: true, message: "Successfully archived accommodation" });
         })
         .catch((error) => {
             console.log(err);
@@ -31,7 +31,7 @@ const unarchiveAccomm = async (req, res) => {
         { $set: { archived: false } }
     )
         .then((result) => {
-            res.send("Successfully unarchived accommodation");
+            res.send({ success: true, message: "Successfully unarchived accommodation" });
         })
         .catch((error) => {
             console.log(err);
