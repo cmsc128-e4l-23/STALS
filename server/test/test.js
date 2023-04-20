@@ -88,13 +88,13 @@ import needle from "needle";
 // try to report an owner
 needle.post("http://localhost:3001/reportAccomm",
     {
-        user: mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
-        reported: mongoose.Types.ObjectId("6440de1c68cbace501aab480"), // Ms dimasalang
+        user_id: new mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
+        reported_id: new mongoose.Types.ObjectId("6440de1c68cbace501aab480"), // Ms dimasalang
         classification: 'User',
         content: "i just wanna know what happens teehee",
-    },
-    (err, res) => {
-        if (err) console.log(err);
-        else console.log("ok");
+    }, {json: true},
+    (err, res, body) => {
+        if (err) console.error(err);
+        else console.log(body);
     }
 );

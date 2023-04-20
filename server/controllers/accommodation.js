@@ -92,9 +92,10 @@ const viewAccomm = async (req, res) => {
         });
 }
 
-const reportAccom = async (req, res) => {
+const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
+
         const report = new Report({
             user: report_details.user_id,
             reported: report_details.reported_id,
@@ -104,8 +105,10 @@ const reportAccom = async (req, res) => {
         });
         const savedreport = await report.save();
         res.status(201).json(savedreport);
+        console.log("Done!");
     }  catch (err) {
         res.status(500).json({error: err.message});
+        console.error(err);
     }
     //res.send("I am reporting an accommodation");
 }
@@ -118,5 +121,5 @@ export default {
     searchAccomm,
     generateRep,
     viewAccomm,
-    reportAccom
+    reportAccomm
 }

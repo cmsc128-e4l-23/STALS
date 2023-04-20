@@ -16,9 +16,9 @@ router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.get("/generateRep", accommodation.generateRep);
+router.post("/reportAccomm", accommodation.reportAccomm);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
-router.get("/reportAccom", accommodation.reportAccom);
 
 export default router;
