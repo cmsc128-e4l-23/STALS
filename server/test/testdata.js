@@ -230,6 +230,31 @@ const accommodations = [
 },
 ]
 // ADDITIONAL SAMPLE INPUT DATA
+const additionaUsers = [
+{
+    userType: "other",
+    firstName: "John",
+    lastName: "Pork",
+    email: "johnpork@up.edu.ph",
+    password: "skdazzleme",
+    phoneNumber: "09332211000",
+    birthday: "18/05/1975",
+    sex: "Male",
+    verificationFiles: ["Business ID"],
+},
+{
+    userType: "landowner",
+    firstName: "Cindy",
+    lastName: "Villar",
+    email: "cindyvillar666@gmail.com",
+    password: "loveforlandchads",
+    phoneNumber: "09666666666",
+    birthday: "16/06/1966",
+    sex: "Female",
+    verificationFiles: ["Land Title"],
+},
+]
+
 const additionalAccomms = [
 {
     accommodationID: new mongoose.Types.ObjectId(),
@@ -287,4 +312,6 @@ const additionalAccomms = [
 },
 ]
 
-export default {users, accommodations, additionalAccomms}
+
+
+export default {users, accommodations, additionalUsers, additionalAccomms}
