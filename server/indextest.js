@@ -35,7 +35,8 @@ mongoose.connect(process.env.MONGO_URL, {
     app.listen(PORT, () => console.log(`SERVER PORT: ${PORT}`));
 }).catch((error) => console.log(`${error} DID NOT CONNECT`));
 
-// include the testing setup here
+// include the testing here
+
 await easytest.clearDatabase();
 await easytest.populateDatabase();
 

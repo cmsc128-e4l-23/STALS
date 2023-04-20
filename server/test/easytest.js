@@ -62,7 +62,7 @@ const registerTest = async (data) => {
     needle.post(url + "register", data,
     (err, res, body) =>{
         if (err) console.error(err);
-        else console.log(body);
+        else console.log("Registered successfully!");
     }
 );
 }
@@ -71,7 +71,7 @@ const loginTest = async (data) => {
     needle.post(url + "login", data,
     (err, res, body) =>{
         if (err) console.error(err);
-        else console.log(body);
+        else console.log("Login successfully!");
     }
 );
 }
@@ -80,7 +80,7 @@ const loginCheckTest = async (data) => {
     needle.post(url + "checkifloggedin", data,
     (err, res, body) =>{
         if (err) console.error(err);
-        else console.log(body);
+        else console.log("Is still login!");
     }
 );
 }
