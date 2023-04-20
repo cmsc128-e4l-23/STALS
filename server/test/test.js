@@ -75,11 +75,22 @@ import needle from "needle";
 //     }
 // );
 
-needle.post("http://localhost:3001/searchAccomm",
-    {
-        searchString: "San Tomas"
-    },
-    (err, res) => {
-        console.log(res.body.result[0].address);
-    }
-);
+// needle.post("http://localhost:3001/searchAccomm",
+//     {
+//         searchString: "San Tomas"
+//     },
+//     (err, res) => {
+//         console.log(res.body.result[0].address);
+//     }
+// );
+
+
+//Testing delete accommodation
+// needle.delete("http://localhost:3001/deleteAccomm",
+//     {
+//         _id: "6437c2d8b74cee2c7bfbc15f"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );

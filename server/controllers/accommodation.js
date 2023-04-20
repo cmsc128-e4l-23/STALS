@@ -5,20 +5,20 @@ const addAccomm = async (req, res) => {
 }
 
 const archiveAccomm = async (req, res) => {
-    
+
     const accomm_details = req.body;
 
     Accommodation.updateOne(
         { _id: accomm_details._id },
-        { $set: {archived: true} }
-        )
+        { $set: { archived: true } }
+    )
         .then((result) => {
             res.send("Successfully archived accommodation");
         })
         .catch((error) => {
             console.log(err);
 
-            res.send({success: false, error: "Archive Failed"});
+            res.send({ success: false, error: "Archive Failed" });
         })
 }
 
@@ -28,20 +28,34 @@ const unarchiveAccomm = async (req, res) => {
 
     Accommodation.updateOne(
         { _id: accomm_details._id },
-        { $set: {archived: false} }
-        )
+        { $set: { archived: false } }
+    )
         .then((result) => {
             res.send("Successfully unarchived accommodation");
         })
         .catch((error) => {
             console.log(err);
 
-            res.send({success: false, error: "Unarchive Failed"});
+            res.send({ success: false, error: "Unarchive Failed" });
         })
 }
 
+//Function for delete accomodation
+//returns a success value of true if the accommodation is successfully deleted
+//else, the success value is false
 const deleteAccomm = async (req, res) => {
-    res.send("I am delete accommodation");
+    const accomm_details = req.body;
+    //delete the accomodation with the id
+    Accommodation.deleteOne(
+        { _id: accomm_details._id }
+    )
+        .then((result) => {
+            res.send({success: true, message:"Successfully deleted accommodation"});
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send({ success: false, error: "Deletion Failed" });
+        })
 }
 
 
@@ -58,18 +72,18 @@ const deleteAccomm = async (req, res) => {
 //  - a key "success" with a value false
 //  - a key error with a value "Search Failed"
 const searchAccomm = async (req, res) => {
-    
-    const searchString = {"$regex": req.body.searchString};
-    
-    
-    Accommodation.find({$or: [{name: searchString}, {"address.postCode": searchString}, {"address.street": searchString}, {"address.barangay": searchString}, {"address.city": searchString}, {"address.province": searchString}, {"address.region": searchString} ]})
-    .then((result) =>{
-        res.send({success: true, result: result});
-    })
-    .catch((error) => {
-        console.log(err);
-        res.send({success: false, error: "Search Failed"});
-    })
+
+    const searchString = { "$regex": req.body.searchString };
+
+
+    Accommodation.find({ $or: [{ name: searchString }, { "address.postCode": searchString }, { "address.street": searchString }, { "address.barangay": searchString }, { "address.city": searchString }, { "address.province": searchString }, { "address.region": searchString }] })
+        .then((result) => {
+            res.send({ success: true, result: result });
+        })
+        .catch((error) => {
+            console.log(err);
+            res.send({ success: false, error: "Search Failed" });
+        })
 
 
 
