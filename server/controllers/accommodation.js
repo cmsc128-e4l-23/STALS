@@ -1,7 +1,51 @@
 import Accommodation from "../models/Accommodation.js";
 
 const addAccomm = async (req, res) => {
-    res.send("I am adding accommodation");
+    try{
+        //Getting the input
+        let accomm_details = req.body;
+
+        //Completing accommodation details given the input
+        const newAccommodation = new Accommodation({
+            accommodationID: accomm_details.accommodationID,
+            name: accomm_details.name,
+            landmarks: accomm_details.landmarks,
+            address: {
+                postCode: accomm_details.address.postCode,
+                street: accomm_details.address.street,
+                barangay: accomm_details.address.barangay,
+                city: accomm_details.address.city,
+                province: accomm_details.address.province,
+                region: accomm_details.address.region
+            },
+            generalLocation: accomm_details.generalLocation,
+            accommodationType: accomm_details.accommodationType,
+            amenities: accomm_details.amenities,
+            priceRange: {
+                minPrice: accomm_details.priceRange.minPrice,
+                maxPrice: accomm_details.priceRange.maxPrice
+            },
+            description: accomm_details.description,
+            photos: accomm_details.photos,
+            restrictions: {
+                curfew: accomm_details.restrictions.curfew,
+                pets: accomm_details.restrictions.pets,
+                cooking: accomm_details.restrictions.cooking,
+                visitors: accomm_details.restrictions.visitors,
+                coedStatus: accomm_details.restrictions.coedStatus,
+                wifi: accomm_details.restrictions.wifi,
+                phoneSignal: accomm_details.restrictions.phoneSignal
+            },
+            security: accomm_details.security,
+            archived: accomm_details.archived
+        });
+        
+        //Saves the accommodation to the database
+        const savedAccommodation = await newAccommodation.save();
+        res.status(201).json(savedAccommodation);
+    }catch (err){
+        res.status(500).json({ error: err.message });
+    }
 }
 
 const archiveAccomm = async (req, res) => {
