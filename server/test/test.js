@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import needle from "needle";
 
 // Add Accommodation
@@ -84,8 +85,14 @@ import needle from "needle";
 //     }
 // );
 
+// try to report an owner
 needle.post("http://localhost:3001/reportAccomm",
-    {},
+    {
+        user: mongoose.Types.ObjectId("6440de1d68cbace501aab486"), // peter griffin would like a complaint
+        reported: mongoose.Types.ObjectId("6440de1c68cbace501aab480"), // Ms dimasalang
+        classification: 'User',
+        content: "i just wanna know what happens teehee",
+    },
     (err, res) => {
         if (err) console.log(err);
         else console.log("ok");

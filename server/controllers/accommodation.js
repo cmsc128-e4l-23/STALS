@@ -1,4 +1,5 @@
 import Accommodation from "../models/Accommodation.js";
+import Report from "../models/Report.js";
 
 const addAccomm = async (req, res) => {
     res.send("I am adding accommodation");
@@ -92,7 +93,21 @@ const viewAccomm = async (req, res) => {
 }
 
 const reportAccom = async (req, res) => {
-    res.send("I am reporting an accommodation");
+    try {
+        const report_details = req.body;
+        const report = new Report({
+            user: report_details.user_id,
+            reported: report_details.reported_id,
+            classification: report_details.classification,
+            content: report_details.content,
+            status: "Pending"
+        });
+        const savedreport = await report.save();
+        res.status(201).json(savedreport);
+    }  catch (err) {
+        res.status(500).json({error: err.message});
+    }
+    //res.send("I am reporting an accommodation");
 }
 
 export default {
