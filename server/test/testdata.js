@@ -230,7 +230,7 @@ const accommodations = [
 },
 ]
 // ADDITIONAL SAMPLE INPUT DATA
-const additionaUsers = [
+const additionalUsers = [
 {
     userType: "other",
     firstName: "John",

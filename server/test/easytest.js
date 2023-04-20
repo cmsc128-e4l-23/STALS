@@ -55,27 +55,40 @@ const populateDatabase = async() => {
 /////////////////////////// NEEDLE FUNCTIONS ///////////////////////////
 
 const url = "http://localhost:3001/"; // IDRK HOW TO SET THIS
-console.log(url);
 
 // PRACTICALLY VARIOUS TESTS WHETHER THE FUNCTIONALITIES WORK OR NOT
-/*
-Checks if an already existing user could enter
-Uses the first input of testdata.users
-WHICH SHOULD NOT BE DELETED to test this functionality
-(Where's logout though?)
-*/
-const loginTest = async () => {
-    needle.post(url + "login", testdata.users[0],
+
+const registerTest = async (data) => {
+    needle.post(url + "register", data,
     (err, res, body) =>{
         if (err) console.error(err);
         else console.log(body);
     }
 );
 }
+
+const loginTest = async (data) => {
+    needle.post(url + "login", data,
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else console.log(body);
+    }
+);
+}
+
+const loginCheckTest = async (data) => {
+    needle.post(url + "checkifloggedin", data,
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else console.log(body);
+    }
+);
+}
+
 // YOU MAY ADD ADDITIONAL FUNCTIONS HERE SO THAT TESTING WOULD
 // LOOK CLEANER
 
 export default {
     clearDatabase, populateDatabase,
-    loginTest
+    registerTest, loginTest, loginCheckTest
 }
