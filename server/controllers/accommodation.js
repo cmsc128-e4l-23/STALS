@@ -33,7 +33,7 @@ const unarchiveAccomm = async (req, res) => {
         .then((result) => {
             res.send("Successfully unarchived accommodation");
         })
-        .catch((error) => {
+        .catch((err) => {
             console.log(err);
 
             res.send({success: false, error: "Unarchive Failed"});

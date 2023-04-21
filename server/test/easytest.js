@@ -111,11 +111,14 @@ const unarchiveAccommTest = async (data) => {
 }
 
 const searchAccommTest = async (data) => {
-    needle.post(url + "searchAccomm", data,
+    needle.post(url + "searchAccomm", data, {json: true},
     (err, res, body) =>{
         if (err) console.error(err);
         else if (body.success === false) console.log(body.error);
-        else console.log("Search Successful!\n" + body.result);
+        else {
+            console.log("Search Successful!");
+            console.log(body.result);
+        }
     }
 );
 }
