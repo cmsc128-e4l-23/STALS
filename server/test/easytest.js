@@ -58,6 +58,8 @@ const url = "http://localhost:3001/"; // IDRK HOW TO SET THIS
 
 // PRACTICALLY VARIOUS TESTS WHETHER THE FUNCTIONALITIES WORK OR NOT
 
+// AUTH FUNCTIONS
+
 const registerTest = async (data) => {
     needle.post(url + "register", data,
     (err, res, body) =>{
@@ -81,8 +83,39 @@ const loginCheckTest = async (data) => {
     needle.post(url + "checkifloggedin", data,
     (err, res, body) =>{
         if (err) console.error(err);
-        else if (body.isLoggedin === false) console.log("is not logged in");
+        else if (body.isLoggedin === false) console.log("Is not logged in");
         else console.log("Is still login!");
+    }
+);
+}
+
+// ACCOMMODATION FUNCTIONS
+const archiveAccommTest = async (data) => {
+    needle.post(url + "archiveAccomm", data,
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else if (body.success === false) console.log(body.error);
+        else console.log("Archiving Successful!");
+    }
+);
+}
+
+const unarchiveAccommTest = async (data) => {
+    needle.post(url + "unarchiveAccomm", data,
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else if (body.success === false) console.log(body.error);
+        else console.log("Unarchiving Successful!");
+    }
+);
+}
+
+const searchAccommTest = async (data) => {
+    needle.post(url + "searchAccomm", data,
+    (err, res, body) =>{
+        if (err) console.error(err);
+        else if (body.success === false) console.log(body.error);
+        else console.log("Search Successful!\n" + body.result);
     }
 );
 }
@@ -92,5 +125,6 @@ const loginCheckTest = async (data) => {
 
 export default {
     clearDatabase, populateDatabase,
-    registerTest, loginTest, loginCheckTest
+    registerTest, loginTest, loginCheckTest,
+    archiveAccommTest, unarchiveAccommTest, searchAccommTest
 }
