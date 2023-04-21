@@ -111,16 +111,21 @@ const reportAccomm = async (req, res) => {
             content: report_details.content,
             status: "Pending"
         });
-        const savedreport = await report.save();
+        await report.save();
         // also add that report to the user
 
         User.updateOne(
             {_id: report_details.user_id},
             { $push: {reports: custom_id} }
-        );
-        res.status(201).json(savedreport);
+        ).then((result) => {
+            res.send("Successfully appended report to user");
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({success: false, error: "Report Appending Failed"});
+        });
     }  catch (err) {
-        res.status(500).json({error: err.message});
+        res.status(500).send({error: err.message});
         console.error(err);
     }
     //res.send("I am reporting an accommodation");
