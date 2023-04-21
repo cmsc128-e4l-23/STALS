@@ -6,7 +6,7 @@ import review from "./controllers/review.js";
 const router = express.Router();
 
 //Authentication
-router.post("/register", auth.register);
+router.post("/signup", auth.signUp);
 router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
 
