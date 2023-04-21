@@ -1,7 +1,7 @@
 import React from 'react';
 import '../components/Signup.css'
 
-function Signup() {
+export default function Signup() {
   return (
     <div className="signup-container">
       <h1>SIGNUP</h1>
@@ -18,4 +18,3 @@ function Signup() {
   );
 }
 
-export default Signup;

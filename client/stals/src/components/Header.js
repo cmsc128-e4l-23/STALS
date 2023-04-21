@@ -3,7 +3,7 @@ import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 
-function Header() {
+export default function Header() {
 
     const [isSignedIn, setAuth] = useState(false);
     const [userName, setName] = useState('User');
@@ -122,5 +122,3 @@ function Header() {
     </div>
     )
 }
-
-export default Header

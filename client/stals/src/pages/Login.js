@@ -1,7 +1,7 @@
 import React from 'react';
 import '../components/Login.css';
 
-function Login() {
+export default function Login() {
     return (
       <div className="login-container">
         <h1>Log In</h1>
@@ -16,4 +16,3 @@ function Login() {
     );
   }
 
-export default Login;
