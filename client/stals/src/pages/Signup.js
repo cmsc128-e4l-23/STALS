@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../components/Signup.css'
+import Header from '../components/Header';
 
 export default function Signup() {
   const [usertype, setUserType]  = useState('Student');
@@ -32,6 +33,7 @@ export default function Signup() {
   }
   return (
     <div className="signup-container">
+      <Header />
       <h1>SIGNUP</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
         <select id="type" name="type" value={usertype} onChange={(e) => setUserType(e.target.value)} required>
