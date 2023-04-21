@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Review from "../models/Review.js";
 
+// Used to add reviews
+// Throws error if user is not found
 const addReview = async (req, res) => {
     try{
         const review_details = req.body;
@@ -24,11 +26,16 @@ const addReview = async (req, res) => {
 
         //Adding the newly created review to current user
         const user = await User.findById(userId);
-        user.reviews.push(savedReview._id);
-        await user.save();
+        if (user){
+            user.reviews.push(savedReview._id);
+            await user.save();
+
+            res.send({ success: true, message: "Successfully added new review" });
+            res.status(201).json(savedReview);
+        } else {
+            throw new Error("User not found");
+        }
         
-        res.send({ success: true, message: "Successfully added new review" });
-        res.status(201).json(savedReview);
     } catch (err){
         console.log(err);
         res.status(500).json({error: err.message})
@@ -36,7 +43,8 @@ const addReview = async (req, res) => {
 
 }
 
-//Used for editing already made reviews
+// Used for editing already made reviews
+// Throws an error if review does not exist
 const editReview = async (req, res) => {
     const review_details = req.body;
     let updateObject = { $set: {} };
@@ -45,47 +53,63 @@ const editReview = async (req, res) => {
         updateObject.$set.content = req.body.content;
     }
     if (req.body.rating){
-        updateObject.$set.content = req.body.rating;
+        updateObject.$set.rating = req.body.rating;
     }
     if (req.body.photos){
         updateObject.$set.photos = req.body.photos;
     }
 
-    console.log("updateObject = ", updateObject);
     try{
-        await Review.findByIdAndUpdate(
+        const result = await Review.findByIdAndUpdate(
             review_details._id,
             updateObject
         );
-        res.send({ success: true, message: "Successfully edited review" });
+
+        if (result){
+            res.send({ success: true, message: "Successfully edited review", updateObject: updateObject, result: result});
+        } else {
+            throw new Error("Review not found");
+        }
     } catch (error){
         console.log(error);
-        res.send({ success: false, error: "Failed to edit review" });
+        res.send({ success: false, message: "Failed to edit review", error: error });
     }
-    
 }
 
+// Deletes an existing review and also deletes it from the user's
+// review list
+// Throws an error if review or user if user is not found
 const deleteReview = async (req, res) => {
     const review_details = req.body;
     const userId = req.body.userId;
 
     try{
         //Deleting review
-        await Accommodation.deleteOne({ _id: review_details._id });
-        
-        //Deleting review from the user
-        const user = await User.findById(userId)
-        user.reviews.pull(review_details._id);
-        await user.save();
-        
-        res.send({ success: true, message: "Successfully deleted review" });
+        const result = await Review.findByIdAndDelete(review_details._id);
+
+        if (result){
+            //Deleting review from the user
+            const user = await User.findById(userId)
+            if (user){
+                user.reviews.pull(review_details._id);
+                await user.save();
+
+                res.send({ success: true, message: "Successfully deleted review", result: result });
+            } else {
+                throw new Error("User not found");
+            }   
+        } else {
+            throw new Error("Review not found");
+        }
     } catch (error){
         console.log(error);
-        res.send({ success: false, error: "Failed to delete review" });
+        res.send({ success: false, message: "Failed to delete review", error: error });
     }
 
 }
 
+// returns all reviews of a given user or a property
+// returns empty array if no reviews were found
 const getReview = async (req, res) => {
 
     let queryObject;
