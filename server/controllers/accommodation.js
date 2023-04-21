@@ -1,5 +1,7 @@
+import mongoose from "mongoose";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import User from "../models/User.js";
 
 const addAccomm = async (req, res) => {
     res.send("I am adding accommodation");
@@ -99,8 +101,10 @@ You may refer to test.js to check how it is used
 const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
+        const custom_id = new mongoose.Types.ObjectId();
 
         const report = new Report({
+            _id: custom_id,
             user: report_details.user_id,
             reported: report_details.reported_id,
             classification: report_details.classification,
@@ -108,6 +112,12 @@ const reportAccomm = async (req, res) => {
             status: "Pending"
         });
         const savedreport = await report.save();
+        // also add that report to the user
+
+        User.updateOne(
+            {_id: report_details.user_id},
+            { $push: {reports: custom_id} }
+        );
         res.status(201).json(savedreport);
     }  catch (err) {
         res.status(500).json({error: err.message});

@@ -125,10 +125,10 @@ import needle from "needle";
 // );
 
 // getting all reports
-needle('get', "http://localhost:3001/viewReports",
-    {
-        onlyPending: false,
-        onlyResolved: false
-    }, {json: true})
-    .then((res)=>console.log(res.body))
-    .catch((err)=>console.error(err));
+// needle('get', "http://localhost:3001/viewReports",
+//     {
+//         onlyPending: false,
+//         onlyResolved: false
+//     }, {json: true})
+//     .then((res)=>console.log(res.body))
+//     .catch((err)=>console.error(err));
