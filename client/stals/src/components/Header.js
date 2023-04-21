@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
-
+    let navigate = useNavigate();
     const [isSignedIn, setAuth] = useState(false);
     const [userName, setName] = useState('User');
 
@@ -54,7 +55,7 @@ export default function Header() {
         </ul>
         </div>;
     } else{
-        auth_section = <><button id='btn-login'>LOG IN</button><button id='btn-register'>REGISTER</button></>;
+        auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-register' onClick={() => {navigate('/signup')}}>REGISTER</button></>;
     };
 
     // Handles the responsiveness for buttons (what buttons inside the options button will appear at a certain window size)
@@ -108,7 +109,7 @@ export default function Header() {
                 {optionsclick ? <div id='options-menu'>
                     <ul>
                         {Object.keys(availableOptions).map((option)=>{
-                            return <li>{option}</li>
+                            return <li id='option-btn' onClick={() => {navigate(availableOptions[option])}}>{option}</li>
                         })}
                     </ul>
                 </div> : null}
