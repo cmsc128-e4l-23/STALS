@@ -133,6 +133,7 @@ const searchAccomm = async (req, res) => {
     // res.send("I am searching accommodation");
 }
 
+
 //bookmark functionality
 //req.body is an object that should have:
 //      - two ids, the user and the id of accommodation to be bookmarked
@@ -189,9 +190,44 @@ const removeBookmarkAccomm = async (req, res) => {
     }
 }
 
+const fetchBookmarks = async (userID) => {
+    return User.findOne({_id:userID})
+        .then((user)=>{
+            return Accommodation.find({_id:{$in:user.bookmarks}})
+                .then((result) =>{
+                    // console.log(result)
+                    return result;
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+
+
+//Functions that generates a pdf file of the bookmarked accommmodations of the user
+
+//Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
+
+
 const generateRep = async (req, res) => {
+    fetchBookmarks(req.body._id)
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error)
+        });  
+    
     res.send("I am generating report");
 }
+
+
+
 
 //for testing
 const viewAccomm = async (req, res) => {
