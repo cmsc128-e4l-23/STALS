@@ -3,11 +3,10 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 // Function for sign up
-export const register = async (req, res) => {
+export const signUp = async (req, res) => {
     try{
         //Getting the input
         let user_details = req.body;
-
         //Encrypting the password
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(user_details.password, salt);
@@ -105,7 +104,7 @@ const checkIfLoggedIn = async (req, res) => {
 }
 
 export default {
-    register,
+    signUp,
     logIn,
     checkIfLoggedIn
 };
