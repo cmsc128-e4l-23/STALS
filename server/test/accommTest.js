@@ -1,7 +1,7 @@
 import needle from "needle";
 import mongoose from "mongoose";
 
-// Add Accommodation
+// ========================== ADD ACCOMMODATION ==========================
 // const url = "http://localhost:3001/addAccomm";
 // const newAccommodation = {
 //     accommodationID: new mongoose.Types.ObjectId(),
@@ -43,51 +43,7 @@ import mongoose from "mongoose";
 //   }
 // });
 
-// Log-In
-// needle.post("http://localhost:3001/login",
-//     {
-//         userType: "Student",
-//         firstName: "Drey",
-//         lastName: "Tuazon",
-//         email: "dreytuaz@gmail.com",
-//         password: "password",
-//         phoneNumber: "09999999"
-//     },
-//     (err, res) =>{
-//         console.log(res.body);
-//     }
-// );
-
-// Sign-Up
-// const url = "http://localhost:3001/register";
-// const data = { userType: "Student", firstName: "First", 
-//                lastName: "Last", email: "firstlast@gmail.com", password: "pass123", phoneNumber: "09123456781",
-//                birthday: "January 31, 1970", sex: "Male"};
-
-// needle.post(url, data, {json: true}, (err, res, body) => {
-//     if (err) {
-//         console.error(err);
-//     } else {
-//         console.log(body);
-//     }
-// });
-
-// Session Handling
-// needle.post("http://localhost:3001/checkifloggedin",
-//     {
-//         userType: "Student",
-//         firstName: "Drey",
-//         lastName: "Tuazon",
-//         email: "dreytuaz@gmail.com",
-//         password: "$2b$10$i26n2rL7/mf//kiJ.w4L4OqMGvxY0fTvS7k1LBSCfTr4zeSaQaZfa",
-//         phoneNumber: "09999999"
-//     },
-//     (err, res) =>{
-//         console.log(res.body);
-//     }
-// );
-
-// Archive Accommodation
+// ========================== ARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/archiveAccomm",
 //     {
 //         _id: "643665dccee7fa1d7dd408ea"
@@ -97,7 +53,7 @@ import mongoose from "mongoose";
 //     }
 // );
 
-//Unarchive Accommodation
+// ========================== UNARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/unarchiveAccomm",
 //     {
 //         _id: "643665dccee7fa1d7dd408ea"
@@ -107,6 +63,7 @@ import mongoose from "mongoose";
 //     }
 // );
 
+// ========================== SEARCH ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/searchAccomm",
 //     {
 //         searchString: "San Tomas"
@@ -116,8 +73,7 @@ import mongoose from "mongoose";
 //     }
 // );
 
-
-//Testing delete accommodation
+// ========================== DELETE ACCOMMODATION ==========================
 // needle.delete("http://localhost:3001/deleteAccomm",
 //     {
 //         _id: "6437c2d8b74cee2c7bfbc15f"
