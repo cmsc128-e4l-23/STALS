@@ -15,7 +15,7 @@ export default function Header() {
     }
     
     // Format for Options: {<displaytext>:<link>}
-    const [availableOptions, setOptions] = useState({"Add an Accomodation":'/add-accom'});
+    const [availableOptions, setOptions] = useState({'Add an Accomodation':'/add-accom'});
     // Parameter "option" must be an object and has the format: {Key:"link"}
     const handleOptions = (option,link) => {
         var new_obj;
@@ -30,12 +30,12 @@ export default function Header() {
 
         // If Login:
         if(!isSignedIn){
-            handleOptions("Log Out","/logout");
+            handleOptions('Log Out','/logout');
             delete availableOptions['Sign Up'];
             delete availableOptions['Log In'];
         } else{
             // For logouts
-            delete availableOptions["Logout"];
+            delete availableOptions['Log Out'];
             console.log(Object.keys(availableOptions));    
         }
 
@@ -68,7 +68,7 @@ export default function Header() {
         if(window.innerWidth<1200){
 
             if(!isSignedIn){
-                handleOptions("Sign Up","/signup")
+                handleOptions('Sign Up','/signup')
             }
 
             delete availableOptions['Log In'];
@@ -77,7 +77,7 @@ export default function Header() {
         if (window.innerWidth<640){
 
             if(!isSignedIn){
-                handleOptions("Log In","/login");
+                handleOptions('Log In','/login');
             }
         }
     };
@@ -104,7 +104,7 @@ export default function Header() {
             <div id='btn-container'>
                 <button id='add-accom'>ADD ACCOMODATION</button>
                 
-                <button id='more-options' onClick={handleClickOptions}> <FontAwesomeIcon icon={faEllipsis}/></button>
+                <button id='more-options' onClick={handleClickOptions}><FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsclick ? <div id='options-menu'>
                     <ul>
                         {Object.keys(availableOptions).map((option)=>{
