@@ -1,0 +1,56 @@
+h1 {
+    font-family: 'Roboto', sans-serif;
+    color: maroon;
+}
+
+.login-container {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+} 
+  
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    background-color: rgb(233, 232, 232);
+    border: 5px solid maroon;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 8px 8px 8px #505050; /* add the box-shadow property with the desired values */
+}
+  
+label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+  
+}
+  
+.login-form input {
+    background-color: #f7f7f7;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 30px;
+    width: 80%;
+}
+  
+button {
+    margin-top: 10px;
+    background-color: rgb(153, 2, 2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    height: 10%;
+}
