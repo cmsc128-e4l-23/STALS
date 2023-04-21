@@ -87,7 +87,7 @@ export default function Header() {
     <div id='header'>
         
         {/* TODO: ADD ONCLICK FUNCTION */}
-        <div id='logo'>
+        <div id='logo' onClick={() => navigate('/home')}>
             <h1>STALS</h1>
         </div>
 
@@ -117,7 +117,7 @@ export default function Header() {
             </div>
         </div>
 
-        <button onClick={handleAuth}>simulate authentication</button>
+        {/* <button onClick={handleAuth}>simulate authentication</button> */}
 
     </div>
     )
