@@ -3,6 +3,8 @@ h1 {
   color: maroon;
 }
 .signup-container {
+  margin-top: 5%;
+  margin-bottom: 10%;
   flex-direction: column;
   display: flex;
   justify-content: center;
