@@ -30,9 +30,9 @@ export default function Header() {
 
         // If Login:
         if(!isSignedIn){
-            handleOptions("Logout","/log-out");
-            delete availableOptions['Register'];
-            delete availableOptions['Login'];
+            handleOptions("Log Out","/logout");
+            delete availableOptions['Sign Up'];
+            delete availableOptions['Log In'];
         } else{
             // For logouts
             delete availableOptions["Logout"];
@@ -55,30 +55,29 @@ export default function Header() {
         </ul>
         </div>;
     } else{
-        auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-register' onClick={() => {navigate('/signup')}}>REGISTER</button></>;
+        auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
     // Handles the responsiveness for buttons (what buttons inside the options button will appear at a certain window size)
     const windowResize = () =>{
 
         if(window.innerWidth>1200){
-            delete availableOptions['Register'];
+            delete availableOptions['Sign Up'];
         }
 
         if(window.innerWidth<1200){
 
             if(!isSignedIn){
-                console.log("Adding register...")
-                handleOptions("Register","/register")
+                handleOptions("Sign Up","/signup")
             }
 
-            delete availableOptions['Login'];
+            delete availableOptions['Log In'];
 
         } 
         if (window.innerWidth<640){
 
             if(!isSignedIn){
-                handleOptions("Login","/login");
+                handleOptions("Log In","/login");
             }
         }
     };
