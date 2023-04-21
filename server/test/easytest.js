@@ -71,6 +71,7 @@ const loginTest = async (data) => {
     needle.post(url + "login", data,
     (err, res, body) =>{
         if (err) console.error(err);
+        else if (body.success === false) console.log("Login unsuccessful");
         else console.log("Login successfully!");
     }
 );
@@ -80,6 +81,7 @@ const loginCheckTest = async (data) => {
     needle.post(url + "checkifloggedin", data,
     (err, res, body) =>{
         if (err) console.error(err);
+        else if (body.isLoggedin === false) console.log("is not logged in");
         else console.log("Is still login!");
     }
 );
