@@ -235,17 +235,31 @@ const generateRep = async (req, res) => {
             doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
             doc.moveDown();
             if(accommodation.landmarks){
-                doc.fontSize(12).text(`Landmarks:`);
-                doc.fontSize(12).list(accommodation.landmarks);
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Landmarks:`);
+                doc.font("./font/Helvetica.ttf").fontSize(12).list(accommodation.landmarks);
+                doc.moveDown();
             }
-            doc.fontSize(12).text(`Address: ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
-            doc.fontSize(12).text(`Accommodation Type: ${accommodation.accommodationType}`);
+            
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Address: `)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
+            doc.moveDown();
+
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Accommodation Type: `)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.accommodationType}`);
+            doc.moveDown();
+
             if(accommodation.amenities){
-                doc.fontSize(12).text(`Ammenities: ${accommodation.amenities}`);
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Amenities: `)
+                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.amenities}`);
+                doc.moveDown();
             }
-            doc.fontSize(12).text(`Price Range: P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
-            doc.fontSize(12).text(`Description:`);
-            doc.fontSize(12).text(accommodation.description);
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Price Range:`)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
+            doc.moveDown();
+            
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Description:`)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.description}`);
+            doc.moveDown();
             
             //Further Implementation
             // if(accommodation.photos.length > 0){
@@ -254,21 +268,39 @@ const generateRep = async (req, res) => {
             //     }
             // }
 
-            doc.fontSize(12).text(`Restrictions:`);
-            doc.fontSize(12).text(`   Curfew: ${accommodation.restrictions.curfew}`);
-            doc.fontSize(12).text(`   Pets: ${accommodation.restrictions.pets}`);
-            doc.fontSize(12).text(`   Cooking: ${accommodation.restrictions.cooking}`);
-            doc.fontSize(12).text(`   Visitors: ${accommodation.restrictions.visitors}`);
-            doc.fontSize(12).text(`   Co-ed: ${accommodation.restrictions.coed}`);
-            doc.fontSize(12).text(`   Wifi: ${accommodation.restrictions.wifi}`);
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Restrictions:`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Curfew:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.curfew}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Pets:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.pets}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Cooking:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.cooking}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Visitors:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.visitors}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Co-ed:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.coedStatus}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Wifi:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.wifi}`);
+            
             if(accommodation.restrictions.phoneSignal){
-                doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
+                // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
+                doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Phone Signal:`)
+                doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.phoneSignal}`);
             }
             
+            doc.moveDown(); 
             if(accommodation.security){
-                doc.fontSize(12).text(`Security: ${accommodation.security}`);
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Security:`)
+                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.security}`);
+                doc.moveDown();
+                
             }
-            
             doc.moveDown();
         });
     
