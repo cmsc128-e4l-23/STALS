@@ -3,13 +3,14 @@ import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export default function Header() {
     let navigate = useNavigate();
 
     const [userName, setName] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
-    const [options, setOptions] = useState({"Add an Accommodation":"/addaccom"});
+    const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
@@ -19,12 +20,23 @@ export default function Header() {
         .then(res => res.json())
         .then(data => {
             setLoggedIn(data.isLoggedIn);
-            if(isLoggedIn){
-                    setName(localStorage.getItem('username'));
-                    console.log("Logged in " + userName);
+            if(data.isLoggedIn){
+                setName(localStorage.getItem('username'));
             }
         })
     }, []);
+
+    const logout = (e) => {
+        e.preventDefault();
+        alert("triggers");
+
+        const cookies = new Cookies();
+        cookies.remove("authToken");
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("email");
+        setLoggedIn(false);
+    }
 
     const handleOptions = (option,link) => {
         var new_options;
@@ -35,11 +47,8 @@ export default function Header() {
 
     let auth_section;
     if(isLoggedIn){
-        auth_section = 
-        <>
-        <div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div>
-        </>
-    } else{
+        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+    }else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
@@ -75,16 +84,20 @@ export default function Header() {
             <div id='btn-container'>
                 <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsActive ? <div id='options-menu'>
-                    <ul>
-                        {Object.keys(options).map((option)=>{
-                            return <li id='option-btn' onClick={() => {navigate(options[option])}}>{option}</li>
-                        })}
-                    </ul>
+                    {isLoggedIn ? 
+                        <ul>
+                            <li id='option-btn' onClick={logout}>LOG OUT</li>
+                        </ul> :
+                        <ul>
+                            {Object.keys(options).map((option)=>{
+                                return <li id='option-btn' onClick={() => {navigate(options[option])}}>{option}</li>
+                            })}
+                        </ul>
+                        
+                    }
                 </div> : null}
-                
             </div>
         </div>
-        
     </div>
     )
 }
