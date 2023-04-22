@@ -16,8 +16,9 @@ router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.get("/generateRep", accommodation.generateRep);
 
-
 router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
+router.post("/removeBookmarkAccomm", accommodation.removeBookmarkAccomm);
+
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
 
