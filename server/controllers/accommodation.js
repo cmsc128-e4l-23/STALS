@@ -190,6 +190,7 @@ const removeBookmarkAccomm = async (req, res) => {
     }
 }
 
+//Function for fetching bookmarks
 const fetchBookmarks = async (userID) => {
     return User.findOne({_id:userID})
         .then((user)=>{
