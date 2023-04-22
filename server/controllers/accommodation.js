@@ -1,4 +1,5 @@
 import Accommodation from "../models/Accommodation.js";
+import User from "../models/User.js";
 
 const addAccomm = async (req, res) => {
     try{
@@ -102,8 +103,6 @@ const deleteAccomm = async (req, res) => {
         })
 }
 
-
-
 //search functionality
 //req.body is an object that should have:
 //      - a key named "searchString" that contains a string to be searched in the database
@@ -134,6 +133,62 @@ const searchAccomm = async (req, res) => {
     // res.send("I am searching accommodation");
 }
 
+//bookmark functionality
+//req.body is an object that should have:
+//      - two ids, the user and the id of accommodation to be bookmarked
+//if success, it will have res.body that contains
+//  - a key "success" with a value true else false
+//  - a key error with a value "Bookmark Success" else "Bookmark Failed"
+//Note: It is assumed that the accommodation is not yet bookmarked
+const bookmarkAccomm = async (req, res) => {
+    try {
+        const bookmark_details = req.body;
+
+        // also add that report to the user
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $push: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, message: "Bookmark Success" });
+        })
+            .catch((error) => {
+                console.log(error);
+                res.send({ success: false, error: "Bookmark Failed" });
+            });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+        console.error(err);
+    }
+}
+
+//remove bookmark functionality
+//req.body is an object that should have:
+//      - two ids, the user and the id of accommodation to be removed in bookmarks
+//if success, it will have res.body that contains
+//  - a key "success" with a value true else false
+//  - a key error with a value "Remove Bookmark Success" else "Remove Bookmark Failed"
+//Note: It is assumed that the accommodation is in the bookmarks
+const removeBookmarkAccomm = async (req, res) => {
+    try {
+        const bookmark_details = req.body;
+
+        // also add that report to the user
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $pull: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, message: "Remove Bookmark Success" });
+        })
+            .catch((error) => {
+                console.log(error);
+                res.send({ success: false, error: "Remove Bookmark Failed" });
+            });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+        console.error(err);
+    }
+}
+
 const generateRep = async (req, res) => {
     res.send("I am generating report");
 }
@@ -156,5 +211,7 @@ export default {
     deleteAccomm,
     searchAccomm,
     generateRep,
-    viewAccomm
+    viewAccomm,
+    bookmarkAccomm,
+    removeBookmarkAccomm
 }
