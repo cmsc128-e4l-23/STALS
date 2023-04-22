@@ -86,6 +86,7 @@
 
 .auth-sect button{
     height: 40px;
+    width: 100px;
     margin-left: 10px;
     border-radius: 100px;
     border: none;
@@ -176,7 +177,7 @@
 }
 
 @media only screen and (max-width: 1200px) {
-    #auth-confirmed, #btn-register{
+    #auth-confirmed, #btn-signup{
         display: none;
     }
 

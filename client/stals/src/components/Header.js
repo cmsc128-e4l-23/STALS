@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 
-function Header() {
-
+export default function Header() {
+    let navigate = useNavigate();
     const [isSignedIn, setAuth] = useState(false);
     const [userName, setName] = useState('User');
 
@@ -14,7 +15,7 @@ function Header() {
     }
     
     // Format for Options: {<displaytext>:<link>}
-    const [availableOptions, setOptions] = useState({"Add an Accomodation":'/add-accom'});
+    const [availableOptions, setOptions] = useState({'Add an Accomodation':'/add-accom'});
     // Parameter "option" must be an object and has the format: {Key:"link"}
     const handleOptions = (option,link) => {
         var new_obj;
@@ -29,12 +30,12 @@ function Header() {
 
         // If Login:
         if(!isSignedIn){
-            handleOptions("Logout","/log-out");
-            delete availableOptions['Register'];
-            delete availableOptions['Login'];
+            handleOptions('Log Out','/logout');
+            delete availableOptions['Sign Up'];
+            delete availableOptions['Log In'];
         } else{
             // For logouts
-            delete availableOptions["Logout"];
+            delete availableOptions['Log Out'];
             console.log(Object.keys(availableOptions));    
         }
 
@@ -54,30 +55,29 @@ function Header() {
         </ul>
         </div>;
     } else{
-        auth_section = <><button id='btn-login'>LOG IN</button><button id='btn-register'>REGISTER</button></>;
+        auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
     // Handles the responsiveness for buttons (what buttons inside the options button will appear at a certain window size)
     const windowResize = () =>{
 
         if(window.innerWidth>1200){
-            delete availableOptions['Register'];
+            delete availableOptions['Sign Up'];
         }
 
         if(window.innerWidth<1200){
 
             if(!isSignedIn){
-                console.log("Adding register...")
-                handleOptions("Register","/register")
+                handleOptions('Sign Up','/signup')
             }
 
-            delete availableOptions['Login'];
+            delete availableOptions['Log In'];
 
         } 
         if (window.innerWidth<640){
 
             if(!isSignedIn){
-                handleOptions("Login","/login");
+                handleOptions('Log In','/login');
             }
         }
     };
@@ -87,7 +87,7 @@ function Header() {
     <div id='header'>
         
         {/* TODO: ADD ONCLICK FUNCTION */}
-        <div id='logo'>
+        <div id='logo' onClick={() => navigate('/home')}>
             <h1>STALS</h1>
         </div>
 
@@ -104,11 +104,11 @@ function Header() {
             <div id='btn-container'>
                 <button id='add-accom'>ADD ACCOMODATION</button>
                 
-                <button id='more-options' onClick={handleClickOptions}> <FontAwesomeIcon icon={faEllipsis}/></button>
+                <button id='more-options' onClick={handleClickOptions}><FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsclick ? <div id='options-menu'>
                     <ul>
                         {Object.keys(availableOptions).map((option)=>{
-                            return <li>{option}</li>
+                            return <li id='option-btn' onClick={() => {navigate(availableOptions[option])}}>{option}</li>
                         })}
                     </ul>
                 </div> : null}
@@ -117,10 +117,8 @@ function Header() {
             </div>
         </div>
 
-        <button onClick={handleAuth}>simulate authentication</button>
+        {/* <button onClick={handleAuth}>simulate authentication</button> */}
 
     </div>
     )
 }
-
-export default Header
