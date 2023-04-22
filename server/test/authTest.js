@@ -17,7 +17,7 @@ import mongoose from "mongoose";
 // );
 
 // ========================== SIGN-UP ==========================
-// const url = "http://localhost:3001/register";
+// const url = "http://localhost:3001/signup";
 // const data = { userType: "Student", firstName: "First", 
 //                lastName: "Last", email: "firstlast@gmail.com", password: "pass123", phoneNumber: "09123456781",
 //                birthday: "January 31, 1970", sex: "Male"};

@@ -1,5 +1,8 @@
 import Accommodation from "../models/Accommodation.js";
 import User from "../models/User.js";
+import PDFDocument from "pdfkit";
+import path from "path";
+import fs from "fs"
 
 const addAccomm = async (req, res) => {
     try{
@@ -133,6 +136,7 @@ const searchAccomm = async (req, res) => {
     // res.send("I am searching accommodation");
 }
 
+
 //bookmark functionality
 //req.body is an object that should have:
 //      - two ids, the user and the id of accommodation to be bookmarked
@@ -189,9 +193,126 @@ const removeBookmarkAccomm = async (req, res) => {
     }
 }
 
-const generateRep = async (req, res) => {
-    res.send("I am generating report");
+//Function for fetching bookmarks
+const fetchBookmarks = async (userID) => {
+    return User.findOne({_id:userID})
+        .then((user)=>{
+            return Accommodation.find({_id:{$in:user.bookmarks}})
+                .then((result) =>{
+                    // console.log(result)
+                    return result;
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
+
+
+
+//Functions that generates a pdf file of the bookmarked accommmodations of the user
+
+//Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
+const generateRep = async (req, res) => {
+    try {
+        const bookmarks = await fetchBookmarks(req.body._id);                           // Retrieve bookmarks given user id
+
+        const doc = new PDFDocument();                                                  // Create pdf document
+        const fileName = `report-${new Date().getTime()}.pdf`;                          // Set filename and path. Only for testing with needle
+        const filePath = path.join("./test/Download", fileName);
+        doc.pipe(fs.createWriteStream(filePath));
+
+
+        // doc.pipe(res)       // Use instead if implemented on web browser already
+    
+        // Edit the PDF file
+        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
+        doc.moveDown();
+        bookmarks.forEach((accommodation, index) => {
+            doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
+            doc.moveDown();
+            if(accommodation.landmarks){
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Landmarks:`);
+                doc.font("./font/Helvetica.ttf").fontSize(12).list(accommodation.landmarks);
+                doc.moveDown();
+            }
+            
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Address: `)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
+            doc.moveDown();
+
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Accommodation Type: `)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.accommodationType}`);
+            doc.moveDown();
+
+            if(accommodation.amenities){
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Amenities: `)
+                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.amenities}`);
+                doc.moveDown();
+            }
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Price Range:`)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
+            doc.moveDown();
+            
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Description:`)
+            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.description}`);
+            doc.moveDown();
+            
+            //Further Implementation
+            // if(accommodation.photos.length > 0){
+            //     for(let i=0; i<accommodation.photos.length; i++){
+            //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
+            //     }
+            // }
+
+            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Restrictions:`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Curfew:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.curfew}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Pets:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.pets}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Cooking:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.cooking}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Visitors:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.visitors}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Co-ed:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.coedStatus}`);
+
+            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Wifi:`)
+            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.wifi}`);
+            
+            if(accommodation.restrictions.phoneSignal){
+                // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
+                doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Phone Signal:`)
+                doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.phoneSignal}`);
+            }
+            
+            doc.moveDown(); 
+            if(accommodation.security){
+                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Security:`)
+                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.security}`);
+                doc.moveDown();
+                
+            }
+            doc.moveDown();
+        });
+    
+        // "Close" the PDF file and send it to where `pipe` specifies it to go
+        doc.end();
+
+        console.log(`PDF report saved to ${filePath}`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error generating report');
+    }
+};
 
 //for testing
 const viewAccomm = async (req, res) => {
