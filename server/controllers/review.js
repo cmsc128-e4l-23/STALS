@@ -31,7 +31,6 @@ const addReview = async (req, res) => {
             await user.save();
 
             res.send({ success: true, message: "Successfully added new review" });
-            res.status(201).json(savedReview);
         } else {
             throw new Error("User not found");
         }
@@ -66,7 +65,7 @@ const editReview = async (req, res) => {
         );
 
         if (result){
-            res.send({ success: true, message: "Successfully edited review", updateObject: updateObject, result: result});
+            res.send({ success: true, message: "Successfully edited review" });
         } else {
             throw new Error("Review not found");
         }
@@ -94,7 +93,7 @@ const deleteReview = async (req, res) => {
                 user.reviews.pull(review_details._id);
                 await user.save();
 
-                res.send({ success: true, message: "Successfully deleted review", result: result });
+                res.send({ success: true, message: "Successfully deleted review" });
             } else {
                 throw new Error("User not found");
             }   
