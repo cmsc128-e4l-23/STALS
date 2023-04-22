@@ -1,24 +1,25 @@
 import Accommodation from "../models/Accommodation.js";
+import User from "../models/User.js";
 
 const addAccomm = async (req, res) => {
     res.send("I am adding accommodation");
 }
 
 const archiveAccomm = async (req, res) => {
-    
+
     const accomm_details = req.body;
 
     Accommodation.updateOne(
         { _id: accomm_details._id },
-        { $set: {archived: true} }
-        )
+        { $set: { archived: true } }
+    )
         .then((result) => {
             res.send("Successfully archived accommodation");
         })
         .catch((error) => {
             console.log(err);
 
-            res.send({success: false, error: "Archive Failed"});
+            res.send({ success: false, error: "Archive Failed" });
         })
 }
 
@@ -28,15 +29,15 @@ const unarchiveAccomm = async (req, res) => {
 
     Accommodation.updateOne(
         { _id: accomm_details._id },
-        { $set: {archived: false} }
-        )
+        { $set: { archived: false } }
+    )
         .then((result) => {
             res.send("Successfully unarchived accommodation");
         })
         .catch((error) => {
             console.log(err);
 
-            res.send({success: false, error: "Unarchive Failed"});
+            res.send({ success: false, error: "Unarchive Failed" });
         })
 }
 
@@ -58,22 +59,45 @@ const deleteAccomm = async (req, res) => {
 //  - a key "success" with a value false
 //  - a key error with a value "Search Failed"
 const searchAccomm = async (req, res) => {
-    
-    const searchString = {"$regex": req.body.searchString};
-    
-    
-    Accommodation.find({$or: [{name: searchString}, {"address.postCode": searchString}, {"address.street": searchString}, {"address.barangay": searchString}, {"address.city": searchString}, {"address.province": searchString}, {"address.region": searchString} ]})
-    .then((result) =>{
-        res.send({success: true, result: result});
-    })
-    .catch((error) => {
-        console.log(err);
-        res.send({success: false, error: "Search Failed"});
-    })
+
+    const searchString = { "$regex": req.body.searchString };
+
+
+    Accommodation.find({ $or: [{ name: searchString }, { "address.postCode": searchString }, { "address.street": searchString }, { "address.barangay": searchString }, { "address.city": searchString }, { "address.province": searchString }, { "address.region": searchString }] })
+        .then((result) => {
+            res.send({ success: true, result: result });
+        })
+        .catch((error) => {
+            console.log(err);
+            res.send({ success: false, error: "Search Failed" });
+        })
 
 
 
     // res.send("I am searching accommodation");
+}
+
+
+const bookmarkAccomm = async (req, res) => {
+    try {
+        const bookmark_details = req.body;
+
+        // also add that report to the user
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $push: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, message: "Bookmark Success" });
+        })
+            .catch((error) => {
+                console.log(error);
+                res.send({ success: false, error: "Bookmark Failed" });
+            });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+        console.error(err);
+    }
+
 }
 
 const generateRep = async (req, res) => {
@@ -98,5 +122,6 @@ export default {
     deleteAccomm,
     searchAccomm,
     generateRep,
-    viewAccomm
+    viewAccomm,
+    bookmarkAccomm
 }
