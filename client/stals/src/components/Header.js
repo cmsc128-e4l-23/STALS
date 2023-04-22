@@ -21,9 +21,10 @@ export default function Header() {
             setLoggedIn(data.isLoggedIn);
             if(isLoggedIn){
                     setName(localStorage.getItem('username'));
+                    console.log("Logged in " + userName);
             }
         })
-    }, [isLoggedIn]);
+    }, []);
 
     const handleOptions = (option,link) => {
         var new_options;
@@ -36,13 +37,7 @@ export default function Header() {
     if(isLoggedIn){
         auth_section = 
         <>
-        <div id='auth-confirmed'>Welcome back, <b>{userName}!</b>
-        <ul>
-            <li>Profile</li>
-            <li>Settings</li>
-            <li>Logout</li>
-        </ul>
-        </div>
+        <div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div>
         </>
     } else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
@@ -74,11 +69,10 @@ export default function Header() {
                 </button>
             </div>
         </div>
-
+        
         <div id='right-side-btns'>
+            <div className='auth-sect'>{auth_section}</div>
             <div id='btn-container'>
-                <button id='add-accom'>ADD ACCOMMODATION</button>
-                
                 <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsActive ? <div id='options-menu'>
                     <ul>
@@ -87,11 +81,10 @@ export default function Header() {
                         })}
                     </ul>
                 </div> : null}
-
-                <div className='auth-sect'>{auth_section}</div>
+                
             </div>
         </div>
-
+        
     </div>
     )
 }
