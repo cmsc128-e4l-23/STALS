@@ -100,6 +100,28 @@ const bookmarkAccomm = async (req, res) => {
 
 }
 
+const removeBookmarkAccomm = async (req, res) => {
+    try {
+        const bookmark_details = req.body;
+
+        // also add that report to the user
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $pull: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, message: "Removing Bookmark Success" });
+        })
+            .catch((error) => {
+                console.log(error);
+                res.send({ success: false, error: "Removing Bookmark Failed" });
+            });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+        console.error(err);
+    }
+
+}
+
 const generateRep = async (req, res) => {
     res.send("I am generating report");
 }
@@ -123,5 +145,6 @@ export default {
     searchAccomm,
     generateRep,
     viewAccomm,
-    bookmarkAccomm
+    bookmarkAccomm,
+    removeBookmarkAccomm,
 }
