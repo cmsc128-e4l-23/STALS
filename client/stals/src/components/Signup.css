@@ -17,8 +17,8 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 400px;
+  width: 40em;
+  height: 60em;
   background-color: rgb(233, 232, 232);
   border: 5px solid maroon;
   padding: 20px;
@@ -41,7 +41,7 @@ label {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 30px;
-  width: 80%;
+  width: 45em;
 }
 
 button {
