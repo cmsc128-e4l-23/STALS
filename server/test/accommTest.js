@@ -49,7 +49,6 @@ import mongoose from "mongoose";
 //     },
 //     generalLocation: 1,
 //     accommodationType: "Transient",
-//     amenities: "Free Wi-Fi",
 //     priceRange: {
 //       minPrice: 5000,
 //       maxPrice: 10000
@@ -62,8 +61,7 @@ import mongoose from "mongoose";
 //       cooking: "Allowed",
 //       visitors: "Upon Approval",
 //       coedStatus: "No",
-//       wifi: "With WiFi",
-//       phoneSignal: "Fair"
+//       wifi: "With WiFi"
 //     }
 //   };
 // needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
@@ -121,11 +119,22 @@ import mongoose from "mongoose";
 //     }
 // );
 
+// ========================== BOOKMARK ACCOMMODATION ==========================
+// needle.post("http://localhost:3001/bookmarkAccomm",
+//     {
+//         user_id:"6443c48421c7c8144ab343e6",
+//         accomm_id: "6443d98319888d78cbbc271f"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
+
 
 // ========================== GENERATE PDF ==========================
 needle.post("http://localhost:3001/generateRep",
     {
-        _id:"64426244d48c880b102fdf2c"
+        _id:"6443c48421c7c8144ab343e6"
     },
     (err, res) => {
         console.log(res.body);

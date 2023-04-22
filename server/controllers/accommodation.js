@@ -1,5 +1,8 @@
 import Accommodation from "../models/Accommodation.js";
 import User from "../models/User.js";
+import PDFDocument from "pdfkit";
+import path from "path";
+import fs from "fs"
 
 const addAccomm = async (req, res) => {
     try{
@@ -213,22 +216,71 @@ const fetchBookmarks = async (userID) => {
 //Functions that generates a pdf file of the bookmarked accommmodations of the user
 
 //Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
-
-
 const generateRep = async (req, res) => {
-    fetchBookmarks(req.body._id)
-        .then((result) => {
-            console.log(result);
-        })
-        .catch((error) => {
-            console.log(error)
-        });  
+    try {
+        const bookmarks = await fetchBookmarks(req.body._id);                           // Retrieve bookmarks given user id
+
+        const doc = new PDFDocument();                                                  // Create pdf document
+        const fileName = `report-${new Date().getTime()}.pdf`;                          // Set filename and path. Only for testing with needle
+        const filePath = path.join("./test/Download", fileName);
+        doc.pipe(fs.createWriteStream(filePath));
+
+
+        // doc.pipe(res)       // Use instead if implemented on web browser already
     
-    res.send("I am generating report");
-}
+        // Edit the PDF file
+        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
+        doc.moveDown();
+        bookmarks.forEach((accommodation, index) => {
+            doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
+            doc.moveDown();
+            if(accommodation.landmarks){
+                doc.fontSize(12).text(`Landmarks:`);
+                doc.fontSize(12).list(accommodation.landmarks);
+            }
+            doc.fontSize(12).text(`Address: ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
+            doc.fontSize(12).text(`Accommodation Type: ${accommodation.accommodationType}`);
+            if(accommodation.amenities){
+                doc.fontSize(12).text(`Ammenities: ${accommodation.amenities}`);
+            }
+            doc.fontSize(12).text(`Price Range: P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
+            doc.fontSize(12).text(`Description:`);
+            doc.fontSize(12).text(accommodation.description);
+            
+            //Further Implementation
+            // if(accommodation.photos.length > 0){
+            //     for(let i=0; i<accommodation.photos.length; i++){
+            //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
+            //     }
+            // }
 
+            doc.fontSize(12).text(`Restrictions:`);
+            doc.fontSize(12).text(`   Curfew: ${accommodation.restrictions.curfew}`);
+            doc.fontSize(12).text(`   Pets: ${accommodation.restrictions.pets}`);
+            doc.fontSize(12).text(`   Cooking: ${accommodation.restrictions.cooking}`);
+            doc.fontSize(12).text(`   Visitors: ${accommodation.restrictions.visitors}`);
+            doc.fontSize(12).text(`   Co-ed: ${accommodation.restrictions.coed}`);
+            doc.fontSize(12).text(`   Wifi: ${accommodation.restrictions.wifi}`);
+            if(accommodation.restrictions.phoneSignal){
+                doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
+            }
+            
+            if(accommodation.security){
+                doc.fontSize(12).text(`Security: ${accommodation.security}`);
+            }
+            
+            doc.moveDown();
+        });
+    
+        // "Close" the PDF file and send it to where `pipe` specifies it to go
+        doc.end();
 
-
+        console.log(`PDF report saved to ${filePath}`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error generating report');
+    }
+};
 
 //for testing
 const viewAccomm = async (req, res) => {
