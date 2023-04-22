@@ -1,7 +1,6 @@
 import express from "express";
 import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
-
 const router = express.Router();
 
 //Authentication
@@ -17,6 +16,8 @@ router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.get("/generateRep", accommodation.generateRep);
 
+
+router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
 
