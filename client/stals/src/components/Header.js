@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
@@ -6,87 +6,62 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
     let navigate = useNavigate();
-    const [isSignedIn, setAuth] = useState(false);
-    const [userName, setName] = useState('User');
 
-    const [optionsclick, clickOptions] = useState(false);
-    const handleClickOptions = () =>{
-        clickOptions(!optionsclick);
-    }
-    
-    // Format for Options: {<displaytext>:<link>}
-    const [availableOptions, setOptions] = useState({'Add an Accomodation':'/add-accom'});
-    // Parameter "option" must be an object and has the format: {Key:"link"}
+    const [userName, setName] = useState(null);
+    const [optionsActive, optionsToggle] = useState(false);
+    const [options, setOptions] = useState({"Add an Accommodation":"/addaccom"});
+    const [isLoggedIn, setLoggedIn] = useState(null);
+    useEffect(() => {
+        fetch('http://localhost:3001/checkifloggedin', {
+        method: 'POST',
+        credentials: 'include'
+        })
+        .then(res => res.json())
+        .then(data => {
+            setLoggedIn(data.isLoggedIn);
+            if(isLoggedIn){
+                    setName(localStorage.getItem('username'));
+            }
+        })
+    }, [isLoggedIn]);
+
     const handleOptions = (option,link) => {
-        var new_obj;
-        new_obj = availableOptions;
-        new_obj[option] = link;
-        setOptions(new_obj);
+        var new_options;
+        new_options = options;
+        new_options[option] = link;
+        setOptions(new_options);
     };
-
-    // handleAuth -> sets to True if user is signed in
-    // handleName -> sets userName to be the user's name
-    const handleAuth = () => {
-
-        // If Login:
-        if(!isSignedIn){
-            handleOptions('Log Out','/logout');
-            delete availableOptions['Sign Up'];
-            delete availableOptions['Log In'];
-        } else{
-            // For logouts
-            delete availableOptions['Log Out'];
-            console.log(Object.keys(availableOptions));    
-        }
-
-        setAuth(!isSignedIn);
-    };
-
-    // Will be used when changing user's name for display
-    const handleName = (name) => setName(name);
 
     let auth_section;
-    if(isSignedIn){
-        auth_section = <div id='auth-confirmed'>Welcome back, <b>{userName}!</b>
+    if(isLoggedIn){
+        auth_section = 
+        <>
+        <div id='auth-confirmed'>Welcome back, <b>{userName}!</b>
         <ul>
             <li>Profile</li>
             <li>Settings</li>
             <li>Logout</li>
         </ul>
-        </div>;
+        </div>
+        </>
     } else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
     // Handles the responsiveness for buttons (what buttons inside the options button will appear at a certain window size)
     const windowResize = () =>{
+        optionsToggle(false);
 
-        if(window.innerWidth>1200){
-            delete availableOptions['Sign Up'];
-        }
-
-        if(window.innerWidth<1200){
-
-            if(!isSignedIn){
-                handleOptions('Sign Up','/signup')
-            }
-
-            delete availableOptions['Log In'];
-
-        } 
-        if (window.innerWidth<640){
-
-            if(!isSignedIn){
-                handleOptions('Log In','/login');
-            }
+        if(!isLoggedIn){
+            if(window.innerWidth > 1200){   delete options['Sign Up'];  }
+            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');    }
+            if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
         }
     };
     window.addEventListener('resize',windowResize);
 
     return (
     <div id='header'>
-        
-        {/* TODO: ADD ONCLICK FUNCTION */}
         <div id='logo' onClick={() => navigate('/home')}>
             <h1>STALS</h1>
         </div>
@@ -102,13 +77,13 @@ export default function Header() {
 
         <div id='right-side-btns'>
             <div id='btn-container'>
-                <button id='add-accom'>ADD ACCOMODATION</button>
+                <button id='add-accom'>ADD ACCOMMODATION</button>
                 
-                <button id='more-options' onClick={handleClickOptions}><FontAwesomeIcon icon={faEllipsis}/></button>
-                {optionsclick ? <div id='options-menu'>
+                <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
+                {optionsActive ? <div id='options-menu'>
                     <ul>
-                        {Object.keys(availableOptions).map((option)=>{
-                            return <li id='option-btn' onClick={() => {navigate(availableOptions[option])}}>{option}</li>
+                        {Object.keys(options).map((option)=>{
+                            return <li id='option-btn' onClick={() => {navigate(options[option])}}>{option}</li>
                         })}
                     </ul>
                 </div> : null}
@@ -116,8 +91,6 @@ export default function Header() {
                 <div className='auth-sect'>{auth_section}</div>
             </div>
         </div>
-
-        {/* <button onClick={handleAuth}>simulate authentication</button> */}
 
     </div>
     )
