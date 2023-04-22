@@ -183,7 +183,7 @@
 
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 725px) {
     #btn-login{
         display: none;
     }
