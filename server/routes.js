@@ -18,6 +18,9 @@ router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.get("/generateRep", accommodation.generateRep);
 
+router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
+router.post("/removeBookmarkAccomm", accommodation.removeBookmarkAccomm);
+
 //Review
 router.post("/addReview", review.addReview);
 router.post("/editReview", review.editReview);
