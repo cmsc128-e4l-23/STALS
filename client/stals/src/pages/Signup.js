@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import '../components/Signup.css'
 import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
+  let navigate = useNavigate();
+
   const [usertype, setUserType]  = useState('Student');
   const [fname, setFName]  = useState('');
   const [lname, setLName]  = useState('');
@@ -12,7 +15,7 @@ export default function Signup() {
   const [sex, setSex] = useState('Male');
   const [birthday, setBirthday] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     let newUser = {
       userType: usertype,
@@ -24,12 +27,18 @@ export default function Signup() {
       phoneNumber: contact,
       birthday: birthday
     }
-    let response = await fetch('http://localhost:3001/signup', {
+    fetch('http://localhost:3001/signup', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser)
-        });
-    alert(response.status);
+    })
+    .then(res => {
+      if(res.status === 201){
+        alert("Successfully signed in " + res.email);
+        navigate('/login');
+      }
+    });
+    
   }
   return (
     <div className="signup-container">
