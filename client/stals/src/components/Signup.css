@@ -18,7 +18,7 @@ h1 {
   width: 400px;
   height: 400px;
   background-color: rgb(233, 232, 232);
-  border: 5px solid maroon;
+  border: 5px solid rgb(136, 4, 4);
   padding: 20px;
   border-radius: 5px;
   box-shadow: 8px 8px 8px #505050; /* add the box-shadow property with the desired values */
@@ -42,9 +42,9 @@ label {
   width: 80%;
 }
 
-button {
+.signup-button {
   margin-top: 10px;
-  background-color: rgb(153, 2, 2);
+  background-color: rgb(99, 24, 2);
   color: white;
   padding: 10px 20px;
   border: none;
