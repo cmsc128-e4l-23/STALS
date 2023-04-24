@@ -214,7 +214,8 @@ export default function Body({data}) {
                                         {favBtnState[index].obj}
                                     </IconButton>
                                 
-                                    {/* image/s */}
+                                {/* image/s */}
+                                { /* reference: https://www.youtube.com/watch?v=McPdzhLRzCg */ }
                                     <div className="img-container">
                                         <div className="slider-wrapper">
                                             <div className="images">
