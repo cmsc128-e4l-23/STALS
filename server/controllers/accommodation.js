@@ -5,7 +5,6 @@ import PDFDocument from "pdfkit";
 import path from "path";
 import fs from "fs"
 import Report from "../models/Report.js";
-import User from "../models/User.js";
 
 const addAccomm = async (req, res) => {
     try{
@@ -122,7 +121,7 @@ const deleteAccomm = async (req, res) => {
 //  - a key error with a value "Search Failed"
 const searchAccomm = async (req, res) => {
 
-    const searchString = { "$regex": req.body.searchString };
+    const searchString = { "$regex": req.body.searchString, "$options": "i" };
 
 
     Accommodation.find({ $or: [{ name: searchString }, { "address.postCode": searchString }, { "address.street": searchString }, { "address.barangay": searchString }, { "address.city": searchString }, { "address.province": searchString }, { "address.region": searchString }] })

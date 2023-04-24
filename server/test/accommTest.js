@@ -102,10 +102,10 @@ import mongoose from "mongoose";
 // ========================== SEARCH ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/searchAccomm",
 //     {
-//         searchString: "San Tomas"
+//         searchString: "bar"
 //     },
 //     (err, res) => {
-//         console.log(res.body.result[0].address);
+//         console.log(res.body.result);
 //     }
 // );
 
@@ -132,11 +132,11 @@ import mongoose from "mongoose";
 
 
 // ========================== GENERATE PDF ==========================
-needle.post("http://localhost:3001/generateRep",
-    {
-        _id:"6443c48421c7c8144ab343e6"
-    },
-    (err, res) => {
-        console.log(res.body);
-    }
-);
+// needle.post("http://localhost:3001/generateRep",
+//     {
+//         _id:"6443c48421c7c8144ab343e6"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
