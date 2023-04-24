@@ -2,6 +2,7 @@ import express from "express";
 import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
 import review from "./controllers/review.js";
+import admin from "./controllers/admin.js";
 
 const router = express.Router();
 
@@ -26,6 +27,11 @@ router.post("/addReview", review.addReview);
 router.post("/editReview", review.editReview);
 router.post("/deleteReview", review.deleteReview);
 router.post("/getReview", review.getReview);
+router.post("/reportAccomm", accommodation.reportAccomm);
+
+//Admin
+router.get("/viewReports", admin.viewReports);
+router.post("/resolveReport", admin.resolveReport);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);

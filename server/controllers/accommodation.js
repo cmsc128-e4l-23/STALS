@@ -1,8 +1,11 @@
+import mongoose from "mongoose";
 import Accommodation from "../models/Accommodation.js";
 import User from "../models/User.js";
 import PDFDocument from "pdfkit";
 import path from "path";
 import fs from "fs"
+import Report from "../models/Report.js";
+import User from "../models/User.js";
 
 const addAccomm = async (req, res) => {
     try{
@@ -325,6 +328,43 @@ const viewAccomm = async (req, res) => {
         });
 }
 
+/*
+The req.body should simply contain what's in the report schema
+You may refer to test.js to check how it is used
+*/
+const reportAccomm = async (req, res) => {
+    try {
+        const report_details = req.body;
+        const custom_id = new mongoose.Types.ObjectId();
+
+        const report = new Report({
+            _id: custom_id,
+            user: report_details.user_id,
+            reported: report_details.reported_id,
+            classification: report_details.classification,
+            content: report_details.content,
+            status: "Pending"
+        });
+        await report.save();
+        // also add that report to the user
+
+        User.updateOne(
+            {_id: report_details.user_id},
+            { $push: {reports: custom_id} }
+        ).then((result) => {
+            res.send("Successfully appended report to user");
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({success: false, error: "Report Appending Failed"});
+        });
+    }  catch (err) {
+        res.status(500).send({error: err.message});
+        console.error(err);
+    }
+    //res.send("I am reporting an accommodation");
+}
+
 export default {
     addAccomm,
     archiveAccomm,
@@ -334,5 +374,6 @@ export default {
     generateRep,
     viewAccomm,
     bookmarkAccomm,
-    removeBookmarkAccomm
+    removeBookmarkAccomm,
+    reportAccomm
 }
