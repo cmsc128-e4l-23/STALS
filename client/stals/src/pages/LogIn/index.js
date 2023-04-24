@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-import '../components/Login.css';
-import Header from '../components/Header';
+import 'pages/LogIn/Login.css';
+import Header from 'components/Header';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {

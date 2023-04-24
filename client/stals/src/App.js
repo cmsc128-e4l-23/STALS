@@ -1,7 +1,7 @@
-import './App.css';
-import Home from './pages/Home';
-import LogIn from './pages/Login';
-import SignUp from './pages/Signup';
+import 'App.css';
+import Home from 'pages/Home/index';
+import LogIn from 'pages/LogIn/index';
+import SignUp from 'pages/SignUp/index';
 //import Login from './pages/Login'; used to check the login page
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 

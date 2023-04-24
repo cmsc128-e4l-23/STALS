@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import "./Body.css";
-import Filter from "./Filter";
+import Filter from "components/Filter";
 import { Favorite, FavoriteBorderRounded } from '@mui/icons-material/';
 import { IconButton } from '@mui/material';
 
@@ -83,7 +83,7 @@ export default function Body() {
                                     </IconButton>
                                 
                                     {/* image */}
-                                    <img src={require("../img/" + image)} />
+                                    <img src={require("../img/" + image)} alt='' />
                                     
                                     {/* details */}
                                     <div className="details">
@@ -104,7 +104,7 @@ export default function Body() {
                                     <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
                                     {favBtnState[index].obj}
                                     </IconButton>
-                                    <img src={require("../img/" + image)} />
+                                    <img src={require("../img/" + image)} alt='' />
                                     {/* details */}
                                     <div className="details">
                                         <h3>Name</h3>
@@ -124,7 +124,7 @@ export default function Body() {
                                     <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
                                     {favBtnState[index].obj}
                                     </IconButton>
-                                    <img src={require("../img/" + image)} />
+                                    <img src={require("../img/" + image)} alt='' />
                                     {/* details */}
                                     <div className="details">
                                         <h3>Name</h3>

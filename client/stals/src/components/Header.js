@@ -7,8 +7,7 @@ import Cookies from 'universal-cookie';
 
 export default function Header() {
     let navigate = useNavigate();
-
-    const [userName, setName] = useState(null);
+    let name = '';
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
@@ -21,14 +20,13 @@ export default function Header() {
         .then(data => {
             setLoggedIn(data.isLoggedIn);
             if(data.isLoggedIn){
-                setName(localStorage.getItem('username'));
+                name = localStorage.getItem('username');
             }
         })
     }, []);
 
     const logout = (e) => {
         e.preventDefault();
-        alert("triggers");
 
         const cookies = new Cookies();
         cookies.remove("authToken");
@@ -47,7 +45,7 @@ export default function Header() {
 
     let auth_section;
     if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
     }else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
