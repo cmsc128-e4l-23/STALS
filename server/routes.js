@@ -1,11 +1,12 @@
 import express from "express";
 import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
+import review from "./controllers/review.js";
 
 const router = express.Router();
 
 //Authentication
-router.post("/register", auth.register);
+router.post("/signup", auth.signUp);
 router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
 
@@ -15,7 +16,16 @@ router.post("/archiveAccomm", accommodation.archiveAccomm);
 router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
-router.get("/generateRep", accommodation.generateRep);
+router.post("/generateRep", accommodation.generateRep);
+
+router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
+router.post("/removeBookmarkAccomm", accommodation.removeBookmarkAccomm);
+
+//Review
+router.post("/addReview", review.addReview);
+router.post("/editReview", review.editReview);
+router.post("/deleteReview", review.deleteReview);
+router.post("/getReview", review.getReview);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);

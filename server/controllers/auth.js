@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 // Function for sign up
-export const register = async (req, res) => {
+export const signUp = async (req, res) => {
     try{
         //Getting the input
         let user_details = req.body;
@@ -42,29 +42,29 @@ const logIn = async (req, res) => {
     const password = req.body.password;
 
     //finds the email in the database
-    User.find({email: email})
-        .then((results) => {
+    User.findOne({email: email})
+        .then((document) => {
             
             //checks the password if correct
-            bcrypt.compare(password, results[0].password, function(err, result){
-                if(!result){
-                    return res.send({ success: result, error: "incorrect password" });    
+            bcrypt.compare(password, document.password, function(err, result){
+                if(err || !result){
+                    return res.send({ success: result, error: "Incorrect Password" });    
                 }
                 
                 //issues the token and cookies
                 const tokenPayLoad = {
-                    _id: results[0]._id
+                    _id: document._id
                 }
                 
                 //NOTE: do not name this var "token"
-                const token1 = jwt.sign(tokenPayLoad, "THIS_IS_A_SECRET_STRING");
+                const token = jwt.sign(tokenPayLoad, process.env.SECRET);
                 
                 
                 //NOTE: you must send the token for authentication to work
-                return res.send({ success: result, token: token1 });
+                return res.send({ success: result, token, fname: document.firstName, lname: document.lastName, email: document.email, type: document.userType });
             });
         })
-        .catch((error) => res.send({ success: false, error: "email not found"}))
+        .catch((error) => res.send({ success: false, error: "User not found"}))
 
 }
 
@@ -80,7 +80,7 @@ const checkIfLoggedIn = async (req, res) => {
     //verifies the cookies
     return jwt.verify(
     req.cookies.authToken,
-    "THIS_IS_A_SECRET_STRING",
+    process.env.SECRET,
     (err, tokenPayload) => {
         if(err) {
             console.log(req.cookies);
@@ -90,10 +90,10 @@ const checkIfLoggedIn = async (req, res) => {
         const userId = tokenPayload._id;
 
         // check if user exists
-        return User.find({_id: userId},
+        return User.findOne({_id: userId},
             ).then(
-                (results) =>{
-                    if(!results[0]){
+                (document) =>{
+                    if(!document){
                         return res.send({isLoggedIn: false, error: "no user found"});
                     }
                     console.log("user is currently logged in");
@@ -105,7 +105,7 @@ const checkIfLoggedIn = async (req, res) => {
 }
 
 export default {
-    register,
+    signUp,
     logIn,
     checkIfLoggedIn
 };
