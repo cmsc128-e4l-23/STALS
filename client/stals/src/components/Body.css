@@ -79,6 +79,11 @@
     /* overflow-y: visible; */
 }
 
+.body-div #not-found {
+    margin: 10%;
+    font-size: 25px;
+}
+
 
 /* adjusting margins and fonts relative to the screen size */
 @media only screen and (max-width: 1200px) {
@@ -90,6 +95,10 @@
         font-size: 30px;
         line-height: 1%;
     }
+    .body-div #not-found {
+        margin: 13%;
+        font-size: 25px;
+    }
 }
 
 @media only screen and ((max-width: 640px))  {
@@ -99,5 +108,9 @@
     .body-container h1 {
         font-size: 30px;
         margin-bottom: 1.5%;
+    }
+    .body-div #not-found {
+        margin: 20%;
+        font-size: 25px;
     }
 }

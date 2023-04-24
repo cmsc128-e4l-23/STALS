@@ -1,126 +1,118 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
-function Header() {
+export default function Header() {
+    let navigate = useNavigate();
 
-    const [isSignedIn, setAuth] = useState(false);
-    const [userName, setName] = useState('User');
+    const [userName, setName] = useState(null);
+    const [optionsActive, optionsToggle] = useState(false);
+    const [options, setOptions] = useState({});
+    const [isLoggedIn, setLoggedIn] = useState(null);
+    const [searchInput, setInput] = useState("");
+    useEffect(() => {
+        fetch('http://localhost:3001/checkifloggedin', {
+        method: 'POST',
+        credentials: 'include'
+        })
+        .then(res => res.json())
+        .then(data => {
+            setLoggedIn(data.isLoggedIn);
+            if(data.isLoggedIn){
+                setName(localStorage.getItem('username'));
+            }
+        })
+    }, []);
 
-    const [optionsclick, clickOptions] = useState(false);
-    const handleClickOptions = () =>{
-        clickOptions(!optionsclick);
+    const logout = (e) => {
+        e.preventDefault();
+        alert("triggers");
+
+        const cookies = new Cookies();
+        cookies.remove("authToken");
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("email");
+        setLoggedIn(false);
     }
-    
-    // Format for Options: {<displaytext>:<link>}
-    const [availableOptions, setOptions] = useState({"Add an Accomodation":'/add-accom'});
-    // Parameter "option" must be an object and has the format: {Key:"link"}
+
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    }
+
+    const search = () => {
+        console.log(searchInput);
+        
+        // redirect to search
+        const searchPage = document.createElement('a');
+        searchPage.href = "/home?search=" + searchInput;
+        document.body.appendChild(searchPage);
+        searchPage.click();
+    }
+
     const handleOptions = (option,link) => {
-        var new_obj;
-        new_obj = availableOptions;
-        new_obj[option] = link;
-        setOptions(new_obj);
+        var new_options;
+        new_options = options;
+        new_options[option] = link;
+        setOptions(new_options);
     };
-
-    // handleAuth -> sets to True if user is signed in
-    // handleName -> sets userName to be the user's name
-    const handleAuth = () => {
-
-        // If Login:
-        if(!isSignedIn){
-            handleOptions("Logout","/log-out");
-            delete availableOptions['Register'];
-            delete availableOptions['Login'];
-        } else{
-            // For logouts
-            delete availableOptions["Logout"];
-            console.log(Object.keys(availableOptions));    
-        }
-
-        setAuth(!isSignedIn);
-    };
-
-    // Will be used when changing user's name for display
-    const handleName = (name) => setName(name);
 
     let auth_section;
-    if(isSignedIn){
-        auth_section = <div id='auth-confirmed'>Welcome back, <b>{userName}!</b>
-        <ul>
-            <li>Profile</li>
-            <li>Settings</li>
-            <li>Logout</li>
-        </ul>
-        </div>;
-    } else{
-        auth_section = <><button id='btn-login'>LOG IN</button><button id='btn-register'>REGISTER</button></>;
+    if(isLoggedIn){
+        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+    }else{
+        auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
     // Handles the responsiveness for buttons (what buttons inside the options button will appear at a certain window size)
     const windowResize = () =>{
+        optionsToggle(false);
 
-        if(window.innerWidth>1200){
-            delete availableOptions['Register'];
-        }
-
-        if(window.innerWidth<1200){
-
-            if(!isSignedIn){
-                console.log("Adding register...")
-                handleOptions("Register","/register")
-            }
-
-            delete availableOptions['Login'];
-
-        } 
-        if (window.innerWidth<640){
-
-            if(!isSignedIn){
-                handleOptions("Login","/login");
-            }
+        if(!isLoggedIn){
+            if(window.innerWidth > 1200){   delete options['Sign Up'];  }
+            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');    }
+            if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
         }
     };
     window.addEventListener('resize',windowResize);
 
     return (
     <div id='header'>
-        
-        {/* TODO: ADD ONCLICK FUNCTION */}
-        <div id='logo'>
+        <div id='logo' onClick={() => navigate('/home')}>
             <h1>STALS</h1>
         </div>
 
         <div id='search-section'>
             <div id='search-bar'>
-                <input id='search-text' type='text' placeholder='What are you looking for?'/>
-                <button id='search-submit' type='submit'>
+                    <input id='search-text' type='text' placeholder='What are you looking for?' onChange={handleInput} value={searchInput} />
+                <button id='search-submit' type='submit' onClick={search}>
                     <FontAwesomeIcon icon={faMagnifyingGlass}/>
                 </button>
             </div>
         </div>
-
+        
         <div id='right-side-btns'>
+            <div className='auth-sect'>{auth_section}</div>
             <div id='btn-container'>
-                <button id='add-accom'>ADD ACCOMODATION</button>
-                
-                <button id='more-options' onClick={handleClickOptions}> <FontAwesomeIcon icon={faEllipsis}/></button>
-                {optionsclick ? <div id='options-menu'>
-                    <ul>
-                        {Object.keys(availableOptions).map((option)=>{
-                            return <li>{option}</li>
-                        })}
-                    </ul>
+                <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
+                {optionsActive ? <div id='options-menu'>
+                    {isLoggedIn ? 
+                        <ul>
+                            <li id='option-btn' onClick={logout}>LOG OUT</li>
+                        </ul> :
+                        <ul>
+                            {Object.keys(options).map((option)=>{
+                                return <li id='option-btn' onClick={() => {navigate(options[option])}}>{option}</li>
+                            })}
+                        </ul>
+                        
+                    }
                 </div> : null}
-
-                <div className='auth-sect'>{auth_section}</div>
             </div>
         </div>
-
-        <button onClick={handleAuth}>simulate authentication</button>
-
     </div>
     )
 }
-
-export default Header

@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 // npm install @mui/material @emotion/react @emotion/styled 
 // npm install @mui/icons-material
 
-export default function Body() {
+export default function Body({data}) {
     // get the images from ./src/img/ -----------
     // temporary
     function importAll(r) {
@@ -24,10 +24,9 @@ export default function Body() {
     const images = importAll(require.context('../img/', false, /\.(png|jpe?g|svg)$/));
     // --------------------------------------------
 
-    // favorite button
+    // favorite button ------------------------------------------
     // when not in favorites: <FavoriteBorderRounded />
     // when in favorites: <Favorite />
-
     // initialize favorite buttons
     // temporary
     const initFavBtn = () => {
@@ -38,9 +37,9 @@ export default function Body() {
         return states;
         
     }
-    
     const [favBtnState, updateFavBtnState] = useState(initFavBtn());
-    
+    const [accommList, udpateAccomm] = useState([]);
+    const [success, setSuccess] = useState(false);
     // changes the state of the button on click
     // NOT WORKING
     // needs editing 
@@ -62,12 +61,36 @@ export default function Body() {
         // prints icon type
         console.log(favBtnState[index].obj.type.type.render.displayName);
     }
+    // -----------------------------------------------------------
 
-    return (
-        // the whole body
-        <div className="body-div">
-            {/* filter component */}
-            <Filter />
+    // search
+    // use `data` prop
+    const fetchAccomm = () => {
+        fetch('http://localhost:3001/searchAccomm', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ searchString: data }),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                setSuccess(body.success);
+                if (success) udpateAccomm(body.result);
+                else udpateAccomm(null);
+        })
+    }
+
+
+    // not searching anything
+    // Homepage
+    if (data === "" || data===null) {
+        return (
+            // the whole body
+            <div className="body-div">
+                {/* filter component */}
+                <Filter />
                 {/* body-container: contains the category title and the accommodation card */}
                 <div className="body-container">
                     <h1>Within UPLB Vicinity</h1>
@@ -137,5 +160,57 @@ export default function Body() {
                     </div>
                 </div>
             </div>
-    );
+        );
+    }
+
+    // return search results
+    else {
+        // fetch accommodations
+        fetchAccomm();
+
+        // display results accordingly
+        // accommodation not found
+        if (accommList === null || !accommList.length) {
+            return (
+                <div className="body-div">
+                    <Filter />
+                    <h3 id="not-found">Accommodation not found</h3>
+                </div>
+            );
+        }
+
+        // accommodation found
+        return (
+            // the whole body
+            <div className="body-div">
+                <Filter />
+                {/* body-container: contains the category title and the accommodation card */}
+                <div className="body-container">
+                {/* body-group: multiple body-elements */}
+                {/* body-element: image and button/s */}
+                    <div className="body-group">
+                        {accommList.map((accomm, index) => {
+                            return <div key={index} className="body-element">
+                                    {/* favorite button */}
+                                    <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
+                                        {favBtnState[index].obj}
+                                    </IconButton>
+                                
+                                {/* image */}
+                                <img src={require("../img/" + accomm.photos[0])} />
+                                
+                                {/* details */}
+                                <div className="details">
+                                    <h3>{ accomm.name}</h3>
+                                    <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
+                                    <p>{`Type: ${accomm.accommodationType}`}</p>
+                                    <h4>{`Php ${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
