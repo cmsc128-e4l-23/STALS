@@ -1,0 +1,63 @@
+h1 {
+  font-family: 'Roboto', sans-serif;
+  color: maroon;
+}
+.signup-container {
+  margin-top: 5%;
+  margin-bottom: 10%;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+} 
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40em;
+  height: 60em;
+  background-color: rgb(233, 232, 232);
+  border: 5px solid maroon;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 8px 8px 8px #505050; /* add the box-shadow property with the desired values */
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+
+}
+
+.signup-form input {
+  background-color: #f7f7f7;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 30px;
+  width: 80%;
+}
+
+.signup-button {
+  margin-top: 10px;
+  background-color: rgb(99, 24, 2);
+  width: 45em;
+}
+
+button {
+  margin-top: 10px;
+  background-color: rgb(153, 2, 2);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 30%;
+  height: 10%;
+}
