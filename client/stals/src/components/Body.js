@@ -82,6 +82,24 @@ export default function Body({data}) {
         })
     }
 
+    // fetch accommodation depending on its distance from the UPLB gate
+    // const fetchAccommOnDistance = (distance) => {
+    //     fetch('http://localhost:3001/searchAccomm', {
+    //         method: 'POST',
+    //         credentials: 'include',
+    //         body: JSON.stringify({ distanceFromUPLB: distance }),
+    //         headers: {
+    //             'Content-Type': "application/json"
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(body => {
+    //             setSuccess(body.success);
+    //             if (success) udpateAccomm(body.result);
+    //             else udpateAccomm(null);
+    //     })
+    // }
+
 
     // not searching anything
     // Homepage
@@ -196,16 +214,29 @@ export default function Body({data}) {
                                         {favBtnState[index].obj}
                                     </IconButton>
                                 
-                                {/* image */}
-                                <img src={require("../img/" + accomm.photos[0])} />
-                                
-                                {/* details */}
-                                <div className="details">
-                                    <h3>{ accomm.name}</h3>
-                                    <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
-                                    <p>{`Type: ${accomm.accommodationType}`}</p>
-                                    <h4>{`Php ${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
-                                </div>
+                                    {/* image/s */}
+                                    <div className="img-container">
+                                        <div className="slider-wrapper">
+                                            <div className="images">
+                                                {accomm.photos.map((photo, index) => {
+                                                    return <img id={"image-" + photo + "-" + index} src={require("../img/" + photo)} />
+                                                })}
+                                            </div>
+                                            {/* slider buttons */}
+                                            <div className="slider-btns">
+                                                {accomm.photos.map((photo, index) => {
+                                                    return <a href={"#image-" + photo + "-" + index}></a>
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* details */}
+                                    <div className="details">
+                                        <h3>{ accomm.name}</h3>
+                                        <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
+                                        <p>{`Type: ${accomm.accommodationType}`}</p>
+                                        <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
+                                    </div>
                             </div>
                         })}
                     </div>
