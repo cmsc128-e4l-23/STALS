@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
 import User from "../models/User.js";
 
 // Function for sign up
@@ -96,7 +97,7 @@ const checkIfLoggedIn = async (req, res) => {
                     if(!document){
                         return res.send({isLoggedIn: false, error: "no user found"});
                     }
-                    console.log("user is currently logged in");
+                    
                     return res.send({ isLoggedIn: true });
                 }
             )

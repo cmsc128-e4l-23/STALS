@@ -1,5 +1,5 @@
 // Calma, Coleen G.
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const reportSchema = new mongoose.Schema({
     user : {

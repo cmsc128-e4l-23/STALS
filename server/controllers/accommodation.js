@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-import Accommodation from "../models/Accommodation.js";
-import User from "../models/User.js";
 import PDFDocument from "pdfkit";
 import path from "path";
 import fs from "fs"
+
+import User from "../models/User.js";
+import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 
 const addAccomm = async (req, res) => {

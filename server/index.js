@@ -3,8 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import routes from "./routes.js";
 import cookieParser from "cookie-parser";
+
+import routes from "./routes.js";
 
 /* CONFIGURATIONS */
 dotenv.config();
