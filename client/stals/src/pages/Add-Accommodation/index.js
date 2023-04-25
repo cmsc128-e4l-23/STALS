@@ -1,5 +1,5 @@
 //import { Margin } from "@mui/icons-material";
-import "components/Accommodation-form.css";
+import "./Accommodation-form.css";
 import Header from "components/Header";
 import React, { useState } from "react";
 

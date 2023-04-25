@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-import 'components/Login.css';
+import './Login.css';
 import Header from 'components/Header';
 import { useNavigate } from 'react-router-dom';
 
