@@ -29,7 +29,6 @@ export default function Header() {
 
     const logout = (e) => {
         e.preventDefault();
-        alert("triggers");
 
         const cookies = new Cookies();
         cookies.remove("authToken");
