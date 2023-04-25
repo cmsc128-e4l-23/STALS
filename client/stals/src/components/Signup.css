@@ -41,6 +41,12 @@ label {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 30px;
+  width: 80%;
+}
+
+.signup-button {
+  margin-top: 10px;
+  background-color: rgb(99, 24, 2);
   width: 45em;
 }
 
