@@ -36,6 +36,7 @@ export default function Header() {
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         setLoggedIn(false);
+        optionsToggle(false);
     }
 
     const handleInput = (e) => {
@@ -74,7 +75,7 @@ export default function Header() {
         optionsToggle(false);
 
         if(!isLoggedIn){
-            if(window.innerWidth > 1200){   delete options['Sign Up'];  }
+            if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; }
             if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');    }
             if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
         }
@@ -97,7 +98,6 @@ export default function Header() {
         </div>
         
         <div id='right-side-btns'>
-            <div className='auth-sect'>{auth_section}</div>
             <div id='btn-container'>
                 <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
                 {optionsActive ? <div id='options-menu'>
@@ -114,6 +114,7 @@ export default function Header() {
                     }
                 </div> : null}
             </div>
+            <div className='auth-sect'>{auth_section}</div>
         </div>
     </div>
     )
