@@ -1,3 +1,9 @@
+button {
+    background-color: rgb(153, 2, 2);
+    color: white;
+    cursor: pointer;
+}
+
 #header{
     background-color: rgb(18, 18, 18);
     height: 70px;
@@ -58,10 +64,16 @@
     height: 100%;
 }
 
+
 #btn-container{
+    
+    float: right;
+    margin-top: .5em;
+    margin-right: 1em;
+    /* float: right;
     margin-top: 15px;
     margin-left: 5%;
-    margin-right: 5%;
+    margin-right: 5%; */
 }
 
 #add-accom{
@@ -80,13 +92,18 @@
 
 .auth-sect{
     float: right;
+    margin-top: .5em;
+    /* float: right;
     line-height: 40px;
     color: white;
+    padding-right: 20%;
+    margin-top: 10px; */
 }
 
 .auth-sect button{
+    background-color: rgb(153, 2, 2);
     height: 40px;
-    width: 100px;
+    width: 95px;
     margin-left: 10px;
     border-radius: 100px;
     border: none;
@@ -124,8 +141,9 @@
 }
 
 #auth-confirmed{
-    padding-left: 1em;
-    padding-right: 1em;
+    margin-top: .5em;
+    color: white;
+    line-height: 40px;
     user-select: none;
 
 }
@@ -143,6 +161,7 @@
 }
 
 #options-menu ul{
+    resize: none;
     list-style-type: none;
     padding: 0 10px 0px 10px;
 }
@@ -166,7 +185,9 @@
         display: none;
     }
     #more-options{
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-left: 10px;
         float: right;
         height: 40px;
