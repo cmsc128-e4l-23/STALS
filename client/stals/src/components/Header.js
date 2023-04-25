@@ -12,6 +12,7 @@ export default function Header() {
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
+    const [searchInput, setInput] = useState("");
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
         method: 'POST',
@@ -36,6 +37,23 @@ export default function Header() {
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         setLoggedIn(false);
+    }
+
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    }
+
+    // called when the search button is clicked
+    const search = () => {
+        const regex = new RegExp('^ *$'); // regex for spaces only input
+        const searchPage = document.createElement('a');
+        
+        // redirect to search if searchInput is not empty
+        if (!regex.test(searchInput))
+            searchPage.href = "/home?search=" + searchInput;
+        else searchPage.href = "/home";
+        document.body.appendChild(searchPage);
+        searchPage.click();
     }
 
     const handleOptions = (option,link) => {
@@ -72,8 +90,8 @@ export default function Header() {
 
         <div id='search-section'>
             <div id='search-bar'>
-                <input id='search-text' type='text' placeholder='What are you looking for?'/>
-                <button id='search-submit' type='submit'>
+                    <input id='search-text' type='text' placeholder='What are you looking for?' onChange={handleInput} value={searchInput} />
+                <button id='search-submit' type='submit' onClick={search}>
                     <FontAwesomeIcon icon={faMagnifyingGlass}/>
                 </button>
             </div>

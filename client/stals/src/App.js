@@ -2,7 +2,6 @@ import './App.css';
 import Home from './pages/Home';
 import LogIn from './pages/Login';
 import SignUp from './pages/Signup';
-//import Login from './pages/Login';
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import Accommodation from'./pages/Accommodation-form'
 
