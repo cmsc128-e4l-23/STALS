@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import "components/Body.css";
+import "./Body.css";
 import Filter from "components/Filter";
 import { Favorite, FavoriteBorderRounded } from '@mui/icons-material/';
 import { IconButton } from '@mui/material';
@@ -17,12 +17,13 @@ export default function Body({data}) {
         let images = [];
         r.keys().forEach((image) => {
             image = image.replace("./", "");
+            image = image.replace("assets/", "");
             images.push(image)
         });
         console.log(images);
         return images;
     }
-    const images = importAll(require.context('img/', false, /\.(png|jpe?g|svg)$/));
+    const images = importAll(require.context('assets/', false, /\.(png|jpe?g|svg)$/));
     // --------------------------------------------
 
     // favorite button ------------------------------------------
@@ -125,7 +126,7 @@ export default function Body({data}) {
                                     </IconButton>
                                 
                                     {/* image */}
-                                    <img src={require('img/pexels-christian-paul-del-rosario-1076240.jpg')} alt='' />
+                                    <img src={require('assets/' + image)} alt='' />
                                     
                                     {/* details */}
                                     <div className="details">
@@ -146,7 +147,7 @@ export default function Body({data}) {
                                     <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
                                     {favBtnState[index].obj}
                                     </IconButton>
-                                    <img src={require('img/pexels-christian-paul-del-rosario-1076240.jpg')} alt='' />
+                                    <img src={require('assets/' + image)} alt='' />
                                     {/* details */}
                                     <div className="details">
                                         <h3>Name</h3>
@@ -166,7 +167,7 @@ export default function Body({data}) {
                                     <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
                                     {favBtnState[index].obj}
                                     </IconButton>
-                                    <img src={require('img/pexels-christian-paul-del-rosario-1076240.jpg')} alt='' />
+                                    <img src={require('assets/' + image)} alt='' />
                                     {/* details */}
                                     <div className="details">
                                         <h3>Name</h3>
@@ -221,7 +222,7 @@ export default function Body({data}) {
                                         <div className="slider-wrapper">
                                             <div className="images">
                                                 {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} src={require("../img/" + photo)} alt='' />
+                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
                                                 })}
                                             </div>
                                             {/* slider buttons */}
