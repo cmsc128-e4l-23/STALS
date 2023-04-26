@@ -2,11 +2,6 @@
 import mongoose from "mongoose";
 
 const accommodationSchema = new mongoose.Schema({
-  accommodationID: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    unique: true
-  },
   name: {
     type: String,
     required: true
@@ -38,20 +33,11 @@ const accommodationSchema = new mongoose.Schema({
     enum: ['Transient', 'Dorm', 'Rent']
   },
   amenities: {
-    type: String,
+    type: [String],
     required: false
   },
   priceRange: {
-    type: {
-      minPrice: {
-        type: Number,
-        required: true
-      },
-      maxPrice: {
-        type: Number,
-        required: true
-      }
-    },
+    type: Number,
     required: true
   },
   description: {
@@ -59,42 +45,7 @@ const accommodationSchema = new mongoose.Schema({
     required: true
   },
   photos: [String],
-  restrictions: {
-    curfew: {
-      type: String,
-      required: true
-    },
-    pets: {
-      type: String,
-      required: true,
-      enum: ['Allowed', 'Not Allowed']
-    },
-    cooking: {
-      type: String,
-      required: true,
-      enum: ['Allowed', 'Not Allowed', 'Depends (Owner’s Prerogative)']
-    },
-    visitors: {
-      type: String,
-      required: true,
-      enum: ['Allowed', 'Not Allowed', 'Upon Approval']
-    },
-    coedStatus: {
-      type: String,
-      required: true,
-      enum: ['Yes', 'No']
-    },
-    wifi: {
-      type: String,
-      required: true,
-      enum: ['With WiFi', 'None', 'Add your own connection']
-    },
-    phoneSignal: {
-      type: String,
-      required: false,
-      enum: ['Strong', 'Fair', 'Poor']
-    }
-  },
+  restrictions: [String],
   security: {
     type: String,
     required: false
@@ -103,7 +54,8 @@ const accommodationSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
-  }
+  },
+  reviews: [{type: mongoose.Schema.Types.ObjectID, ref:"Review"}]
 });
 
 const Accommodation = mongoose.model('Accommodation', accommodationSchema);
