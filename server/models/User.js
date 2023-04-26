@@ -9,7 +9,7 @@ const OwnerSchema = new mongoose.Schema({
 });
 
 const AdminSchema = new mongoose.Schema({
-    pendingApplications: [{type: mongoose.Schema.Types.ObjectID, ref: 'Application'}],
+    pendingApplications: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
     pendingReports: [{type: mongoose.Schema.Types.ObjectID, ref: "Report"}]
 })
 const UserSchema = new mongoose.Schema(
