@@ -129,7 +129,7 @@ const searchAccomm = async (req, res) => {
         .then((result) => {
             res.send({ success: true, result: result });
         })
-        .catch((error) => {
+        .catch((err) => {
             console.log(err);
             res.send({ success: false, error: "Search Failed" });
         })
