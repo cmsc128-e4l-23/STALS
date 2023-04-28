@@ -273,6 +273,6 @@ select {
   background-color: #da0505;
 }
 
-input:empty {
+.input:empty {
   background-color: #d8d8d8;
 }
