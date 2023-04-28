@@ -1,9 +1,9 @@
 import "./Accommodation-form.css";
 import Header from "components/Header";
-import BasicInfo from "./BasicInfo";
+import BasicInfo from "./1_BasicInfo";
 import React, { useState, useRef } from "react";
-import AccommInfo from "./AccommInfo";
-import OtherInfo from "./OtherInfo";
+import AccommInfo from "./2_AccommInfo";
+import OtherInfo from "./3_OtherInfo";
 
 
 export default function AddAccommodation(){
