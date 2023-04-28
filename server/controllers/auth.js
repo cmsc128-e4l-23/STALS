@@ -105,6 +105,7 @@ const checkIfLoggedIn = async (req, res) => {
     });
 }
 
+//Function for retrieving the encrypted password of a user based on the email input
 const retrievePasswordHash = async (user_email) =>{
     return User.findOne({email: user_email})
         .then((user)=>{
@@ -115,16 +116,32 @@ const retrievePasswordHash = async (user_email) =>{
         });
 }
 
+
+//JS POST method for changing the password of a user
+//The request body should follow the following format:
+/*
+{
+    user_email: <string of the user email>,
+    old_password: <string of the old password of the user>,
+    new_password: <string of the new password of the user to be changed>
+}
+*/
 const changePassword = async (req, res) => {
+    
+    //retrieves the encrypted old password
     let passwordHash = await retrievePasswordHash(req.body.user_email);
+    
+    //checks if the old password inputted matches the encrypted old password
     bcrypt.compare(req.body.old_password, passwordHash, async function(err, result){
-        
         if(!result){
             res.send({success:false, error: "Wrong old password input"})
         } else{
+
+            //encrypts the new password
             const salt = await bcrypt.genSalt();
             const newPasswordHash = await bcrypt.hash(req.body.new_password, salt);
 
+            //updates the encrypted password in the database
             User.updateOne({email: req.body.user_email}, {$set: {password: newPasswordHash}})
                 .then((result)=>{
                     res.send({success:true, msg: "Successfully update password"})
@@ -133,9 +150,6 @@ const changePassword = async (req, res) => {
                     res.send({success:false, error: error})
                 })    
         }
-
-
-        
     });
 }
 
