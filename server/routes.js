@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/signup", auth.signUp);
 router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
+router.post("/changePassword", auth.changePassword);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
