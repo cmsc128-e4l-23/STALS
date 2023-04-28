@@ -105,8 +105,43 @@ const checkIfLoggedIn = async (req, res) => {
     });
 }
 
+const retrievePasswordHash = async (user_email) =>{
+    return User.findOne({email: user_email})
+        .then((user)=>{
+            return user.password;
+        })
+        .catch((error) => {
+            return false; 
+        });
+}
+
+const changePassword = async (req, res) => {
+    let passwordHash = await retrievePasswordHash(req.body.user_email);
+    bcrypt.compare(req.body.old_password, passwordHash, async function(err, result){
+        
+        if(!result){
+            res.send({success:false, error: "Wrong old password input"})
+        } else{
+            const salt = await bcrypt.genSalt();
+            const newPasswordHash = await bcrypt.hash(req.body.new_password, salt);
+
+            User.updateOne({email: req.body.user_email}, {$set: {password: newPasswordHash}})
+                .then((result)=>{
+                    res.send({success:true, msg: "Successfully update password"})
+                })
+                .catch((error)=>{
+                    res.send({success:false, error: error})
+                })    
+        }
+
+
+        
+    });
+}
+
 export default {
     signUp,
     logIn,
-    checkIfLoggedIn
+    checkIfLoggedIn,
+    changePassword
 };

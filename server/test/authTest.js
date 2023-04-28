@@ -44,3 +44,26 @@ import mongoose from "mongoose";
 //         console.log(res.body);
 //     }
 // );
+
+// ========================== CHANGE PASSWORD ==========================
+
+// needle.post("http://localhost:3001/login",
+//     {
+//         email: "firstlast@gmail.com",
+//         password: "password4",
+//     },
+//     (err, res) =>{
+//         console.log(res.body);
+//     }
+// );
+
+// needle.post("http://localhost:3001/changePassword",
+//     {
+//         user_email: "firstlast@gmail.com",
+//         old_password: "password4",
+//         new_password: "pass123"
+//     },
+//     (err, res) =>{
+//         console.log(res.body);
+//     }
+// );
