@@ -100,33 +100,112 @@ import mongoose from "mongoose";
 // );
 
 // ========================== EDIT ACCOMMODATION ==========================
-// // revert edits
-needle.post("http://localhost:3001/editAccomm",
-    {
-        name: 'UP DORM',
-        landmarks: [ 'Oblation', 'CAS Building' ],
-        address: {
-            postCode: '1111',
-            street: 'Kalsada street',
-            barangay: 'Batong Malake',
-            city: 'Los Banos',
-            province: 'Laguna',
-            region: 'Region IV'
-        },
-        reviews: [],
-        _id: '643665dccee7fa1d7dd408ea',
-        generalLocation: 12345,
-        accommodationType: 'Dorm',
-        amenities: [ 'Toiletries' ],
-        description: 'Available to all UP Students',
-        photos: [ 'Photo 1', 'Photo 2' ],
-        security: 'Very Secure',
-        archived: false
-    },
-    (err, res) => {
-        console.log(res.body)
-    }
-)
+// // edit 1 (complete requirements)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         name: 'Never',
+//         landmarks: [ 'Gonna' ],
+//         address: {
+//             postCode: 'Give',
+//             street: 'You',
+//             barangay: 'Up',
+//             city: 'Never',
+//             province: 'Gonna',
+//             region: 'Let'
+//         },
+//         generalLocation: 310771,
+//         accommodationType: 'You',
+//         amenities: [ 'Down' ],
+//         priceRange: 4000,
+//         description: 'Never gonna run around and desert you',
+//         photos: [ 'and' ],
+//         restrictions: ["desert", "you"],
+//         security: 'Rick Astley',
+//         archived: false
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
+
+// // edit 2 (half requirements)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         name: 'UP TRANSIENT HOUSE',
+//         landmarks: [ 'Oblation', 'CAS Building' ],
+//         address: {
+//             postCode: '1234',
+//             street: 'New Kalsada Street',
+//             barangay: 'Batong Maliit',
+//             city: "Los Banos",
+//             province: "Laguna",
+//             region: "CALABARZON"
+//         },
+//         generalLocation: 12345,
+//         accommodationType: 'Transient',
+//         archived: true
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
+
+// // edit 3 (description only)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         description: "BEST PLACE TO STAY! GUARANTEED 100% NO CAP!"
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
+
+// // edit 4 (original edit)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         name: 'UP DORM',
+//         landmarks: [ 'Oblation', 'CAS Building' ],
+//         address: {
+//             postCode: '1111',
+//             street: 'Kalsada street',
+//             barangay: 'Batong Malake',
+//             city: 'Los Banos',
+//             province: 'Laguna',
+//             region: 'Region IV'
+//         },
+//         generalLocation: 12345,
+//         accommodationType: 'Dorm',
+//         amenities: [ 'Toiletries' ],
+//         // priceRange: {
+//         //     minPrice: 2000,
+//         //     maxPrice: 5000
+//         // },
+//         priceRange: 5000,
+//         description: 'Available to all UP Students',
+//         photos: [ 'Photo 1', 'Photo 2' ],
+//         // restrictions: {     
+//         //     curfew: 'Yes',
+//         //     pets: 'Not Allowed',
+//         //     cooking: 'Not Allowed',
+//         //     visitors: 'Not Allowed',
+//         //     coedStatus: 'No',
+//         //     wifi: 'With WiFi',
+//         //     phoneSignal: 'Fair'
+//         // },
+//         restrictions: ["No curfew", "with WiFi"],
+//         security: 'Very Secure',
+//         archived: false
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
+
+
 
 // needle.get("http://localhost:3001/viewAccomm", 
 //     {
