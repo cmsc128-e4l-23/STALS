@@ -16,6 +16,7 @@ router.post("/changePassword", auth.changePassword);
 router.post("/addAccomm", accommodation.addAccomm);
 router.post("/archiveAccomm", accommodation.archiveAccomm);
 router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
+router.post("/editAccomm", accommodation.editAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.post("/generateRep", accommodation.generateRep);
