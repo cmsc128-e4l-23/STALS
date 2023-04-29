@@ -248,6 +248,20 @@ const searchAccomm = async (req, res) => {
     // res.send("I am searching accommodation");
 }
 
+/*
+Search Recommendation based on the given search input
+(i.e. req.body.searchString) and how much would be returned
+via req.body.returnLength for each category. The response is
+ordered by the ratings.
+
+The response would send the following:
+- Accomms "nearby" (same province)
+- Accomms with same accomm type
+- Accomms of roughly the same price
+*/
+const recommendAccom = async (req, res) => {
+    res.send("I am recommending accommodations.");
+}
 
 //bookmark functionality
 //req.body is an object that should have:
