@@ -99,6 +99,44 @@ import mongoose from "mongoose";
 //     }
 // );
 
+// ========================== EDIT ACCOMMODATION ==========================
+// // revert edits
+needle.post("http://localhost:3001/editAccomm",
+    {
+        name: 'UP DORM',
+        landmarks: [ 'Oblation', 'CAS Building' ],
+        address: {
+            postCode: '1111',
+            street: 'Kalsada street',
+            barangay: 'Batong Malake',
+            city: 'Los Banos',
+            province: 'Laguna',
+            region: 'Region IV'
+        },
+        reviews: [],
+        _id: '643665dccee7fa1d7dd408ea',
+        generalLocation: 12345,
+        accommodationType: 'Dorm',
+        amenities: [ 'Toiletries' ],
+        description: 'Available to all UP Students',
+        photos: [ 'Photo 1', 'Photo 2' ],
+        security: 'Very Secure',
+        archived: false
+    },
+    (err, res) => {
+        console.log(res.body)
+    }
+)
+
+// needle.get("http://localhost:3001/viewAccomm", 
+//     {
+//         _id: "random"
+//     },
+//     (err, res) => {
+//         console.log(res.body.result);
+//     }
+// )
+
 // ========================== SEARCH ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/searchAccomm",
 //     {
