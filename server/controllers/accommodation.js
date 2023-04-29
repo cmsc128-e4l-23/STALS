@@ -90,41 +90,51 @@ const editAccomm = async (req, res) => {
     const accomm_details = req.body;
     let updateObject = { $set: {} };
 
-    if (accomm_details.name){
-        updateObject.$set.name = accomm_details.name;
-    }
-    if (accomm_details.landmarks){
-        updateObject.$set.landmarks = accomm_details.landmarks;
-    }
-    if (accomm_details.address){
-        updateObject.$set.address = accomm_details.address;
-    }
-    if (accomm_details.generalLocation){
-        updateObject.$set.generalLocation = accomm_details.generalLocation;
-    }
-    if (accomm_details.accommodationType){
-        updateObject.$set.accommodationType = accomm_details.accommodationType;
-    }
-    if (accomm_details.amenities){
-        updateObject.$set.amenities = accomm_details.amenities;
-    }
-    if (accomm_details.priceRange){
-        updateObject.$set.priceRange = accomm_details.priceRange;
-    }
-    if (accomm_details.description){
-        updateObject.$set.description = accomm_details.description;
-    }
-    if (accomm_details.photos){
-        updateObject.$set.photos = accomm_details.photos;
-    }
-    if (accomm_details.restrictions){
-        updateObject.$set.restrictions = accomm_details.restrictions;
-    }
-    if (accomm_details.security){
-        updateObject.$set.security = accomm_details.security;
-    }
-
     try{
+        const currentAccomm = Accommodation.findById(accomm_details._id,
+        
+        )
+
+        if (accomm_details.name){
+            updateObject.$set.name = accomm_details.name;
+        }
+        if (accomm_details.landmarks){
+            updateObject.$set.landmarks = accomm_details.landmarks;
+        }
+        if (accomm_details.address){
+    
+    
+            if (accomm_details.address.postCode){
+    
+            }
+            updateObject.$set.address = accomm_details.address;
+        }
+        if (accomm_details.generalLocation){
+            updateObject.$set.generalLocation = accomm_details.generalLocation;
+        }
+        if (accomm_details.accommodationType){
+            updateObject.$set.accommodationType = accomm_details.accommodationType;
+        }
+        if (accomm_details.amenities){
+            updateObject.$set.amenities = accomm_details.amenities;
+        }
+        if (accomm_details.priceRange){
+            updateObject.$set.priceRange = accomm_details.priceRange;
+        }
+        if (accomm_details.description){
+            updateObject.$set.description = accomm_details.description;
+        }
+        if (accomm_details.photos){
+            updateObject.$set.photos = accomm_details.photos;
+        }
+        if (accomm_details.restrictions){
+            updateObject.$set.restrictions = accomm_details.restrictions;
+        }
+        if (accomm_details.security){
+            updateObject.$set.security = accomm_details.security;
+        }
+        
+        //Updating the accommodation
         const result = await Accommodation.findByIdAndUpdate(
             { _id: accomm_details._id },
             updateObject
