@@ -18,11 +18,34 @@ import mongoose from "mongoose";
 
 // ========================== SIGN-UP ==========================
 // const url = "http://localhost:3001/signup";
-// const data = { userType: "Student", firstName: "First", 
-//                lastName: "Last", email: "firstlast@gmail.com", password: "pass123", phoneNumber: "09123456781",
+// const data1 = { userType: "Student", firstName: "Maui", 
+//                lastName: "Tate", email: "mtate@gmail.com", password: "go ahead", phoneNumber: "09123456781",
 //                birthday: "January 31, 1970", sex: "Male"};
 
-// needle.post(url, data, {json: true}, (err, res, body) => {
+// const data2 = { userType: "Student", firstName: "Drey", 
+//                lastName: "Tuaz", email: "dtuaz@gmail.com", password: "pass", phoneNumber: "09223456781",
+//                birthday: "January 1, 1970", sex: "Male"};
+
+// const data3 = { userType: "Student", firstName: "Francis", 
+//                lastName: "Ching", email: "fching@gmail.com", password: "pass123", phoneNumber: "09423456781",
+//                birthday: "January 2, 1970", sex: "Male"};
+
+// needle.post(url, data1, {json: true}, (err, res, body) => {
+//     if (err) {
+//         console.error(err);
+//     } else {
+//         console.log(body);
+//     }
+// });
+
+// needle.post(url, data2, {json: true}, (err, res, body) => {
+//     if (err) {
+//         console.error(err);
+//     } else {
+//         console.log(body);
+//     }
+// });
+// needle.post(url, data3, {json: true}, (err, res, body) => {
 //     if (err) {
 //         console.error(err);
 //     } else {

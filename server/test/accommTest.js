@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 // const url = "http://localhost:3001/addAccomm";
 // const newAccommodation1 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
-//     name: "A Place to Stay At Home",
-//     landmarks: ["Nearby Mall"],
+//     name: "White House",
+//     landmarks: ["Raymundo Gate"],
 //     address: {
 //       postCode: "1234",
 //       street: "Street 10",
@@ -24,21 +24,36 @@ import mongoose from "mongoose";
 //     },
 //     description: "A place to stay at!",
 //     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-//     restrictions: {
-//       curfew: "11pm",
-//       pets: "Not Allowed",
-//       cooking: "Allowed",
-//       visitors: "Upon Approval",
-//       coedStatus: "No",
-//       wifi: "With WiFi",
-//       phoneSignal: "Fair"
-//     }
+//     restrictions: ["no visitors allowed"]
 //   };
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
-//     name: "A Place to Stay At Mall",
-//     landmarks: ["Nearby Mall"],
+//     name: "Big Bellys",
+//     landmarks: ["UPLB Main Gate"],
+//     address: {
+//       postCode: "1234",
+//       street: "Street 10",
+//       barangay: "Barangay 11",
+//       city: "City 12",
+//       province: "Laguna",
+//       region: "CALABARZON"
+//     },
+//     generalLocation: 2,
+//     accommodationType: "Transient",
+//     priceRange: {
+//       minPrice: 5000,
+//       maxPrice: 10000
+//     },
+//     description: "Masarap kainan dito",
+//     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+//     restrictions: ["no wifi"]
+//   };
+
+// const newAccommodation3 = {
+//     accommodationID: new mongoose.Types.ObjectId(),
+//     name: "F Park",
+//     landmarks: ["Student Union Building", "Bakers Hall"],
 //     address: {
 //       postCode: "1234",
 //       street: "Street 10",
@@ -53,18 +68,114 @@ import mongoose from "mongoose";
 //       minPrice: 5000,
 //       maxPrice: 10000
 //     },
-//     description: "A place to stay at!",
+//     description: "May tulugan dito",
 //     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-//     restrictions: {
-//       curfew: "11pm",
-//       pets: "Not Allowed",
-//       cooking: "Allowed",
-//       visitors: "Upon Approval",
-//       coedStatus: "No",
-//       wifi: "With WiFi"
-//     }
+//     restrictions: ["no pets allowed"]
 //   };
-// needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
+
+// Example 4
+// const accommodation4 = {
+//     name: "Luxury Condo",
+//     landmarks: ["Near the shopping mall"],
+//     address: {
+//       postCode: "1634",
+//       street: "101 Orchard Road",
+//       barangay: "Barangay 4",
+//       city: "Makati",
+//       province: "Metro Manila",
+//       region: "NCR"
+//     },
+//     generalLocation: 5,
+//     accommodationType: "Rent",
+//     amenities: ["Swimming pool", "Gym", "Parking"],
+//     priceRange: {
+//               minPrice: 5000,
+//               maxPrice: 10000
+//             },
+//     description: "Experience luxury living in our condo near the shopping mall",
+//     photos: ["condo.jpg"],
+//     restrictions: ["No parties allowed"],
+//     security: "24-hour security"
+//   };
+  
+//   // Example 1
+//   const accommodation1 = {
+//     name: "Beautiful Villa",
+//     landmarks: ["Near the beach"],
+//     address: {
+//       postCode: "4026",
+//       street: "123 Beach Road",
+//       barangay: "Barangay 1",
+//       city: "Santa Rosa",
+//       province: "Laguna",
+//       region: "CALABARZON"
+//     },
+//     generalLocation: 4,
+//     accommodationType: "Dorm",
+//     amenities: ["Swimming pool", "Free Wi-Fi"],
+//     priceRange: {
+//         minPrice: 1500,
+//         maxPrice: 10000
+//       },
+//     description: "Stay in our beautiful villa by the beach",
+//     photos: ["beach.jpg", "pool.jpg"],
+//     restrictions: ["No pets allowed"],
+//     security: "24-hour security"
+//   };
+  
+//   // Example 2
+//   const accommodation2 = {
+//     name: "Cozy Apartment",
+//     landmarks: ["Near the train station"],
+//     address: {
+//       postCode: "1001",
+//       street: "456 Main Street",
+//       barangay: "Barangay 2",
+//       city: "Manila",
+//       province: "Metro Manila",
+//       region: "NCR"
+//     },
+//     generalLocation: 5,
+//     accommodationType: "Rent",
+//     amenities: ["Gym", "Parking"],
+//     priceRange: {
+//         minPrice: 2000,
+//         maxPrice: 10000
+//       },
+//     description: "Our cozy apartment is perfect for short-term rentals",
+//     photos: ["apartment.jpg"],
+//     restrictions: ["No smoking"],
+//     security: "CCTV monitoring"
+//   };
+  
+//   // Example 3
+//   const accommodation3 = {
+//     name: "Budget Inn",
+//     landmarks: ["Near the bus station"],
+//     address: {
+//       postCode: "6000",
+//       street: "789 Main Street",
+//       barangay: "Barangay 3",
+//       city: "Cebu City",
+//       province: "Cebu",
+//       region: "Central Visayas"
+//     },
+//     generalLocation: 3,
+//     accommodationType: "Transient",
+//     amenities: ["Air-conditioning", "Hot shower"],
+//     priceRange: {
+//         minPrice: 800,
+//         maxPrice: 1000
+//       },
+//     description: "Stay in our budget inn for a comfortable and affordable stay",
+//     photos: ["inn.jpg"],
+//     restrictions: ["No loud music after 10pm"],
+//     security: "Safe and secure"
+//   };
+
+
+
+// needle.post(url, accommodation4, { json: true }, (err, res, body) => {
 //   if (err) {
 //     console.error(err);
 //   } else {
@@ -72,7 +183,23 @@ import mongoose from "mongoose";
 //   }
 // });
 
-// needle.post(url, newAccommodation2, { json: true }, (err, res, body) => {
+// needle.post(url, accommodation3, { json: true }, (err, res, body) => {
+//     if (err) {
+//       console.error(err);
+//     } else {
+//       console.log(body);
+//     }
+//   });
+
+//   needle.post(url, accommodation2, { json: true }, (err, res, body) => {
+//     if (err) {
+//       console.error(err);
+//     } else {
+//       console.log(body);
+//     }
+//   });
+
+//   needle.post(url, accommodation1, { json: true }, (err, res, body) => {
 //     if (err) {
 //       console.error(err);
 //     } else {
