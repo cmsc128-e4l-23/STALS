@@ -91,6 +91,65 @@ const unarchiveAccomm = async (req, res) => {
         })
 }
 
+// returns a json that indicates success and sends message
+// throws an error if accommodation was not found or if accommodation edit failed
+const editAccomm = async (req, res) => {
+
+    const accomm_details = req.body;
+    let updateObject = { $set: {} };
+
+    if (accomm_details.name){
+        updateObject.$set.name = accomm_details.name;
+    }
+    if (accomm_details.landmarks){
+        updateObject.$set.landmarks = accomm_details.landmarks;
+    }
+    if (accomm_details.address){
+        updateObject.$set.address = accomm_details.address;
+    }
+    if (accomm_details.generalLocation){
+        updateObject.$set.generalLocation = accomm_details.generalLocation;
+    }
+    if (accomm_details.accommodationType){
+        updateObject.$set.accommodationType = accomm_details.accommodationType;
+    }
+    if (accomm_details.amenities){
+        updateObject.$set.amenities = accomm_details.amenities;
+    }
+    if (accomm_details.priceRange){
+        updateObject.$set.priceRange = accomm_details.priceRange;
+    }
+    if (accomm_details.description){
+        updateObject.$set.description = accomm_details.description;
+    }
+    if (accomm_details.photos){
+        updateObject.$set.photos = accomm_details.photos;
+    }
+    if (accomm_details.restrictions){
+        updateObject.$set.restrictions = accomm_details.restrictions;
+    }
+    if (accomm_details.security){
+        updateObject.$set.security = accomm_details.security;
+    }
+
+    try{
+        const result = await Accommodation.findByIdAndUpdate(
+            { _id: accomm_details._id },
+            updateObject
+        );
+
+        if (result){
+            res.send({ success: true, message: "Successfully edited accommodation" });
+        } else {
+            throw new Error("Accommodation not found");
+        }
+    } catch (error){
+        console.log(error);
+        res.send({ success: false, message: "Failed to edit accommodation", error: error });
+    }
+
+}
+
 //Function for delete accomodation
 //returns a success value of true if the accommodation is successfully deleted
 //else, the success value is false
@@ -319,12 +378,12 @@ const generateRep = async (req, res) => {
 
 //for testing
 const viewAccomm = async (req, res) => {
-    Accommodation.findById('643665dccee7fa1d7dd408ea')
+    Accommodation.findById("643665dccee7fa1d7dd408ea")
         .then((result) => {
-            res.send(result)
+            res.send({ result: result });
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         });
 }
 
@@ -369,6 +428,7 @@ export default {
     addAccomm,
     archiveAccomm,
     unarchiveAccomm,
+    editAccomm,
     deleteAccomm,
     searchAccomm,
     generateRep,
