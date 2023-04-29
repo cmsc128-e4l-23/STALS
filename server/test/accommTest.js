@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 // const url = "http://localhost:3001/addAccomm";
 // const newAccommodation1 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
-//     name: "A Place to Stay At Home",
-//     landmarks: ["Nearby Mall"],
+//     name: "White House",
+//     landmarks: ["Raymundo Gate"],
 //     address: {
 //       postCode: "1234",
 //       street: "Street 10",
@@ -24,21 +24,36 @@ import mongoose from "mongoose";
 //     },
 //     description: "A place to stay at!",
 //     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-//     restrictions: {
-//       curfew: "11pm",
-//       pets: "Not Allowed",
-//       cooking: "Allowed",
-//       visitors: "Upon Approval",
-//       coedStatus: "No",
-//       wifi: "With WiFi",
-//       phoneSignal: "Fair"
-//     }
+//     restrictions: ["no visitors allowed"]
 //   };
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
-//     name: "A Place to Stay At Mall",
-//     landmarks: ["Nearby Mall"],
+//     name: "Big Bellys",
+//     landmarks: ["UPLB Main Gate"],
+//     address: {
+//       postCode: "1234",
+//       street: "Street 10",
+//       barangay: "Barangay 11",
+//       city: "City 12",
+//       province: "Laguna",
+//       region: "CALABARZON"
+//     },
+//     generalLocation: 2,
+//     accommodationType: "Transient",
+//     priceRange: {
+//       minPrice: 5000,
+//       maxPrice: 10000
+//     },
+//     description: "Masarap kainan dito",
+//     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+//     restrictions: ["no wifi"]
+//   };
+
+// const newAccommodation3 = {
+//     accommodationID: new mongoose.Types.ObjectId(),
+//     name: "F Park",
+//     landmarks: ["Student Union Building", "Bakers Hall"],
 //     address: {
 //       postCode: "1234",
 //       street: "Street 10",
@@ -53,16 +68,9 @@ import mongoose from "mongoose";
 //       minPrice: 5000,
 //       maxPrice: 10000
 //     },
-//     description: "A place to stay at!",
+//     description: "May tulugan dito",
 //     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-//     restrictions: {
-//       curfew: "11pm",
-//       pets: "Not Allowed",
-//       cooking: "Allowed",
-//       visitors: "Upon Approval",
-//       coedStatus: "No",
-//       wifi: "With WiFi"
-//     }
+//     restrictions: ["no pets allowed"]
 //   };
 // needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 //   if (err) {
@@ -73,6 +81,14 @@ import mongoose from "mongoose";
 // });
 
 // needle.post(url, newAccommodation2, { json: true }, (err, res, body) => {
+//     if (err) {
+//       console.error(err);
+//     } else {
+//       console.log(body);
+//     }
+//   });
+
+//   needle.post(url, newAccommodation3, { json: true }, (err, res, body) => {
 //     if (err) {
 //       console.error(err);
 //     } else {
