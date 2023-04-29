@@ -44,6 +44,11 @@ const viewReports = async (req, res) => {
 
 }
 
+const dataAnalytics = async (req, res) => {
+    
+}
+
+
 export default {
     resolveReport, viewReports
 }
