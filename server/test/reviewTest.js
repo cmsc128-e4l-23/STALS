@@ -7,54 +7,54 @@ import mongoose from "mongoose";
 // const propertyId = "643665dccee7fa1d7dd408ea";
 
 // Review Data (for adding reviews)
-const data1 = {
-    userId: "644cd8a4dad90ff1fc7d1513",
-    propertyId: "644cdb964c5e0d977fa685ac",
-    content: "I like it",
-    rating: 5,
-    photos: [{filename: "Photo1"}]
-}
+// const data1 = {
+//     userId: "644cd8a4dad90ff1fc7d1513",
+//     propertyId: "644cdb964c5e0d977fa685ac",
+//     content: "I like it",
+//     rating: 5,
+//     photos: [{filename: "Photo1"}]
+// }
 
-const data2 = {
-    userId: "644cd8a4dad90ff1fc7d1511",
-    propertyId: "644cdb964c5e0d977fa685af",
-    content: "Very mid",
-    rating: 3,
-    photos: [{filename: "Insert very mid photo"}]
-}
+// const data2 = {
+//     userId: "644cd8a4dad90ff1fc7d1511",
+//     propertyId: "644cdb964c5e0d977fa685af",
+//     content: "Very mid",
+//     rating: 3,
+//     photos: [{filename: "Insert very mid photo"}]
+// }
 
-const data3 = {
-    userId: "644cd8a4dad90ff1fc7d150f",
-    propertyId: "644cdb964c5e0d977fa685b2",
-    content: "I like it",
-    rating: 1,
-    photos: [{filename: "Photo1"}]
-}
+// const data3 = {
+//     userId: "644cd8a4dad90ff1fc7d150f",
+//     propertyId: "644cdb964c5e0d977fa685b2",
+//     content: "I like it",
+//     rating: 1,
+//     photos: [{filename: "Photo1"}]
+// }
 
 
-// =========================== ADDING REVIEW ===========================
-// Add Review
-needle.post("http://localhost:3001/addReview",
-    data1,
-    (err, res) => {
-        console.log(res.body);
-    }
-);
+// // =========================== ADDING REVIEW ===========================
+// // Add Review
+// needle.post("http://localhost:3001/addReview",
+//     data1,
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
 
-// Add Review 2
-needle.post("http://localhost:3001/addReview",
-    data2,
-    (err, res) => {
-        console.log(res.body);
-    }
-);
+// // Add Review 2
+// needle.post("http://localhost:3001/addReview",
+//     data2,
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
 
-needle.post("http://localhost:3001/addReview",
-    data3,
-    (err, res) => {
-        console.log(res.body);
-    }
-);
+// needle.post("http://localhost:3001/addReview",
+//     data3,
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
 
 // =========================== EDITING REVIEW ===========================
 // // Edit Review
