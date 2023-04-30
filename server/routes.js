@@ -3,6 +3,7 @@ import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
 import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
+import userinfo from "./controllers/userinfo.js";
 
 const router = express.Router();
 
@@ -11,6 +12,9 @@ router.post("/signup", auth.signUp);
 router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
 router.post("/changePassword", auth.changePassword);
+
+//User Info
+router.post("/getOwnerAccomms", userinfo.getOwnerAccomms);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
