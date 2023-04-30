@@ -8,7 +8,7 @@ import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 
 const addAccomm = async (req, res) => {
-    try{
+    try {
         //Getting the input
         let accomm_details = req.body;
 
@@ -38,11 +38,11 @@ const addAccomm = async (req, res) => {
             security: accomm_details.security,
             archived: accomm_details.archived
         });
-        
+
         //Saves the accommodation to the database
         const savedAccommodation = await newAccommodation.save();
         res.status(201).json(savedAccommodation);
-    }catch (err){
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
@@ -89,6 +89,7 @@ const editAccomm = async (req, res) => {
 
     const accomm_details = req.body;
     let updateObject = { $set: {} };
+
 
     try{
         if (accomm_details.name){
@@ -182,12 +183,12 @@ const editAccomm = async (req, res) => {
             updateObject
         );
 
-        if (result){
+        if (result) {
             res.send({ success: true, message: "Successfully edited accommodation" });
         } else {
             throw new Error("Accommodation not found");
         }
-    } catch (error){
+    } catch (error) {
         console.log(error);
         res.send({ success: false, message: "Failed to edit accommodation", error: error });
     }
@@ -204,7 +205,7 @@ const deleteAccomm = async (req, res) => {
         { _id: accomm_details._id }
     )
         .then((result) => {
-            res.send({success: true, message:"Successfully deleted accommodation"});
+            res.send({ success: true, message: "Successfully deleted accommodation" });
         })
         .catch((err) => {
             console.log(err);
@@ -249,15 +250,14 @@ const searchAccomm = async (req, res) => {
 //if success, it will have res.body that contains
 //  - a key "success" with a value true else false
 //  - a key error with a value "Bookmark Success" else "Bookmark Failed"
-//Note: It is assumed that the accommodation is not yet bookmarked
 const bookmarkAccomm = async (req, res) => {
     try {
         const bookmark_details = req.body;
 
-        // also add that report to the user
+        // accomm_id is added to bookmarks array
         User.updateOne(
             { _id: bookmark_details.user_id },
-            { $push: { bookmarks: bookmark_details.accomm_id } }
+            { $addToSet: { bookmarks: bookmark_details.accomm_id } }
         ).then((result) => {
             res.send({ success: true, message: "Bookmark Success" });
         })
@@ -277,12 +277,11 @@ const bookmarkAccomm = async (req, res) => {
 //if success, it will have res.body that contains
 //  - a key "success" with a value true else false
 //  - a key error with a value "Remove Bookmark Success" else "Remove Bookmark Failed"
-//Note: It is assumed that the accommodation is in the bookmarks
 const removeBookmarkAccomm = async (req, res) => {
     try {
         const bookmark_details = req.body;
 
-        // also add that report to the user
+        //accomm_id is removed from bookmark array
         User.updateOne(
             { _id: bookmark_details.user_id },
             { $pull: { bookmarks: bookmark_details.accomm_id } }
@@ -301,10 +300,10 @@ const removeBookmarkAccomm = async (req, res) => {
 
 //Function for fetching bookmarks
 const fetchBookmarks = async (userID) => {
-    return User.findOne({_id:userID})
-        .then((user)=>{
-            return Accommodation.find({_id:{$in:user.bookmarks}})
-                .then((result) =>{
+    return User.findOne({ _id: userID })
+        .then((user) => {
+            return Accommodation.find({ _id: { $in: user.bookmarks } })
+                .then((result) => {
                     // console.log(result)
                     return result;
                 })
@@ -333,19 +332,19 @@ const generateRep = async (req, res) => {
 
 
         // doc.pipe(res)       // Use instead if implemented on web browser already
-    
+
         // Edit the PDF file
-        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
+        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true });
         doc.moveDown();
         bookmarks.forEach((accommodation, index) => {
             doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
             doc.moveDown();
-            if(accommodation.landmarks){
+            if (accommodation.landmarks) {
                 doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Landmarks:`);
                 doc.font("./font/Helvetica.ttf").fontSize(12).list(accommodation.landmarks);
                 doc.moveDown();
             }
-            
+
             doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Address: `)
             doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
             doc.moveDown();
@@ -354,7 +353,7 @@ const generateRep = async (req, res) => {
             doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.accommodationType}`);
             doc.moveDown();
 
-            if(accommodation.amenities){
+            if (accommodation.amenities) {
                 doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Amenities: `)
                 doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.amenities}`);
                 doc.moveDown();
@@ -362,11 +361,11 @@ const generateRep = async (req, res) => {
             doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Price Range:`)
             doc.font("./font/Helvetica.ttf").text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
             doc.moveDown();
-            
+
             doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Description:`)
             doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.description}`);
             doc.moveDown();
-            
+
             //Further Implementation
             // if(accommodation.photos.length > 0){
             //     for(let i=0; i<accommodation.photos.length; i++){
@@ -393,23 +392,23 @@ const generateRep = async (req, res) => {
 
             doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Wifi:`)
             doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.wifi}`);
-            
-            if(accommodation.restrictions.phoneSignal){
+
+            if (accommodation.restrictions.phoneSignal) {
                 // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
                 doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Phone Signal:`)
                 doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.phoneSignal}`);
             }
-            
-            doc.moveDown(); 
-            if(accommodation.security){
+
+            doc.moveDown();
+            if (accommodation.security) {
                 doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Security:`)
                 doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.security}`);
                 doc.moveDown();
-                
+
             }
             doc.moveDown();
         });
-    
+
         // "Close" the PDF file and send it to where `pipe` specifies it to go
         doc.end();
 
@@ -452,17 +451,17 @@ const reportAccomm = async (req, res) => {
         // also add that report to the user
 
         User.updateOne(
-            {_id: report_details.user_id},
-            { $push: {reports: custom_id} }
+            { _id: report_details.user_id },
+            { $push: { reports: custom_id } }
         ).then((result) => {
             res.send("Successfully appended report to user");
         })
-        .catch((error) => {
-            console.log(error);
-            res.send({success: false, error: "Report Appending Failed"});
-        });
-    }  catch (err) {
-        res.status(500).send({error: err.message});
+            .catch((error) => {
+                console.log(error);
+                res.send({ success: false, error: "Report Appending Failed" });
+            });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
         console.error(err);
     }
     //res.send("I am reporting an accommodation");

@@ -290,6 +290,7 @@ import mongoose from "mongoose";
 //     }
 // )
 
+
 // edit 4 (original edit)
 needle.post("http://localhost:3001/editAccomm",
     {
@@ -332,7 +333,7 @@ needle.post("http://localhost:3001/editAccomm",
     }
 )
 
-// needle.get("http://localhost:3001/viewAccomm", 
+// needle.get("http://localhost:3001/viewAccomm",
 //     {
 //         _id: "random"
 //     },
@@ -361,17 +362,32 @@ needle.post("http://localhost:3001/editAccomm",
 //     }
 // );
 
-// ========================== BOOKMARK ACCOMMODATION ==========================
+//========================== BOOKMARK ACCOMMODATION ==========================
+//user1 = "644cd8a4dad90ff1fc7d1513"
+//user2 = "644cd8a4dad90ff1fc7d1511"
+//user3 = "644cd8a4dad90ff1fc7d150f"
+//accomm1 = "644cdb964c5e0d977fa685ac"
+//accomm2= "644cdb964c5e0d977fa685af"
+//accomm3 = "644cdb964c5e0d977fa685b2"
 // needle.post("http://localhost:3001/bookmarkAccomm",
 //     {
-//         user_id:"6443c48421c7c8144ab343e6",
-//         accomm_id: "6443d98319888d78cbbc271f"
+//         user_id: user1,
+//         accomm_id: accomm1
 //     },
 //     (err, res) => {
 //         console.log(res.body);
 //     }
 // );
 
+// needle.post("http://localhost:3001/removeBookmarkAccomm",
+//     {
+//         user_id: user1,
+//         accomm_id: accomm1
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// );
 
 // ========================== GENERATE PDF ==========================
 // needle.post("http://localhost:3001/generateRep",
