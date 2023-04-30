@@ -138,12 +138,26 @@ via req.body.returnLength for each category. The response is
 ordered by the ratings and all of the accommodations are unarchived.
 
 The response would send the following:
+- Recommended accomms in general
 - Accomms "nearby" (same province) since city or baranggays are optional
 - Accomms with same accomm type
 - Accomms of roughly the same price
 */
 const recommendAccom = async (req, res) => {
-    res.send("I am recommending accommodations.");
+    const searchString = req.body.searchString;
+    const returnLength = req.body.returnLength;
+    // Get the general recommended accomms based
+    // on the top rating of the recommendations
+    Accommodation.find({}).sort().limit(returnLength)
+        .then((result)=>{
+            res.send({success: true, result: result})
+        })
+        .catch((error)=> {
+            console.log(err);
+            res.send({success: false, error: "Recommend Accomm Failed"})
+        })
+
+    //res.send("I am recommending accommodations.");
 }
 
 //bookmark functionality

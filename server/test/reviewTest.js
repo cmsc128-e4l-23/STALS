@@ -15,37 +15,37 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // db.accommodations.updateMany({}, {$set: {reviews:[]}})
 
 // let's just generate data here
-const datalen = 50;
-const propids = [
-    "644cdb964c5e0d977fa685ac",
-    "644cdb964c5e0d977fa685af",
-    "644cdb964c5e0d977fa685b2",
-    "644ce1aad31be0a75c33df6b",
-    "644ce1aad31be0a75c33df6e",
-    "644ce1aad31be0a75c33df71",
-    "644ce1aad31be0a75c33df74",
-    "644e58b2f157a1f22a80e73e",
-    "644e58b2f157a1f22a80e73b",
-    "644e58b2f157a1f22a80e738",
-    "644e58b2f157a1f22a80e741",
-];
+// const datalen = 50;
+// const propids = [
+//     "644cdb964c5e0d977fa685ac",
+//     "644cdb964c5e0d977fa685af",
+//     "644cdb964c5e0d977fa685b2",
+//     "644ce1aad31be0a75c33df6b",
+//     "644ce1aad31be0a75c33df6e",
+//     "644ce1aad31be0a75c33df71",
+//     "644ce1aad31be0a75c33df74",
+//     "644e58b2f157a1f22a80e73e",
+//     "644e58b2f157a1f22a80e73b",
+//     "644e58b2f157a1f22a80e738",
+//     "644e58b2f157a1f22a80e741",
+// ];
 
-const userids = [
-    "644cd8a4dad90ff1fc7d150f",
-    "644cd8a4dad90ff1fc7d1511",
-    "644cd8a4dad90ff1fc7d1513",
-]
+// const userids = [
+//     "644cd8a4dad90ff1fc7d150f",
+//     "644cd8a4dad90ff1fc7d1511",
+//     "644cd8a4dad90ff1fc7d1513",
+// ]
 
-const data = []
-for (let i=0; i<datalen; i++) {
-    data[i] = {
-        userId: userids[Math.floor(Math.random() * userids.length)],
-        propertyId: propids[Math.floor(Math.random() * propids.length)],
-        content: "Sample",
-        rating: Math.floor(Math.random() * 6),
-        photos: []
-    }
-}
+// const data = []
+// for (let i=0; i<datalen; i++) {
+//     data[i] = {
+//         userId: userids[Math.floor(Math.random() * userids.length)],
+//         propertyId: propids[Math.floor(Math.random() * propids.length)],
+//         content: "Sample",
+//         rating: Math.floor(Math.random() * 6),
+//         photos: []
+//     }
+// }
 
 // // Review Data (for adding reviews)
 // const data1 = {
@@ -98,13 +98,13 @@ for (let i=0; i<datalen; i++) {
 // );
 
 // Add all reviews
-for (let i=0; i<datalen; i++) {
-    needle.post("http://localhost:3001/addReview",
-    data[i], (err, res) => {
-        console.log(res.body);
-    }
-    )
-}
+// for (let i=0; i<datalen; i++) {
+//     needle.post("http://localhost:3001/addReview",
+//     data[i], (err, res) => {
+//         console.log(res.body);
+//     }
+//     )
+// }
 
 // =========================== EDITING REVIEW ===========================
 // // Edit Review
