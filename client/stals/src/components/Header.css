@@ -1,8 +1,4 @@
-.button {
-    background-color: rgb(153, 2, 2);
-    color: white;
-    cursor: pointer;
-}
+
 
 #header{
     background-color: rgb(18, 18, 18);
@@ -102,6 +98,7 @@
 
 .auth-sect button{
     background-color: rgb(153, 2, 2);
+    color: white;
     height: 40px;
     width: 95px;
     margin-left: 10px;
@@ -149,7 +146,8 @@
 }
 
 #more-options{
-    display: none;
+    background-color: rgb(153, 2, 2);
+    color: white;
 }
 
 #options-menu{
