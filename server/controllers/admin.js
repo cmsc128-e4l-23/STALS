@@ -1,4 +1,7 @@
+import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import User from "../models/User.js";
+import Review from "../models/Review.js";
 
 /*
 Marks the report as resolved
@@ -44,11 +47,46 @@ const viewReports = async (req, res) => {
 
 }
 
+
+//A JS method for acquiring an object of data about the database
+//for admin to study
 const dataAnalytics = async (req, res) => {
     
+    //Retrieval of the following data
+    
+    //Number of Users
+    const numUsers = await User.count();
+
+    //Number of Accommodations
+    const numAccomm = await Accommodation.count();
+
+    //Number of Reports
+    const numReports = await Report.count();
+
+    //Number of Reviews
+    const numReviews = await Review.count();
+
+    // const accomm_MaxReports = await 
+
+    const db_details = {
+        numUsers: numUsers,
+        numAccomm: numAccomm,
+        numReports: numReports,
+        numReviews: numReviews
+    }
+
+
+    console.log(db_details);
+    
+
+    
+    
+    res.send({success: true, return: req.body});
 }
 
 
 export default {
-    resolveReport, viewReports
+    resolveReport, 
+    viewReports,
+    dataAnalytics
 }
