@@ -34,15 +34,7 @@ const addAccomm = async (req, res) => {
             },
             description: accomm_details.description,
             photos: accomm_details.photos,
-            restrictions: {
-                curfew: accomm_details.restrictions.curfew,
-                pets: accomm_details.restrictions.pets,
-                cooking: accomm_details.restrictions.cooking,
-                visitors: accomm_details.restrictions.visitors,
-                coedStatus: accomm_details.restrictions.coedStatus,
-                wifi: accomm_details.restrictions.wifi,
-                phoneSignal: accomm_details.restrictions.phoneSignal
-            },
+            restrictions: accomm_details.restrictions,
             security: accomm_details.security,
             archived: accomm_details.archived
         });
