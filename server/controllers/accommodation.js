@@ -14,7 +14,6 @@ const addAccomm = async (req, res) => {
 
         //Completing accommodation details given the input
         const newAccommodation = new Accommodation({
-            accommodationID: accomm_details.accommodationID,
             name: accomm_details.name,
             landmarks: accomm_details.landmarks,
             address: {
@@ -28,10 +27,7 @@ const addAccomm = async (req, res) => {
             generalLocation: accomm_details.generalLocation,
             accommodationType: accomm_details.accommodationType,
             amenities: accomm_details.amenities,
-            priceRange: {
-                minPrice: accomm_details.priceRange.minPrice,
-                maxPrice: accomm_details.priceRange.maxPrice
-            },
+            priceRange: accomm_details.priceRange,
             description: accomm_details.description,
             photos: accomm_details.photos,
             restrictions: accomm_details.restrictions,
@@ -42,7 +38,8 @@ const addAccomm = async (req, res) => {
         //Saves the accommodation to the database
         const savedAccommodation = await newAccommodation.save();
         res.status(201).json(savedAccommodation);
-    } catch (err) {
+    }catch (err){
+        console.log(err.message);
         res.status(500).json({ error: err.message });
     }
 }
