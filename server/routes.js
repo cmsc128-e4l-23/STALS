@@ -34,6 +34,7 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 //Admin
 router.get("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
+router.post("/dataAnalytics", admin.dataAnalytics);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);

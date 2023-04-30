@@ -1,4 +1,7 @@
+import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import User from "../models/User.js";
+import Review from "../models/Review.js";
 
 /*
 Marks the report as resolved
@@ -44,6 +47,44 @@ const viewReports = async (req, res) => {
 
 }
 
+
+//A JS method for acquiring details about the database
+const dataAnalytics = async (req, res) => {
+    
+    //Retrieval of the following data
+    try{
+        //Number of Users
+        const numUsers = await User.count();
+
+        //Number of Accommodations
+        const numAccomm = await Accommodation.count();
+
+        //Number of Reports
+        const numReports = await Report.count();
+
+        //Number of Reviews
+        const numReviews = await Review.count();
+
+        const db_details = {
+            numUsers: numUsers,
+            numAccomm: numAccomm,
+            numReports: numReports,
+            numReviews: numReviews
+        }
+        res.send({success: true, return: db_details});
+    }
+    catch (error){
+        console.log(error);
+        res.send({ success: false,  error: error });
+    }
+    
+
+    
+}
+
+
 export default {
-    resolveReport, viewReports
+    resolveReport, 
+    viewReports,
+    dataAnalytics
 }
