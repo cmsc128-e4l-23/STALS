@@ -252,10 +252,10 @@ const searchAccomm = async (req, res) => {
 Search Recommendation based on the given search input
 (i.e. req.body.searchString) and how much would be returned
 via req.body.returnLength for each category. The response is
-ordered by the ratings.
+ordered by the ratings and all of the accommodations are unarchived.
 
 The response would send the following:
-- Accomms "nearby" (same province)
+- Accomms "nearby" (same province) since city or baranggays are optional
 - Accomms with same accomm type
 - Accomms of roughly the same price
 */
