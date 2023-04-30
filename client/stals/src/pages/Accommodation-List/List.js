@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
 
 
-function fetchAccomms(email){
-    
-}
+
 
 
 
 export default function List({email}){
+    const [accomms, setAccomms] = useState([]);
 
+    useEffect(() => {
+        fetch('http://localhost:3001/getOwnerAccomms', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({email: email})
+        })
+        .then(res => res.json())
+        .then(data => {
+            setAccomms(data.accommodations)
+        });
+    }, [email])
     return(
         <>
-        {email}
+        {accomms && accomms.map((accomm) => <li>{accomm.name}</li>)}
         </>
     )
 }
