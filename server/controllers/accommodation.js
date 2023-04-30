@@ -90,41 +90,94 @@ const editAccomm = async (req, res) => {
     const accomm_details = req.body;
     let updateObject = { $set: {} };
 
-    if (accomm_details.name) {
-        updateObject.$set.name = accomm_details.name;
-    }
-    if (accomm_details.landmarks) {
-        updateObject.$set.landmarks = accomm_details.landmarks;
-    }
-    if (accomm_details.address) {
-        updateObject.$set.address = accomm_details.address;
-    }
-    if (accomm_details.generalLocation) {
-        updateObject.$set.generalLocation = accomm_details.generalLocation;
-    }
-    if (accomm_details.accommodationType) {
-        updateObject.$set.accommodationType = accomm_details.accommodationType;
-    }
-    if (accomm_details.amenities) {
-        updateObject.$set.amenities = accomm_details.amenities;
-    }
-    if (accomm_details.priceRange) {
-        updateObject.$set.priceRange = accomm_details.priceRange;
-    }
-    if (accomm_details.description) {
-        updateObject.$set.description = accomm_details.description;
-    }
-    if (accomm_details.photos) {
-        updateObject.$set.photos = accomm_details.photos;
-    }
-    if (accomm_details.restrictions) {
-        updateObject.$set.restrictions = accomm_details.restrictions;
-    }
-    if (accomm_details.security) {
-        updateObject.$set.security = accomm_details.security;
-    }
 
-    try {
+    try{
+        if (accomm_details.name){
+            updateObject.$set.name = accomm_details.name;
+        }
+        if (accomm_details.landmarks){
+            updateObject.$set.landmarks = accomm_details.landmarks;
+        }
+
+        //address
+        if (accomm_details.address){
+            const newAccommAddr = accomm_details.address;
+            let currentAccommAddr = await Accommodation.findById(accomm_details._id).select("address -_id").exec();
+
+            if (currentAccommAddr){
+                currentAccommAddr = currentAccommAddr.address;
+
+                if (newAccommAddr.postCode){
+                    currentAccommAddr.postCode = newAccommAddr.postCode;
+                }
+                if (newAccommAddr.street){
+                    currentAccommAddr.street = newAccommAddr.street;
+                }
+                if (newAccommAddr.barangay){
+                    currentAccommAddr.barangay = newAccommAddr.barangay;
+                }
+                if (newAccommAddr.city){
+                    currentAccommAddr.city = newAccommAddr.city;
+                }
+                if (newAccommAddr.province){
+                    currentAccommAddr.province = newAccommAddr.province;
+                }
+                if (newAccommAddr.region){
+                    currentAccommAddr.region = newAccommAddr.region;
+                }
+
+                updateObject.$set.address = currentAccommAddr;
+            } else {
+                throw new Error("Accommodation not found when trying to update address");
+            }
+        }
+
+        if (accomm_details.generalLocation){
+            updateObject.$set.generalLocation = accomm_details.generalLocation;
+        }
+        if (accomm_details.accommodationType){
+            updateObject.$set.accommodationType = accomm_details.accommodationType;
+        }
+        if (accomm_details.amenities){
+            updateObject.$set.amenities = accomm_details.amenities;
+        }
+
+        //price range
+        if (accomm_details.priceRange){
+            const newAccommPrice = accomm_details.priceRange;
+            let currentAccommPrice = await Accommodation.findById(accomm_details._id).select("priceRange -_id").exec();
+
+            if(currentAccommPrice){
+                currentAccommPrice = currentAccommPrice.priceRange;
+
+                if (newAccommPrice.minPrice){
+                    currentAccommPrice.minPrice = newAccommPrice.minPrice;
+                }
+                if (newAccommPrice.maxPrice){
+                    currentAccommPrice.maxPrice = newAccommPrice.maxPrice;
+                }
+
+            } else {
+                throw new Error("Accomodation not found when trying to update price range");
+            }
+
+            updateObject.$set.priceRange = currentAccommPrice;
+        }
+
+        if (accomm_details.description){
+            updateObject.$set.description = accomm_details.description;
+        }
+        if (accomm_details.photos){
+            updateObject.$set.photos = accomm_details.photos;
+        }
+        if (accomm_details.restrictions){
+            updateObject.$set.restrictions = accomm_details.restrictions;
+        }
+        if (accomm_details.security){
+            updateObject.$set.security = accomm_details.security;
+        }
+        
+        //Updating the accommodation
         const result = await Accommodation.findByIdAndUpdate(
             { _id: accomm_details._id },
             updateObject
