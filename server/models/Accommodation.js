@@ -37,8 +37,16 @@ const accommodationSchema = new mongoose.Schema({
     required: false
   },
   priceRange: {
-    type: Number,
-    required: true
+    type: {
+      minPrice: {
+        type: Number,
+        required: true
+      },
+      maxPrice: {
+        type: Number,
+        required: true
+      }
+    }
   },
   description: {
     type: String,
