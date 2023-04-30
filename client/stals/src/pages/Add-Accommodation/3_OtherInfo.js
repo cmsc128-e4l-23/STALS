@@ -10,7 +10,16 @@ export default function OtherInfo({ formData, setFormData }){
                 onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                 }    
-            /> 
+            />
+
+            <input
+                type="text"
+                placeholder="Restrictions..."
+                value={formData.restrictions}
+                onChange={(e) => 
+                    setFormData({ ...formData, restrictions: e.target.value })
+                }
+            />
         </>
     )
 }
