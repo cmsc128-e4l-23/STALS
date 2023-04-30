@@ -6,7 +6,42 @@ import mongoose from "mongoose";
 // const userId = "64415c5344582ba43b014e14";
 // const propertyId = "643665dccee7fa1d7dd408ea";
 
-// Review Data (for adding reviews)
+// note that the current database has still report ids
+// in the array for the users but not on accomms
+// please delete them first before proceeding:
+// db.users.update({}, {$set: {reviews:[]}})
+// db.accommodations.update({}, {$set: {reviews:[]}})
+
+// let's just generate data here
+const datalen = 10;
+const propids = [
+    "644cdb964c5e0d977fa685ac",
+    "644cdb964c5e0d977fa685af",
+    "644cdb964c5e0d977fa685b2",
+    "644ce1aad31be0a75c33df6b",
+    "644ce1aad31be0a75c33df6e",
+    "644ce1aad31be0a75c33df71",
+    "644ce1aad31be0a75c33df74",
+];
+
+const userids = [
+    "644cd8a4dad90ff1fc7d150f",
+    "644cd8a4dad90ff1fc7d1511",
+    "644cd8a4dad90ff1fc7d1513",
+]
+
+const data = []
+for (let i=0; i<datalen; i++) {
+    data[i] = {
+        userId: userids[Math.floor(Math.random() * userids.length)],
+        propertyId: propids[Math.floor(Math.random() * propids.length)],
+        content: "Sample",
+        rating: Math.floor(Math.random() * 6),
+        photos: []
+    }
+}
+
+// // Review Data (for adding reviews)
 // const data1 = {
 //     userId: "644cd8a4dad90ff1fc7d1513",
 //     propertyId: "644cdb964c5e0d977fa685ac",
@@ -55,6 +90,15 @@ import mongoose from "mongoose";
 //         console.log(res.body);
 //     }
 // );
+
+// Add all reviews
+for (let i=0; i<datalen; i++) {
+    needle.post("http://localhost:3001/addReview",
+    data[i], (err, res) => {
+        console.log(res.body);
+    }
+    )
+}
 
 // =========================== EDITING REVIEW ===========================
 // // Edit Review
