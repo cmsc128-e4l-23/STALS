@@ -14,7 +14,6 @@ const addAccomm = async (req, res) => {
 
         //Completing accommodation details given the input
         const newAccommodation = new Accommodation({
-            accommodationID: accomm_details.accommodationID,
             name: accomm_details.name,
             landmarks: accomm_details.landmarks,
             address: {
@@ -28,21 +27,10 @@ const addAccomm = async (req, res) => {
             generalLocation: accomm_details.generalLocation,
             accommodationType: accomm_details.accommodationType,
             amenities: accomm_details.amenities,
-            priceRange: {
-                minPrice: accomm_details.priceRange.minPrice,
-                maxPrice: accomm_details.priceRange.maxPrice
-            },
+            priceRange: accomm_details.priceRange,
             description: accomm_details.description,
             photos: accomm_details.photos,
-            restrictions: {
-                curfew: accomm_details.restrictions.curfew,
-                pets: accomm_details.restrictions.pets,
-                cooking: accomm_details.restrictions.cooking,
-                visitors: accomm_details.restrictions.visitors,
-                coedStatus: accomm_details.restrictions.coedStatus,
-                wifi: accomm_details.restrictions.wifi,
-                phoneSignal: accomm_details.restrictions.phoneSignal
-            },
+            restrictions: accomm_details.restrictions,
             security: accomm_details.security,
             archived: accomm_details.archived
         });
@@ -51,6 +39,7 @@ const addAccomm = async (req, res) => {
         const savedAccommodation = await newAccommodation.save();
         res.status(201).json(savedAccommodation);
     }catch (err){
+        console.log(err.message);
         res.status(500).json({ error: err.message });
     }
 }
