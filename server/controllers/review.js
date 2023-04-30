@@ -91,22 +91,28 @@ const editReview = async (req, res) => {
 // Throws an error if review or user if user is not found
 const deleteReview = async (req, res) => {
     const review_details = req.body;
-    const userId = req.body.userId;
+    const id = review_details._id;
+    const userId = review_details.userId;
+    const propertyId = review_details.propertyId;
 
     try{
         //Deleting review
-        const result = await Review.findByIdAndDelete(review_details._id);
+        const result = await Review.findByIdAndDelete(id);
 
         if (result){
-            //Deleting review from the user
-            const user = await User.findById(userId)
-            if (user){
-                user.reviews.pull(review_details._id);
+            //Deleting review from the user and the accommodation
+            const user = await User.findById(userId);
+            const accomm = await User.findById(propertyId);
+            if (user && accomm){
+                user.reviews.pull(id);
+                accomm.reviews.pull(id);
                 await user.save();
+                await accomm.save();
 
                 res.send({ success: true, message: "Successfully deleted review" });
             } else {
-                throw new Error("User not found");
+                if (!user) throw new Error("User not found");
+                if (!accomm) throw new Error("Accommodation not found");
             }   
         } else {
             throw new Error("Review not found");
