@@ -76,7 +76,7 @@
   -o-border-radius: 5px;
 }
 
-label {
+.label {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -122,7 +122,7 @@ label {
   justify-content: center;
 }
 
-li{
+.li{
   margin-right: 10px;
 }
 
@@ -162,7 +162,7 @@ li{
   width:100px;
 }
 
-input[type="file"] {
+.input[type="file"] {
   display: none;
 }
 
@@ -233,13 +233,13 @@ input[type="file"] {
   max-width: 500px;
 }
 
-ul{
+.ul{
   overflow: auto;
   resize: vertical;
 }
 
 
-select {
+.select {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
