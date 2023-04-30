@@ -9,6 +9,8 @@ import mongoose from "mongoose";
 // note that the current database has still report ids
 // in the array for the users but not on accomms
 // please delete them first before proceeding:
+
+// db.reviews.deleteMany({})
 // db.users.update({}, {$set: {reviews:[]}})
 // db.accommodations.update({}, {$set: {reviews:[]}})
 
