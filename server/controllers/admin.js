@@ -48,40 +48,38 @@ const viewReports = async (req, res) => {
 }
 
 
-//A JS method for acquiring an object of data about the database
-//for admin to study
+//A JS method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
     
     //Retrieval of the following data
-    
-    //Number of Users
-    const numUsers = await User.count();
+    try{
+        //Number of Users
+        const numUsers = await User.count();
 
-    //Number of Accommodations
-    const numAccomm = await Accommodation.count();
+        //Number of Accommodations
+        const numAccomm = await Accommodation.count();
 
-    //Number of Reports
-    const numReports = await Report.count();
+        //Number of Reports
+        const numReports = await Report.count();
 
-    //Number of Reviews
-    const numReviews = await Review.count();
+        //Number of Reviews
+        const numReviews = await Review.count();
 
-    // const accomm_MaxReports = await 
-
-    const db_details = {
-        numUsers: numUsers,
-        numAccomm: numAccomm,
-        numReports: numReports,
-        numReviews: numReviews
+        const db_details = {
+            numUsers: numUsers,
+            numAccomm: numAccomm,
+            numReports: numReports,
+            numReviews: numReviews
+        }
+        res.send({success: true, return: db_details});
     }
-
-
-    console.log(db_details);
+    catch (error){
+        console.log(error);
+        res.send({ success: false,  error: error });
+    }
     
 
     
-    
-    res.send({success: true, return: req.body});
 }
 
 
