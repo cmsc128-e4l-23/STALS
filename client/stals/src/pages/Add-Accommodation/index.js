@@ -1,12 +1,14 @@
 import "./Accommodation-form.css";
-import Header from "components/Header";
 import BasicInfo from "./1_BasicInfo";
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
+import { useNavigate } from "react-router-dom";
 
 
 export default function AddAccommodation(){
+    let navigate = useNavigate();
+
     const [page, setPage] = useState(0);
     const [formData, setFormData] = useState({
         name: "",
@@ -16,19 +18,32 @@ export default function AddAccommodation(){
             street: "",
             barangay: "",
             city: "",
-            province: null,
-            region: null,
+            province: "Laguna",
+            region: "CALABARZON",
         },
         generalLocation: 0,
-        accommodationType: "",
+        accommodationType: "Transient",
         amenities: [],
         priceRange: 0,
         description: "",
         photos: [],
         restrictions: [],
         security: "",
-        archived: null
+        archived: true,
       });
+
+    const submit = () => {
+        fetch('http://localhost:3001/addAccomm', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+        })
+        .then(res => {
+            if(res.status === 201){
+              alert("Successfully signed up " + formData.accommodationType);
+            }
+          });
+    }
 
     const FormTitles = ["Basic Information", "Detailed Information", "Other Information"];
 
@@ -39,11 +54,26 @@ export default function AddAccommodation(){
             case(1):
                 return <AccommInfo formData={formData} setFormData={setFormData} />
             case(2):
-                return <div><OtherInfo formData={formData} setFormData={setFormData} /><button>Add Accommodation</button></div>
+                return <div><OtherInfo formData={formData} setFormData={setFormData} /><button onClick={submit}>Add Accommodation</button></div>
             default:
                 return <div></div>
         }
     }
+
+    useEffect(() => {
+        fetch('http://localhost:3001/checkifloggedin', {
+        method: 'POST',
+        credentials: 'include'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.isLoggedIn && localStorage.getItem('usertype') === 'Accommodation Owner'){
+            }else{
+                alert('You are not an accommodation owner');
+                navigate('/home');
+            }
+        })
+    }, [navigate]);
 
     return(
         <>

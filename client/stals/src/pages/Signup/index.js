@@ -35,7 +35,7 @@ export default function Signup() {
     })
     .then(res => {
       if(res.status === 201){
-        alert("Successfully signed in " + res.email);
+        alert("Successfully signed up " + newUser.email);
         navigate('/login');
       }
     });

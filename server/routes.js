@@ -10,11 +10,13 @@ const router = express.Router();
 router.post("/signup", auth.signUp);
 router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
+router.post("/changePassword", auth.changePassword);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
 router.post("/archiveAccomm", accommodation.archiveAccomm);
 router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
+router.post("/editAccomm", accommodation.editAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
 router.post("/generateRep", accommodation.generateRep);
