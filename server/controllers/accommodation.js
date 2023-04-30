@@ -7,41 +7,35 @@ import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 
-const addAccomm = async (req, res) => {
-    try {
+const addAccomm = (req, res) => {
         //Getting the input
-        let accomm_details = req.body;
+    let accomm_details = req.body;
+    console.log(accomm_details)
 
-        //Completing accommodation details given the input
-        const newAccommodation = new Accommodation({
-            name: accomm_details.name,
-            landmarks: accomm_details.landmarks,
-            address: {
-                postCode: accomm_details.address.postCode,
-                street: accomm_details.address.street,
-                barangay: accomm_details.address.barangay,
-                city: accomm_details.address.city,
-                province: accomm_details.address.province,
-                region: accomm_details.address.region
-            },
-            generalLocation: accomm_details.generalLocation,
-            accommodationType: accomm_details.accommodationType,
-            amenities: accomm_details.amenities,
-            priceRange: accomm_details.priceRange,
-            description: accomm_details.description,
-            photos: accomm_details.photos,
-            restrictions: accomm_details.restrictions,
-            security: accomm_details.security,
-            archived: accomm_details.archived
-        });
+    User.findOne({ email: accomm_details.owner })
+        .then( async (document) => {
+            if(!document){
+                throw "User not found!"
+            }
 
-        //Saves the accommodation to the database
-        const savedAccommodation = await newAccommodation.save();
-        res.status(201).json(savedAccommodation);
-    }catch (err){
-        console.log(err.message);
-        res.status(500).json({ error: err.message });
-    }
+            accomm_details.owner = document._id
+            const newAccommodation = new Accommodation(accomm_details);
+            const savedAccommodation = await newAccommodation.save();
+            User.findByIdAndUpdate(
+                document._id, 
+                { "$push": { "owner.propertiesList": savedAccommodation._id}},
+                { "new": true, "upsert": true })
+                .then(
+                    function (user){
+                        console.log(user);
+                    }
+                )         
+                
+            res.status(201).json(savedAccommodation);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: err });
+    })
 }
 
 const archiveAccomm = async (req, res) => {
