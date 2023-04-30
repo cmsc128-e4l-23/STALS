@@ -26,7 +26,20 @@ export default function Signup() {
       password: password,
       sex: sex,
       phoneNumber: contact,
-      birthday: birthday
+      birthday: birthday,
+    }
+
+    if(usertype === 'Accommodation Owner'){
+      newUser = {...newUser, owner: {
+        propertiesList: [],
+        archivedList: [],
+        status: 'active'
+      }}
+    }else if(usertype === 'Admin'){
+        newUser = {...newUser, admin: {
+          pendingApplications: [],
+          pendingReports: []
+        }}
     }
     fetch('http://localhost:3001/signup', {
             method: 'POST',
