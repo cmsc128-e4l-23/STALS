@@ -19,9 +19,9 @@ export default function AccommInfo({ formData, setFormData }) {
                 type="range" 
                 min="1" 
                 max="100" 
-                value={formData.priceRange} 
+                value={formData.priceRange.maxPrice} 
                 onChange={(e) =>
-                    setFormData({ ...formData, priceRange: e.target.value })
+                    setFormData({ ...formData, priceRange: { ...formData.priceRange, maxPrice: parseFloat(e.target.value) }})
                 }
             />
             {/* FIXME:fix input responsiveness */}
