@@ -102,7 +102,7 @@ const deleteReview = async (req, res) => {
         if (result){
             //Deleting review from the user and the accommodation
             const user = await User.findById(userId);
-            const accomm = await User.findById(propertyId);
+            const accomm = await Accommodation.findById(propertyId);
             if (user && accomm){
                 user.reviews.pull(id);
                 accomm.reviews.pull(id);
