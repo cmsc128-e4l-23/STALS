@@ -240,12 +240,12 @@ const recommendAccomm = async (req, res) => {
         // then order the sorted list by rating
         sortlist.sort((a, b)=>{return a.rating - b.rating})
         // get only the return length
-        let resultlist;
-        if (returnLength <= sortlist.length) resultlist = sortlist.slice(0, returnLength);
-        else resultlist = sortlist;
+        if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
 
-        
+        res.send({success: true, result: sortlist});
+
     } catch (error) {
+        res.send({success: false, error: "Search Recommendation Failed"});
         console.error(error);
     }
 
