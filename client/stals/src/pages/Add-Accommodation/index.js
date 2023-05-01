@@ -12,6 +12,7 @@ export default function AddAccommodation(){
     const [page, setPage] = useState(0);
     const [formData, setFormData] = useState({
         name: "",
+        owner: localStorage.getItem('email'),
         landmarks: [],
         address: {
             postCode: "",
@@ -24,7 +25,10 @@ export default function AddAccommodation(){
         generalLocation: 0,
         accommodationType: "Transient",
         amenities: [],
-        priceRange: 0,
+        priceRange: {
+            minPrice: 0,
+            maxPrice: 0
+        },
         description: "",
         photos: [],
         restrictions: [],

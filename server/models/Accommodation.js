@@ -6,6 +6,10 @@ const accommodationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectID,
+    required: true
+  },
   landmarks: [String],
   address: {
     postCode: String,

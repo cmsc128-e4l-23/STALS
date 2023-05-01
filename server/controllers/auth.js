@@ -13,22 +13,15 @@ export const signUp = async (req, res) => {
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(user_details.password, salt);
 
+        user_details = {...user_details, password: passwordHash}
         //Completing the user details along with the encrypted password
-        const newUser = new User({
-            userType : user_details.userType,
-            firstName : user_details.firstName,
-            lastName: user_details.lastName,
-            email: user_details.email,
-            password : passwordHash,
-            phoneNumber : user_details.phoneNumber,
-            sex: user_details.sex,
-            birthday: user_details.birthday
-        });
+        const newUser = new User(user_details);
         
         //saves the user to the database
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     }catch (err){
+        console.log(err.message)
         res.status(500).json({ error: err.message });
     }
 }
