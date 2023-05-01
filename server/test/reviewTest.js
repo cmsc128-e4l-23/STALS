@@ -15,33 +15,33 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // db.accommodations.updateMany({}, {$set: {reviews:[]}})
 
 // let's just generate data here
-const datalen = 10;
-const propids = [
-    "644cdb964c5e0d977fa685ac",
-    "644cdb964c5e0d977fa685af",
-    "644cdb964c5e0d977fa685b2",
-    "644ce1aad31be0a75c33df6b",
-    "644ce1aad31be0a75c33df6e",
-    "644ce1aad31be0a75c33df71",
-    "644ce1aad31be0a75c33df74",
-];
+// const datalen = 10;
+// const propids = [
+//     "644cdb964c5e0d977fa685ac",
+//     "644cdb964c5e0d977fa685af",
+//     "644cdb964c5e0d977fa685b2",
+//     "644ce1aad31be0a75c33df6b",
+//     "644ce1aad31be0a75c33df6e",
+//     "644ce1aad31be0a75c33df71",
+//     "644ce1aad31be0a75c33df74",
+// ];
 
-const userids = [
-    "644cd8a4dad90ff1fc7d150f",
-    "644cd8a4dad90ff1fc7d1511",
-    "644cd8a4dad90ff1fc7d1513",
-]
+// const userids = [
+//     "644cd8a4dad90ff1fc7d150f",
+//     "644cd8a4dad90ff1fc7d1511",
+//     "644cd8a4dad90ff1fc7d1513",
+// ]
 
-const data = []
-for (let i=0; i<datalen; i++) {
-    data[i] = {
-        userId: userids[Math.floor(Math.random() * userids.length)],
-        propertyId: propids[Math.floor(Math.random() * propids.length)],
-        content: "Sample",
-        rating: Math.floor(Math.random() * 6),
-        photos: []
-    }
-}
+// const data = []
+// for (let i=0; i<datalen; i++) {
+//     data[i] = {
+//         userId: userids[Math.floor(Math.random() * userids.length)],
+//         propertyId: propids[Math.floor(Math.random() * propids.length)],
+//         content: "Sample",
+//         rating: Math.floor(Math.random() * 6),
+//         photos: []
+//     }
+// }
 
 // // Review Data (for adding reviews)
 // const data1 = {
@@ -133,16 +133,16 @@ for (let i=0; i<datalen; i++) {
 // )
 
 // =========================== DELETING REVIEW ===========================
-needle.post("http://localhost:3001/deleteReview",
-    {
-        _id: "644e59d63865b26904957ace",
-        userId: "644cd8a4dad90ff1fc7d1513",
-        propertyId: "644ce1aad31be0a75c33df71"
-    },
-    (err, res) => {
-        console.log(res.body);
-    }
-)
+// needle.post("http://localhost:3001/deleteReview",
+//     {
+//         _id: "644e59d63865b26904957adc",
+//         userId: "644cd8a4dad90ff1fc7d1513",
+//         propertyId: "644ce1aad31be0a75c33df6e"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// )
 
 // =========================== GETTING REVIEW ===========================
 // // Get Review 1 (userID)
