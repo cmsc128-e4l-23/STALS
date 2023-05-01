@@ -237,7 +237,14 @@ const recommendAccomm = async (req, res) => {
             // to estimate accurate rating in case reviews are too low
             sortlist.push({accommId: accomm._id, rating: rating});
         }
-        console.log(sortlist);
+        // then order the sorted list by rating
+        sortlist.sort((a, b)=>{return a.rating - b.rating})
+        // get only the return length
+        let resultlist;
+        if (returnLength <= sortlist.length) resultlist = sortlist.slice(0, returnLength);
+        else resultlist = sortlist;
+
+        
     } catch (error) {
         console.error(error);
     }

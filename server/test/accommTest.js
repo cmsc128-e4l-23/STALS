@@ -360,6 +360,6 @@ needle.post("http://localhost:3001/recommendAccomm",
        accommLength: 11,
     },
     (err, res) => {
-        console.log(res.body);
+        //console.log(res.body);
     }
 );
