@@ -144,6 +144,7 @@ function Accommodation() {
           </div>
           <div class="flex-item2">
             <textarea
+              style={{verticalAlign:"top", padding:"0", margin:"0"}}
               rows="5"
               cols="50"
               type="text"
@@ -167,9 +168,9 @@ function Accommodation() {
                     name="upload-image"
                     accept="image/*"
                     onChange={handleImageChange}
-                    multiple
                   />
                   <img
+                    style={{width: "400px", height: "400px", borderRadius: "5px"}}
                     class="acc_image"
                     src={URL.createObjectURL(images[images.length - 1])}
                     alt="uploaded"
@@ -183,7 +184,8 @@ function Accommodation() {
                   <label htmlFor="upload-image" className="upload">
                     Upload an Image
                   </label>
-                  <input
+                  <input 
+                    style={{width: "400px", height: "400px"}}
                     type="file"
                     id="upload-image"
                     name="upload-image"

@@ -1,4 +1,4 @@
-.flex-container {
+/* .flex-container {
   margin-top: 50px;
  display: flex;
  flex-direction: column;
@@ -125,10 +125,11 @@
 .li{
   margin-right: 10px;
 }
+*/
 
 .upload {
   display: inline-block;
-  background-color: #108143;
+  background-color: #0a4424;
   color: white;
   padding: 12px 20px;
   margin: 10px;
@@ -138,13 +139,16 @@
   align-self: center;
 }
 
-.x{
-  background-color: #751518;
-  color: white;
-  margin-left: 10px;
-  border-radius: 5px;
+.upload:hover {
+  background-color: #3e8e41;
 }
 
+.delete:hover{
+  background-color: #da0505;
+}
+
+
+/*
 .delete {
   display: inline-block;
   background-color: #680202;
@@ -162,17 +166,8 @@
   width:100px;
 }
 
-.input[type="file"] {
-  display: none;
-}
 
-.upload:hover {
-  background-color: #3e8e41;
-}
 
-.delete:hover{
-  background-color: #da0505;
-}
 
 .image-uploader{
   display: flex;
@@ -275,4 +270,4 @@
 
 .input:empty {
   background-color: #d8d8d8;
-}
+} */
