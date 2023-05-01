@@ -3,6 +3,7 @@ import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
 import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
+import image from "./controllers/image.js";
 
 const router = express.Router();
 
@@ -35,6 +36,8 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 router.get("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
 
+//Images
+router.post("/uploadImage", image.uploadImage);
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
 

@@ -1,0 +1,38 @@
+import fs from "fs";
+import path from "path";
+import multer from "multer";
+import Image from "../models/Image.js";
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null,'images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+var upload = multer({storage: storage});
+//upload Image
+
+const uploadImage = async (req, res) => {
+    try{
+        let image_details = req.body;
+
+        const newImage = new Image({
+            userId: image_details.userId,
+            propertyId: image_details.propertyId,
+            img: {
+                data: fs.readFileSync(path.join(__dirname + '/images/' + req.file.filename)),
+                contentType: 'image/png'
+            }
+        });
+        const savedImage = await newImage.save();
+        res.status(201).json(savedImage);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+export default {
+    uploadImage
+}
