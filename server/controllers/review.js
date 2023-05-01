@@ -97,22 +97,27 @@ const deleteReview = async (req, res) => {
 
     try{
         //Deleting review
-        const result = await Review.findByIdAndDelete(id);
+        const result = await Review.findById(id);
 
         if (result){
             //Deleting review from the user and the accommodation
             const user = await User.findById(userId);
             const accomm = await Accommodation.findById(propertyId);
-            if (user && accomm){
+            // the user should also match the 
+            if (user._id == result.userId && accomm._id == result.propertyId){
                 user.reviews.pull(id);
                 accomm.reviews.pull(id);
                 await user.save();
                 await accomm.save();
+                // finally delete the result
+                await User.deteteOne({_id: result._id});
 
                 res.send({ success: true, message: "Successfully deleted review" });
             } else {
                 if (!user) throw new Error("User not found");
                 if (!accomm) throw new Error("Accommodation not found");
+                if (user._id != result.userId) throw new Error("User id mismatch! Report found but incorrect userId");
+                if (accomm._id != result.propertyId) throw new Error("Property / Accomm id mismatch! Report found but incorrect propertyId");
             }   
         } else {
             throw new Error("Review not found");

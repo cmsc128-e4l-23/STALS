@@ -61,8 +61,8 @@ for (let i=0; i<datalen; i++) {
 // }
 
 // const data3 = {
-//     userId: "644cd8a4dad90ff1fc7d150f",
-//     propertyId: "644cdb964c5e0d977fa685b2",
+//     userId: "644cd8a4dad90ff1fc7d1514",
+//     propertyId: "644cdb964c5e0d977fa685ad",
 //     content: "I like it",
 //     rating: 1,
 //     photos: [{filename: "Photo1"}]
@@ -133,16 +133,16 @@ for (let i=0; i<datalen; i++) {
 // )
 
 // =========================== DELETING REVIEW ===========================
-// needle.post("http://localhost:3001/deleteReview",
-//     {
-//         _id: reviewId,
-//         userId: userId,
-//         propertyId: propertyId
-//     },
-//     (err, res) => {
-//         console.log(res.body);
-//     }
-// )
+needle.post("http://localhost:3001/deleteReview",
+    {
+        _id: "644e59d63865b26904957ace",
+        userId: "644cd8a4dad90ff1fc7d1513",
+        propertyId: "644ce1aad31be0a75c33df71"
+    },
+    (err, res) => {
+        console.log(res.body);
+    }
+)
 
 // =========================== GETTING REVIEW ===========================
 // // Get Review 1 (userID)
