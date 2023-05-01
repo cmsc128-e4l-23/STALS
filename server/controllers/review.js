@@ -13,6 +13,12 @@ const addReview = async (req, res) => {
         const content = review_details.content;
         const rating = review_details.rating;
         const photos = review_details.photos;
+
+        // additional checking
+        // I am not sure whether rating is a float or integer
+        if (rating < 0 || rating > 5) throw new Error("Invalid Rating Range");
+        // let's assume that content length shouldn't be that long
+        if (content.length > 2000) throw new Error("Content shouldn't exceed 2000 characters")
         
         //Creating new review
         const newReview = new Review({
@@ -24,15 +30,20 @@ const addReview = async (req, res) => {
         });
         const savedReview = await newReview.save();
 
-        //Adding the newly created review to current user
+        //Adding the newly created review to current user and to the accommodation
         const user = await User.findById(userId);
-        if (user){
+        const accomm = await Accommodation.findById(propertyId);
+        
+        if (user && accomm){
             user.reviews.push(savedReview._id);
+            accomm.reviews.push(savedReview._id);
             await user.save();
+            await accomm.save();
 
             res.send({ success: true, message: "Successfully added new review" });
         } else {
-            throw new Error("User not found");
+            if (!user) throw new Error("User not found");
+            if (!accomm) throw new Error("Accommodation not found");
         }
         
     } catch (err){
@@ -80,22 +91,34 @@ const editReview = async (req, res) => {
 // Throws an error if review or user if user is not found
 const deleteReview = async (req, res) => {
     const review_details = req.body;
-    const userId = req.body.userId;
+    const id = review_details._id;
+    const userId = review_details.userId;
+    const propertyId = review_details.propertyId;
 
     try{
         //Deleting review
-        const result = await Review.findByIdAndDelete(review_details._id);
+        const result = await Review.findById(id);
 
         if (result){
-            //Deleting review from the user
-            const user = await User.findById(userId)
-            if (user){
-                user.reviews.pull(review_details._id);
+            //Deleting review from the user and the accommodation
+            const user = await User.findById(userId);
+            const accomm = await Accommodation.findById(propertyId);
+            // the user should also match the 
+            if (user && accomm && user._id == result.userId && accomm._id == result.propertyId){
+                user.reviews.pull(id);
+                accomm.reviews.pull(id);
                 await user.save();
+                await accomm.save();
+                // finally delete the result
+                await User.deteteOne({_id: result._id});
 
                 res.send({ success: true, message: "Successfully deleted review" });
             } else {
-                throw new Error("User not found");
+                if (!user) throw new Error("User not found");
+                if (!accomm) throw new Error("Accommodation not found");
+                // for additional security measures
+                if (user._id != result.userId) throw new Error("User id mismatch! Report found but incorrect userId");
+                if (accomm._id != result.propertyId) throw new Error("Property / Accomm id mismatch! Report found but incorrect propertyId");
             }   
         } else {
             throw new Error("Review not found");
