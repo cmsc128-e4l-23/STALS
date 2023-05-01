@@ -240,7 +240,7 @@ needle.post("http://localhost:3001/recommendAccomm",
     {
        searchString: "lorem ipsum",
        returnLength: 3,
-       accommLength: 11,
+       accommLength: 2,
     },
     (err, res) => {
         console.log(res.body);
