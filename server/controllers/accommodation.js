@@ -19,6 +19,20 @@ const addAccomm = (req, res) => {
             }
 
             accomm_details.owner = document._id
+
+            // Check if accommodation name already exists in the database
+            const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
+            if (existingNameAccommodation) {
+                return res.status(409).json({ error: "Accommodation with the same name already exists" });
+            }
+
+            // Check if accommodation address already exists in the database
+            const existingAddressAccommodation = await Accommodation.findOne({ address: accomm_details.address });
+            if (existingAddressAccommodation) {
+                return res.status(409).json({ error: "Accommodation with the same address already exists" });
+            }
+
+            // If both are unique, save the accommodation to the database
             const newAccommodation = new Accommodation(accomm_details);
             const savedAccommodation = await newAccommodation.save();
             User.findByIdAndUpdate(

@@ -17,26 +17,26 @@ import mongoose from "mongoose";
 // );
 
 // ========================== SIGN-UP ==========================
-// const url = "http://localhost:3001/signup";
-// const data1 = { userType: "Student", firstName: "Maui", 
-//                lastName: "Tate", email: "mtate@gmail.com", password: "go ahead", phoneNumber: "09123456781",
-//                birthday: "January 31, 1970", sex: "Male"};
+const url = "http://localhost:3001/signup";
+const data1 = { userType: "Student", firstName: "Maui", 
+               lastName: "Tate", email: "mtate2422@gmail.com", password: "goahaaaaaaea", phoneNumber: "09121456488",
+               birthday: "04/31/2022", sex: "Male"};
 
 // const data2 = { userType: "Student", firstName: "Drey", 
 //                lastName: "Tuaz", email: "dtuaz@gmail.com", password: "pass", phoneNumber: "09223456781",
-//                birthday: "January 1, 1970", sex: "Male"};
+//                birthday: "01/24/1990", sex: "Male"};
 
 // const data3 = { userType: "Student", firstName: "Francis", 
 //                lastName: "Ching", email: "fching@gmail.com", password: "pass123", phoneNumber: "09423456781",
-//                birthday: "January 2, 1970", sex: "Male"};
+//                birthday: "12/01/1980", sex: "Male"};
 
-// needle.post(url, data1, {json: true}, (err, res, body) => {
-//     if (err) {
-//         console.error(err);
-//     } else {
-//         console.log(body);
-//     }
-// });
+needle.post(url, data1, {json: true}, (err, res, body) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(body);
+    }
+});
 
 // needle.post(url, data2, {json: true}, (err, res, body) => {
 //     if (err) {
