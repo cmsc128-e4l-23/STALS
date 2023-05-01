@@ -6,6 +6,7 @@ import fs from "fs"
 import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import Review from "../models/Review.js";
 
 const addAccomm = async (req, res) => {
     try{
@@ -193,28 +194,53 @@ const searchAccomm = async (req, res) => {
 /*
 Search Recommendation based on the given search input
 (i.e. req.body.searchString) and how much would be returned
-via req.body.returnLength for each category. The response is
-ordered by the ratings and all of the accommodations are unarchived.
+via req.body.returnLength for each category.
+Realistically, due to the number of accommodations present,
+its number should be limited by req.body.accommLength
+The response is ordered by the ratings
+and all of the accommodations are unarchived.
 
 The response would send the following:
-- Recommended accomms in general
+- Recommended accomms in general with top ratings
+(searchString is irrelevant)
+To be implemented later due to time constraints:
 - Accomms "nearby" (same province) since city or baranggays are optional
 - Accomms with same accomm type
 - Accomms of roughly the same price
+- More secure version of the function
 */
-const recommendAccom = async (req, res) => {
+const recommendAccomm = async (req, res) => {
     const searchString = req.body.searchString;
-    const returnLength = req.body.returnLength;
+    const returnLength = parseInt(req.body.returnLength);
+    const accommLength = parseInt(req.body.accommLength);
+
     // Get the general recommended accomms based
     // on the top rating of the recommendations
-    Accommodation.find({}).sort().limit(returnLength)
-        .then((result)=>{
-            res.send({success: true, result: result})
-        })
-        .catch((error)=> {
-            console.log(err);
-            res.send({success: false, error: "Recommend Accomm Failed"})
-        })
+    try {
+        // search randomly unarchived accomms w/ at least one review
+        const randsearch = await Accommodation.aggregate(
+            [{$match: {archived: false, reviews: {$ne: []}}},
+            {$sample: {size: accommLength}} ]
+        )
+        // from those searches arrange those by the ratings
+        let sortlist = [];
+        for (let accomm of randsearch) {
+            let sum = 0;
+            let reviews = accomm.reviews;
+            let reviewnum = reviews.length;
+            for (let rev of reviews) {
+                let actualrev = await Review.findById(rev._id);
+                sum += actualrev.rating;
+            }
+            // calculate the total rating
+            let rating = (sum+1)/(reviewnum+1);// adding 1 to numerator and denominator
+            // to estimate accurate rating in case reviews are too low
+            sortlist.push({accommId: accomm._id, rating: rating});
+        }
+        console.log(sortlist);
+    } catch (error) {
+        console.error(error);
+    }
 
     //res.send("I am recommending accommodations.");
 }
@@ -451,6 +477,7 @@ export default {
     editAccomm,
     deleteAccomm,
     searchAccomm,
+    recommendAccomm,
     generateRep,
     viewAccomm,
     bookmarkAccomm,

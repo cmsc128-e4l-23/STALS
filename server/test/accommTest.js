@@ -351,3 +351,15 @@ const url = "http://localhost:3001/addAccomm";
 //         console.log(res.body);
 //     }
 // );
+
+// ========================== GET RECOMMENDATIONS ==========================
+needle.post("http://localhost:3001/recommendAccomm",
+    {
+       searchString: "lorem ipsum",
+       returnLength: 3,
+       accommLength: 11,
+    },
+    (err, res) => {
+        console.log(res.body);
+    }
+);
