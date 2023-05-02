@@ -133,16 +133,16 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // )
 
 // =========================== DELETING REVIEW ===========================
-needle.post("http://localhost:3001/deleteReview",
-    {
-        _id: "644f8539a80e536403b37f8d",
-        userId: "644cd8a4dad90ff1fc7d1512",
-        propertyId: "644cdb964c5e0d977fa685b2"
-    },
-    (err, res) => {
-        console.log(res.body);
-    }
-)
+// needle.post("http://localhost:3001/deleteReview",
+//     {
+//         _id: "644f8539a80e536403b37f8d",
+//         userId: "644cd8a4dad90ff1fc7d1512",
+//         propertyId: "644cdb964c5e0d977fa685b2"
+//     },
+//     (err, res) => {
+//         console.log(res.body);
+//     }
+// )
 
 // =========================== GETTING REVIEW ===========================
 // // Get Review 1 (userID)
