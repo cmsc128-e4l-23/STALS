@@ -233,7 +233,7 @@ const recommendAccomm = async (req, res) => {
                 sum += actualrev.rating;
             }
             // calculate the total rating
-            let rating = (sum+1)/(reviewnum+1);// adding 1 to numerator and denominator
+            let rating = ((sum+1)/(reviewnum+1)).toFixed(2);// adding 1 to numerator and denominator
             // to estimate accurate rating in case reviews are too low
             sortlist.push({accommId: accomm._id, rating: rating});
         }
@@ -248,7 +248,7 @@ const recommendAccomm = async (req, res) => {
 
         // from searches of other optional requirements
         if (searchLocs) {
-            const locslist = randsearch.filter((elem)=>{
+            let locslist = randsearch.filter((elem)=>{
                 return (elem.address.province.toLowerCase() == searchLocs.toLowerCase())
             })
             if (returnLength <= locslist.length) locslist = locslist.slice(0, returnLength);
@@ -256,7 +256,7 @@ const recommendAccomm = async (req, res) => {
         }
 
         if (searchType) {
-            const typelist = randsearch.filter((elem)=>{
+            let typelist = randsearch.filter((elem)=>{
                 return (elem.accommodationType.toLowerCase() == searchType.toLowerCase())
             })
             if (returnLength <= typelist.length) typelist = typelist.slice(0, returnLength);
@@ -266,8 +266,9 @@ const recommendAccomm = async (req, res) => {
         if (minPrice != null && maxPrice != null) {
             if (minPrice < 0) throw new Error("Minimum price must be a positive float.");
             if (maxPrice < 0) throw new Error("Maximum price must be a positive float.");
-            const pricelist = randsearch.filter((elem)=>{
-                return (elem.priceRange.minPrice >= minPrice && elem.priceRange.maxPrice <= maxPrice)
+            if (minPrice > maxPrice) throw new Error("Minimum price must be less than max price");
+            let pricelist = randsearch.filter((elem)=>{
+                return (parseFloat(elem.priceRange.minPrice) >= minPrice && parseFloat(elem.priceRange.maxPrice) <= maxPrice)
             })
             if (returnLength <= pricelist.length) pricelist = pricelist.slice(0, returnLength);
             returnobject.similarPrice = pricelist;
