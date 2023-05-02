@@ -10,7 +10,7 @@ export const signUp = async (req, res) => {
         let user_details = req.body;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^09\d{9}$/;
-        const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+        //const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/; no need since HTML has date input
 
 
         // Validating the email format given the regex
@@ -43,7 +43,7 @@ export const signUp = async (req, res) => {
         // Validating the birthday format and checking if birthday is not in the future. Works if the format of user_details.birthday string is MM/DD/YYYY.
         const birthday = new Date(user_details.birthday);
         const now = new Date();
-        if (!dateRegex.test(user_details.birthday) || isNaN(birthday.getTime()) || birthday > now) {
+        if (isNaN(birthday.getTime()) || birthday > now) {
             return res.status(400).json({ error: "Invalid birthday" });
         }
 
