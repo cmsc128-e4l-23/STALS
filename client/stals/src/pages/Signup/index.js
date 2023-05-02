@@ -46,14 +46,16 @@ export default function Signup() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser)
     })
-    .then(res => {
-      if(res.status === 201){
+    .then(res => res.json())
+    .then(data => {
+      if(data.error){
+        alert(data.error)
+      }else{
         alert("Successfully signed up " + newUser.email);
         navigate('/login');
       }
-    });
-    
-  }
+    })
+}
   return (
     <div className="signup-container">
       <Header />
