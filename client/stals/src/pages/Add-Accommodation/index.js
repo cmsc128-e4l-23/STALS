@@ -1,6 +1,7 @@
 import "./Accommodation-form.css";
-import BasicInfo from "./1_BasicInfo";
 import React, { useState, useEffect } from "react";
+import Header from "components/Header";
+import BasicInfo from "./1_BasicInfo";
 import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
 import { useNavigate } from "react-router-dom";
@@ -109,6 +110,9 @@ export default function AddAccommodation() {
 
   return (
     <>
+      <div className="page-header">
+        <Header />
+      </div>
       <div
         className="form"
         style={{
