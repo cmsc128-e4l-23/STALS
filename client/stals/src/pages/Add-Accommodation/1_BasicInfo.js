@@ -2,7 +2,7 @@ import React from "react";
 
 export default function BasicInfo({ formData, setFormData }) {
     return(
-        <div style ={{position: "relative",display:"flex", flexDirection:"column", width: "500px", fontSize:"Larger"}}className="basic-info-form-container">
+        <div style ={{position: "relative",display:"flex", flexDirection:"column", width: "500px", fontSize:"Larger"}} className="basic-info-form-container">
             <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center"}}
             type="text" 
                 placeholder="Accommodation Name..." 
