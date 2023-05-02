@@ -203,7 +203,8 @@ export default function Body({data}) {
                             return <div key={index} className="body-element">
                                     {/* favorite button */}
                                     <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
-                                        {favBtnState[accomm._id].obj}
+                                    {/* {favBtnState[accomm._id].obj} */}
+                                    <FavoriteBorderRounded key={accomm._id} />
                                     </IconButton>
                                 
                                 {/* image/s */}
