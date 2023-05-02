@@ -103,6 +103,7 @@ export default function Header() {
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
+                            <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
                         <ul>

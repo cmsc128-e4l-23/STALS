@@ -48,14 +48,14 @@ const editReview = async (req, res) => {
     const review_details = req.body;
     let updateObject = { $set: {} };
 
-    if (req.body.content){
-        updateObject.$set.content = req.body.content;
+    if (review_details.content){
+        updateObject.$set.content = review_details.content;
     }
-    if (req.body.rating){
-        updateObject.$set.rating = req.body.rating;
+    if (review_details.rating){
+        updateObject.$set.rating = review_details.rating;
     }
-    if (req.body.photos){
-        updateObject.$set.photos = req.body.photos;
+    if (review_details.photos){
+        updateObject.$set.photos = review_details.photos;
     }
 
     try{
