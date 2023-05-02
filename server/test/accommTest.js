@@ -492,3 +492,19 @@ needle.post("http://localhost:3001/editAccomm",
 //         console.log(res.body);
 //     }
 // );
+
+// ========================== GET RECOMMENDATIONS ==========================
+needle.post("http://localhost:3001/recommendAccomm",
+    {
+       returnLength: 3,
+       accommLength: 10,
+    //    searchLocs: 'Laguna',
+    //    searchType: 'Transient',
+       minPrice: 0,
+       maxPrice: 200
+
+    },
+    (err, res) => {
+        console.log(res.body.result);
+    }
+);

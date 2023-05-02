@@ -6,6 +6,7 @@ import fs from "fs"
 import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import Review from "../models/Review.js";
 
 const addAccomm = (req, res) => {
         //Getting the input
@@ -249,30 +250,95 @@ const searchAccomm = async (req, res) => {
 }
 
 /*
-Search Recommendation based on the given search input
-(i.e. req.body.searchString) and how much would be returned
-via req.body.returnLength for each category. The response is
-ordered by the ratings and all of the accommodations are unarchived.
+Search Recommendation based on overall ratings
+and how much would be returned
+via req.body.returnLength for each category.
+Realistically, due to the number of accommodations present,
+its number should be limited by req.body.accommLength
+The response is ordered by the ratings
+and all of the accommodations are unarchived.
 
-The response would send the following:
-- Recommended accomms in general
-- Accomms "nearby" (same province) since city or baranggays are optional
-- Accomms with same accomm type
-- Accomms of roughly the same price
 */
-const recommendAccom = async (req, res) => {
-    const searchString = req.body.searchString;
-    const returnLength = req.body.returnLength;
+const recommendAccomm = async (req, res) => {
+    // OPTIONAL
+    const searchLocs = req.body.searchLocs;
+    const searchType = req.body.searchType;
+    const minPrice = parseFloat(req.body.minPrice);
+    const maxPrice = parseFloat(req.body.maxPrice);
+    // CRUCIAL
+    const returnLength = parseInt(req.body.returnLength);
+    const accommLength = parseInt(req.body.accommLength);
     // Get the general recommended accomms based
     // on the top rating of the recommendations
-    Accommodation.find({}).sort().limit(returnLength)
-        .then((result)=>{
-            res.send({success: true, result: result})
-        })
-        .catch((error)=> {
-            console.log(err);
-            res.send({success: false, error: "Recommend Accomm Failed"})
-        })
+    try {
+        if (!returnLength && returnLength <= 0) throw new Error("Return Length must be a postiive integer");
+        if (!accommLength && accommLength <= 0) throw new Error("Accomm Length must be a positive integer");
+        // the ultimate return object
+        let returnobject = {}
+        // search randomly unarchived accomms w/ at least one review
+        const randsearch = await Accommodation.aggregate(
+            [{$match: {archived: false, reviews: {$ne: []}}},
+            {$sample: {size: accommLength}} ]
+        )
+        // from those searches arrange those by the ratings
+        let sortlist = [];
+        for (let accomm of randsearch) {
+            let sum = 0;
+            let reviews = accomm.reviews;
+            let reviewnum = reviews.length;
+            for (let rev of reviews) {
+                let actualrev = await Review.findById(rev._id);
+                sum += actualrev.rating;
+            }
+            // calculate the total rating
+            let rating = ((sum+1)/(reviewnum+1)).toFixed(2);// adding 1 to numerator and denominator
+            // to estimate accurate rating in case reviews are too low
+            sortlist.push({accommId: accomm._id, rating: rating});
+        }
+        // then order the sorted list by rating
+        sortlist.sort((a, b)=>{return b.rating - a.rating})
+
+        // get only the return length
+        // this is for the top rated flag
+        if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
+        // append the sortlist to the return object
+        returnobject.topAccomms = sortlist;
+
+        // from searches of other optional requirements
+        if (searchLocs) {
+            let locslist = randsearch.filter((elem)=>{
+                return (elem.address.province.toLowerCase() == searchLocs.toLowerCase())
+            })
+            if (returnLength <= locslist.length) locslist = locslist.slice(0, returnLength);
+            returnobject.nearAccomms = locslist;
+        }
+
+        if (searchType) {
+            let typelist = randsearch.filter((elem)=>{
+                return (elem.accommodationType.toLowerCase() == searchType.toLowerCase())
+            })
+            if (returnLength <= typelist.length) typelist = typelist.slice(0, returnLength);
+            returnobject.similarType = typelist;
+        }
+
+        if (minPrice != null && maxPrice != null) {
+            if (minPrice < 0) throw new Error("Minimum price must be a positive float.");
+            if (maxPrice < 0) throw new Error("Maximum price must be a positive float.");
+            if (minPrice > maxPrice) throw new Error("Minimum price must be less than max price");
+            let pricelist = randsearch.filter((elem)=>{
+                return (parseFloat(elem.priceRange.minPrice) >= minPrice && parseFloat(elem.priceRange.maxPrice) <= maxPrice)
+            })
+            if (returnLength <= pricelist.length) pricelist = pricelist.slice(0, returnLength);
+            returnobject.similarPrice = pricelist;
+        }
+
+        // finally return
+        res.send({success: true, result: returnobject});
+
+    } catch (error) {
+        res.send({success: false, error: "Search Recommendation Failed"});
+        console.error(error);
+    }
 
     //res.send("I am recommending accommodations.");
 }
@@ -507,6 +573,7 @@ export default {
     editAccomm,
     deleteAccomm,
     searchAccomm,
+    recommendAccomm,
     generateRep,
     viewAccomm,
     bookmarkAccomm,

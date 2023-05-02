@@ -23,6 +23,7 @@ router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
 router.post("/editAccomm", accommodation.editAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
+router.post("/recommendAccomm", accommodation.recommendAccomm);
 router.post("/generateRep", accommodation.generateRep);
 
 router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
