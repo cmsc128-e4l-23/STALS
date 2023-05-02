@@ -5,11 +5,6 @@ import { Favorite, FavoriteBorderRounded } from '@mui/icons-material/';
 import { IconButton } from '@mui/material';
 
 
-// install dependencies for favorite (and other) icons
-// Material UI Icons
-// npm install @mui/material @emotion/react @emotion/styled 
-// npm install @mui/icons-material
-
 export default function Body({data}) {
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [accommList, udpateAccomm] = useState([]);
@@ -34,14 +29,6 @@ export default function Body({data}) {
         })
     }
 
-    // const fetchBookmark = () => {
-    //     fetch('http://localhost:3001/fetchBookmarkAccomm', {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         body: JSON.stringify({  })
-    //     })
-    // }
-
     // check if logged in
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
@@ -63,7 +50,7 @@ export default function Body({data}) {
     const initFavBtn = () => {
         var states = {};
         accommList.forEach((accomm, index) => {
-            states[accomm._id] = {value: false, obj: <FavoriteBorderRounded key={index} />};
+            states[accomm._id] = { value: false, obj: <FavoriteBorderRounded key={accomm._id} /> };
         });
         console.log(states);
         return states;
@@ -73,20 +60,20 @@ export default function Body({data}) {
     const [success, setSuccess] = useState(false);
 
     // changes the state of the button on click
-    const clickFavBtn = (index) => {
-        var state = favBtnState;
-        // change boolean value
-        // true : clicked
-        // false : not clicked
-        state[index].value = !state[index].value;
+    const clickFavBtn = (id) => {
+        var states = favBtnState;
 
-        // changing icon
-        if (state[index].value) {
-            state[index].obj = <Favorite key={index} />;
-        } else {
-            state[index].obj = <FavoriteBorderRounded key={index} />;
-        }
-        updateFavBtnState(state);
+        // get the button clicked
+        var btn = states[id];
+
+        // changed btn type depending on the value of value
+        if (states[id].value) {
+            btn.obj = <Favorite key={id} />;
+        } else 
+            btn.obj = <FavoriteBorderRounded key={id} />
+
+        console.log(states);
+        return states;
     }
 
     // not searching anything
@@ -109,7 +96,7 @@ export default function Body({data}) {
                                     {/* favorite button */}
                                     <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
                                         {/* {favBtnState[accomm._id].obj} */}
-                                        <FavoriteBorderRounded key={index} />
+                                        <FavoriteBorderRounded key={accomm._id} />
                                     </IconButton>
                                 
                                 {/* image/s */}
@@ -150,7 +137,7 @@ export default function Body({data}) {
                                     {/* favorite button */}
                                     <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
                                         {/* {favBtnState[accomm._id].obj} */}
-                                        <FavoriteBorderRounded key={index} />
+                                        <FavoriteBorderRounded key={accomm._id} />
                                     </IconButton>
                                 
                                 {/* image/s */}
@@ -215,8 +202,8 @@ export default function Body({data}) {
                         {accommList.map((accomm, index) => {
                             return <div key={index} className="body-element">
                                     {/* favorite button */}
-                                    <IconButton onClick={() => clickFavBtn(index)} className="favorite" >
-                                        {favBtnState[index].obj}
+                                    <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
+                                        {favBtnState[accomm._id].obj}
                                     </IconButton>
                                 
                                 {/* image/s */}
