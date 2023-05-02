@@ -46,6 +46,8 @@
     /* background-color: brown; */
     border-radius: 10%;
     position: relative;
+    padding: 2% 1%;
+    padding-top: 1%;
 
     /* after hover */
     transition: 300ms;
@@ -54,8 +56,8 @@
 .body-element:hover {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     transition: 300ms;
-    padding: 2% 1%;
-    padding-top: 1%;
+    /* padding: 2% 1%;
+    padding-top: 1%; */
 }
 
 .body-element img {
