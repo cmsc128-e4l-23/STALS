@@ -238,11 +238,15 @@ const url = "http://localhost:3001/addAccomm";
 // ========================== GET RECOMMENDATIONS ==========================
 needle.post("http://localhost:3001/recommendAccomm",
     {
-       searchString: "lorem ipsum",
        returnLength: 3,
-       accommLength: 2,
+       accommLength: 10,
+    //    searchLocs: 'Laguna',
+    //    searchType: 'Transient',
+       minPrice: 0,
+       maxPrice: 200
+
     },
     (err, res) => {
-        console.log(res.body);
+        console.log(res.body.result);
     }
 );
