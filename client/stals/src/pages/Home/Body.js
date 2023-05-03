@@ -1,14 +1,30 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import "./Body.css";
 import Filter from "components/Filter";
-import { Favorite, FavoriteBorderRounded } from '@mui/icons-material/';
-import { IconButton } from '@mui/material';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { IconButton, ToggleButton } from '@mui/material';
+import { getElementError } from "@testing-library/react";
+import { useNavigate } from "react-router-dom";
 
 
-export default function Body({data}) {
+export default function Body({ data }) {
+    let navigate = useNavigate();
+
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [accommList, udpateAccomm] = useState([]);
     const [bookmarkList, updateBookmark] = useState([]);
+    const [buttons, updateButtons] = useState({});
+    const [success, setSuccess] = useState(false);
+
+    // initialize buttons
+    const initButton = () => {
+        var btns = {};
+        accommList.forEach((accomm, index) => {
+            btns[accomm._id] = false;
+        });
+        return btns;
+    }
 
     // search
     // use `data` prop
@@ -24,10 +40,17 @@ export default function Body({data}) {
             .then(res => res.json())
             .then(body => {
                 setSuccess(body.success);
-                if (body.success) udpateAccomm(body.result);
+                if (body.success) {
+                    udpateAccomm(body.result);
+                    updateButtons(initButton());
+                }
                 else udpateAccomm([]);
-        })
+            })
     }
+
+    // const fetchBookmark = () => {
+    //     fetch('http://localhost:3001/fetch')
+    // }
 
     // check if logged in
     useEffect(() => {
@@ -41,39 +64,26 @@ export default function Body({data}) {
             if(body.isLoggedIn){
                 // get bookmarks (type: ObjectID)
                 // fetchBookmark();
+                setLoggedIn(body.isLoggedIn);
             }
             fetchAccomm();
         })
     }, []);
 
-    // initialize favorite buttons
-    const initFavBtn = () => {
-        var states = {};
-        accommList.forEach((accomm, index) => {
-            states[accomm._id] = { value: false, obj: <FavoriteBorderRounded key={accomm._id} /> };
-        });
-        console.log(states);
-        return states;
-        
-    }
-    const [favBtnState, updateFavBtnState] = useState(initFavBtn());
-    const [success, setSuccess] = useState(false);
-
     // changes the state of the button on click
     const clickFavBtn = (id) => {
-        var states = favBtnState;
+        console.log(id)
 
-        // get the button clicked
-        var btn = states[id];
-
-        // changed btn type depending on the value of value
-        if (states[id].value) {
-            btn.obj = <Favorite key={id} />;
-        } else 
-            btn.obj = <FavoriteBorderRounded key={id} />
-
-        console.log(states);
-        return states;
+        if (isLoggedIn) {
+            var btns = buttons;
+            btns[id] = !btns[id];
+            console.log(btns[id]);
+            updateButtons(btns);
+        } else {
+            alert("You have to be logged in!"); // change to pop-up
+            navigate('/login');
+        }
+        
     }
 
     // not searching anything
@@ -93,10 +103,9 @@ export default function Body({data}) {
                         {accommList.map((accomm, index) => {
                             if (accomm.generalLocation <= 1000) {
                                 return <div key={index} className="body-element">
-                                    {/* favorite button */}
-                                    <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
-                                        {/* {favBtnState[accomm._id].obj} */}
-                                        <FavoriteBorderRounded key={accomm._id} />
+                                    {/* bookmark button */}
+                                    <IconButton id={index} key={index} onClick={() => clickFavBtn(accomm._id)} className="favorite" >
+                                        {buttons[accomm._id] ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
                                     </IconButton>
                                 
                                 {/* image/s */}
@@ -137,7 +146,7 @@ export default function Body({data}) {
                                     {/* favorite button */}
                                     <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
                                         {/* {favBtnState[accomm._id].obj} */}
-                                        <FavoriteBorderRounded key={accomm._id} />
+                                        <BookmarkBorderIcon key={accomm._id} />
                                     </IconButton>
                                 
                                 {/* image/s */}
@@ -204,7 +213,7 @@ export default function Body({data}) {
                                     {/* favorite button */}
                                     <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
                                     {/* {favBtnState[accomm._id].obj} */}
-                                    <FavoriteBorderRounded key={accomm._id} />
+                                    <BookmarkBorderIcon key={accomm._id} />
                                     </IconButton>
                                 
                                 {/* image/s */}
