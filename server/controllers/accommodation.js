@@ -65,9 +65,7 @@ const archiveAccomm = async (req, res) => {
             res.send({ success: true, message: "Successfully archived accommodation" });
         })
         .catch((error) => {
-            console.log(err);
-
-            res.send({ success: false, error: "Archive Failed" });
+            res.send({ success: false, message: "Failed to archive accommodation", error: error });
         })
 }
 
@@ -83,122 +81,53 @@ const unarchiveAccomm = async (req, res) => {
             res.send({ success: true, message: "Successfully unarchived accommodation" });
         })
         .catch((error) => {
-            console.log(err);
-
-            res.send({ success: false, error: "Unarchive Failed" });
+            res.send({ success: false, message: "Failed to unarchive accommodation", error: error });
         })
 }
 
 // returns a json that indicates success and sends message
 // throws an error if accommodation was not found or if accommodation edit failed
 const editAccomm = async (req, res) => {
-
     const accomm_details = req.body;
-    let updateObject = { $set: {} };
-
-
+    
     try{
-        if (accomm_details.name){
-            updateObject.$set.name = accomm_details.name;
-        }
-        if (accomm_details.landmarks){
-            updateObject.$set.landmarks = accomm_details.landmarks;
-        }
+        let currAccomm = await Accommodation.findById(accomm_details._id);
 
-        //address
-        if (accomm_details.address){
-            const newAccommAddr = accomm_details.address;
-            let currentAccommAddr = await Accommodation.findById(accomm_details._id).select("address -_id").exec();
+        if (currAccomm){
+            const currAccommObj = currAccomm.toObject();
 
-            if (currentAccommAddr){
-                currentAccommAddr = currentAccommAddr.address;
+            //creates the updateObject that determines what would be
+            //updated in the document
+            const updateObject = {
+                $set: {...currAccommObj, ...accomm_details,
+                    address: {
+                        ...currAccommObj.address,
+                        ...(accomm_details.address ?? {})
+                    },
+                    priceRange: {
+                        ...currAccommObj.priceRange,
+                        ...(accomm_details.priceRange ?? {})
+                    }
+                }
+            };
 
-                if (newAccommAddr.postCode){
-                    currentAccommAddr.postCode = newAccommAddr.postCode;
-                }
-                if (newAccommAddr.street){
-                    currentAccommAddr.street = newAccommAddr.street;
-                }
-                if (newAccommAddr.barangay){
-                    currentAccommAddr.barangay = newAccommAddr.barangay;
-                }
-                if (newAccommAddr.city){
-                    currentAccommAddr.city = newAccommAddr.city;
-                }
-                if (newAccommAddr.province){
-                    currentAccommAddr.province = newAccommAddr.province;
-                }
-                if (newAccommAddr.region){
-                    currentAccommAddr.region = newAccommAddr.region;
-                }
+            const result = await Accommodation.findByIdAndUpdate(
+                {_id: accomm_details._id},
+                updateObject
+            );
 
-                updateObject.$set.address = currentAccommAddr;
+            if (result){
+                res.send({ success: true, message: "Successfully edited accommodation" })
             } else {
-                throw new Error("Accommodation not found when trying to update address");
-            }
-        }
-
-        if (accomm_details.generalLocation){
-            updateObject.$set.generalLocation = accomm_details.generalLocation;
-        }
-        if (accomm_details.accommodationType){
-            updateObject.$set.accommodationType = accomm_details.accommodationType;
-        }
-        if (accomm_details.amenities){
-            updateObject.$set.amenities = accomm_details.amenities;
-        }
-
-        //price range
-        if (accomm_details.priceRange){
-            const newAccommPrice = accomm_details.priceRange;
-            let currentAccommPrice = await Accommodation.findById(accomm_details._id).select("priceRange -_id").exec();
-
-            if(currentAccommPrice){
-                currentAccommPrice = currentAccommPrice.priceRange;
-
-                if (newAccommPrice.minPrice){
-                    currentAccommPrice.minPrice = newAccommPrice.minPrice;
-                }
-                if (newAccommPrice.maxPrice){
-                    currentAccommPrice.maxPrice = newAccommPrice.maxPrice;
-                }
-
-            } else {
-                throw new Error("Accomodation not found when trying to update price range");
+                throw new Error("Failed to find and update the accommodation");
             }
 
-            updateObject.$set.priceRange = currentAccommPrice;
-        }
-
-        if (accomm_details.description){
-            updateObject.$set.description = accomm_details.description;
-        }
-        if (accomm_details.photos){
-            updateObject.$set.photos = accomm_details.photos;
-        }
-        if (accomm_details.restrictions){
-            updateObject.$set.restrictions = accomm_details.restrictions;
-        }
-        if (accomm_details.security){
-            updateObject.$set.security = accomm_details.security;
-        }
-        
-        //Updating the accommodation
-        const result = await Accommodation.findByIdAndUpdate(
-            { _id: accomm_details._id },
-            updateObject
-        );
-
-        if (result) {
-            res.send({ success: true, message: "Successfully edited accommodation" });
         } else {
-            throw new Error("Accommodation not found");
+            throw new Error("Accommodation not found.");
         }
     } catch (error) {
-        console.log(error);
         res.send({ success: false, message: "Failed to edit accommodation", error: error });
     }
-
 }
 
 //Function for delete accomodation
