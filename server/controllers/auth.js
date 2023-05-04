@@ -5,30 +5,60 @@ import User from "../models/User.js";
 
 // Function for sign up
 export const signUp = async (req, res) => {
-    try{
-        //Getting the input
+    try {
+        // Getting the input
         let user_details = req.body;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^09\d{9}$/;
+        //const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/; no need since HTML has date input
 
-        //Encrypting the password
+
+        // Validating the email format given the regex
+        if (!emailRegex.test(user_details.email)) {
+            return res.status(400).json({ error: "Invalid email format" });
+        }
+
+        // Check if email already exists
+        const existingUser = await User.findOne({ email: user_details.email });
+        if (existingUser) {
+            return res.status(409).json({ error: "Email already exists" });
+        }
+        
+        // Validating the password. Must contain 8 or more characters.
+        if (user_details.password.length < 8) {
+            return res.status(400).json({ error: "Password should be at least 8 characters long" });
+        }
+
+        // Validating the phone number format. Must start with 09 and then 9 more digits.
+        if (!phoneRegex.test(user_details.phoneNumber)) {
+            return res.status(400).json({ error: "Invalid phone number" });
+        }   
+
+        // Validating if phone number already exists
+        const existingPhoneNum = await User.findOne({ phoneNumber: user_details.phoneNumber });
+        if (existingPhoneNum) {
+            return res.status(409).json({ error: "Phone number already exists" });
+        }        
+
+        // Validating the birthday format and checking if birthday is not in the future. Works if the format of user_details.birthday string is MM/DD/YYYY.
+        const birthday = new Date(user_details.birthday);
+        const now = new Date();
+        if (isNaN(birthday.getTime()) || birthday > now) {
+            return res.status(400).json({ error: "Invalid birthday" });
+        }
+
+        // Encrypting the password
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(user_details.password, salt);
 
+        user_details = {...user_details, password: passwordHash}
         //Completing the user details along with the encrypted password
-        const newUser = new User({
-            userType : user_details.userType,
-            firstName : user_details.firstName,
-            lastName: user_details.lastName,
-            email: user_details.email,
-            password : passwordHash,
-            phoneNumber : user_details.phoneNumber,
-            sex: user_details.sex,
-            birthday: user_details.birthday
-        });
+        const newUser = new User(user_details);
         
         //saves the user to the database
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
-    }catch (err){
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }

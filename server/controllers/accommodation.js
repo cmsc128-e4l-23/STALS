@@ -6,45 +6,51 @@ import fs from "fs"
 import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
+import Review from "../models/Review.js";
 
-const addAccomm = async (req, res) => {
-    try {
+const addAccomm = (req, res) => {
         //Getting the input
-        let accomm_details = req.body;
+    let accomm_details = req.body;
+    console.log(accomm_details)
 
-        //Completing accommodation details given the input
-        const newAccommodation = new Accommodation({
-            accommodationID: accomm_details.accommodationID,
-            name: accomm_details.name,
-            landmarks: accomm_details.landmarks,
-            address: {
-                postCode: accomm_details.address.postCode,
-                street: accomm_details.address.street,
-                barangay: accomm_details.address.barangay,
-                city: accomm_details.address.city,
-                province: accomm_details.address.province,
-                region: accomm_details.address.region
-            },
-            generalLocation: accomm_details.generalLocation,
-            accommodationType: accomm_details.accommodationType,
-            amenities: accomm_details.amenities,
-            priceRange: {
-                minPrice: accomm_details.priceRange.minPrice,
-                maxPrice: accomm_details.priceRange.maxPrice
-            },
-            description: accomm_details.description,
-            photos: accomm_details.photos,
-            restrictions: accomm_details.restrictions,
-            security: accomm_details.security,
-            archived: accomm_details.archived
-        });
+    User.findOne({ email: accomm_details.owner })
+        .then( async (document) => {
+            if(!document){
+                throw "User not found!"
+            }
 
-        //Saves the accommodation to the database
-        const savedAccommodation = await newAccommodation.save();
-        res.status(201).json(savedAccommodation);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+            accomm_details.owner = document._id
+
+            // Check if accommodation name already exists in the database
+            const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
+            if (existingNameAccommodation) {
+                return res.status(409).json({ error: "Accommodation with the same name already exists" });
+            }
+
+            // Check if accommodation address already exists in the database
+            const existingAddressAccommodation = await Accommodation.findOne({ address: accomm_details.address });
+            if (existingAddressAccommodation) {
+                return res.status(409).json({ error: "Accommodation with the same address already exists" });
+            }
+
+            // If both are unique, save the accommodation to the database
+            const newAccommodation = new Accommodation(accomm_details);
+            const savedAccommodation = await newAccommodation.save();
+            User.findByIdAndUpdate(
+                document._id, 
+                { "$push": { "owner.propertiesList": savedAccommodation._id}},
+                { "new": true, "upsert": true })
+                .then(
+                    function (user){
+                        console.log(user);
+                    }
+                )         
+                
+            res.status(201).json(savedAccommodation);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: err });
+    })
 }
 
 const archiveAccomm = async (req, res) => {
@@ -90,41 +96,94 @@ const editAccomm = async (req, res) => {
     const accomm_details = req.body;
     let updateObject = { $set: {} };
 
-    if (accomm_details.name) {
-        updateObject.$set.name = accomm_details.name;
-    }
-    if (accomm_details.landmarks) {
-        updateObject.$set.landmarks = accomm_details.landmarks;
-    }
-    if (accomm_details.address) {
-        updateObject.$set.address = accomm_details.address;
-    }
-    if (accomm_details.generalLocation) {
-        updateObject.$set.generalLocation = accomm_details.generalLocation;
-    }
-    if (accomm_details.accommodationType) {
-        updateObject.$set.accommodationType = accomm_details.accommodationType;
-    }
-    if (accomm_details.amenities) {
-        updateObject.$set.amenities = accomm_details.amenities;
-    }
-    if (accomm_details.priceRange) {
-        updateObject.$set.priceRange = accomm_details.priceRange;
-    }
-    if (accomm_details.description) {
-        updateObject.$set.description = accomm_details.description;
-    }
-    if (accomm_details.photos) {
-        updateObject.$set.photos = accomm_details.photos;
-    }
-    if (accomm_details.restrictions) {
-        updateObject.$set.restrictions = accomm_details.restrictions;
-    }
-    if (accomm_details.security) {
-        updateObject.$set.security = accomm_details.security;
-    }
 
-    try {
+    try{
+        if (accomm_details.name){
+            updateObject.$set.name = accomm_details.name;
+        }
+        if (accomm_details.landmarks){
+            updateObject.$set.landmarks = accomm_details.landmarks;
+        }
+
+        //address
+        if (accomm_details.address){
+            const newAccommAddr = accomm_details.address;
+            let currentAccommAddr = await Accommodation.findById(accomm_details._id).select("address -_id").exec();
+
+            if (currentAccommAddr){
+                currentAccommAddr = currentAccommAddr.address;
+
+                if (newAccommAddr.postCode){
+                    currentAccommAddr.postCode = newAccommAddr.postCode;
+                }
+                if (newAccommAddr.street){
+                    currentAccommAddr.street = newAccommAddr.street;
+                }
+                if (newAccommAddr.barangay){
+                    currentAccommAddr.barangay = newAccommAddr.barangay;
+                }
+                if (newAccommAddr.city){
+                    currentAccommAddr.city = newAccommAddr.city;
+                }
+                if (newAccommAddr.province){
+                    currentAccommAddr.province = newAccommAddr.province;
+                }
+                if (newAccommAddr.region){
+                    currentAccommAddr.region = newAccommAddr.region;
+                }
+
+                updateObject.$set.address = currentAccommAddr;
+            } else {
+                throw new Error("Accommodation not found when trying to update address");
+            }
+        }
+
+        if (accomm_details.generalLocation){
+            updateObject.$set.generalLocation = accomm_details.generalLocation;
+        }
+        if (accomm_details.accommodationType){
+            updateObject.$set.accommodationType = accomm_details.accommodationType;
+        }
+        if (accomm_details.amenities){
+            updateObject.$set.amenities = accomm_details.amenities;
+        }
+
+        //price range
+        if (accomm_details.priceRange){
+            const newAccommPrice = accomm_details.priceRange;
+            let currentAccommPrice = await Accommodation.findById(accomm_details._id).select("priceRange -_id").exec();
+
+            if(currentAccommPrice){
+                currentAccommPrice = currentAccommPrice.priceRange;
+
+                if (newAccommPrice.minPrice){
+                    currentAccommPrice.minPrice = newAccommPrice.minPrice;
+                }
+                if (newAccommPrice.maxPrice){
+                    currentAccommPrice.maxPrice = newAccommPrice.maxPrice;
+                }
+
+            } else {
+                throw new Error("Accomodation not found when trying to update price range");
+            }
+
+            updateObject.$set.priceRange = currentAccommPrice;
+        }
+
+        if (accomm_details.description){
+            updateObject.$set.description = accomm_details.description;
+        }
+        if (accomm_details.photos){
+            updateObject.$set.photos = accomm_details.photos;
+        }
+        if (accomm_details.restrictions){
+            updateObject.$set.restrictions = accomm_details.restrictions;
+        }
+        if (accomm_details.security){
+            updateObject.$set.security = accomm_details.security;
+        }
+        
+        //Updating the accommodation
         const result = await Accommodation.findByIdAndUpdate(
             { _id: accomm_details._id },
             updateObject
@@ -190,6 +249,99 @@ const searchAccomm = async (req, res) => {
     // res.send("I am searching accommodation");
 }
 
+/*
+Search Recommendation based on overall ratings
+and how much would be returned
+via req.body.returnLength for each category.
+Realistically, due to the number of accommodations present,
+its number should be limited by req.body.accommLength
+The response is ordered by the ratings
+and all of the accommodations are unarchived.
+
+*/
+const recommendAccomm = async (req, res) => {
+    // OPTIONAL
+    const searchLocs = req.body.searchLocs;
+    const searchType = req.body.searchType;
+    const minPrice = parseFloat(req.body.minPrice);
+    const maxPrice = parseFloat(req.body.maxPrice);
+    // CRUCIAL
+    const returnLength = parseInt(req.body.returnLength);
+    const accommLength = parseInt(req.body.accommLength);
+    // Get the general recommended accomms based
+    // on the top rating of the recommendations
+    try {
+        if (!returnLength && returnLength <= 0) throw new Error("Return Length must be a postiive integer");
+        if (!accommLength && accommLength <= 0) throw new Error("Accomm Length must be a positive integer");
+        // the ultimate return object
+        let returnobject = {}
+        // search randomly unarchived accomms w/ at least one review
+        const randsearch = await Accommodation.aggregate(
+            [{$match: {archived: false, reviews: {$ne: []}}},
+            {$sample: {size: accommLength}} ]
+        )
+        // from those searches arrange those by the ratings
+        let sortlist = [];
+        for (let accomm of randsearch) {
+            let sum = 0;
+            let reviews = accomm.reviews;
+            let reviewnum = reviews.length;
+            for (let rev of reviews) {
+                let actualrev = await Review.findById(rev._id);
+                sum += actualrev.rating;
+            }
+            // calculate the total rating
+            let rating = ((sum+1)/(reviewnum+1)).toFixed(2);// adding 1 to numerator and denominator
+            // to estimate accurate rating in case reviews are too low
+            sortlist.push({accommId: accomm._id, rating: rating});
+        }
+        // then order the sorted list by rating
+        sortlist.sort((a, b)=>{return b.rating - a.rating})
+
+        // get only the return length
+        // this is for the top rated flag
+        if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
+        // append the sortlist to the return object
+        returnobject.topAccomms = sortlist;
+
+        // from searches of other optional requirements
+        if (searchLocs) {
+            let locslist = randsearch.filter((elem)=>{
+                return (elem.address.province.toLowerCase() == searchLocs.toLowerCase())
+            })
+            if (returnLength <= locslist.length) locslist = locslist.slice(0, returnLength);
+            returnobject.nearAccomms = locslist;
+        }
+
+        if (searchType) {
+            let typelist = randsearch.filter((elem)=>{
+                return (elem.accommodationType.toLowerCase() == searchType.toLowerCase())
+            })
+            if (returnLength <= typelist.length) typelist = typelist.slice(0, returnLength);
+            returnobject.similarType = typelist;
+        }
+
+        if (minPrice != null && maxPrice != null) {
+            if (minPrice < 0) throw new Error("Minimum price must be a positive float.");
+            if (maxPrice < 0) throw new Error("Maximum price must be a positive float.");
+            if (minPrice > maxPrice) throw new Error("Minimum price must be less than max price");
+            let pricelist = randsearch.filter((elem)=>{
+                return (parseFloat(elem.priceRange.minPrice) >= minPrice && parseFloat(elem.priceRange.maxPrice) <= maxPrice)
+            })
+            if (returnLength <= pricelist.length) pricelist = pricelist.slice(0, returnLength);
+            returnobject.similarPrice = pricelist;
+        }
+
+        // finally return
+        res.send({success: true, result: returnobject});
+
+    } catch (error) {
+        res.send({success: false, error: "Search Recommendation Failed"});
+        console.error(error);
+    }
+
+    //res.send("I am recommending accommodations.");
+}
 
 //bookmark functionality
 //req.body is an object that should have:
@@ -421,6 +573,7 @@ export default {
     editAccomm,
     deleteAccomm,
     searchAccomm,
+    recommendAccomm,
     generateRep,
     viewAccomm,
     bookmarkAccomm,

@@ -26,21 +26,36 @@ export default function Signup() {
       password: password,
       sex: sex,
       phoneNumber: contact,
-      birthday: birthday
+      birthday: birthday,
+    }
+
+    if(usertype === 'Accommodation Owner'){
+      newUser = {...newUser, owner: {
+        propertiesList: [],
+        archivedList: [],
+        status: 'active'
+      }}
+    }else if(usertype === 'Admin'){
+        newUser = {...newUser, admin: {
+          pendingApplications: [],
+          pendingReports: []
+        }}
     }
     fetch('http://localhost:3001/signup', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser)
     })
-    .then(res => {
-      if(res.status === 201){
-        alert("Successfully signed in " + res.email);
+    .then(res => res.json())
+    .then(data => {
+      if(data.error){
+        alert(data.error)
+      }else{
+        alert("Successfully signed up " + newUser.email);
         navigate('/login');
       }
-    });
-    
-  }
+    })
+}
   return (
     <div className="signup-container">
       <Header />

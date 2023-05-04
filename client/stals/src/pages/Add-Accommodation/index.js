@@ -1,235 +1,162 @@
-//import { Margin } from "@mui/icons-material";
 import "./Accommodation-form.css";
+import React, { useState, useEffect } from "react";
 import Header from "components/Header";
-import React, { useState } from "react";
+import BasicInfo from "./1_BasicInfo";
+import AccommInfo from "./2_AccommInfo";
+import OtherInfo from "./3_OtherInfo";
+import { useNavigate } from "react-router-dom";
 
-function Accommodation() {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedOptionsList, setSelectedOptionsList] = useState([]);
-  const [selectedOption2, setSelectedOption2] = useState("");
-  const [selectedOptionsList2, setSelectedOptionsList2] = useState([]);
-  const [images, setImages] = useState([]);
-  const [pdfs, setPdfs] = useState([]);
+export default function AddAccommodation() {
+  let navigate = useNavigate();
 
-  const handleImageChange = (event) => {
-    setImages([...images, event.target.files[0]]);
+  const [page, setPage] = useState(0);
+  const [formData, setFormData] = useState({
+    name: "",
+    owner: localStorage.getItem('email'),
+    landmarks: [],
+    address: {
+        postCode: "",
+        street: "",
+        barangay: "",
+        city: "",
+        province: "Laguna",
+        region: "CALABARZON",
+    },
+    generalLocation: 0,
+    accommodationType: "Transient",
+    amenities: [],
+    priceRange: {
+        minPrice: 0,
+        maxPrice: 0
+    },
+    description: "",
+    photos: [],
+    restrictions: [],
+    security: "",
+    archived: true,
+  });
+
+  const submit = () => {
+    fetch("http://localhost:3001/addAccomm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    }).then((res) => {
+      if (res.status === 201) {
+        alert("Successfully signed up " + formData.accommodationType);
+      }
+    });
   };
 
-  const handlePdfChange = (event) => {
-    const newPdfs = [...pdfs];
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      newPdfs.push({ name: files[i].name, file: files[i] });
+  const FormTitles = [
+    "Basic Information",
+    "Detailed Information",
+    "Other Information",
+  ];
+
+  const RenderPage = () => {
+    switch (page) {
+      case 0:
+        return <BasicInfo formData={formData} setFormData={setFormData} />;
+      case 1:
+        return <AccommInfo formData={formData} setFormData={setFormData} />;
+      case 2:
+        return (
+          <div>
+            <OtherInfo formData={formData} setFormData={setFormData} />
+            <button
+              style={{
+                position: "absolute",
+                bottom: 10,
+                left: 675,
+                width: "180px",
+                backgroundColor: "#0a4424",
+                height: "60px",
+                color: "white",
+                borderRadius: "5px",
+                border: "none",
+                fontSize: "Larger",
+                padding: "5px",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = "green";
+              }}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#0a4424")}
+              onClick={submit}
+            >
+              Add Accommodation
+            </button>
+          </div>
+        );
+      default:
+        return <div></div>;
     }
-    setPdfs(newPdfs);
   };
 
-  const handleDeleteClick = () => {
-    setImages(images.slice(0, -1));
-  };
+  useEffect(() => {
+    fetch("http://localhost:3001/checkifloggedin", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (
+          data.isLoggedIn &&
+          localStorage.getItem("usertype") === "Accommodation Owner"
+        ) {
+        } else {
+          alert("You are not an accommodation owner");
+          navigate("/home");
+        }
+      });
+  }, [navigate]);
 
-  const handleDropdownChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
-
-  const handleAddToList = () => {
-    if (selectedOption && selectedOption.trim()) {
-      setSelectedOptionsList([...selectedOptionsList, selectedOption]);
-      setSelectedOption("");
-    }
-  };
-
-  const handleDropdownChange2 = (event) => {
-    setSelectedOption2(event.target.value);
-  };
-
-  const handleAddToList2 = () => {
-    if (selectedOption2 && selectedOption2.trim()) {
-      setSelectedOptionsList2([...selectedOptionsList2, selectedOption2]);
-      setSelectedOption2("");
-    }
-  };
-
-  const handleClearList = () => {
-    setSelectedOptionsList([]);
-  };
-
-  const handleClearList2 = () => {
-    setSelectedOptionsList2([]);
-  };
-
-  const handlePdfDeleteClick = (pdfName) => {
-    const newPdfs = pdfs.filter((pdf) => pdf.name !== pdfName);
-    setPdfs(newPdfs);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
   return (
-    <div>
-      <div>
+    <>
+      <div className="page-header">
         <Header />
       </div>
-      <form onSubmit={handleSubmit} class="accommodation-form">
-      <div class="flex-container">
-        <div class="top-flex">
-          <div class="flex-item1">
-            <label htmlFor="accommodation-name">Accommodation Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              required
-            />
-            <label htmlFor="accommodation-name">Location:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter Location"
-              required
-            />
-            <label htmlFor="Price">Price in php:</label>
-            <input 
-              type="number"
-              id="price"
-              name="price"
-              min="0"
-              step="100"
-              placeholder="Enter price"
-              required
-              class="short-input"
-            />
-            <label htmlFor="Rules">Rules:</label>
-            <div>
-              <select value={selectedOption} onChange={handleDropdownChange}>
-                <option value="">Select an option</option>
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-                <option value="Option 3">Option 3</option>
-              </select>
-              <button class="add" onClick={handleAddToList}>Add to list</button>
-              <ul class="list">
-                {selectedOptionsList.map((option, index) => (
-                  <li class="item" key={index}>{option}</li>
-                ))}
-              </ul>
-              <button class="clear" onClick={handleClearList}>Clear Rules</button>
-            </div>
-            <label htmlFor="Amenities">Amenities</label>
-            <div>
-              <div>
-                <select
-                  value={selectedOption2}
-                  onChange={handleDropdownChange2}
-                >
-                  <option value="">Select an option</option>
-                  <option value="Option 1">Option 1</option>
-                  <option value="Option 2">Option 2</option>
-                  <option value="Option 3">Option 3</option>
-                </select>
-                <button class="add" onClick={handleAddToList2}>Add to list</button>
-                <ul class="list">
-                  {selectedOptionsList2.map((option, index) => (
-                    <li className="item" key={index}>{option}</li>
-                  ))}
-                </ul>
-                <button class="clear" onClick={handleClearList2}>Clear Amenities</button>
-              </div>
-            </div>
+      <div
+        className="form"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "100px",
+        }}
+      >
+        <div className="progress-bar"></div>
+        <div
+          className="form-container"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div className="form-header">
+            <h1>{FormTitles[page]}</h1>
           </div>
-          <div class="flex-item2">
-            <textarea
-              rows="5"
-              cols="50"
-              type="text"
-              id="description"
-              name="description"
-              placeholder="Enter additional details and description"
-              class="description-input"
-              required
-            />
+          <div className="form-body">{RenderPage()}</div>
+          <div className="form-footer">
+            <button
+              style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
+              disabled={page === 0}
+              onClick={() => {
+                setPage((currPage) => currPage - 1);
+              }}
+            >
+              Prev
+            </button>
+            <button
+              style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
+              disabled={page === FormTitles.length - 1}
+              onClick={() => {
+                setPage((currPage) => currPage + 1);
+              }}
+            >
+              Next
+            </button>
           </div>
-          <div className="column-container">
-            <div className="image-uploader">
-              {images.length > 0 ? (
-                <>
-                  <label htmlFor="upload-image" className="upload">
-                    Upload an Image
-                  </label>
-                  <input
-                    type="file"
-                    id="upload-image"
-                    name="upload-image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    multiple
-                  />
-                  <img
-                    class="acc_image"
-                    src={URL.createObjectURL(images[images.length - 1])}
-                    alt="uploaded"
-                  />
-                  <button class="delete" onClick={handleDeleteClick}>
-                    Delete Image
-                  </button>
-                </>
-              ) : (
-                <>
-                  <label htmlFor="upload-image" className="upload">
-                    Upload an Image
-                  </label>
-                  <input
-                    type="file"
-                    id="upload-image"
-                    name="upload-image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    multiple
-                  />
-                </>
-              )}
-            </div>
-            <div className="upload-pdf">
-                <label htmlFor="upload-pdf" className="upload">
-                  Upload PDF
-                </label>
-                <input
-                  type="file"
-                  id="upload-pdf"
-                  name="upload-pdf"
-                  accept="application/pdf"
-                  onChange={handlePdfChange}
-                  multiple
-                />
-              <ul class="list2">
-                {pdfs.map((pdf) => (
-                  <li key={pdf.name}>
-                    {pdf.name}
-                    <button
-                      class="x"
-                      onClick={() => handlePdfDeleteClick(pdf.name)}
-                    >
-                      X
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="bottom-flex">
-          <button class="submit">
-            SUBMIT ACCOMMODATION
-          </button>
         </div>
       </div>
-      </form>
-      
-    </div>
+    </>
   );
 }
-
-export default Accommodation;

@@ -3,6 +3,7 @@ import auth from "./controllers/auth.js";
 import accommodation from "./controllers/accommodation.js";
 import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
+import userinfo from "./controllers/userinfo.js";
 
 const router = express.Router();
 
@@ -12,6 +13,9 @@ router.post("/login", auth.logIn);
 router.post("/checkifloggedin", auth.checkIfLoggedIn);
 router.post("/changePassword", auth.changePassword);
 
+//User Info
+router.post("/getOwnerAccomms", userinfo.getOwnerAccomms);
+
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
 router.post("/archiveAccomm", accommodation.archiveAccomm);
@@ -19,6 +23,7 @@ router.post("/unarchiveAccomm", accommodation.unarchiveAccomm);
 router.post("/editAccomm", accommodation.editAccomm);
 router.delete("/deleteAccomm", accommodation.deleteAccomm);
 router.post("/searchAccomm", accommodation.searchAccomm);
+router.post("/recommendAccomm", accommodation.recommendAccomm);
 router.post("/generateRep", accommodation.generateRep);
 
 router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
@@ -34,6 +39,7 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 //Admin
 router.get("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
+router.post("/dataAnalytics", admin.dataAnalytics);
 
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
