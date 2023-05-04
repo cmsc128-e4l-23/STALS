@@ -27,8 +27,8 @@ app.use(cookieParser());
 app.use(routes);
 
 /* DB SETUP */
-const PORT = process.env.PORT || 6001;
-mongoose.connect(process.env.MONGO_URL, {
+const PORT = 3001;
+mongoose.connect("mongodb://localhost:27017/stals", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {

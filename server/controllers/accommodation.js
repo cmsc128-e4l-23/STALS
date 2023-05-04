@@ -418,8 +418,7 @@ const reportAccomm = async (req, res) => {
             res.send({success: false, error: "Report Appending Failed"});
         });
     }  catch (err) {
-        res.status(500).send({error: err.message});
-        console.error(err);
+        res.send({success: false, error: err.message})
     }
     //res.send("I am reporting an accommodation");
 }

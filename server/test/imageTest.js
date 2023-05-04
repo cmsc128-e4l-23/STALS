@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 const userId = "64415c5344582ba43b014e14";
 const propertyId = "643665dccee7fa1d7dd408ea";
-const url = "http://loaclhost:3001/uploadImage";
+const url = "http://localhost:3001/uploadImage";
 const dirname = path.resolve();
 const imgPath = path.join(dirname,'test.png');
 const testImg = {
