@@ -76,44 +76,39 @@ const editReview = async (req, res) => {
 // Throws an error if review or user if user is not found
 const deleteReview = async (req, res) => {
     const review_details = req.body;
-    const id = review_details._id;
-    const userId = review_details.userId;
-    const propertyId = review_details.propertyId;
 
     try {
         //Deleting review
-        const result = await Review.findById(id);
+        const doc = await Review.findById(review_details._id);
 
-        if (result) {
+        if (doc) {
             //Deleting review from the user and the accommodation
-            const user = await User.findById(userId);
-            const accomm = await Accommodation.findById(propertyId);
+            const user = await User.findById(review_details.userId);
+            const accomm = await Accommodation.findById(review_details.propertyId);
             // the user should also match the 
 
-            if (user && accomm && result.userId.equals(user._id) && result.propertyId.equals(accomm._id)) {
-                user.reviews.pull(id);
-                accomm.reviews.pull(id);
+            if (user && accomm && doc.userId.equals(user._id) && doc.propertyId.equals(accomm._id)) {
+                user.reviews.pull(review_details._id);
+                accomm.reviews.pull(review_details._id);
                 await user.save();
                 await accomm.save();
-                // finally delete the result
-                await Review.deleteOne({ _id: result._id });
-                res.send({ success: true, message: "Successfully deleted review" });
+                // finally delete the doc review
+                await Review.deleteOne({ _id: doc._id });
+                res.send({ success: true, msg: "Successfully deleted review" });
             } else {
                 if (!user) throw new Error("User not found");
                 if (!accomm) throw new Error("Accommodation not found");
                 // for additional security measures
-                if (!result.userId.equals(user._id)) throw new Error("User id mismatch! Report found but incorrect userId");
-                if (!result.propertyId.equals(accomm._id)) throw new Error("Property / Accomm id mismatch! Report found but incorrect propertyId");
+                if (!doc.userId.equals(user._id)) throw new Error("User id mismatch! Report found but incorrect userId");
+                if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
 
             }
         } else {
             throw new Error("Review not found");
         }
-    } catch (error) {
-        console.log(error);
-        res.send({ success: false, message: "Failed to delete review", error: error });
+    } catch (err) {
+        res.send({ success: false, msg: err });
     }
-
 }
 
 // returns all reviews of a given user or a property
