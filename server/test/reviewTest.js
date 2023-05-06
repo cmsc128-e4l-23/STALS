@@ -2,9 +2,9 @@ import needle from "needle";
 import mongoose from "mongoose";
 
 // Object IDs (change this for different databases)
-const reviewId = "644df0fa899d98c980e65ad7";
-const userId = "644cd8a4dad90ff1fc7d150f";
-const propertyId = "644ce1aad31be0a75c33df6e";
+// const reviewId = "644df0fa899d98c980e65ad7";
+// const userId = "644cd8a4dad90ff1fc7d150f";
+// const propertyId = "644ce1aad31be0a75c33df6e";
 
 // note that the current database has still report ids
 // in the array for the users but not on accomms
@@ -45,24 +45,24 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 
 // // Review Data (for adding reviews)
 // const data1 = {
-//     userId: "644cd8a4dad90ff1fc7d1513",
-//     propertyId: "644cdb964c5e0d977fa685ac",
+//     user: "mtate@gmail.com",
+//     propertyId: "644e58b2f157a1f22a80e741",
 //     content: "I like it",
 //     rating: 5,
-//     photos: [{filename: "Photo1"}]
+//     photos: [{ filename: "Photo1" }]
 // }
 
 // const data2 = {
-//     userId: "644cd8a4dad90ff1fc7d1511",
-//     propertyId: "644cdb964c5e0d977fa685af",
+//     user: "mtate@gmail.com",
+//     propertyId: "644e58b2f157a1f22a80e741",
 //     content: "Very mid",
 //     rating: 3,
 //     photos: [{filename: "Insert very mid photo"}]
 // }
 
 // const data3 = {
-//     userId: "644cd8a4dad90ff1fc7d1514",
-//     propertyId: "644cdb964c5e0d977fa685ad",
+//     user: "mtate@gmail.com",
+//     propertyId: "644e58b2f157a1f22a80e741",
 //     content: "I like it",
 //     rating: 1,
 //     photos: [{filename: "Photo1"}]
@@ -105,14 +105,9 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // =========================== EDITING REVIEW ===========================
 // // Edit Review
 // needle.post("http://localhost:3001/editReview",
-//     {   
-//         _id: reviewId,
-//         content: "I hate it",
-//         rating: 1,
-//         photos: [
-//             {filename: "Photo2"}
-//             // {filename: "Photo3"} //doesn't work
-//         ]
+//     {
+//         _id: "64560ba58d797a0d06aa9661",
+//         rating: 5,
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -121,11 +116,11 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 
 // // Edit Review 2 (revert changes)
 // needle.post("http://localhost:3001/editReview",
-//     {   
-//         _id: reviewId,
+//     {
+//         _id: "64560ba58d797a0d06aa9661",
 //         content: "I like it",
 //         rating: 5,
-//         photos: [{filename: "Photo1"}]
+//         photos: [{ filename: "Photo1" }]
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -135,9 +130,9 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // =========================== DELETING REVIEW ===========================
 // needle.post("http://localhost:3001/deleteReview",
 //     {
-//         _id: "644f8539a80e536403b37f8d",
-//         userId: "644cd8a4dad90ff1fc7d1512",
-//         propertyId: "644cdb964c5e0d977fa685b2"
+//         _id: "64560834900198adf49dc33d",
+//         user: "mtate@gmail.com",
+//         propertyId: "644e58b2f157a1f22a80e741"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -148,7 +143,7 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // // Get Review 1 (userID)
 // needle.post("http://localhost:3001/getReview",
 //     {
-//         userId: userId
+//         user: "mtate@gmail.com"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -158,7 +153,7 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // // Get Review 2 (propertyID)
 // needle.post("http://localhost:3001/getReview",
 //     {
-//         propertyId: propertyId
+//         propertyId: "644e58b2f157a1f22a80e738"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
