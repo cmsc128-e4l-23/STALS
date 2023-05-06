@@ -219,45 +219,53 @@ const deleteAccomm = async (req, res) => {
         })
 }
 
-//search functionality
-//req.body is an object that should have:
-//      - a key named "searchString" that contains a string to be searched in the database
+/*
+Search Functionality
+req.body is an object that should have:
+    - a key named "searchString" that contains a string to be searched in the database
 
-//A successful search will result to a res.body that contains
-//  - a key "success" with a value true
-//  - a key result with an array of the documents being searched by the user
+A successful search will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+    - a key result with an array of the documents being searched by the user
 
-//A unsuccessful search will result to a res.body that contains
-//  - a key "success" with a value false
-//  - a key error with a value "Search Failed"
+A unsuccessful search will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed search
+*/
 const searchAccomm = async (req, res) => {
-
+    // searching is not case-sensitive
     const searchString = { "$regex": req.body.searchString, "$options": "i" };
-
-
-    Accommodation.find({ $or: [{ name: searchString }, { "address.postCode": searchString }, { "address.street": searchString }, { "address.barangay": searchString }, { "address.city": searchString }, { "address.province": searchString }, { "address.region": searchString }] })
+    Accommodation.find({ $or: [
+        { name: searchString },
+        { "address.postCode": searchString },
+        { "address.street": searchString },
+        { "address.barangay": searchString },
+        { "address.city": searchString },
+        { "address.province": searchString },
+        { "address.region": searchString }] })
         .then((result) => {
-            res.send({ success: true, result: result });
+            res.send({ success: true, msg: "Search Accommodation Successful", result: result });
         })
         .catch((error) => {
-            console.log(err);
-            res.send({ success: false, error: "Search Failed" });
+            console.log(error);
+            res.send({ success: false, msg: "Search Accommodation Failed" });
         })
-
-
-
-    // res.send("I am searching accommodation");
 }
 
 /*
-Search Recommendation based on overall ratings
-and how much would be returned
-via req.body.returnLength for each category.
-Realistically, due to the number of accommodations present,
-its number should be limited by req.body.accommLength
-The response is ordered by the ratings
-and all of the accommodations are unarchived.
+Search Recommendation
+req.body is an object that should have:
+    - a key named "searchString" that contains a string to be searched in the database
 
+A successful search will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+    - a key result with an array of the documents being searched by the user
+
+A unsuccessful search will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed search
 */
 const recommendAccomm = async (req, res) => {
     // OPTIONAL
@@ -343,12 +351,20 @@ const recommendAccomm = async (req, res) => {
     //res.send("I am recommending accommodations.");
 }
 
-//bookmark functionality
-//req.body is an object that should have:
-//      - two ids, the user and the id of accommodation to be bookmarked
-//if success, it will have res.body that contains
-//  - a key "success" with a value true else false
-//  - a key error with a value "Bookmark Success" else "Bookmark Failed"
+/*
+Bookmark Functionality
+req.body is an object that should have:
+    - user_id which is the id of the user
+    - accomm_id which is the id of the accommodation
+
+A successful bookmark will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+
+A unsuccessful bookmark will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed operation
+*/
 const bookmarkAccomm = async (req, res) => {
     try {
         const bookmark_details = req.body;
@@ -358,24 +374,32 @@ const bookmarkAccomm = async (req, res) => {
             { _id: bookmark_details.user_id },
             { $addToSet: { bookmarks: bookmark_details.accomm_id } }
         ).then((result) => {
-            res.send({ success: true, message: "Bookmark Success" });
+            res.send({ success: true, msg: "Bookmark Success" });
         })
             .catch((error) => {
                 console.log(error);
-                res.send({ success: false, error: "Bookmark Failed" });
+                res.send({ success: false, msg: "Bookmark Failed" });
             });
     } catch (err) {
-        res.status(500).send({ error: err.message });
+        res.send({ success: false, msg: err.message });
         console.error(err);
     }
 }
 
-//remove bookmark functionality
-//req.body is an object that should have:
-//      - two ids, the user and the id of accommodation to be removed in bookmarks
-//if success, it will have res.body that contains
-//  - a key "success" with a value true else false
-//  - a key error with a value "Remove Bookmark Success" else "Remove Bookmark Failed"
+/*
+Remove Bookmark Functionality
+req.body is an object that should have:
+    - user_id which is the id of the user
+    - accomm_id which is the id of the accommodation
+
+A successful bookmark will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+
+A unsuccessful bookmark will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed operation
+*/
 const removeBookmarkAccomm = async (req, res) => {
     try {
         const bookmark_details = req.body;
@@ -385,14 +409,14 @@ const removeBookmarkAccomm = async (req, res) => {
             { _id: bookmark_details.user_id },
             { $pull: { bookmarks: bookmark_details.accomm_id } }
         ).then((result) => {
-            res.send({ success: true, message: "Remove Bookmark Success" });
+            res.send({ success: true, msg: "Remove Bookmark Success" });
         })
             .catch((error) => {
                 console.log(error);
-                res.send({ success: false, error: "Remove Bookmark Failed" });
+                res.send({ success: false, msg: "Remove Bookmark Failed" });
             });
     } catch (err) {
-        res.status(500).send({ error: err.message });
+        res.send({ success: false, msg: err.message });
         console.error(err);
     }
 }
