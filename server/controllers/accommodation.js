@@ -373,9 +373,10 @@ const generateRep = async (req, res) => {
         doc.end();
 
         console.log(`PDF report saved to ${filePath}`);
+        res.send({success: true, message: "PDF Report Successfully Generated."})
     } catch (error) {
         console.log(error);
-        res.send({success: false, message: "PDF Report Generation Failed."})
+        res.send({success: false, message: "PDF Report Generation Failed.", error: error.message})
     }
 };
 
@@ -414,14 +415,14 @@ const reportAccomm = async (req, res) => {
             {_id: report_details.user_id},
             { $push: {reports: custom_id} }
         ).then((result) => {
-            res.send("Successfully appended report to user");
+            res.send({success: true, message: "Successfully appended report to user"});
         })
         .catch((error) => {
             console.log(error);
-            res.send({success: false, error: "Report Appending Failed"});
+            res.send({success: false, message: "Report Appending Failed",error: error.message});
         });
-    }  catch (err) {
-        res.send({success: false, error: err.message})
+    }  catch (error) {
+        res.send({success: false, message: "Report Accommodation Failed", error: error.message})
     }
     //res.send("I am reporting an accommodation");
 }
