@@ -114,20 +114,21 @@ const deleteReview = async (req, res) => {
 // returns all reviews of a given user or a property
 // returns empty array if no reviews were found
 const getReview = async (req, res) => {
-
+    const review_details = req.body;
     let queryObject;
 
-    if (req.body.userId) {
-        queryObject = { userId: req.body.userId };
-    } else if (req.body.propertyId) {
-        queryObject = { propertyId: req.body.propertyId };
+    if (review_details.user) {
+        const user = await User.findOne({ email: review_details.user });
+        queryObject = { userId: user._id };
+    } else if (review_details.propertyId) {
+        queryObject = { propertyId: review_details.propertyId };
     }
 
     try {
-        const result = await Review.find(queryObject);
-        res.send({ success: true, result: result });
-    } catch (error) {
-        res.send({ success: false, error: error });
+        const doc = await Review.find(queryObject);
+        res.send({ success: true, msg: "Successfully retrieved reviews", result: doc });
+    } catch (err) {
+        res.send({ success: false, msg: err });
     }
 }
 
