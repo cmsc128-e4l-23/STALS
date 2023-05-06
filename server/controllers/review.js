@@ -2,8 +2,21 @@ import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Review from "../models/Review.js";
 
-// Used to add reviews
-// Throws error if user is not found
+//add review functionality
+//req.body is an object that should have:
+//     user: #email of the user#,
+//     propertyId: #id of property/accomm#,
+//     content: #review content#,
+//     rating: #rating for accommodation (0-5)#,
+//     photos: #photos related to review (optional#
+
+//A successful search will result to a res.body that contains
+//  - a key "success" with a value true
+//  - a key msg with string Successfully added new review
+
+//A unsuccessful search will result to a res.body that contains
+//  - a key "success" with a value false
+//  - a key msg with a value of the error encountered
 const addReview = async (req, res) => {
     const review_details = req.body;
 
@@ -44,8 +57,20 @@ const addReview = async (req, res) => {
         })
 }
 
-// Used for editing already made reviews
-// Throws an error if review does not exist
+//edit review functionality
+//req.body is an object that should have:
+//     _id: #id of review#,
+//     content: #review content (optional)#,
+//     rating: #rating for accommodation (0-5) (optional)#,
+//     photos: #photos related to review (optional)#
+
+//A successful search will result to a res.body that contains
+//  - a key "success" with a value true
+//  - a key msg with string Successfully edited review
+
+//A unsuccessful search will result to a res.body that contains
+//  - a key "success" with a value false
+//  - a key msg with a value of the error encountered
 const editReview = async (req, res) => {
     const review_details = req.body;
     let updateObject = { $set: {} };
@@ -71,9 +96,19 @@ const editReview = async (req, res) => {
     }
 }
 
-// Deletes an existing review and also deletes it from the user's
-// review list
-// Throws an error if review or user if user is not found
+//delete review functionality - Deletes an existing review as well as user's copy
+//req.body is an object that should have:
+//     _id: #id of review#,
+//     user: #email of the user#,
+//     propertyId: #id of property/accomm#,
+
+//A successful search will result to a res.body that contains
+//  - a key "success" with a value true
+//  - a key msg with string Successfully deleted review
+
+//A unsuccessful search will result to a res.body that contains
+//  - a key "success" with a value false
+//  - a key msg with a value of the error encountered
 const deleteReview = async (req, res) => {
     const review_details = req.body;
 
@@ -111,8 +146,20 @@ const deleteReview = async (req, res) => {
     }
 }
 
-// returns all reviews of a given user or a property
-// returns empty array if no reviews were found
+//get review functionality
+//req.body is an object that should have:
+//     _id: #id of review#,
+//     user: #email of the user#,
+//     propertyId: #id of property/accomm#,
+
+//A successful search will result to a res.body that contains
+//  - a key "success" with a value true
+//  - a key msg with string Successfully deleted review
+// - a key "result" with all reviews of a given user or a property
+
+//A unsuccessful search will result to a res.body that contains
+//  - a key "success" with a value false
+//  - a key msg with a value of the error encountered
 const getReview = async (req, res) => {
     const review_details = req.body;
     let queryObject;
