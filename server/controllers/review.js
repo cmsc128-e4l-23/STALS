@@ -83,7 +83,7 @@ const deleteReview = async (req, res) => {
 
         if (doc) {
             //Deleting review from the user and the accommodation
-            const user = await User.findById(review_details.userId);
+            const user = await User.findOne({ email: review_details.user });
             const accomm = await Accommodation.findById(review_details.propertyId);
             // the user should also match the 
 
@@ -99,7 +99,7 @@ const deleteReview = async (req, res) => {
                 if (!user) throw new Error("User not found");
                 if (!accomm) throw new Error("Accommodation not found");
                 // for additional security measures
-                if (!doc.userId.equals(user._id)) throw new Error("User id mismatch! Report found but incorrect userId");
+                if (!doc.user.equals(user.email)) throw new Error("User id mismatch! Report found but incorrect userId");
                 if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
 
             }
