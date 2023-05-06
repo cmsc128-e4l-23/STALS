@@ -257,32 +257,32 @@ const searchAccomm = async (req, res) => {
 Search Recommendation
 req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
+    - a key named "accommLength" which would be the number of accommodations
+        to be sampled from the database
+    - a key named "returnLength" which would be the number of accommodations to be returned 
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
     - a key "msg" indicating that the operation is successful
-    - a key result with an array of the documents being searched by the user
+    - a key "result" with an array of objects with at least one rating
+        * The objects contain the following:
+            - a key "accommodation" which contains the accommodation object
+            - a key "rating" which contains the rating
+            - a key "ratingNum" which contains the number of ratings
 
 A unsuccessful search will result to a res.body that contains
     - a key "success" with a value false
     - a key "msg" with a value indicating a failed search
 */
 const recommendAccomm = async (req, res) => {
-    // OPTIONAL
-    const searchLocs = req.body.searchLocs;
-    const searchType = req.body.searchType;
-    const minPrice = parseFloat(req.body.minPrice);
-    const maxPrice = parseFloat(req.body.maxPrice);
-    // CRUCIAL
+    const searchString = req.body.searchString;
     const returnLength = parseInt(req.body.returnLength);
     const accommLength = parseInt(req.body.accommLength);
-    // Get the general recommended accomms based
-    // on the top rating of the recommendations
     try {
         if (!returnLength && returnLength <= 0) throw new Error("Return Length must be a postiive integer");
         if (!accommLength && accommLength <= 0) throw new Error("Accomm Length must be a positive integer");
-        // the ultimate return object
-        let returnobject = {}
+        if (returnLength > accommLength) throw new Error("Return Length must be less than or equal to Accomm Length")
+
         // search randomly unarchived accomms w/ at least one review
         const randsearch = await Accommodation.aggregate(
             [{$match: {archived: false, reviews: {$ne: []}}},
@@ -299,56 +299,21 @@ const recommendAccomm = async (req, res) => {
                 sum += actualrev.rating;
             }
             // calculate the total rating
-            let rating = ((sum+1)/(reviewnum+1)).toFixed(2);// adding 1 to numerator and denominator
-            // to estimate accurate rating in case reviews are too low
-            sortlist.push({accommId: accomm._id, rating: rating});
+            let rating = (sum/reviewnum).toFixed(2);
+            sortlist.push({accommodation: accomm, rating: rating, ratingNum: reviewnum});
         }
         // then order the sorted list by rating
         sortlist.sort((a, b)=>{return b.rating - a.rating})
-
         // get only the return length
         // this is for the top rated flag
         if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
-        // append the sortlist to the return object
-        returnobject.topAccomms = sortlist;
 
-        // from searches of other optional requirements
-        if (searchLocs) {
-            let locslist = randsearch.filter((elem)=>{
-                return (elem.address.province.toLowerCase() == searchLocs.toLowerCase())
-            })
-            if (returnLength <= locslist.length) locslist = locslist.slice(0, returnLength);
-            returnobject.nearAccomms = locslist;
-        }
-
-        if (searchType) {
-            let typelist = randsearch.filter((elem)=>{
-                return (elem.accommodationType.toLowerCase() == searchType.toLowerCase())
-            })
-            if (returnLength <= typelist.length) typelist = typelist.slice(0, returnLength);
-            returnobject.similarType = typelist;
-        }
-
-        if (minPrice != null && maxPrice != null) {
-            if (minPrice < 0) throw new Error("Minimum price must be a positive float.");
-            if (maxPrice < 0) throw new Error("Maximum price must be a positive float.");
-            if (minPrice > maxPrice) throw new Error("Minimum price must be less than max price");
-            let pricelist = randsearch.filter((elem)=>{
-                return (parseFloat(elem.priceRange.minPrice) >= minPrice && parseFloat(elem.priceRange.maxPrice) <= maxPrice)
-            })
-            if (returnLength <= pricelist.length) pricelist = pricelist.slice(0, returnLength);
-            returnobject.similarPrice = pricelist;
-        }
-
-        // finally return
-        res.send({success: true, result: returnobject});
+        res.send({success: true, msg: "Search Recommendation Successful", result: sortlist})
 
     } catch (error) {
-        res.send({success: false, error: "Search Recommendation Failed"});
+        res.send({success: false, msg: "Search Recommendation Failed"});
         console.error(error);
     }
-
-    //res.send("I am recommending accommodations.");
 }
 
 /*
