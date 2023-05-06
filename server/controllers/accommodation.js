@@ -332,31 +332,10 @@ const generateRep = async (req, res) => {
             //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
             //     }
             // }
-
-            doc.font(boldFont).fontSize(fSize12).text(`Restrictions:`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Curfew:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.curfew}`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Pets:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.pets}`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Cooking:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.cooking}`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Visitors:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.visitors}`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Co-ed:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.coedStatus}`);
-
-            doc.font(boldOblique).fontSize(fSize12).text(`   Wifi:`)
-            doc.font(regularFont).text(`      ${accommodation.restrictions.wifi}`);
-            
-            if(accommodation.restrictions.phoneSignal){
-                // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
-                doc.font(boldOblique).fontSize(fSize12).text(`   Phone Signal:`)
-                doc.font(regularFont).text(`      ${accommodation.restrictions.phoneSignal}`);
+            if(accommodation.restrictions){
+                doc.font(boldFont).fontSize(fSize12).text(`Restrictions: `)
+                doc.font(regularFont).text(`\u0020 ${accommodation.restrictions}`);
+                doc.moveDown();
             }
             
             doc.moveDown(); 
@@ -366,6 +345,7 @@ const generateRep = async (req, res) => {
                 doc.moveDown();
                 
             }
+            
             doc.moveDown();
         });
     
