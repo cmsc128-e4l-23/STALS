@@ -50,15 +50,9 @@ const editReview = async (req, res) => {
     const review_details = req.body;
     let updateObject = { $set: {} };
 
-    if (review_details.content) {
-        updateObject.$set.content = review_details.content;
-    }
-    if (review_details.rating) {
-        updateObject.$set.rating = review_details.rating;
-    }
-    if (review_details.photos) {
-        updateObject.$set.photos = review_details.photos;
-    }
+    if (review_details.content) updateObject.$set.content = review_details.content;
+    if (review_details.rating) updateObject.$set.rating = review_details.rating;
+    if (review_details.photos) updateObject.$set.photos = review_details.photos;
 
     try {
         const result = await Review.findByIdAndUpdate(
@@ -67,15 +61,14 @@ const editReview = async (req, res) => {
         );
 
         if (result) {
-            res.send({ success: true, message: "Successfully edited review" });
+            res.send({ success: true, msg: "Successfully edited review" });
         } else {
             throw new Error("Review not found");
         }
-    } catch (error) {
-        console.log(error);
-        res.send({ success: false, message: "Failed to edit review", error: error });
-    }
 
+    } catch (err) {
+        res.send({ success: false, msg: err });
+    }
 }
 
 // Deletes an existing review and also deletes it from the user's
