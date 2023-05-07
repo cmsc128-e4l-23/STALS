@@ -206,16 +206,17 @@ const editAccomm = async (req, res) => {
 const deleteAccomm = async (req, res) => {
     const accomm_details = req.body;
     //delete the accomodation with the id
-    Accommodation.deleteOne(
-        { _id: accomm_details._id }
-    )
-        .then((result) => {
-            res.send({ success: true, message: "Successfully deleted accommodation" });
-        })
-        .catch((err) => {
-            console.log(err);
-            res.send({ success: false, error: "Deletion Failed" });
-        })
+    Accommodation.findByIdAndDelete(accomm_details._id)
+    .then((res) => {
+        User.findByIdAndUpdate(
+                accomm_details.owner, 
+                { "$pull": { "owner.propertiesList": accomm_details._id}})
+                .then(
+                    res.send({success: true, message: "Successfully deleted accommodation"})
+                )
+    }).catch((err) => {
+        res.send({success: false, message: err});
+    })
 }
 
 //search functionality
