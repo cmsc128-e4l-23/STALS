@@ -66,8 +66,7 @@ const archiveAccomm = async (req, res) => {
         })
         .catch((error) => {
             console.log(err);
-
-            res.send({ success: false, error: "Archive Failed" });
+            res.send({ success: false, message: "Archive Failed" });
         })
 }
 

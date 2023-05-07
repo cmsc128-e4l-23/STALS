@@ -8,6 +8,7 @@ export default function AccommodationList(){
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const [isLoggedIn, setLoggedIn] = useState(null);
     useEffect(() => {
@@ -22,6 +23,7 @@ export default function AccommodationList(){
                     setLoggedIn(data.isLoggedIn);
                     setName(localStorage.getItem('username'));
                     setEmail(localStorage.getItem('email'));
+                    setLoading(false);
                 }else{
                     navigate('/home');
                 }
@@ -33,15 +35,19 @@ export default function AccommodationList(){
     }, [navigate, isLoggedIn]);
 
     return(
-    <>
-    <div>
-        <div id='user-info'>
-            {name}'s Accommodations
-        </div>
-        <div id='list-container'>
-            <List email={email} />
-        </div>
-    </div>
-    </>
+        <>
+        {
+            loading ?
+            <div>Loading</div> :
+            <div>
+                <div id='user-info'>
+                    {name}'s Accommodations
+                </div>
+                <div id='list-container'>
+                    <List email={email}/>
+                </div>
+            </div>
+        }
+        </>
     );
 }

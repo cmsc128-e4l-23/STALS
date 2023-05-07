@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DeleteModal from './DeleteModal';
 
-export default function DeleteButton({ accommodation, setAccomms }){
+export default function DeleteButton({ accommodation, setLoading }){
     const [modalOpen, setModalOpen] = useState(false);
 
 
@@ -11,7 +11,7 @@ export default function DeleteButton({ accommodation, setAccomms }){
             Delete
         </button>
 
-        {modalOpen && <DeleteModal setModalOpen={setModalOpen} setAccomms={setAccomms} accommodation={accommodation} />}
+        {modalOpen && <DeleteModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
         </>
     )
 }

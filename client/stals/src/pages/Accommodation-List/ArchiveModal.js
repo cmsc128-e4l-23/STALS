@@ -1,9 +1,9 @@
 import React from "react";
 import "./Modal.css";
 
-export default function DeleteModal({ setModalOpen, setLoading, accommodation }) {
-    const deleteAccomm = () => {
-        fetch('http://localhost:3001/deleteAccomm', {
+export default function ArchiveModal({ setModalOpen, setLoading, accommodation }) {
+    const archiveAccomm = () => {
+        fetch('http://localhost:3001/archiveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(accommodation)
@@ -33,7 +33,7 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation })
                     </button>
                 </div>
                 <div className="title">
-                    <h1>Are You Sure You Want to Delete?</h1>
+                    <h1>Are You Sure You Want to Archive?</h1>
                 </div>
                 <div className="footer">
                     <button
@@ -46,7 +46,7 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation })
                     </button>
                     <button
                         onClick={() => {
-                            deleteAccomm();
+                            archiveAccomm();
                         }} 
                     >
                         Continue
