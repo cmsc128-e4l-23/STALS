@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DeleteButton from "./DeleteButton.";
 
 
 
@@ -21,7 +22,7 @@ export default function List({email}){
     }, [email])
     return(
         <>
-        {accomms && accomms.map((accomm) => <li>{accomm.name}</li>)}
+        {accomms && accomms.map((accomm) => <li>{accomm.name}<DeleteButton accommodation={accomm} setAccomms={setAccomms} /></li>)}
         </>
     )
 }
