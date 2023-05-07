@@ -3,6 +3,7 @@ import React from "react";
 export default function BasicInfo({ formData, setFormData }) {
     return(
         <div style ={{position: "relative",display:"flex", flexDirection:"column", width: "500px", fontSize:"Larger"}} className="basic-info-form-container">
+            
             <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center"}}
             type="text" 
                 placeholder="Accommodation Name..." 
@@ -18,6 +19,7 @@ export default function BasicInfo({ formData, setFormData }) {
             {/* FIXME:fix input type */}
 
             <div className="address-field" style ={{display:"flex", flexDirection:"column"}}>
+                
                 <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center"}}
                     type="text" 
                     placeholder="City..." 
@@ -27,6 +29,7 @@ export default function BasicInfo({ formData, setFormData }) {
                     }    
                 />
                 <label style={{borderRadius: "5px", position: 'absolute', top: '150px', left: '50px', backgroundColor: 'white', padding: '0 5px', fontSize: '14px', color: 'maroon' }}>City</label>
+                
                 <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center"}}
                     type="text" 
                     placeholder="Barangay..."
@@ -36,6 +39,7 @@ export default function BasicInfo({ formData, setFormData }) {
                     }
                 />
                  <label style={{borderRadius: "5px", position: 'absolute', top: '307px', left: '50px', backgroundColor: 'white', padding: '0 5px', fontSize: '14px', color: 'maroon' }}>Street</label>
+                
                 <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center"}}
                     type="text" 
                     placeholder="Street Name..." 
@@ -45,6 +49,7 @@ export default function BasicInfo({ formData, setFormData }) {
                     }
                 />
                  <label style={{borderRadius: "5px", position: 'absolute', top: '228px', left: '50px', backgroundColor: 'white', padding: '0 5px', fontSize: '14px', color: 'maroon' }}>Barangay</label>
+                
                 <input style={{ backgroundColor: "#f7f7f7", border: "1px solid #751518", borderRadius: "5px", padding: "10px", marginBottom: "30px", width: "80%", fontSize: "larger",alignSelf:"center", max:"4"}}
                     type="number" 
                     placeholder="Postal Code..."
