@@ -2,30 +2,30 @@ import needle from "needle";
 import mongoose from "mongoose";
 
 // ========================== ADD ACCOMMODATION ==========================
-const url = "http://localhost:3001/addAccomm";
-// const newAccommodation1 = {
-//     accommodationID: new mongoose.Types.ObjectId(),
-//     name: "White House",
-//     landmarks: ["Raymundo Gate"],
-//     address: {
-//       postCode: "1234",
-//       street: "Street 10",
-//       barangay: "Barangay 11",
-//       city: "City 12",
-//       province: "Laguna",
-//       region: "CALABARZON"
-//     },
-//     generalLocation: 1,
-//     accommodationType: "Transient",
-//     amenities: "Free Wi-Fi",
-//     priceRange: {
-//       minPrice: 5000,
-//       maxPrice: 10000
-//     },
-//     description: "A place to stay at!",
-//     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-//     restrictions: ["no visitors allowed"]
-//   };
+// const url = "http://localhost:3001/addAccomm";
+const newAccommodation1 = {
+    owner: "6458b94082442da5c8771d93",
+    name: "White House",
+    landmarks: ["Raymundo Gate"],
+    address: {
+      postCode: "1234",
+      street: "Street 10",
+      barangay: "Barangay 11",
+      city: "City 12",
+      province: "Laguna",
+      region: "CALABARZON"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: "Free Wi-Fi",
+    priceRange: {
+      minPrice: 5000,
+      maxPrice: 10000
+    },
+    description: "A place to stay at!",
+    photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+    restrictions: ["no visitors allowed"]
+  };
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
@@ -174,7 +174,6 @@ const url = "http://localhost:3001/addAccomm";
 //   };
 
 
-
 // needle.post(url, accommodation4, { json: true }, (err, res, body) => {
 //   if (err) {
 //     console.error(err);
@@ -199,13 +198,20 @@ const url = "http://localhost:3001/addAccomm";
 //     }
 //   });
 
-//   needle.post(url, accommodation1, { json: true }, (err, res, body) => {
+//   needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 //     if (err) {
 //       console.error(err);
 //     } else {
 //       console.log(body);
 //     }
 //   });
+
+// needle.post("http://localhost:3001/addAccomm",
+//     newAccommodation1, 
+//     (err,res) => {
+//         console.log(res.body);
+//     }
+// )
 
 // fetched from test-cases branch
 // const data = [
@@ -303,7 +309,7 @@ const url = "http://localhost:3001/addAccomm";
 // ========================== ARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/archiveAccomm",
 //     {
-//         _id: "643665dccee7fa1d7dd408ea"
+//         _id: "645881e98f9b89a70c1d4596"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -313,7 +319,7 @@ const url = "http://localhost:3001/addAccomm";
 // ========================== UNARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/unarchiveAccomm",
 //     {
-//         _id: "643665dccee7fa1d7dd408ea"
+//         _id: "645881e98f9b89a70c1d4596"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -324,7 +330,7 @@ const url = "http://localhost:3001/addAccomm";
 // edit 1 (complete requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '645881e98f9b89a70c1d4596',
 //         name: 'Never',
 //         landmarks: [ 'Gonna' ],
 //         address: {
@@ -356,7 +362,7 @@ const url = "http://localhost:3001/addAccomm";
 // edit 2 (half requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '645881e98f9b89a70c1d4596',
 //         name: 'UP TRANSIENT HOUSE',
 //         landmarks: [ 'Oblation', 'CAS Building' ],
 //         address: {
@@ -379,7 +385,7 @@ const url = "http://localhost:3001/addAccomm";
 // // edit 3 (description only)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '645881e98f9b89a70c1d4596',
 //         description: "BEST PLACE TO STAY! GUARANTEED 100% NO CAP!"
 //     },
 //     (err, res) => {
@@ -389,46 +395,46 @@ const url = "http://localhost:3001/addAccomm";
 
 
 // edit 4 (original edit)
-// needle.post("http://localhost:3001/editAccomm",
-//     {
-//         _id: '643665dccee7fa1d7dd408ea',
-//         name: 'UP DORM',
-//         landmarks: [ 'Oblation', 'CAS Building' ],
-//         address: {
-//             postCode: '1111',
-//             street: 'Kalsada street',
-//             barangay: 'Batong Malake',
-//             city: 'Los Banos',
-//             province: 'Laguna',
-//             region: 'Region IV'
-//         },
-//         generalLocation: 12345,
-//         accommodationType: 'Dorm',
-//         amenities: [ 'Toiletries' ],
-//         priceRange: {
-//             minPrice: 500,
-//             maxPrice: 5000
-//         },
-//         // priceRange: 5000,
-//         description: 'Available to all UP Students',
-//         photos: [ 'Photo 1', 'Photo 2' ],
-//         // restrictions: {     
-//         //     curfew: 'Yes',
-//         //     pets: 'Not Allowed',
-//         //     cooking: 'Not Allowed',
-//         //     visitors: 'Not Allowed',
-//         //     coedStatus: 'No',
-//         //     wifi: 'With WiFi',
-//         //     phoneSignal: 'Fair'
-//         // },
-//         restrictions: ["No curfew", "with WiFi"],
-//         security: 'Very Secure',
-//         archived: false
-//     },
-//     (err, res) => {
-//         console.log(res.body)
-//     }
-// )
+needle.post("http://localhost:3001/editAccomm",
+    {
+        _id: '643665dccee7fa1d7dd408ea',
+        name: 'UP DORM',
+        landmarks: [ 'Oblation', 'CAS Building' ],
+        address: {
+            postCode: '1111',
+            street: 'Kalsada street',
+            barangay: 'Batong Malake',
+            city: 'Los Banos',
+            province: 'Laguna',
+            region: 'Region IV'
+        },
+        generalLocation: 12345,
+        accommodationType: 'Dorm',
+        amenities: [ 'Toiletries' ],
+        priceRange: {
+            minPrice: 2000,
+            maxPrice: 5000
+        },
+        // priceRange: 5000,
+        description: 'Available to all UP Students',
+        photos: [ 'Photo 1', 'Photo 2' ],
+        // restrictions: {     
+        //     curfew: 'Yes',
+        //     pets: 'Not Allowed',
+        //     cooking: 'Not Allowed',
+        //     visitors: 'Not Allowed',
+        //     coedStatus: 'No',
+        //     wifi: 'With WiFi',
+        //     phoneSignal: 'Fair'
+        // },
+        restrictions: ["No curfew", "with WiFi"],
+        security: 'Very Secure',
+        archived: false
+    },
+    (err, res) => {
+        console.log(res.body)
+    }
+)
 
 // needle.get("http://localhost:3001/viewAccomm",
 //     {
@@ -450,9 +456,9 @@ const url = "http://localhost:3001/addAccomm";
 // );
 
 // ========================== DELETE ACCOMMODATION ==========================
-// needle.delete("http://localhost:3001/deleteAccomm",
+// needle.post("http://localhost:3001/deleteAccomm",
 //     {
-//         _id: "6437c2d8b74cee2c7bfbc15f"
+//         _id: "6458bf03d7c65f23d7589436"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
