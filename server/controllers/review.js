@@ -22,9 +22,8 @@ const addReview = async (req, res) => {
 
     User.findOne({ email: review_details.user })
         .then(async (document) => {
-            if (!document) {
-                throw "User not found!";
-            }
+            if (!document) throw new Error("User not found!");
+
             //Adding the newly created review to current user and to the accommodation
             const user = await User.findById(document._id);
             const accomm = await Accommodation.findById(review_details.propertyId);
@@ -47,12 +46,12 @@ const addReview = async (req, res) => {
 
                 res.send({ success: true, msg: "Successfully added new review" });
             } else {
-                if (!user) throw "User not found";
-                if (!accomm) throw "Accommodation not found";
+                if (!user) throw new Error("User not found");
+                if (!accomm) throw new Error("Accommodation not found");
             }
 
         }).catch((err) => {
-            res.send({ success: false, msg: err });
+            res.send({ success: false, msg: "Adding new review Failed", error: err.message });
         })
 }
 
@@ -84,14 +83,11 @@ const editReview = async (req, res) => {
             updateObject
         );
 
-        if (result) {
-            res.send({ success: true, msg: "Successfully edited review" });
-        } else {
-            throw new Error("Review not found");
-        }
+        if (result) res.send({ success: true, msg: "Successfully edited review" });
+        else throw new Error("Review not found");
 
     } catch (err) {
-        res.send({ success: false, msg: err });
+        res.send({ success: false, msg: "Editing review failed", error: err.message });
     }
 }
 
@@ -119,8 +115,8 @@ const deleteReview = async (req, res) => {
             //Deleting review from the user and the accommodation
             const user = await User.findOne({ email: review_details.user });
             const accomm = await Accommodation.findById(review_details.propertyId);
-            // the user should also match the 
 
+            // the user should also match
             if (user && accomm && doc.userId.equals(user._id) && doc.propertyId.equals(accomm._id)) {
                 user.reviews.pull(review_details._id);
                 accomm.reviews.pull(review_details._id);
@@ -137,11 +133,9 @@ const deleteReview = async (req, res) => {
                 if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
 
             }
-        } else {
-            throw new Error("Review not found");
-        }
+        } else throw new Error("Review not found");
     } catch (err) {
-        res.send({ success: false, msg: err });
+        res.send({ success: false, msg: "Deleting review failed", error: err.message });
     }
 }
 
@@ -164,17 +158,24 @@ const getReview = async (req, res) => {
     let queryObject;
 
     if (review_details.user) {
-        const user = await User.findOne({ email: review_details.user });
-        queryObject = { userId: user._id };
+        try {
+            const user = await User.findOne({ email: review_details.user });
+            if (user) queryObject = { userId: user._id };
+            else throw new Error("User not found");
+        } catch (err) {
+            res.send({ success: false, msg: "Retrieval of reviews failed", error: err.message });
+        }
+
     } else if (review_details.propertyId) {
         queryObject = { propertyId: review_details.propertyId };
     }
 
     try {
         const doc = await Review.find(queryObject);
-        res.send({ success: true, msg: "Successfully retrieved reviews", result: doc });
+        if (doc) res.send({ success: true, msg: "Successfully retrieved reviews", result: doc });
+        else throw new Error("Cannot retrieve reviews");
     } catch (err) {
-        res.send({ success: false, msg: err });
+        res.send({ success: false, msg: "Retrieval of reviews failed", error: err.message });
     }
 }
 
