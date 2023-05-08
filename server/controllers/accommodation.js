@@ -418,7 +418,6 @@ const fetchBookmarks = async (userID) => {
 
 
 //Functions that generates a pdf file of the bookmarked accommmodations of the user
-
 //Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
 const generateRep = async (req, res) => {
     try {
@@ -495,10 +494,10 @@ const generateRep = async (req, res) => {
         doc.end();
 
         console.log(`PDF report saved to ${filePath}`);
-        res.send({success: true, message: "PDF Report Successfully Generated."})
+        res.send({success: true, msg: "PDF Report Successfully Generated."})
     } catch (error) {
         console.log(error);
-        res.send({success: false, message: "PDF Report Generation Failed.", error: error.message})
+        res.send({success: false, msg: "PDF Report Generation Failed.", error: error.message})
     }
 };
 
@@ -535,14 +534,14 @@ const reportAccomm = async (req, res) => {
             {_id: report_details.user_id},
             { $push: {reports: report._id} }
         ).then((result) => {
-            res.send({success: true, message: "Successfully appended report to user"});
+            res.send({success: true, msg: "Successfully appended report to user"});
         })
         .catch((error) => {
             console.log(error);
-            res.send({success: false, message: "Report Appending Failed",error: error.message});
+            res.send({success: false, msg: "Report Appending Failed",error: error.message});
         });
     }  catch (error) {
-        res.send({success: false, message: "Report Accommodation Failed", error: error.message})
+        res.send({success: false, msg: "Report Accommodation Failed", error: error.message})
     }
     //res.send("I am reporting an accommodation");
 }
