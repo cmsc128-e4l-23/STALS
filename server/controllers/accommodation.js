@@ -431,90 +431,74 @@ const generateRep = async (req, res) => {
 
 
         // doc.pipe(res)       // Use instead if implemented on web browser already
-
+        const boldFont = "./font/Helvetica-Bold.ttf";
+        const regularFont = "./font/Helvetica.ttf";
+        const boldOblique = "./font/Helvetica-BoldOblique.ttf";
+        const fSize12 = 12; //fontSize 12.
         // Edit the PDF file
-        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true });
+        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
         doc.moveDown();
         bookmarks.forEach((accommodation, index) => {
             doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
             doc.moveDown();
-            if (accommodation.landmarks) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Landmarks:`);
-                doc.font("./font/Helvetica.ttf").fontSize(12).list(accommodation.landmarks);
+            if(accommodation.landmarks){
+                doc.font(boldFont).fontSize(fSize12).text(`Landmarks:`);
+                doc.font(regularFont).fontSize(fSize12).list(accommodation.landmarks);
                 doc.moveDown();
             }
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Address: `)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
+            
+            doc.font(boldFont).fontSize(fSize12).text(`Address: `)
+            doc.font(regularFont).text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
             doc.moveDown();
 
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Accommodation Type: `)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.accommodationType}`);
+            doc.font(boldFont).fontSize(fSize12).text(`Accommodation Type: `)
+            doc.font(regularFont).text(`\u0020 ${accommodation.accommodationType}`);
             doc.moveDown();
 
-            if (accommodation.amenities) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Amenities: `)
-                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.amenities}`);
+            if(accommodation.amenities){
+                doc.font(boldFont).fontSize(fSize12).text(`Amenities: `)
+                doc.font(regularFont).text(`\u0020 ${accommodation.amenities}`);
                 doc.moveDown();
             }
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Price Range:`)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
+            doc.font(boldFont).fontSize(fSize12).text(`Price Range:`)
+            doc.font(regularFont).text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
             doc.moveDown();
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Description:`)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.description}`);
+            
+            doc.font(boldFont).fontSize(fSize12).text(`Description:`)
+            doc.font(regularFont).text(`\u0020 ${accommodation.description}`);
             doc.moveDown();
-
+            
             //Further Implementation
             // if(accommodation.photos.length > 0){
             //     for(let i=0; i<accommodation.photos.length; i++){
             //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
             //     }
             // }
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Restrictions:`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Curfew:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.curfew}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Pets:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.pets}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Cooking:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.cooking}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Visitors:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.visitors}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Co-ed:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.coedStatus}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Wifi:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.wifi}`);
-
-            if (accommodation.restrictions.phoneSignal) {
-                // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
-                doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Phone Signal:`)
-                doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.phoneSignal}`);
-            }
-
-            doc.moveDown();
-            if (accommodation.security) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Security:`)
-                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.security}`);
+            if(accommodation.restrictions){
+                doc.font(boldFont).fontSize(fSize12).text(`Restrictions: `)
+                doc.font(regularFont).text(`\u0020 ${accommodation.restrictions}`);
                 doc.moveDown();
-
             }
+            
+            doc.moveDown(); 
+            if(accommodation.security){
+                doc.font(boldFont).fontSize(fSize12).text(`Security:`)
+                doc.font(regularFont).text(`\u0020 ${accommodation.security}`);
+                doc.moveDown();
+                
+            }
+            
             doc.moveDown();
         });
-
+    
         // "Close" the PDF file and send it to where `pipe` specifies it to go
         doc.end();
 
         console.log(`PDF report saved to ${filePath}`);
+        res.send({success: true, message: "PDF Report Successfully Generated."})
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error generating report');
+        res.send({success: false, message: "PDF Report Generation Failed.", error: error.message})
     }
 };
 
