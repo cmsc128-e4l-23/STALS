@@ -520,10 +520,8 @@ You may refer to test.js to check how it is used
 const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
-        const custom_id = new mongoose.Types.ObjectId();
 
         const report = new Report({
-            _id: custom_id,
             user: report_details.user_id,
             reported: report_details.reported_id,
             classification: report_details.classification,
@@ -535,7 +533,7 @@ const reportAccomm = async (req, res) => {
 
         User.updateOne(
             {_id: report_details.user_id},
-            { $push: {reports: custom_id} }
+            { $push: {reports: report._id} }
         ).then((result) => {
             res.send({success: true, message: "Successfully appended report to user"});
         })
