@@ -550,21 +550,21 @@ const reportAccomm = async (req, res) => {
         // also add that report to the user
 
         User.updateOne(
-            { _id: report_details.user_id },
-            { $push: { reports: custom_id } }
+            {_id: report_details.user_id},
+            { $push: {reports: custom_id} }
         ).then((result) => {
-            res.send("Successfully appended report to user");
+            res.send({success: true, message: "Successfully appended report to user"});
         })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, error: "Report Appending Failed" });
-            });
-    } catch (err) {
-        res.status(500).send({ error: err.message });
-        console.error(err);
+        .catch((error) => {
+            console.log(error);
+            res.send({success: false, message: "Report Appending Failed",error: error.message});
+        });
+    }  catch (error) {
+        res.send({success: false, message: "Report Accommodation Failed", error: error.message})
     }
     //res.send("I am reporting an accommodation");
 }
+
 
 export default {
     addAccomm,
