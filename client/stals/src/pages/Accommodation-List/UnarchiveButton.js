@@ -9,14 +9,15 @@ export default function UnarchiveButton({ accommodation, setLoading }){
 
     return(
         <>
+        {modalOpen && <UnarchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
+
         <button className='unarchive-btn' onClick={() => setModalOpen(true)}>
             Unarchive
-            <span style={iconStyle}>
+            <span className='btn-icon'>
                 <FontAwesomeIcon icon={faArchive}/>
             </span>
         </button>
 
-        {modalOpen && <UnarchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
         </>
     )
 }

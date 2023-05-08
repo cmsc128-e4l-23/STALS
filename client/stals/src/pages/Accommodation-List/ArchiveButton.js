@@ -10,14 +10,15 @@ export default function ArchiveButton({ accommodation, setLoading }){
 
     return(
         <>
+        {modalOpen && <ArchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
+        
         <button className='archive-btn' onClick={() => setModalOpen(true)}> 
             Archive
-            <span style={iconStyle}>
+            <span className='btn-icon'>
                 <FontAwesomeIcon icon={faArchive}/>
             </span>
         </button>
 
-        {modalOpen && <ArchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
         </>
     )
 }

@@ -12,14 +12,15 @@ export default function DeleteButton({ accommodation, setLoading }){
 
     return(
         <>
+        {modalOpen && <DeleteModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
+
         <button className='delete-btn' onClick={() => setModalOpen(true)}>
             Delete
-            <span style={iconStyle}>
+            <span className='btn-icon'>
                 <FontAwesomeIcon icon={faTrash}/>
             </span>
         </button>
 
-        {modalOpen && <DeleteModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
         </>
     )
 }
