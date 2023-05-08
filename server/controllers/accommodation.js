@@ -8,81 +8,108 @@ import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import Review from "../models/Review.js";
 
-const addAccomm = (req, res) => {
-        //Getting the input
+const addAccomm = async (req, res) => {
+    //Getting the input
     let accomm_details = req.body;
-    console.log(accomm_details)
 
-    User.findOne({ email: accomm_details.owner })
-        .then( async (document) => {
-            if(!document){
-                throw "User not found!"
-            }
+    try{
+        //NOTE: The accommodation model states that the 'owner' field contains an object
+        // const currEmail = await User.findById(accomm_details.owner).select("email -_id").exec();
+        
+        const currUser = await User.findById(accomm_details.owner);
 
-            accomm_details.owner = document._id
-
+        if (currUser){
+            // accomm_details.owner = currUser._id
+            
             // Check if accommodation name already exists in the database
             const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
             if (existingNameAccommodation) {
-                return res.status(409).json({ error: "Accommodation with the same name already exists" });
+                // return res.status(409).json({ error: "Accommodation with the same name already exists" });
+                throw new Error("Accommodation with the same name already exists");
             }
-
+            
             // Check if accommodation address already exists in the database
             const existingAddressAccommodation = await Accommodation.findOne({ address: accomm_details.address });
             if (existingAddressAccommodation) {
-                return res.status(409).json({ error: "Accommodation with the same address already exists" });
+                // return res.status(409).json({ error: "Accommodation with the same address already exists" });
+                throw new Error("Accommodation with the same address already exists");
             }
 
             // If both are unique, save the accommodation to the database
             const newAccommodation = new Accommodation(accomm_details);
             const savedAccommodation = await newAccommodation.save();
-            User.findByIdAndUpdate(
-                document._id, 
-                { "$push": { "owner.propertiesList": savedAccommodation._id}},
-                { "new": true, "upsert": true })
-                .then(
-                    function (user){
-                        console.log(user);
-                    }
-                )         
-                
-            res.status(201).json(savedAccommodation);
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).json({ error: err });
-    })
+            const result = await User.findByIdAndUpdate(
+                currUser._id, 
+                { $push: { "owner.propertiesList": savedAccommodation._id }},
+                { "new": true, "upsert": true }
+            );
+
+            // const result = await User.findById(currUser._id);
+            // if (result){
+            //     const resultYo = await User.updateOne(
+            //         { _id: currUser._id },
+            //         { $push: { "owner.propertiesList": savedAccommodation._id }},
+            //         { "new": true, "upsert": true }
+            //     )
+
+            //     if(!resultYo){
+            //         throw new Error("User not updating");
+            //     }
+            // }
+            // await result.save();
+            
+            console.log(result);
+            if (!result){
+                throw new Error("Error updating user in add accommodation");
+            }
+
+            res.send({ success: true, message: "Successfully added accommodation" });
+        } else {
+            throw new Error("User not found");
+        }
+    } catch(error) {
+        res.send({ success: false, message: error.message });
+    }
 }
 
 const archiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
 
-    Accommodation.updateOne(
-        { _id: accomm_details._id },
-        { $set: { archived: true } }
-    )
-        .then((result) => {
+    try{
+        const result = await Accommodation.findByIdAndUpdate(
+            accomm_details._id,
+            { $set: { archived: true }}
+        );
+
+        if (result){
             res.send({ success: true, message: "Successfully archived accommodation" });
-        })
-        .catch((error) => {
-            res.send({ success: false, message: "Failed to archive accommodation", error: error });
-        })
+        } else {
+            throw new Error("Failed to find and archive accommodation");
+        }
+    } catch (error){
+        res.send({ success: false, message: error.message });
+    }
 }
 
 const unarchiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
 
-    Accommodation.updateOne(
-        { _id: accomm_details._id },
-        { $set: { archived: false } }
-    )
-        .then((result) => {
+    try{
+        const result = await Accommodation.findByIdAndUpdate(
+            accomm_details._id,
+            { $set: { archived: false }}
+        );
+
+        if (result){
             res.send({ success: true, message: "Successfully unarchived accommodation" });
-        })
-        .catch((error) => {
-            res.send({ success: false, message: "Failed to unarchive accommodation", error: error });
-        })
+        } else {
+            throw new Error("Failed to find and unarchive accommodation");
+        }
+    } catch (error){
+        res.send({ success: false, message: error.message });
+    }
 }
 
 // returns a json that indicates success and sends message
@@ -119,14 +146,14 @@ const editAccomm = async (req, res) => {
             if (result){
                 res.send({ success: true, message: "Successfully edited accommodation" })
             } else {
-                throw new Error("Failed to find and update the accommodation");
+                throw new Error("An error occured in updating the accommodation");
             }
 
         } else {
             throw new Error("Accommodation not found.");
         }
     } catch (error) {
-        res.send({ success: false, message: "Failed to edit accommodation", error: error });
+        res.send({ success: false, message: error.message });
     }
 }
 
@@ -136,17 +163,40 @@ const editAccomm = async (req, res) => {
 const deleteAccomm = async (req, res) => {
     const accomm_details = req.body;
     //delete the accomodation with the id
-    Accommodation.findByIdAndDelete(accomm_details._id)
-    .then((res) => {
-        User.findByIdAndUpdate(
-                accomm_details.owner, 
-                { "$pull": { "owner.propertiesList": accomm_details._id}})
-                .then(
-                    res.send({success: true, message: "Successfully deleted accommodation"})
-                )
-    }).catch((err) => {
-        res.send({success: false, message: err});
-    })
+
+    try{
+        const currAccomm = await Accommodation.findByIdAndDelete(accomm_details._id);
+
+        if (currAccomm){
+            const currUser = await User.findByIdAndUpdate(
+                currAccomm.owner,
+                { $pull: { "owner.propertiesList" : accomm_details._id }}
+            );
+
+            if (currUser){
+                res.send({ success: true, message: "Successfully deleted accommodation" })
+            } else {
+                throw new Error("Failed to find and edit propertyList of current user");
+            }
+        } else {
+            throw new Error("Failed to find and delete accommodation");
+        }
+    } catch (err){
+        res.send({ success: false, message: err.message });
+    }
+
+    // Accommodation.findByIdAndDelete(accomm_details._id)
+    // .then((res) => {
+    //     User.findByIdAndUpdate(
+    //             accomm_details.owner, 
+    //             { "$pull": { "owner.propertiesList": accomm_details._id}})
+    //             .then(
+    //                 res.send({success: true, message: "Successfully deleted accommodation"})
+    //             )
+    // }).catch((err) => {
+    //     console.log("accommodation not found.");
+    //     res.send({success: false, message: err.message});
+    // })
 }
 
 //search functionality
