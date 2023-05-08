@@ -27,7 +27,7 @@ const addReview = async (req, res) => {
             //Adding the newly created review to current user and to the accommodation
             const user = await User.findById(document._id);
             const accomm = await Accommodation.findById(review_details.propertyId);
-
+            console.log(user, accomm)
             if (user && accomm) {
                 //Creating new review
                 const newReview = new Review({
