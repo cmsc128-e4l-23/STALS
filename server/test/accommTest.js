@@ -321,7 +321,7 @@ const url = "http://localhost:3001/addAccomm";
 // );
 
 // ========================== EDIT ACCOMMODATION ==========================
-// // edit 1 (complete requirements)
+// edit 1 (complete requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
 //         _id: '643665dccee7fa1d7dd408ea',
@@ -338,7 +338,10 @@ const url = "http://localhost:3001/addAccomm";
 //         generalLocation: 310771,
 //         accommodationType: 'You',
 //         amenities: [ 'Down' ],
-//         priceRange: 4000,
+//         priceRange: {
+//             minPrice: 10000,
+//             maxPrice: 15000
+//         },
 //         description: 'Never gonna run around and desert you',
 //         photos: [ 'and' ],
 //         restrictions: ["desert", "you"],
@@ -358,7 +361,7 @@ const url = "http://localhost:3001/addAccomm";
 //         landmarks: [ 'Oblation', 'CAS Building' ],
 //         address: {
 //             postCode: '1234',
-//             street: 'New Kalsada Street',
+//             street: 'Lopez Street',
 //             region: "CALABARZON"
 //         },
 //         generalLocation: 12345,
@@ -386,46 +389,46 @@ const url = "http://localhost:3001/addAccomm";
 
 
 // edit 4 (original edit)
-needle.post("http://localhost:3001/editAccomm",
-    {
-        _id: '643665dccee7fa1d7dd408ea',
-        name: 'UP DORM',
-        landmarks: [ 'Oblation', 'CAS Building' ],
-        address: {
-            postCode: '1111',
-            street: 'Kalsada street',
-            barangay: 'Batong Malake',
-            city: 'Los Banos',
-            province: 'Laguna',
-            region: 'Region IV'
-        },
-        generalLocation: 12345,
-        accommodationType: 'Dorm',
-        amenities: [ 'Toiletries' ],
-        priceRange: {
-            minPrice: 2000,
-            maxPrice: 5000
-        },
-        // priceRange: 5000,
-        description: 'Available to all UP Students',
-        photos: [ 'Photo 1', 'Photo 2' ],
-        // restrictions: {     
-        //     curfew: 'Yes',
-        //     pets: 'Not Allowed',
-        //     cooking: 'Not Allowed',
-        //     visitors: 'Not Allowed',
-        //     coedStatus: 'No',
-        //     wifi: 'With WiFi',
-        //     phoneSignal: 'Fair'
-        // },
-        restrictions: ["No curfew", "with WiFi"],
-        security: 'Very Secure',
-        archived: false
-    },
-    (err, res) => {
-        console.log(res.body)
-    }
-)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         name: 'UP DORM',
+//         landmarks: [ 'Oblation', 'CAS Building' ],
+//         address: {
+//             postCode: '1111',
+//             street: 'Kalsada street',
+//             barangay: 'Batong Malake',
+//             city: 'Los Banos',
+//             province: 'Laguna',
+//             region: 'Region IV'
+//         },
+//         generalLocation: 12345,
+//         accommodationType: 'Dorm',
+//         amenities: [ 'Toiletries' ],
+//         priceRange: {
+//             minPrice: 500,
+//             maxPrice: 5000
+//         },
+//         // priceRange: 5000,
+//         description: 'Available to all UP Students',
+//         photos: [ 'Photo 1', 'Photo 2' ],
+//         // restrictions: {     
+//         //     curfew: 'Yes',
+//         //     pets: 'Not Allowed',
+//         //     cooking: 'Not Allowed',
+//         //     visitors: 'Not Allowed',
+//         //     coedStatus: 'No',
+//         //     wifi: 'With WiFi',
+//         //     phoneSignal: 'Fair'
+//         // },
+//         restrictions: ["No curfew", "with WiFi"],
+//         security: 'Very Secure',
+//         archived: false
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
 
 // needle.get("http://localhost:3001/viewAccomm",
 //     {
@@ -494,17 +497,17 @@ needle.post("http://localhost:3001/editAccomm",
 // );
 
 // ========================== GET RECOMMENDATIONS ==========================
-needle.post("http://localhost:3001/recommendAccomm",
-    {
-       returnLength: 3,
-       accommLength: 10,
-    //    searchLocs: 'Laguna',
-    //    searchType: 'Transient',
-       minPrice: 0,
-       maxPrice: 200
+// needle.post("http://localhost:3001/recommendAccomm",
+//     {
+//        returnLength: 3,
+//        accommLength: 10,
+//     //    searchLocs: 'Laguna',
+//     //    searchType: 'Transient',
+//        minPrice: 0,
+//        maxPrice: 200
 
-    },
-    (err, res) => {
-        console.log(res.body.result);
-    }
-);
+//     },
+//     (err, res) => {
+//         console.log(res.body.result);
+//     }
+// );
