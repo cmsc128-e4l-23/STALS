@@ -15,7 +15,7 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // db.accommodations.updateMany({}, {$set: {reviews:[]}})
 
 // let's just generate data here
-// const datalen = 50;
+// const datalen = 10;
 // const propids = [
 //     "644cdb964c5e0d977fa685ac",
 //     "644cdb964c5e0d977fa685af",
@@ -24,10 +24,6 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 //     "644ce1aad31be0a75c33df6e",
 //     "644ce1aad31be0a75c33df71",
 //     "644ce1aad31be0a75c33df74",
-//     "644e58b2f157a1f22a80e73e",
-//     "644e58b2f157a1f22a80e73b",
-//     "644e58b2f157a1f22a80e738",
-//     "644e58b2f157a1f22a80e741",
 // ];
 
 // const userids = [
@@ -65,8 +61,8 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // }
 
 // const data3 = {
-//     userId: "644cd8a4dad90ff1fc7d150f",
-//     propertyId: "644cdb964c5e0d977fa685b2",
+//     userId: "644cd8a4dad90ff1fc7d1514",
+//     propertyId: "644cdb964c5e0d977fa685ad",
 //     content: "I like it",
 //     rating: 1,
 //     photos: [{filename: "Photo1"}]
@@ -139,9 +135,9 @@ const propertyId = "644ce1aad31be0a75c33df6e";
 // =========================== DELETING REVIEW ===========================
 // needle.post("http://localhost:3001/deleteReview",
 //     {
-//         _id: reviewId,
-//         userId: userId,
-//         propertyId: propertyId
+//         _id: "644f8539a80e536403b37f8d",
+//         userId: "644cd8a4dad90ff1fc7d1512",
+//         propertyId: "644cdb964c5e0d977fa685b2"
 //     },
 //     (err, res) => {
 //         console.log(res.body);

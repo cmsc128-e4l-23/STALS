@@ -103,6 +103,9 @@ export default function Header() {
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
+                        {   localStorage.getItem("usertype") === "Accommodation Owner" ? 
+                            <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li> : <></>
+                        }
                             <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
