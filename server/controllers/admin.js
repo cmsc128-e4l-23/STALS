@@ -7,19 +7,16 @@ import Review from "../models/Review.js";
 Marks the report as resolved
 */
 const resolveReport = async (req, res) => {
-    
     const report_details = req.body;
-
     Report.updateOne(
         { _id: report_details._id },
         { $set: {status: 'Resolved'} }
         )
         .then((result) => {
-            res.send("Successfully resolved report");
+            res.send({success: true, msg: "Resolving succeeded"});
         })
         .catch((error) => {
-            console.log(err);
-            res.send({success: false, error: "Resolving failed"});
+            res.send({success: false, msg: "Resolving failed", error: error});
         })
 }
 
@@ -32,37 +29,25 @@ Both could be true to view both
 const viewReports = async (req, res) => {
     const body = req.body;
     let query = []
-    if (body.onlyPending===true)  query.push({status: 'Pending'});
-    if (body.onlyResolved===true) query.push({status: 'Resolved'});
+    if (body.onlyPending==='true')  query.push({status: 'Pending'});
+    if (body.onlyResolved==='true') query.push({status: 'Resolved'});
     if (query.length>0) {
         Report.find({$or: query})
         .then((result) =>{
-            res.send({success: true, result: result});
+            res.send({success: true, msg: "Viewing Succeeded", result: result});
         })
         .catch((error) => {
-            console.log(error);
-            res.send({success: false, error: "Viewing Failed"});
+            res.send({success: false, msg: "Viewing Failed", error: error});
         });
-    }else res.send({success: true, result: {}});
-
+    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: {}});
 }
-
 
 //A JS method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
-    
-    //Retrieval of the following data
     try{
-        //Number of Users
         const numUsers = await User.count();
-
-        //Number of Accommodations
         const numAccomm = await Accommodation.count();
-
-        //Number of Reports
         const numReports = await Report.count();
-
-        //Number of Reviews
         const numReviews = await Review.count();
 
         const db_details = {
@@ -71,17 +56,12 @@ const dataAnalytics = async (req, res) => {
             numReports: numReports,
             numReviews: numReviews
         }
-        res.send({success: true, return: db_details});
+        res.send({success: true, msg: "Successfully retrieve admin data", return: db_details});
     }
     catch (error){
-        console.log(error);
-        res.send({ success: false,  error: error });
+        res.send({ success: false, msg: "Unsuccessfully retrieve admin data", error: error });
     }
-    
-
-    
 }
-
 
 export default {
     resolveReport, 
