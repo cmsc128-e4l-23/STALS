@@ -8,30 +8,25 @@ import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import Review from "../models/Review.js";
 
+//Method for adding accommodations
 const addAccomm = async (req, res) => {
     //Getting the input
     let accomm_details = req.body;
 
     try{
         //NOTE: The accommodation model states that the 'owner' field contains an object
-        // const currEmail = await User.findById(accomm_details.owner).select("email -_id").exec();
-        
         const currUser = await User.findById(accomm_details.owner);
 
         if (currUser){
-            // accomm_details.owner = currUser._id
-            
             // Check if accommodation name already exists in the database
             const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
             if (existingNameAccommodation) {
-                // return res.status(409).json({ error: "Accommodation with the same name already exists" });
                 throw new Error("Accommodation with the same name already exists");
             }
             
             // Check if accommodation address already exists in the database
             const existingAddressAccommodation = await Accommodation.findOne({ address: accomm_details.address });
             if (existingAddressAccommodation) {
-                // return res.status(409).json({ error: "Accommodation with the same address already exists" });
                 throw new Error("Accommodation with the same address already exists");
             }
 
@@ -44,20 +39,6 @@ const addAccomm = async (req, res) => {
                 { "new": true, "upsert": true }
             );
 
-            // const result = await User.findById(currUser._id);
-            // if (result){
-            //     const resultYo = await User.updateOne(
-            //         { _id: currUser._id },
-            //         { $push: { "owner.propertiesList": savedAccommodation._id }},
-            //         { "new": true, "upsert": true }
-            //     )
-
-            //     if(!resultYo){
-            //         throw new Error("User not updating");
-            //     }
-            // }
-            // await result.save();
-            
             console.log(result);
             if (!result){
                 throw new Error("Error updating user in add accommodation");
@@ -72,6 +53,7 @@ const addAccomm = async (req, res) => {
     }
 }
 
+//Method for archiving accommodations
 const archiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
@@ -83,12 +65,12 @@ const archiveAccomm = async (req, res) => {
         );
 
         if (result){
-            res.send({ success: true, message: "Successfully archived accommodation" });
+            res.send({ success: true, msg: "Successfully archived accommodation" });
         } else {
             throw new Error("Failed to find and archive accommodation");
         }
     } catch (error){
-        res.send({ success: false, message: error.message });
+        res.send({ success: false, msg: error.message });
     }
 }
 
@@ -108,10 +90,11 @@ const unarchiveAccomm = async (req, res) => {
             throw new Error("Failed to find and unarchive accommodation");
         }
     } catch (error){
-        res.send({ success: false, message: error.message });
+        res.send({ success: false, msg: error.message });
     }
 }
 
+//Function for editing accommodations
 // returns a json that indicates success and sends message
 // throws an error if accommodation was not found or if accommodation edit failed
 const editAccomm = async (req, res) => {
@@ -144,7 +127,7 @@ const editAccomm = async (req, res) => {
             );
 
             if (result){
-                res.send({ success: true, message: "Successfully edited accommodation" })
+                res.send({ success: true, msg: "Successfully edited accommodation" })
             } else {
                 throw new Error("An error occured in updating the accommodation");
             }
@@ -153,7 +136,7 @@ const editAccomm = async (req, res) => {
             throw new Error("Accommodation not found.");
         }
     } catch (error) {
-        res.send({ success: false, message: error.message });
+        res.send({ success: false, msg: error.message });
     }
 }
 
@@ -163,7 +146,6 @@ const editAccomm = async (req, res) => {
 const deleteAccomm = async (req, res) => {
     const accomm_details = req.body;
     //delete the accomodation with the id
-
     try{
         const currAccomm = await Accommodation.findByIdAndDelete(accomm_details._id);
 
@@ -174,7 +156,7 @@ const deleteAccomm = async (req, res) => {
             );
 
             if (currUser){
-                res.send({ success: true, message: "Successfully deleted accommodation" })
+                res.send({ success: true, msg: "Successfully deleted accommodation" })
             } else {
                 throw new Error("Failed to find and edit propertyList of current user");
             }
@@ -182,21 +164,8 @@ const deleteAccomm = async (req, res) => {
             throw new Error("Failed to find and delete accommodation");
         }
     } catch (err){
-        res.send({ success: false, message: err.message });
+        res.send({ success: false, msg: "Unsuccessful deleted accommodation", error: err.message });
     }
-
-    // Accommodation.findByIdAndDelete(accomm_details._id)
-    // .then((res) => {
-    //     User.findByIdAndUpdate(
-    //             accomm_details.owner, 
-    //             { "$pull": { "owner.propertiesList": accomm_details._id}})
-    //             .then(
-    //                 res.send({success: true, message: "Successfully deleted accommodation"})
-    //             )
-    // }).catch((err) => {
-    //     console.log("accommodation not found.");
-    //     res.send({success: false, message: err.message});
-    // })
 }
 
 //search functionality

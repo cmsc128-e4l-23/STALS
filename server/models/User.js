@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 const OwnerSchema = new mongoose.Schema({
     propertiesList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
     archivedList: [{type: mongoose.Schema.Types.ObjectID, ref: 'Accomodation'}],
-    status:{type: String, enum: ['pending', 'active', 'inactive'], required: true}
+    status:{type: String, enum: ['pending', 'active', 'inactive'], default: "active"}
 });
 
 const AdminSchema = new mongoose.Schema({

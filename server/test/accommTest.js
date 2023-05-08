@@ -2,9 +2,9 @@ import needle from "needle";
 import mongoose from "mongoose";
 
 // ========================== ADD ACCOMMODATION ==========================
-// const url = "http://localhost:3001/addAccomm";
+const url = "http://localhost:3001/addAccomm";
 const newAccommodation1 = {
-    owner: "6458b94082442da5c8771d93",
+    owner: "mtate@gmail.com",
     name: "White House",
     landmarks: ["Raymundo Gate"],
     address: {
@@ -26,6 +26,14 @@ const newAccommodation1 = {
     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
     restrictions: ["no visitors allowed"]
   };
+
+needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(body);
+  }
+});
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
@@ -174,13 +182,7 @@ const newAccommodation1 = {
 //   };
 
 
-// needle.post(url, accommodation4, { json: true }, (err, res, body) => {
-//   if (err) {
-//     console.error(err);
-//   } else {
-//     console.log(body);
-//   }
-// });
+
 
 // needle.post(url, accommodation3, { json: true }, (err, res, body) => {
 //     if (err) {
@@ -458,7 +460,7 @@ const newAccommodation1 = {
 // ========================== DELETE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/deleteAccomm",
 //     {
-//         _id: "6458bf03d7c65f23d7589436"
+//         _id: "64583b14112d7db7aa87c189"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
