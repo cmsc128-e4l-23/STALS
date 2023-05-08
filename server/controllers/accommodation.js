@@ -39,17 +39,16 @@ const addAccomm = async (req, res) => {
                 { "new": true, "upsert": true }
             );
 
-            console.log(result);
             if (!result){
                 throw new Error("Error updating user in add accommodation");
             }
 
-            res.send({ success: true, message: "Successfully added accommodation" });
+            res.send({ success: true, msg: "Successfully added accommodation" });
         } else {
             throw new Error("User not found");
         }
     } catch(error) {
-        res.send({ success: false, message: error.message });
+        res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
     }
 }
 
@@ -70,10 +69,11 @@ const archiveAccomm = async (req, res) => {
             throw new Error("Failed to find and archive accommodation");
         }
     } catch (error){
-        res.send({ success: false, msg: error.message });
+        res.send({ success: false, msg: "Unsuccessfully archived accommodation", error: error.message });
     }
 }
 
+//Function for unarchiving accommodations
 const unarchiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
@@ -85,12 +85,12 @@ const unarchiveAccomm = async (req, res) => {
         );
 
         if (result){
-            res.send({ success: true, message: "Successfully unarchived accommodation" });
+            res.send({ success: true, msg: "Successfully unarchived accommodation" });
         } else {
             throw new Error("Failed to find and unarchive accommodation");
         }
     } catch (error){
-        res.send({ success: false, msg: error.message });
+        res.send({ success: false, msg: "Unsuccessfully unarchived accommodation", error: error.message });
     }
 }
 
@@ -136,7 +136,7 @@ const editAccomm = async (req, res) => {
             throw new Error("Accommodation not found.");
         }
     } catch (error) {
-        res.send({ success: false, msg: error.message });
+        res.send({ success: false, msg: "Unsuccessfully edited accommodation", error: error.message });
     }
 }
 

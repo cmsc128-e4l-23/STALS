@@ -2,38 +2,38 @@ import needle from "needle";
 import mongoose from "mongoose";
 
 // ========================== ADD ACCOMMODATION ==========================
-const url = "http://localhost:3001/addAccomm";
-const newAccommodation1 = {
-    owner: "mtate@gmail.com",
-    name: "White House",
-    landmarks: ["Raymundo Gate"],
-    address: {
-      postCode: "1234",
-      street: "Street 10",
-      barangay: "Barangay 11",
-      city: "City 12",
-      province: "Laguna",
-      region: "CALABARZON"
-    },
-    generalLocation: 1,
-    accommodationType: "Transient",
-    amenities: "Free Wi-Fi",
-    priceRange: {
-      minPrice: 5000,
-      maxPrice: 10000
-    },
-    description: "A place to stay at!",
-    photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-    restrictions: ["no visitors allowed"]
-  };
+// const url = "http://localhost:3001/addAccomm";
+// const newAccommodation1 = {
+//     owner: "64583b07112d7db7aa87c183",
+//     name: "White House",
+//     landmarks: ["Raymundo Gate"],
+//     address: {
+//       postCode: "1234",
+//       street: "Street 10",
+//       barangay: "Barangay 11",
+//       city: "City 12",
+//       province: "Laguna",
+//       region: "CALABARZON"
+//     },
+//     generalLocation: 1,
+//     accommodationType: "Transient",
+//     amenities: "Free Wi-Fi",
+//     priceRange: {
+//       minPrice: 5000,
+//       maxPrice: 10000
+//     },
+//     description: "A place to stay at!",
+//     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+//     restrictions: ["no visitors allowed"]
+//   };
 
-needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(body);
-  }
-});
+// needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     console.log(body);
+//   }
+// });
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
@@ -311,7 +311,7 @@ needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 // ========================== ARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/archiveAccomm",
 //     {
-//         _id: "645881e98f9b89a70c1d4596"
+//         _id: "6458e666a710337e6ada50ae"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -321,7 +321,7 @@ needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 // ========================== UNARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/unarchiveAccomm",
 //     {
-//         _id: "645881e98f9b89a70c1d4596"
+//         _id: "6458e666a710337e6ada50ae"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -332,7 +332,7 @@ needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 // edit 1 (complete requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '645881e98f9b89a70c1d4596',
+//         _id: '6458e666a710337e6ada50ae',
 //         name: 'Never',
 //         landmarks: [ 'Gonna' ],
 //         address: {
@@ -364,7 +364,7 @@ needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 // edit 2 (half requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '645881e98f9b89a70c1d4596',
+//         _id: '6458e666a710337e6ada50ae',
 //         name: 'UP TRANSIENT HOUSE',
 //         landmarks: [ 'Oblation', 'CAS Building' ],
 //         address: {
