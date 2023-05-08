@@ -117,22 +117,22 @@ const deleteReview = async (req, res) => {
             const accomm = await Accommodation.findById(review_details.propertyId);
 
             // the user should also match
-            if (user && accomm && doc.userId.equals(user._id) && doc.propertyId.equals(accomm._id)) {
-                user.reviews.pull(review_details._id);
-                accomm.reviews.pull(review_details._id);
-                await user.save();
-                await accomm.save();
-                // finally delete the doc review
-                await Review.deleteOne({ _id: doc._id });
-                res.send({ success: true, msg: "Successfully deleted review" });
-            } else {
-                if (!user) throw new Error("User not found");
-                if (!accomm) throw new Error("Accommodation not found");
-                // for additional security measures
-                if (!doc.user.equals(user.email)) throw new Error("User id mismatch! Report found but incorrect userId");
-                if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
+            try {
+                if (user && accomm && doc.userId.equals(user._id) && doc.propertyId.equals(accomm._id)) {
+                    user.reviews.pull(review_details._id);
+                    accomm.reviews.pull(review_details._id);
+                    await user.save();
+                    await accomm.save();
+                    // finally delete the doc review
+                    await Review.deleteOne({ _id: doc._id });
+                    res.send({ success: true, msg: "Successfully deleted review" });
+                } else {
+                    // for additional security measures
+                    if (!doc.user.equals(user.email)) throw new Error("User id mismatch! Report found but incorrect userId");
+                    if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
 
-            }
+                }
+            } catch (err) { throw new Error("Accomodation/User not found"); }
         } else throw new Error("Review not found");
     } catch (err) {
         res.send({ success: false, msg: "Deleting review failed", error: err.message });
