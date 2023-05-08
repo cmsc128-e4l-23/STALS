@@ -2,9 +2,9 @@ import needle from "needle";
 import mongoose from "mongoose";
 
 // ========================== ADD ACCOMMODATION ==========================
-const url = "http://localhost:3001/addAccomm";
+// const url = "http://localhost:3001/addAccomm";
 // const newAccommodation1 = {
-//     accommodationID: new mongoose.Types.ObjectId(),
+//     owner: "64583b07112d7db7aa87c183",
 //     name: "White House",
 //     landmarks: ["Raymundo Gate"],
 //     address: {
@@ -26,6 +26,14 @@ const url = "http://localhost:3001/addAccomm";
 //     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
 //     restrictions: ["no visitors allowed"]
 //   };
+
+// needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     console.log(body);
+//   }
+// });
 
 // const newAccommodation2 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
@@ -175,13 +183,6 @@ const url = "http://localhost:3001/addAccomm";
 
 
 
-// needle.post(url, accommodation4, { json: true }, (err, res, body) => {
-//   if (err) {
-//     console.error(err);
-//   } else {
-//     console.log(body);
-//   }
-// });
 
 // needle.post(url, accommodation3, { json: true }, (err, res, body) => {
 //     if (err) {
@@ -199,13 +200,20 @@ const url = "http://localhost:3001/addAccomm";
 //     }
 //   });
 
-//   needle.post(url, accommodation1, { json: true }, (err, res, body) => {
+//   needle.post(url, newAccommodation1, { json: true }, (err, res, body) => {
 //     if (err) {
 //       console.error(err);
 //     } else {
 //       console.log(body);
 //     }
 //   });
+
+// needle.post("http://localhost:3001/addAccomm",
+//     newAccommodation1, 
+//     (err,res) => {
+//         console.log(res.body);
+//     }
+// )
 
 // fetched from test-cases branch
 // const data = [
@@ -303,7 +311,7 @@ const url = "http://localhost:3001/addAccomm";
 // ========================== ARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/archiveAccomm",
 //     {
-//         _id: "643665dccee7fa1d7dd408ea"
+//         _id: "6458e666a710337e6ada50ae"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -313,7 +321,7 @@ const url = "http://localhost:3001/addAccomm";
 // ========================== UNARCHIVE ACCOMMODATION ==========================
 // needle.post("http://localhost:3001/unarchiveAccomm",
 //     {
-//         _id: "643665dccee7fa1d7dd408ea"
+//         _id: "6458e666a710337e6ada50ae"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
@@ -324,7 +332,7 @@ const url = "http://localhost:3001/addAccomm";
 // edit 1 (complete requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '6458e666a710337e6ada50ae',
 //         name: 'Never',
 //         landmarks: [ 'Gonna' ],
 //         address: {
@@ -356,7 +364,7 @@ const url = "http://localhost:3001/addAccomm";
 // edit 2 (half requirements)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '6458e666a710337e6ada50ae',
 //         name: 'UP TRANSIENT HOUSE',
 //         landmarks: [ 'Oblation', 'CAS Building' ],
 //         address: {
@@ -379,7 +387,7 @@ const url = "http://localhost:3001/addAccomm";
 // // edit 3 (description only)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '645881e98f9b89a70c1d4596',
 //         description: "BEST PLACE TO STAY! GUARANTEED 100% NO CAP!"
 //     },
 //     (err, res) => {
@@ -391,7 +399,7 @@ const url = "http://localhost:3001/addAccomm";
 // edit 4 (original edit)
 // needle.post("http://localhost:3001/editAccomm",
 //     {
-//         _id: '643665dccee7fa1d7dd408ea',
+//         _id: '645881e98f9b89a70c1d4596',
 //         name: 'UP DORM',
 //         landmarks: [ 'Oblation', 'CAS Building' ],
 //         address: {
@@ -406,7 +414,7 @@ const url = "http://localhost:3001/addAccomm";
 //         accommodationType: 'Dorm',
 //         amenities: [ 'Toiletries' ],
 //         priceRange: {
-//             minPrice: 500,
+//             minPrice: 2000,
 //             maxPrice: 5000
 //         },
 //         // priceRange: 5000,
@@ -450,9 +458,9 @@ const url = "http://localhost:3001/addAccomm";
 // );
 
 // ========================== DELETE ACCOMMODATION ==========================
-// needle.delete("http://localhost:3001/deleteAccomm",
+// needle.post("http://localhost:3001/deleteAccomm",
 //     {
-//         _id: "6437c2d8b74cee2c7bfbc15f"
+//         _id: "64583b14112d7db7aa87c189"
 //     },
 //     (err, res) => {
 //         console.log(res.body);
