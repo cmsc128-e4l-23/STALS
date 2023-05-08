@@ -395,46 +395,46 @@ const newAccommodation1 = {
 
 
 // edit 4 (original edit)
-needle.post("http://localhost:3001/editAccomm",
-    {
-        _id: '643665dccee7fa1d7dd408ea',
-        name: 'UP DORM',
-        landmarks: [ 'Oblation', 'CAS Building' ],
-        address: {
-            postCode: '1111',
-            street: 'Kalsada street',
-            barangay: 'Batong Malake',
-            city: 'Los Banos',
-            province: 'Laguna',
-            region: 'Region IV'
-        },
-        generalLocation: 12345,
-        accommodationType: 'Dorm',
-        amenities: [ 'Toiletries' ],
-        priceRange: {
-            minPrice: 2000,
-            maxPrice: 5000
-        },
-        // priceRange: 5000,
-        description: 'Available to all UP Students',
-        photos: [ 'Photo 1', 'Photo 2' ],
-        // restrictions: {     
-        //     curfew: 'Yes',
-        //     pets: 'Not Allowed',
-        //     cooking: 'Not Allowed',
-        //     visitors: 'Not Allowed',
-        //     coedStatus: 'No',
-        //     wifi: 'With WiFi',
-        //     phoneSignal: 'Fair'
-        // },
-        restrictions: ["No curfew", "with WiFi"],
-        security: 'Very Secure',
-        archived: false
-    },
-    (err, res) => {
-        console.log(res.body)
-    }
-)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '645881e98f9b89a70c1d4596',
+//         name: 'UP DORM',
+//         landmarks: [ 'Oblation', 'CAS Building' ],
+//         address: {
+//             postCode: '1111',
+//             street: 'Kalsada street',
+//             barangay: 'Batong Malake',
+//             city: 'Los Banos',
+//             province: 'Laguna',
+//             region: 'Region IV'
+//         },
+//         generalLocation: 12345,
+//         accommodationType: 'Dorm',
+//         amenities: [ 'Toiletries' ],
+//         priceRange: {
+//             minPrice: 2000,
+//             maxPrice: 5000
+//         },
+//         // priceRange: 5000,
+//         description: 'Available to all UP Students',
+//         photos: [ 'Photo 1', 'Photo 2' ],
+//         // restrictions: {     
+//         //     curfew: 'Yes',
+//         //     pets: 'Not Allowed',
+//         //     cooking: 'Not Allowed',
+//         //     visitors: 'Not Allowed',
+//         //     coedStatus: 'No',
+//         //     wifi: 'With WiFi',
+//         //     phoneSignal: 'Fair'
+//         // },
+//         restrictions: ["No curfew", "with WiFi"],
+//         security: 'Very Secure',
+//         archived: false
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
 
 // needle.get("http://localhost:3001/viewAccomm",
 //     {
