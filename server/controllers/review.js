@@ -25,22 +25,21 @@ const addReview = async (req, res) => {
             if (!document) {
                 throw "User not found!";
             }
-
-            //Creating new review
-            const newReview = new Review({
-                userId: document._id,
-                propertyId: review_details.propertyId,
-                content: review_details.content,
-                rating: review_details.rating,
-                photos: review_details.photos
-            });
-            const savedReview = await newReview.save();
-
             //Adding the newly created review to current user and to the accommodation
             const user = await User.findById(document._id);
             const accomm = await Accommodation.findById(review_details.propertyId);
 
             if (user && accomm) {
+                //Creating new review
+                const newReview = new Review({
+                    userId: document._id,
+                    propertyId: review_details.propertyId,
+                    content: review_details.content,
+                    rating: review_details.rating,
+                    photos: review_details.photos
+                });
+                const savedReview = await newReview.save();
+
                 user.reviews.push(savedReview._id);
                 accomm.reviews.push(savedReview._id);
                 await user.save();
