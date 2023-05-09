@@ -223,6 +223,7 @@ const deleteAccomm = async (req, res) => {
 Search Functionality
 req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
+    - it assumes that search string is empty
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
@@ -341,10 +342,10 @@ const bookmarkAccomm = async (req, res) => {
         ).then((result) => {
             res.send({ success: true, msg: "Bookmark Success" });
         })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, msg: "Bookmark Failed" });
-            });
+        .catch((error) => {
+            console.log(error);
+            res.send({ success: false, msg: "Bookmark Failed" });
+        });
     } catch (err) {
         res.send({ success: false, msg: err.message });
         console.error(err);
@@ -376,10 +377,10 @@ const removeBookmarkAccomm = async (req, res) => {
         ).then((result) => {
             res.send({ success: true, msg: "Remove Bookmark Success" });
         })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, msg: "Remove Bookmark Failed" });
-            });
+        .catch((error) => {
+            console.log(error);
+            res.send({ success: false, msg: "Remove Bookmark Failed" });
+        });
     } catch (err) {
         res.send({ success: false, msg: err.message });
         console.error(err);

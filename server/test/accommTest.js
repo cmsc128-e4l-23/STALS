@@ -1,8 +1,42 @@
 import needle from "needle";
 import mongoose from "mongoose";
 
+// assuming that we still use the same dump
+
+let url;
+
+// encapsulation
+const post = async (name, url, req) => {
+    needle.post(url, req,
+        (err, res) => {
+            console.log(res.body);
+        }
+    );
+}
+// SEARCH ACCOMMODATION
+url = "http://localhost:3001/searchAccomm";
+
+// testing the name
+//post("Name Test", url, {searchString: "Beautiful Villa"})
+// test the post code
+//post("Post Code Test", url, {searchString: "6666"})
+// multiple returns
+//post("Multiple Returns", url, {searchString: "Barangay 11"})
+// misspelling
+//post("Misspelling", url, {searchString: "Lanuga"})
+// we'll assume that blank strings couldn't be inputted
+
+test('Accommodation Name Searching', () => {
+    return needle.post(url, {searchString: "Beautiful Villa"},
+    (err, res) => {
+        expect(res.body.success).toBe(true);
+        // only get the ids
+        expect(res.body.result._id).toBe('644ce1aad31be0a75c33df74');
+    })
+})
+
 // ========================== ADD ACCOMMODATION ==========================
-const url = "http://localhost:3001/addAccomm";
+url = "http://localhost:3001/addAccomm";
 // const newAccommodation1 = {
 //     accommodationID: new mongoose.Types.ObjectId(),
 //     name: "White House",
@@ -386,46 +420,46 @@ const url = "http://localhost:3001/addAccomm";
 
 
 // edit 4 (original edit)
-needle.post("http://localhost:3001/editAccomm",
-    {
-        _id: '643665dccee7fa1d7dd408ea',
-        name: 'UP DORM',
-        landmarks: [ 'Oblation', 'CAS Building' ],
-        address: {
-            postCode: '1111',
-            street: 'Kalsada street',
-            barangay: 'Batong Malake',
-            city: 'Los Banos',
-            province: 'Laguna',
-            region: 'Region IV'
-        },
-        generalLocation: 12345,
-        accommodationType: 'Dorm',
-        amenities: [ 'Toiletries' ],
-        priceRange: {
-            minPrice: 2000,
-            maxPrice: 5000
-        },
-        // priceRange: 5000,
-        description: 'Available to all UP Students',
-        photos: [ 'Photo 1', 'Photo 2' ],
-        // restrictions: {     
-        //     curfew: 'Yes',
-        //     pets: 'Not Allowed',
-        //     cooking: 'Not Allowed',
-        //     visitors: 'Not Allowed',
-        //     coedStatus: 'No',
-        //     wifi: 'With WiFi',
-        //     phoneSignal: 'Fair'
-        // },
-        restrictions: ["No curfew", "with WiFi"],
-        security: 'Very Secure',
-        archived: false
-    },
-    (err, res) => {
-        console.log(res.body)
-    }
-)
+// needle.post("http://localhost:3001/editAccomm",
+//     {
+//         _id: '643665dccee7fa1d7dd408ea',
+//         name: 'UP DORM',
+//         landmarks: [ 'Oblation', 'CAS Building' ],
+//         address: {
+//             postCode: '1111',
+//             street: 'Kalsada street',
+//             barangay: 'Batong Malake',
+//             city: 'Los Banos',
+//             province: 'Laguna',
+//             region: 'Region IV'
+//         },
+//         generalLocation: 12345,
+//         accommodationType: 'Dorm',
+//         amenities: [ 'Toiletries' ],
+//         priceRange: {
+//             minPrice: 2000,
+//             maxPrice: 5000
+//         },
+//         // priceRange: 5000,
+//         description: 'Available to all UP Students',
+//         photos: [ 'Photo 1', 'Photo 2' ],
+//         // restrictions: {     
+//         //     curfew: 'Yes',
+//         //     pets: 'Not Allowed',
+//         //     cooking: 'Not Allowed',
+//         //     visitors: 'Not Allowed',
+//         //     coedStatus: 'No',
+//         //     wifi: 'With WiFi',
+//         //     phoneSignal: 'Fair'
+//         // },
+//         restrictions: ["No curfew", "with WiFi"],
+//         security: 'Very Secure',
+//         archived: false
+//     },
+//     (err, res) => {
+//         console.log(res.body)
+//     }
+// )
 
 // needle.get("http://localhost:3001/viewAccomm",
 //     {
@@ -494,17 +528,17 @@ needle.post("http://localhost:3001/editAccomm",
 // );
 
 // ========================== GET RECOMMENDATIONS ==========================
-needle.post("http://localhost:3001/recommendAccomm",
-    {
-       returnLength: 3,
-       accommLength: 10,
-    //    searchLocs: 'Laguna',
-    //    searchType: 'Transient',
-       minPrice: 0,
-       maxPrice: 200
+// needle.post("http://localhost:3001/recommendAccomm",
+//     {
+//        returnLength: 3,
+//        accommLength: 10,
+//     //    searchLocs: 'Laguna',
+//     //    searchType: 'Transient',
+//        minPrice: 0,
+//        maxPrice: 200
 
-    },
-    (err, res) => {
-        console.log(res.body.result);
-    }
-);
+//     },
+//     (err, res) => {
+//         console.log(res.body.result);
+//     }
+// );
