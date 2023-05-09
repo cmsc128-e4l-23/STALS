@@ -29,8 +29,8 @@ Both could be true to view both
 const viewReports = async (req, res) => {
     const body = req.body;
     let query = []
-    if (body.onlyPending==='true')  query.push({status: 'Pending'});
-    if (body.onlyResolved==='true') query.push({status: 'Resolved'});
+    if (body.onlyPending===true)  query.push({status: 'Pending'});
+    if (body.onlyResolved===true) query.push({status: 'Resolved'});
     if (query.length>0) {
         Report.find({$or: query})
         .then((result) =>{

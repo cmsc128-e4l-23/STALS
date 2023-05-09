@@ -8,15 +8,15 @@ import mongoose from "mongoose";
 //     }
 // )
 
-// needle.post("http://localhost:3001/viewReports",
-//     {
-//         onlyPending: false,
-//         onlyResolved: true
-//     },
-//     (err, res) => {
-//         console.log(res.body);
-//     }
-// )
+needle.post("http://localhost:3001/viewReports",
+    {
+        onlyPending: false,
+        onlyResolved: true
+    },
+    (err, res) => {
+        console.log(res.body);
+    }
+)
 
 // needle.post("http://localhost:3001/resolveReport",
 //     {
