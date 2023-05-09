@@ -15,6 +15,10 @@ router.post("/changePassword", auth.changePassword);
 
 //User Info
 router.post("/getOwnerAccomms", userinfo.getOwnerAccomms);
+router.post("/getUserBasicDetails", userinfo.getUserBasicDetails);
+router.post("/getUserReviews", userinfo.getUserReviews);
+router.post("/getUserReports", userinfo.getUserReports);
+router.post("/getUserBookmarks", userinfo.getUserBookmarks);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);

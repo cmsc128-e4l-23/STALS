@@ -11,13 +11,122 @@ const getOwnerAccomms = (req, res) => {
         }
         Accommodation.find({owner: document._id})
         .then((documents) => {
-            res.status(201).json({ accommodations: documents })
+            res.send({
+                success: true, 
+                message: "Accommodations successfully retrieved", 
+                accommodations: documents 
+            })
         })
-    }).catch((err) => {
-        res.status(500).json({err: err})
+    })
+    .catch((err) => {
+        res.send({
+                success: false, 
+                message: "Failed to retrieve accommodations", 
+                error: err
+        })
+    })
+}
+
+const getUserBasicDetails = (req, res) => {
+    let user_details = req.body;
+
+    User.findOne({ email: user_details.email })
+    .then((document) => {
+        if(!document) throw "User not found"
+
+        res.send({
+            success: true,
+            message: "Reviews successfully retrieved",
+            user: {
+                userType: document.userType,
+                firstName: document.firstName,
+                lastName: document.lastName,
+                email: document.email,
+                phoneNumber: document.phoneNumber,
+                birthday: document.birthday,
+                sex: document.sex,
+            }
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Failed to retrieve reviews",
+            error: err
+        })
+    })
+}
+
+const getUserReviews = (req, res) => {
+    let user_details = req.body;
+
+    User.findOne({ email: user_details.email })
+    .then((document) => {
+        if(!document) throw "User not found"
+
+        res.send({
+            success: true,
+            message: "Reviews successfully retrieved",
+            reviews: document.reviews
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Failed to retrieve reviews",
+            error: err
+        })
+    })
+}
+
+const getUserReports = (req, res) => {
+    let user_details = req.body;
+
+    User.findOne({ email: user_details.email })
+    .then((document) => {
+        if(!document) throw "User not found"
+
+        res.send({
+            success: true,
+            message: "Reports successfully retrieved",
+            reports: document.reports
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Failed to retrieve reports",
+            error: err
+        })
+    })
+}
+
+const getUserBookmarks = (req, res) => {
+    let user_details = req.body;
+
+    User.findOne({ email: user_details.email })
+    .then((document) => {
+        if(!document) throw "User not found"
+
+        res.send({
+            success: true,
+            message: "Bookmarks successfully retrieved",
+            bookmarks: document.bookmarks
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Book to retrieve bookmarks",
+            error: err
+        })
     })
 }
 
 export default {
-    getOwnerAccomms
+    getOwnerAccomms,
+    getUserBasicDetails,
+    getUserReviews,
+    getUserReports,
+    getUserBookmarks
 }
