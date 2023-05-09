@@ -7,10 +7,9 @@ const imageSchema = new mongoose.Schema({
         ref : "User",
         required : true
 	},
-	propertyId: {
+	attachedTo: {
 		type : mongoose.SchemaTypes.ObjectId,
-        ref : "Accommodation",
-        required : true
+        ref : "Accommodation"
 	},
     img:
     {

@@ -11,7 +11,7 @@ import routes from "./routes.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.json({extended: true, limit: '100mb'}));
 app.use(bodyParser.urlencoded({extended: true}));
 // app.use(cors());
 

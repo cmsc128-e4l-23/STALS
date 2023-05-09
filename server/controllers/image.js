@@ -17,12 +17,11 @@ var upload = multer({storage: storage});
 const uploadImage = async (req, res) => {
     try{
         let image_details = req.body;
-
         const newImage = new Image({
             userId: image_details.userId,
-            propertyId: image_details.propertyId,
+            attachedTo: image_details.propertyId,
             img: {
-                data: fs.readFileSync(path.join(__dirname + '/images/' + req.file.filename)),
+                data: fs.readFileSync(path.join('./images/' + req.file.filename)),
                 contentType: 'image/png'
             }
         });
@@ -30,6 +29,7 @@ const uploadImage = async (req, res) => {
         res.status(201).json(savedImage);
     } catch (err) {
         res.status(500).json({error: err.message});
+        console.log("Image saving failed.")
     }
 }
 
