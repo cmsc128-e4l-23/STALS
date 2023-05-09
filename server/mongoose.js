@@ -4,5 +4,7 @@ export default async function makeDB(mongourl){
     return mongoose.connect(mongourl, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    }).then(() => console.log("connected to database"))
+    })
+    .then(() => console.log("Connected to Database"))
+    .catch((err) => console.log(`Database Connection Error: ${err}`))
 }
