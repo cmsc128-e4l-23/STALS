@@ -36,7 +36,7 @@ const getUserBasicDetails = (req, res) => {
 
         res.send({
             success: true,
-            message: "Reviews successfully retrieved",
+            message: "User basic details successfully retrieved",
             user: {
                 userType: document.userType,
                 firstName: document.firstName,
@@ -51,7 +51,7 @@ const getUserBasicDetails = (req, res) => {
     .catch((err) => {
         res.send({
             success: false,
-            message: "Failed to retrieve reviews",
+            message: "Failed to retrieve basic details",
             error: err
         })
     })
