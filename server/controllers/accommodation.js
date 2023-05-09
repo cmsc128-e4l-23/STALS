@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import PDFDocument from "pdfkit";
 import path from "path";
 import fs from "fs"
-
+import os from "os";
 import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
@@ -418,22 +418,33 @@ const fetchBookmarks = async (userID) => {
 
 
 //Functions that generates a pdf file of the bookmarked accommmodations of the user
+//Functions that generates a pdf file of the bookmarked accommmodations of the user
+const boldFont = "./font/Helvetica-Bold.ttf";
+const regularFont = "./font/Helvetica.ttf";
+const boldOblique = "./font/Helvetica-BoldOblique.ttf";
+const fSize12 = 12; //fontSize 12.
+
+const writeToDoc = (doc, header, content, list) =>{
+    doc.font(boldFont).fontSize(fSize12).text(header)
+    if(list){
+        doc.font(regularFont).fontSize(fSize12).list(content);
+    } else {
+        doc.font(regularFont).text(content);
+    }
+    doc.moveDown();
+};
 //Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
 const generateRep = async (req, res) => {
     try {
         const bookmarks = await fetchBookmarks(req.body._id);                           // Retrieve bookmarks given user id
-
-        const doc = new PDFDocument();                                                  // Create pdf document
-        const fileName = `report-${new Date().getTime()}.pdf`;                          // Set filename and path. Only for testing with needle
-        const filePath = path.join("./test/Download", fileName);
+        const downloadFolderPath = path.join(os.homedir(), 'Downloads');
+        const doc = new PDFDocument();    
+        const now = new Date();                                    // Create pdf document
+        const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;                          // Set filename and path. Only for testing with needle
+        //adjusted to immediately head to the downloads folder of the user.
+        const filePath = path.join(downloadFolderPath, fileName);
         doc.pipe(fs.createWriteStream(filePath));
-
-
         // doc.pipe(res)       // Use instead if implemented on web browser already
-        const boldFont = "./font/Helvetica-Bold.ttf";
-        const regularFont = "./font/Helvetica.ttf";
-        const boldOblique = "./font/Helvetica-BoldOblique.ttf";
-        const fSize12 = 12; //fontSize 12.
         // Edit the PDF file
         doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
         doc.moveDown();
@@ -441,32 +452,16 @@ const generateRep = async (req, res) => {
             doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
             doc.moveDown();
             if(accommodation.landmarks){
-                doc.font(boldFont).fontSize(fSize12).text(`Landmarks:`);
-                doc.font(regularFont).fontSize(fSize12).list(accommodation.landmarks);
-                doc.moveDown();
+                writeToDoc(doc, `Landmarks:`, accommodation.landmarks.map(landmark => `${landmark}`), true);
             }
-            
-            doc.font(boldFont).fontSize(fSize12).text(`Address: `)
-            doc.font(regularFont).text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
-            doc.moveDown();
-
-            doc.font(boldFont).fontSize(fSize12).text(`Accommodation Type: `)
-            doc.font(regularFont).text(`\u0020 ${accommodation.accommodationType}`);
-            doc.moveDown();
+            writeToDoc(doc,`Address: `,`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`, false);
+            writeToDoc(doc,`Accommodation Type: `,`\u0020 ${accommodation.accommodationType}`);
 
             if(accommodation.amenities){
-                doc.font(boldFont).fontSize(fSize12).text(`Amenities: `)
-                doc.font(regularFont).text(`\u0020 ${accommodation.amenities}`);
-                doc.moveDown();
+                writeToDoc(doc, `Amenities:`, accommodation.amenities.map(amenity => `${amenity}`), true);
             }
-            doc.font(boldFont).fontSize(fSize12).text(`Price Range:`)
-            doc.font(regularFont).text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
-            doc.moveDown();
-            
-            doc.font(boldFont).fontSize(fSize12).text(`Description:`)
-            doc.font(regularFont).text(`\u0020 ${accommodation.description}`);
-            doc.moveDown();
-            
+            writeToDoc(doc, `Price Range:`,`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`, false);
+            writeToDoc(doc,`Description:`,`\u0020 ${accommodation.description}`);
             //Further Implementation
             // if(accommodation.photos.length > 0){
             //     for(let i=0; i<accommodation.photos.length; i++){
@@ -474,25 +469,17 @@ const generateRep = async (req, res) => {
             //     }
             // }
             if(accommodation.restrictions){
-                doc.font(boldFont).fontSize(fSize12).text(`Restrictions: `)
-                doc.font(regularFont).text(`\u0020 ${accommodation.restrictions}`);
-                doc.moveDown();
+                writeToDoc(doc, `Restrictions:`, accommodation.restrictions.map(restriction => `${restriction}`), true);
             }
-            
             doc.moveDown(); 
             if(accommodation.security){
-                doc.font(boldFont).fontSize(fSize12).text(`Security:`)
-                doc.font(regularFont).text(`\u0020 ${accommodation.security}`);
-                doc.moveDown();
-                
+                writeToDoc(doc, `Security:`, `\u0020 ${accommodation.security}`, false);
             }
-            
             doc.moveDown();
+            //why cant i push
         });
-    
         // "Close" the PDF file and send it to where `pipe` specifies it to go
         doc.end();
-
         console.log(`PDF report saved to ${filePath}`);
         res.send({success: true, msg: "PDF Report Successfully Generated."})
     } catch (error) {
@@ -500,7 +487,6 @@ const generateRep = async (req, res) => {
         res.send({success: false, msg: "PDF Report Generation Failed.", error: error.message})
     }
 };
-
 //for testing
 const viewAccomm = async (req, res) => {
     Accommodation.findById("643665dccee7fa1d7dd408ea")
