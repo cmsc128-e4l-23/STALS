@@ -15,9 +15,10 @@ const addAccomm = async (req, res) => {
 
     try{
         //NOTE: The accommodation model states that the 'owner' field contains an object
-        const currUser = await User.findById(accomm_details.owner);
+        const currUser = await User.findOne({ email: accomm_details.owner });
 
         if (currUser){
+            accomm_details.owner = currUser._id
             // Check if accommodation name already exists in the database
             const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
             if (existingNameAccommodation) {
@@ -48,6 +49,7 @@ const addAccomm = async (req, res) => {
             throw new Error("User not found");
         }
     } catch(error) {
+        console.log(error);
         res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
     }
 }

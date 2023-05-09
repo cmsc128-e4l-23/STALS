@@ -41,11 +41,16 @@ export default function AddAccommodation() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
-    }).then((res) => {
-      if (res.status === 201) {
-        alert("Successfully signed up " + formData.accommodationType);
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if(data.success){
+        alert(data.msg)
+        navigate("/home")
+      }else{
+        alert(data.error)
       }
-    });
+    })
   };
 
   const FormTitles = [
