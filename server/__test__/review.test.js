@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const request = require("supertest");
+import request from "supertest";
 
 const url = "http://localhost:3001";
 describe("add new review", () => {
     test("should add a new review", async () => {
-        const res = await request().post("/addReview")
+        const res = await request(url).post("/addReview")
             .send({
                 user: "mtate@gmail.com",
                 propertyId: "644e58b2f157a1f22a80e741",
@@ -30,6 +29,7 @@ describe("add new review with incorrect user cred", () => {
             },);
         console.log(res.body);
         expect(res.body.success).toBe(false);
+        expect(res.body.error).toBe("User not found!");
     });
 });
 
@@ -51,7 +51,7 @@ describe("edit existing review", () => {
 });
 
 // //change id of review for deletion
-const deleteId = "6459d4c0ac54f7c40f223c90";
+const deleteId = "645a34d59bf7595623e56e22";
 describe("delete review with wrong user cred", () => {
     test("deleting a review with wrong user email", async () => {
 
@@ -63,6 +63,7 @@ describe("delete review with wrong user cred", () => {
             },);
         console.log(res.body);
         expect(res.body.success).toBe(false);
+        expect(res.body.error).toBe("Accomodation/User not found");
     });
 });
 describe("delete existing review", () => {
@@ -90,10 +91,9 @@ describe("delete review again", () => {
             },);
         console.log(res.body);
         expect(res.body.success).toBe(false);
+        expect(res.body.error).toBe("Review not found");
     });
 });
-
-
 
 // //change id of review for fetch
 const accommId = "644e58b2f157a1f22a80e741"
