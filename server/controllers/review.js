@@ -22,11 +22,13 @@ const addReview = async (req, res) => {
 
     User.findOne({ email: review_details.user })
         .then(async (document) => {
+
             if (!document) throw new Error("User not found!");
 
             //Adding the newly created review to current user and to the accommodation
             const user = await User.findById(document._id);
             const accomm = await Accommodation.findById(review_details.propertyId);
+
             console.log(user, accomm)
             if (user && accomm) {
                 //Creating new review
@@ -46,12 +48,14 @@ const addReview = async (req, res) => {
 
                 res.send({ success: true, msg: "Successfully added new review" });
             } else {
+
                 if (!user) throw new Error("User not found");
                 if (!accomm) throw new Error("Accommodation not found");
             }
 
         }).catch((err) => {
             res.send({ success: false, msg: "Adding new review Failed", error: err.message });
+
         })
 }
 
@@ -88,6 +92,7 @@ const editReview = async (req, res) => {
 
     } catch (err) {
         res.send({ success: false, msg: "Editing review failed", error: err.message });
+
     }
 }
 
@@ -158,6 +163,7 @@ const getReview = async (req, res) => {
     let queryObject;
 
     if (review_details.user) {
+
         try {
             const user = await User.findOne({ email: review_details.user });
             if (user) queryObject = { userId: user._id };
@@ -172,10 +178,12 @@ const getReview = async (req, res) => {
 
     try {
         const doc = await Review.find(queryObject);
+
         if (doc) res.send({ success: true, msg: "Successfully retrieved reviews", result: doc });
         else throw new Error("Cannot retrieve reviews");
     } catch (err) {
         res.send({ success: false, msg: "Retrieval of reviews failed", error: err.message });
+
     }
 }
 

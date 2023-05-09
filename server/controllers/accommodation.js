@@ -8,196 +8,136 @@ import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import Review from "../models/Review.js";
 
-const addAccomm = (req, res) => {
-        //Getting the input
+//Method for adding accommodations
+const addAccomm = async (req, res) => {
+    //Getting the input
     let accomm_details = req.body;
-    console.log(accomm_details)
 
-    User.findOne({ email: accomm_details.owner })
-        .then( async (document) => {
-            if(!document){
-                throw "User not found!"
-            }
+    try{
+        //NOTE: The accommodation model states that the 'owner' field contains an object
+        const currUser = await User.findById(accomm_details.owner);
 
-            accomm_details.owner = document._id
-
+        if (currUser){
             // Check if accommodation name already exists in the database
             const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });
             if (existingNameAccommodation) {
-                return res.status(409).json({ error: "Accommodation with the same name already exists" });
+                throw new Error("Accommodation with the same name already exists");
             }
-
+            
             // Check if accommodation address already exists in the database
             const existingAddressAccommodation = await Accommodation.findOne({ address: accomm_details.address });
             if (existingAddressAccommodation) {
-                return res.status(409).json({ error: "Accommodation with the same address already exists" });
+                throw new Error("Accommodation with the same address already exists");
             }
 
             // If both are unique, save the accommodation to the database
             const newAccommodation = new Accommodation(accomm_details);
             const savedAccommodation = await newAccommodation.save();
-            User.findByIdAndUpdate(
-                document._id, 
-                { "$push": { "owner.propertiesList": savedAccommodation._id}},
-                { "new": true, "upsert": true })
-                .then(
-                    function (user){
-                        console.log(user);
-                    }
-                )         
-                
-            res.status(201).json(savedAccommodation);
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).json({ error: err });
-    })
+            const result = await User.findByIdAndUpdate(
+                currUser._id, 
+                { $push: { "owner.propertiesList": savedAccommodation._id }},
+                { "new": true, "upsert": true }
+            );
+
+            if (!result){
+                throw new Error("Error updating user in add accommodation");
+            }
+
+            res.send({ success: true, msg: "Successfully added accommodation" });
+        } else {
+            throw new Error("User not found");
+        }
+    } catch(error) {
+        res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
+    }
 }
 
+//Method for archiving accommodations
 const archiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
 
-    Accommodation.updateOne(
-        { _id: accomm_details._id },
-        { $set: { archived: true } }
-    )
-        .then((result) => {
-            res.send({ success: true, message: "Successfully archived accommodation" });
-        })
-        .catch((error) => {
-            console.log(err);
-            res.send({ success: false, message: "Archive Failed" });
-        })
+    try{
+        const result = await Accommodation.findByIdAndUpdate(
+            accomm_details._id,
+            { $set: { archived: true }}
+        );
+
+        if (result){
+            res.send({ success: true, msg: "Successfully archived accommodation" });
+        } else {
+            throw new Error("Failed to find and archive accommodation");
+        }
+    } catch (error){
+        res.send({ success: false, msg: "Unsuccessfully archived accommodation", error: error.message });
+    }
 }
 
+//Function for unarchiving accommodations
 const unarchiveAccomm = async (req, res) => {
 
     const accomm_details = req.body;
 
-    Accommodation.updateOne(
-        { _id: accomm_details._id },
-        { $set: { archived: false } }
-    )
-        .then((result) => {
-            res.send({ success: true, message: "Successfully unarchived accommodation" });
-        })
-        .catch((error) => {
-            console.log(err);
+    try{
+        const result = await Accommodation.findByIdAndUpdate(
+            accomm_details._id,
+            { $set: { archived: false }}
+        );
 
-            res.send({ success: false, error: "Unarchive Failed" });
-        })
+        if (result){
+            res.send({ success: true, msg: "Successfully unarchived accommodation" });
+        } else {
+            throw new Error("Failed to find and unarchive accommodation");
+        }
+    } catch (error){
+        res.send({ success: false, msg: "Unsuccessfully unarchived accommodation", error: error.message });
+    }
 }
 
+//Function for editing accommodations
 // returns a json that indicates success and sends message
 // throws an error if accommodation was not found or if accommodation edit failed
 const editAccomm = async (req, res) => {
-
     const accomm_details = req.body;
-    let updateObject = { $set: {} };
-
-
+    
     try{
-        if (accomm_details.name){
-            updateObject.$set.name = accomm_details.name;
-        }
-        if (accomm_details.landmarks){
-            updateObject.$set.landmarks = accomm_details.landmarks;
-        }
+        let currAccomm = await Accommodation.findById(accomm_details._id);
 
-        //address
-        if (accomm_details.address){
-            const newAccommAddr = accomm_details.address;
-            let currentAccommAddr = await Accommodation.findById(accomm_details._id).select("address -_id").exec();
+        if (currAccomm){
+            const currAccommObj = currAccomm.toObject();
 
-            if (currentAccommAddr){
-                currentAccommAddr = currentAccommAddr.address;
+            //creates the updateObject that determines what would be
+            //updated in the document
+            const updateObject = {
+                $set: {...currAccommObj, ...accomm_details,
+                    address: {
+                        ...currAccommObj.address,
+                        ...(accomm_details.address ?? {})
+                    },
+                    priceRange: {
+                        ...currAccommObj.priceRange,
+                        ...(accomm_details.priceRange ?? {})
+                    }
+                }
+            };
 
-                if (newAccommAddr.postCode){
-                    currentAccommAddr.postCode = newAccommAddr.postCode;
-                }
-                if (newAccommAddr.street){
-                    currentAccommAddr.street = newAccommAddr.street;
-                }
-                if (newAccommAddr.barangay){
-                    currentAccommAddr.barangay = newAccommAddr.barangay;
-                }
-                if (newAccommAddr.city){
-                    currentAccommAddr.city = newAccommAddr.city;
-                }
-                if (newAccommAddr.province){
-                    currentAccommAddr.province = newAccommAddr.province;
-                }
-                if (newAccommAddr.region){
-                    currentAccommAddr.region = newAccommAddr.region;
-                }
+            const result = await Accommodation.findByIdAndUpdate(
+                {_id: accomm_details._id},
+                updateObject
+            );
 
-                updateObject.$set.address = currentAccommAddr;
+            if (result){
+                res.send({ success: true, msg: "Successfully edited accommodation" })
             } else {
-                throw new Error("Accommodation not found when trying to update address");
-            }
-        }
-
-        if (accomm_details.generalLocation){
-            updateObject.$set.generalLocation = accomm_details.generalLocation;
-        }
-        if (accomm_details.accommodationType){
-            updateObject.$set.accommodationType = accomm_details.accommodationType;
-        }
-        if (accomm_details.amenities){
-            updateObject.$set.amenities = accomm_details.amenities;
-        }
-
-        //price range
-        if (accomm_details.priceRange){
-            const newAccommPrice = accomm_details.priceRange;
-            let currentAccommPrice = await Accommodation.findById(accomm_details._id).select("priceRange -_id").exec();
-
-            if(currentAccommPrice){
-                currentAccommPrice = currentAccommPrice.priceRange;
-
-                if (newAccommPrice.minPrice){
-                    currentAccommPrice.minPrice = newAccommPrice.minPrice;
-                }
-                if (newAccommPrice.maxPrice){
-                    currentAccommPrice.maxPrice = newAccommPrice.maxPrice;
-                }
-
-            } else {
-                throw new Error("Accomodation not found when trying to update price range");
+                throw new Error("An error occured in updating the accommodation");
             }
 
-            updateObject.$set.priceRange = currentAccommPrice;
-        }
-
-        if (accomm_details.description){
-            updateObject.$set.description = accomm_details.description;
-        }
-        if (accomm_details.photos){
-            updateObject.$set.photos = accomm_details.photos;
-        }
-        if (accomm_details.restrictions){
-            updateObject.$set.restrictions = accomm_details.restrictions;
-        }
-        if (accomm_details.security){
-            updateObject.$set.security = accomm_details.security;
-        }
-        
-        //Updating the accommodation
-        const result = await Accommodation.findByIdAndUpdate(
-            { _id: accomm_details._id },
-            updateObject
-        );
-
-        if (result) {
-            res.send({ success: true, message: "Successfully edited accommodation" });
         } else {
-            throw new Error("Accommodation not found");
+            throw new Error("Accommodation not found.");
         }
     } catch (error) {
-        console.log(error);
-        res.send({ success: false, message: "Failed to edit accommodation", error: error });
+        res.send({ success: false, msg: "Unsuccessfully edited accommodation", error: error.message });
     }
-
 }
 
 //Function for delete accomodation
@@ -206,17 +146,26 @@ const editAccomm = async (req, res) => {
 const deleteAccomm = async (req, res) => {
     const accomm_details = req.body;
     //delete the accomodation with the id
-    Accommodation.findByIdAndDelete(accomm_details._id)
-    .then((res) => {
-        User.findByIdAndUpdate(
-                accomm_details.owner, 
-                { "$pull": { "owner.propertiesList": accomm_details._id}})
-                .then(
-                    res.send({success: true, message: "Successfully deleted accommodation"})
-                )
-    }).catch((err) => {
-        res.send({success: false, message: err});
-    })
+    try{
+        const currAccomm = await Accommodation.findByIdAndDelete(accomm_details._id);
+
+        if (currAccomm){
+            const currUser = await User.findByIdAndUpdate(
+                currAccomm.owner,
+                { $pull: { "owner.propertiesList" : accomm_details._id }}
+            );
+
+            if (currUser){
+                res.send({ success: true, msg: "Successfully deleted accommodation" })
+            } else {
+                throw new Error("Failed to find and edit propertyList of current user");
+            }
+        } else {
+            throw new Error("Failed to find and delete accommodation");
+        }
+    } catch (err){
+        res.send({ success: false, msg: "Unsuccessful deleted accommodation", error: err.message });
+    }
 }
 
 //search functionality
@@ -431,90 +380,74 @@ const generateRep = async (req, res) => {
 
 
         // doc.pipe(res)       // Use instead if implemented on web browser already
-
+        const boldFont = "./font/Helvetica-Bold.ttf";
+        const regularFont = "./font/Helvetica.ttf";
+        const boldOblique = "./font/Helvetica-BoldOblique.ttf";
+        const fSize12 = 12; //fontSize 12.
         // Edit the PDF file
-        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true });
+        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
         doc.moveDown();
         bookmarks.forEach((accommodation, index) => {
             doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
             doc.moveDown();
-            if (accommodation.landmarks) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Landmarks:`);
-                doc.font("./font/Helvetica.ttf").fontSize(12).list(accommodation.landmarks);
+            if(accommodation.landmarks){
+                doc.font(boldFont).fontSize(fSize12).text(`Landmarks:`);
+                doc.font(regularFont).fontSize(fSize12).list(accommodation.landmarks);
                 doc.moveDown();
             }
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Address: `)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
+            
+            doc.font(boldFont).fontSize(fSize12).text(`Address: `)
+            doc.font(regularFont).text(`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`);
             doc.moveDown();
 
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Accommodation Type: `)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.accommodationType}`);
+            doc.font(boldFont).fontSize(fSize12).text(`Accommodation Type: `)
+            doc.font(regularFont).text(`\u0020 ${accommodation.accommodationType}`);
             doc.moveDown();
 
-            if (accommodation.amenities) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Amenities: `)
-                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.amenities}`);
+            if(accommodation.amenities){
+                doc.font(boldFont).fontSize(fSize12).text(`Amenities: `)
+                doc.font(regularFont).text(`\u0020 ${accommodation.amenities}`);
                 doc.moveDown();
             }
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Price Range:`)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
+            doc.font(boldFont).fontSize(fSize12).text(`Price Range:`)
+            doc.font(regularFont).text(`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`);
             doc.moveDown();
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Description:`)
-            doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.description}`);
+            
+            doc.font(boldFont).fontSize(fSize12).text(`Description:`)
+            doc.font(regularFont).text(`\u0020 ${accommodation.description}`);
             doc.moveDown();
-
+            
             //Further Implementation
             // if(accommodation.photos.length > 0){
             //     for(let i=0; i<accommodation.photos.length; i++){
             //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
             //     }
             // }
-
-            doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Restrictions:`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Curfew:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.curfew}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Pets:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.pets}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Cooking:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.cooking}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Visitors:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.visitors}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Co-ed:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.coedStatus}`);
-
-            doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Wifi:`)
-            doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.wifi}`);
-
-            if (accommodation.restrictions.phoneSignal) {
-                // doc.fontSize(12).text(`   Phone Signal: ${accommodation.restrictions.phoneSignal}`);
-                doc.font("./font/Helvetica-BoldOblique.ttf").fontSize(12).text(`   Phone Signal:`)
-                doc.font("./font/Helvetica.ttf").text(`      ${accommodation.restrictions.phoneSignal}`);
-            }
-
-            doc.moveDown();
-            if (accommodation.security) {
-                doc.font("./font/Helvetica-Bold.ttf").fontSize(12).text(`Security:`)
-                doc.font("./font/Helvetica.ttf").text(`\u0020 ${accommodation.security}`);
+            if(accommodation.restrictions){
+                doc.font(boldFont).fontSize(fSize12).text(`Restrictions: `)
+                doc.font(regularFont).text(`\u0020 ${accommodation.restrictions}`);
                 doc.moveDown();
-
             }
+            
+            doc.moveDown(); 
+            if(accommodation.security){
+                doc.font(boldFont).fontSize(fSize12).text(`Security:`)
+                doc.font(regularFont).text(`\u0020 ${accommodation.security}`);
+                doc.moveDown();
+                
+            }
+            
             doc.moveDown();
         });
-
+    
         // "Close" the PDF file and send it to where `pipe` specifies it to go
         doc.end();
 
         console.log(`PDF report saved to ${filePath}`);
+        res.send({success: true, message: "PDF Report Successfully Generated."})
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error generating report');
+        res.send({success: false, message: "PDF Report Generation Failed.", error: error.message})
     }
 };
 
@@ -536,10 +469,8 @@ You may refer to test.js to check how it is used
 const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
-        const custom_id = new mongoose.Types.ObjectId();
 
         const report = new Report({
-            _id: custom_id,
             user: report_details.user_id,
             reported: report_details.reported_id,
             classification: report_details.classification,
@@ -550,21 +481,21 @@ const reportAccomm = async (req, res) => {
         // also add that report to the user
 
         User.updateOne(
-            { _id: report_details.user_id },
-            { $push: { reports: custom_id } }
+            {_id: report_details.user_id},
+            { $push: {reports: report._id} }
         ).then((result) => {
-            res.send("Successfully appended report to user");
+            res.send({success: true, message: "Successfully appended report to user"});
         })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, error: "Report Appending Failed" });
-            });
-    } catch (err) {
-        res.status(500).send({ error: err.message });
-        console.error(err);
+        .catch((error) => {
+            console.log(error);
+            res.send({success: false, message: "Report Appending Failed",error: error.message});
+        });
+    }  catch (error) {
+        res.send({success: false, message: "Report Accommodation Failed", error: error.message})
     }
     //res.send("I am reporting an accommodation");
 }
+
 
 export default {
     addAccomm,
