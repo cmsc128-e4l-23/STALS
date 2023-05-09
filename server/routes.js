@@ -4,6 +4,7 @@ import accommodation from "./controllers/accommodation.js";
 import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
 import userinfo from "./controllers/userinfo.js";
+import accomminfo from "./controllers/accomminfo.js";
 
 const router = express.Router();
 
@@ -19,6 +20,12 @@ router.post("/getUserBasicDetails", userinfo.getUserBasicDetails);
 router.post("/getUserReviews", userinfo.getUserReviews);
 router.post("/getUserReports", userinfo.getUserReports);
 router.post("/getUserBookmarks", userinfo.getUserBookmarks);
+
+//Accommodation Info
+router.post("/getAccommOwner", accomminfo.getAccommOwner);
+router.post("/getAccommBasicDetails", accomminfo.getAccommBasicDetails);
+router.post("/getAccommReviews", accomminfo.getAccommReviews);
+router.post("/getAccommReports", accomminfo.getAccommReports);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
