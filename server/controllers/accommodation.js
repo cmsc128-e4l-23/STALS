@@ -240,6 +240,7 @@ const searchAccomm = async (req, res) => {
     const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
         .filter((key) => {return key.includes("address.")})
         .map((key) => {return {key: searchString}});
+        
     Accommodation.find({ $or: [
         { name: searchString },
         ...addressArgs] })
@@ -329,24 +330,19 @@ A unsuccessful bookmark will result to a res.body that contains
     - a key "msg" with a value indicating a failed operation
 */
 const bookmarkAccomm = async (req, res) => {
-    try {
-        const bookmark_details = req.body;
+    const bookmark_details = req.body;
 
-        // accomm_id is added to bookmarks array
-        User.updateOne(
-            { _id: bookmark_details.user_id },
-            { $addToSet: { bookmarks: bookmark_details.accomm_id } }
-        ).then((result) => {
-            res.send({ success: true, msg: "Bookmark Success" });
-        })
-        .catch((error) => {
-            console.log(error);
-            res.send({ success: false, msg: "Bookmark Failed" });
-        });
-    } catch (err) {
-        res.send({ success: false, msg: err.message });
-        console.error(err);
-    }
+    // accomm_id is added to bookmarks array
+    User.updateOne(
+        { _id: bookmark_details.user_id },
+        { $addToSet: { bookmarks: bookmark_details.accomm_id } }
+    ).then((result) => {
+        res.send({ success: true, msg: "Bookmark Success" });
+    })
+    .catch((error) => {
+        console.log(error);
+        res.send({ success: false, msg: "Bookmark Failed", err: error });
+    });
 }
 
 /*
@@ -364,24 +360,19 @@ A unsuccessful bookmark will result to a res.body that contains
     - a key "msg" with a value indicating a failed operation
 */
 const removeBookmarkAccomm = async (req, res) => {
-    try {
-        const bookmark_details = req.body;
+    const bookmark_details = req.body;
 
-        //accomm_id is removed from bookmark array
-        User.updateOne(
-            { _id: bookmark_details.user_id },
-            { $pull: { bookmarks: bookmark_details.accomm_id } }
-        ).then((result) => {
-            res.send({ success: true, msg: "Remove Bookmark Success" });
-        })
-        .catch((error) => {
-            console.log(error);
-            res.send({ success: false, msg: "Remove Bookmark Failed" });
-        });
-    } catch (err) {
-        res.send({ success: false, msg: err.message });
-        console.error(err);
-    }
+    //accomm_id is removed from bookmark array
+    User.updateOne(
+        { _id: bookmark_details.user_id },
+        { $pull: { bookmarks: bookmark_details.accomm_id } }
+    ).then((result) => {
+        res.send({ success: true, msg: "Remove Bookmark Success" });
+    })
+    .catch((error) => {
+        console.log(error);
+        res.send({ success: false, msg: "Remove Bookmark Failed", err: error });
+    });
 }
 
 //Function for fetching bookmarks
