@@ -463,14 +463,14 @@ url = "http://localhost:3001/addAccomm";
 // )
 
 // ========================== SEARCH ACCOMMODATION ==========================
-// needle.post("http://localhost:3001/searchAccomm",
-//     {
-//         searchString: "bar"
-//     },
-//     (err, res) => {
-//         console.log(res.body.result);
-//     }
-// );
+needle.post("http://localhost:3001/searchAccomm",
+    {
+        searchString: "Nawawalang Paraiso"
+    },
+    (err, res) => {
+        console.log(res.body.result);
+    }
+);
 
 // ========================== DELETE ACCOMMODATION ==========================
 // needle.delete("http://localhost:3001/deleteAccomm",

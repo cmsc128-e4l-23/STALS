@@ -237,20 +237,18 @@ A unsuccessful search will result to a res.body that contains
 const searchAccomm = async (req, res) => {
     // searching is not case-sensitive
     const searchString = { "$regex": req.body.searchString, "$options": "i" };
+    const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
+        .filter((key) => {return key.includes("address.")})
+        .map((key) => {return {key: searchString}});
     Accommodation.find({ $or: [
         { name: searchString },
-        { "address.postCode": searchString },
-        { "address.street": searchString },
-        { "address.barangay": searchString },
-        { "address.city": searchString },
-        { "address.province": searchString },
-        { "address.region": searchString }] })
+        ...addressArgs] })
         .then((result) => {
             res.send({ success: true, msg: "Search Accommodation Successful", result: result });
         })
         .catch((error) => {
             console.log(error);
-            res.send({ success: false, msg: "Search Accommodation Failed" });
+            res.send({ success: false, msg: "Search Accommodation Failed", err: error});
         })
 }
 
