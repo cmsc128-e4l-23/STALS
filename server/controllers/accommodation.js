@@ -306,7 +306,6 @@ const recommendAccomm = async (req, res) => {
         // then order the sorted list by rating
         sortlist.sort((a, b)=>{return b.rating - a.rating})
         // get only the return length
-        // this is for the top rated flag
         if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
 
         res.send({success: true, msg: "Search Recommendation Successful", result: sortlist})

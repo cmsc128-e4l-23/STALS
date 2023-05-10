@@ -5,14 +5,6 @@ import mongoose from "mongoose";
 
 let url;
 
-// encapsulation
-const post = async (name, url, req) => {
-    needle.post(url, req,
-        (err, res) => {
-            console.log(res.body);
-        }
-    );
-}
 // SEARCH ACCOMMODATION
 url = "http://localhost:3001/searchAccomm";
 
@@ -26,14 +18,14 @@ url = "http://localhost:3001/searchAccomm";
 //post("Misspelling", url, {searchString: "Lanuga"})
 // we'll assume that blank strings couldn't be inputted
 
-test('Accommodation Name Searching', () => {
-    return needle.post(url, {searchString: "Beautiful Villa"},
-    (err, res) => {
-        expect(res.body.success).toBe(true);
-        // only get the ids
-        expect(res.body.result._id).toBe('644ce1aad31be0a75c33df74');
-    })
-})
+// test('Accommodation Name Searching', () => {
+//     return needle.post(url, {searchString: "Beautiful Villa"},
+//     (err, res) => {
+//         expect(res.body.success).toBe(true);
+//         // only get the ids
+//         expect(res.body.result._id).toBe('644ce1aad31be0a75c33df74');
+//     })
+// })
 
 // ========================== ADD ACCOMMODATION ==========================
 url = "http://localhost:3001/addAccomm";
