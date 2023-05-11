@@ -126,7 +126,7 @@ const editAccomm = async (req, res) => {
 
             res.send({ success: true, msg: "Successfully edited accommodation" });
         } else {
-            throw new Error("Accommodation not found.");
+            throw new Error("Accommodation not found");
         }
     } catch (error) {
         res.send({ success: false, msg: "Unsuccessfully edited accommodation", error: error.message });
@@ -157,7 +157,7 @@ const deleteAccomm = async (req, res) => {
             throw new Error("Failed to find and delete accommodation");
         }
     } catch (err){
-        res.send({ success: false, msg: "Unsuccessful deleted accommodation", error: err.message });
+        res.send({ success: false, msg: "Unsuccessfully deleted accommodation", error: err.message });
     }
 }
 
