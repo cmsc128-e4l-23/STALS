@@ -1,13 +1,39 @@
-// import accommodation from "../controllers/accommodation";
-// import User from "../models/User";
+import app from '../app';
+import makeDB from '../mongoose';
+import mongoose from 'mongoose';
+import request from 'supertest';
+import Accommodation from '../models/Accommodation';
+import User from '../models/User';
+beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
-import request from "supertest";
-import Accommodation from "../models/Accommodation";
-const baseURL = "http://localhost:3001";
+const mockUser = {
+    userType: "Owner",
+    firstName: "John",
+    lastName: "Doe",
+    email: "johndoe@example.com",
+    password: "password123",
+    phoneNumber: "09123456789",
+    birthday: "1990-01-01",
+    profilePhoto: "https://example.com/profile-photo.jpg",
+    sex: "Male",
+    verificationFiles: ["https://example.com/verification-file1.jpg", "https://example.com/verification-file2.jpg"],
+    reviews: [],
+    reports: [],
+    bookmarks: [],
+    owner: {
+      propertiesList: [],
+      archivedList: [],
+      status: "active"
+    },
+    admin: {
+      pendingApplications: [],
+      pendingReports: []
+    }
+};
 
 const mockAccomm = {
     name: "Mock Accommodation",
-    owner: "645a60a303c639371334984a", // Example owner ID
+    owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
       postCode: "12345",
@@ -40,14 +66,18 @@ describe("Accommodation Tests", () => {
 
     //============================ Add Accommodation ============================
     test("should successfully add an accommodation to the database", async() => {
-        const res = await request(baseURL).post("/addAccomm").send(mockAccomm);
+        //adding a new user to the database
+        await request(app).post("/signup").send(mockUser);
+
+        //adding accommodation to the database
+        const res = await request(app).post("/addAccomm").send(mockAccomm);
         expect(res.body).toEqual({
             "success": true,
             "msg": "Successfully added accommodation"
         });
         
         //Getting added accommodation to be used for future testing
-        newAccomm = await Accommodation.findOne({ name: "Mock Accommodation" });
+        newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
 
         //Mock document to be used for edit tests
         editAccomm = {
@@ -78,7 +108,7 @@ describe("Accommodation Tests", () => {
     });
 
     test("should fail to add accommodation due to same name error", async() => {
-        const res = await request(baseURL).post("/addAccomm").send(newAccomm);
+        const res = await request(app).post("/addAccomm").send(mockAccomm);
         expect(res.body).toEqual({
             "error": "Accommodation with the same name already exists",
             "msg": "Unsuccessfully added accommodation",
@@ -87,7 +117,7 @@ describe("Accommodation Tests", () => {
     });
 
     test("should fail to add an accommodation due to same address error", async() => {
-        const res = await request(baseURL).post("/addAccomm").send({...newAccomm, name: "DIFFERENT DORM"});
+        const res = await request(app).post("/addAccomm").send({...mockAccomm, name: "DIFFERENT DORM"});
         expect(res.body).toEqual({
             "error": "Accommodation with the same address already exists",
             "msg": "Unsuccessfully added accommodation",
@@ -96,18 +126,18 @@ describe("Accommodation Tests", () => {
     });
 
     test("should fail to add an accommodation due to 'User not found' error", async() => {
-        const res = await request(baseURL).post("/addAccomm").send({...newAccomm, owner: "6458b94082442da5c8771d69"});
+        const res = await request(app).post("/addAccomm").send({...mockAccomm, owner: "random@email.com"});
         expect(res.body).toEqual({"error": "User not found", "msg": "Unsuccessfully added accommodation","success": false});
     });
 
     //============================ Archive ============================
     test("should successfully archive an accommodation from database", async () => {
-        const res = await request(baseURL).post("/archiveAccomm").send(newAccomm._id);
+        const res = await request(app).post("/archiveAccomm").send({_id: newAccomm._id});
         expect(res.body.success).toBe(true);
     });
 
     test("should fail in archiving an accommodation from database", async () => {
-        const res = await request(baseURL).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+        const res = await request(app).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
         expect(res.body).toEqual({
             "error": "Failed to find and archive accommodation",
             "msg": "Unsuccessfully archived accommodation",
@@ -116,12 +146,12 @@ describe("Accommodation Tests", () => {
     });
 
     test("should successfully unarchive an accommodation from database", async () => {
-        const res = await request(baseURL).post("/unarchiveAccomm").send(newAccomm._id);
+        const res = await request(app).post("/unarchiveAccomm").send({_id: newAccomm._id});
         expect(res.body.success).toBe(true);
     });
 
     test("should fail in unarchiving an accommodation from database", async () => {
-        const res = await request(baseURL).post("/unarchiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+        const res = await request(app).post("/unarchiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
         expect(res.body).toEqual({
             "error": "Failed to find and unarchive accommodation",
             "msg": "Unsuccessfully unarchived accommodation",
@@ -131,12 +161,12 @@ describe("Accommodation Tests", () => {
 
     //============================ Edit Accommodation ============================
     test("should successfully edit accommodation from database", async () => {
-        const res = await request(baseURL).post("/editAccomm").send(editAccomm);
+        const res = await request(app).post("/editAccomm").send(editAccomm);
         expect(res.body.success).toBe(true);
     });
 
     test("should fail to edit accommodation due to accommodation not existing", async () => {
-        const res = await request(baseURL).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
+        const res = await request(app).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
         expect(res.body.success).toBe(false);
         expect(res.body).toEqual({"error": "Accommodation not found.", "msg": "Unsuccessfully edited accommodation", "success": false});
     });
@@ -144,12 +174,12 @@ describe("Accommodation Tests", () => {
     //============================ Delete Accommodation ============================
     test("should successfully delete accommodation", async () => {
         // const currAccomm = await Accommodation.findOne({ name: "Mock Accommodation" });
-        const res = await request(baseURL).post("/deleteAccomm").send(newAccomm._id);
+        const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
         expect(res.body.success).toBe(true);
     });
 
     test("should fail to delete accommodation due to non-existent accommodation", async () => {
-        const res = await request(baseURL).post("/deleteAccomm").send({ _id: "615ab89dcf32a1a234555555" });
+        const res = await request(app).post("/deleteAccomm").send({ _id: "615ab89dcf32a1a234555555" });
         expect(res.body).toEqual({
             "error": "Failed to find and delete accommodation",
             "msg": "Unsuccessful deleted accommodation",
@@ -158,10 +188,15 @@ describe("Accommodation Tests", () => {
     });
 
     test("should fail to edit owner's property list at accommodation deletion due to incorrect user id", async () => {
-        //creating the mock accommodation
-        await request(baseURL).post("/addAccomm").send(newAccomm);
+        //adding a mock accommodation
+        const result = await request(app).post("/addAccomm").send(mockAccomm);
+        newAccomm = await Accommodation.findOne({name: mockAccomm.name});
         
-        const res = await request(baseURL).post("/deleteAccomm").send({...newAccomm, owner: "645a23db01e8d52bb114278b"});
+        //editing the mock accommodation
+        const result1 = await request(app).post("/editAccomm").send({_id: newAccomm._id, owner: "615ab89dcf32a1a2345abcde"});
+        newAccomm = await Accommodation.findOne({name: mockAccomm.name})
+        
+        const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
         expect(res.body).toEqual({
             "error": "Failed to find and edit propertyList of current user",
             "msg": "Unsuccessful deleted accommodation",
@@ -170,3 +205,8 @@ describe("Accommodation Tests", () => {
     });
     
 });
+
+afterAll(() => {
+    mongoose.connection.db.dropDatabase()
+    .then(() => mongoose.connection.close())
+})
