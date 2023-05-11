@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../models/Accommodation';
 import User from '../models/User';
-beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
+// beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
+beforeAll(() => makeDB('mongodb+srv://STALS-user:password123321@stals-test.bsqn4yg.mongodb.net/jest-test'))
 
 const mockUser = {
     userType: "Owner",
@@ -62,149 +63,160 @@ const mockAccomm = {
 let newAccomm;
 let editAccomm;
 
-describe("Accommodation Tests", () => {
-
-    //============================ Add Accommodation ============================
-    test("should successfully add an accommodation to the database", async() => {
-        //adding a new user to the database
-        await request(app).post("/signup").send(mockUser);
-
-        //adding accommodation to the database
-        const res = await request(app).post("/addAccomm").send(mockAccomm);
-        expect(res.body).toEqual({
-            "success": true,
-            "msg": "Successfully added accommodation"
-        });
-        
-        //Getting added accommodation to be used for future testing
-        newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
-
-        //Mock document to be used for edit tests
-        editAccomm = {
-            _id: newAccomm._id,
-            name: 'Never',
-            landmarks: [ 'Gonna' ],
-            address: {
-                postCode: 'Give',
-                street: 'You',
-                barangay: 'Up',
-                city: 'Never',
-                province: 'Gonna',
-                region: 'Let'
-            },
-            generalLocation: 310771,
-            accommodationType: 'You',
-            amenities: [ 'Down' ],
-            priceRange: {
-                minPrice: 10000,
-                maxPrice: 15000
-            },
-            description: 'Never gonna run around and desert you',
-            photos: [ 'and' ],
-            restrictions: ["desert", "you"],
-            security: 'Rick Astley',
-            archived: false
-        }
-    });
-
-    test("should fail to add accommodation due to same name error", async() => {
-        const res = await request(app).post("/addAccomm").send(mockAccomm);
-        expect(res.body).toEqual({
-            "error": "Accommodation with the same name already exists",
-            "msg": "Unsuccessfully added accommodation",
-            "success": false
-        });
-    });
-
-    test("should fail to add an accommodation due to same address error", async() => {
-        const res = await request(app).post("/addAccomm").send({...mockAccomm, name: "DIFFERENT DORM"});
-        expect(res.body).toEqual({
-            "error": "Accommodation with the same address already exists",
-            "msg": "Unsuccessfully added accommodation",
-            "success": false
-        });
-    });
-
-    test("should fail to add an accommodation due to 'User not found' error", async() => {
-        const res = await request(app).post("/addAccomm").send({...mockAccomm, owner: "random@email.com"});
-        expect(res.body).toEqual({"error": "User not found", "msg": "Unsuccessfully added accommodation","success": false});
-    });
-
-    //============================ Archive ============================
-    test("should successfully archive an accommodation from database", async () => {
-        const res = await request(app).post("/archiveAccomm").send({_id: newAccomm._id});
-        expect(res.body.success).toBe(true);
-    });
-
-    test("should fail in archiving an accommodation from database", async () => {
-        const res = await request(app).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
-        expect(res.body).toEqual({
-            "error": "Failed to find and archive accommodation",
-            "msg": "Unsuccessfully archived accommodation",
-            "success": false,
-        });
-    });
-
-    test("should successfully unarchive an accommodation from database", async () => {
-        const res = await request(app).post("/unarchiveAccomm").send({_id: newAccomm._id});
-        expect(res.body.success).toBe(true);
-    });
-
-    test("should fail in unarchiving an accommodation from database", async () => {
-        const res = await request(app).post("/unarchiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
-        expect(res.body).toEqual({
-            "error": "Failed to find and unarchive accommodation",
-            "msg": "Unsuccessfully unarchived accommodation",
-            "success": false,
-        });
-    });
-
-    //============================ Edit Accommodation ============================
-    test("should successfully edit accommodation from database", async () => {
-        const res = await request(app).post("/editAccomm").send(editAccomm);
-        expect(res.body.success).toBe(true);
-    });
-
-    test("should fail to edit accommodation due to accommodation not existing", async () => {
-        const res = await request(app).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
-        expect(res.body.success).toBe(false);
-        expect(res.body).toEqual({"error": "Accommodation not found.", "msg": "Unsuccessfully edited accommodation", "success": false});
-    });
-
-    //============================ Delete Accommodation ============================
-    test("should successfully delete accommodation", async () => {
-        // const currAccomm = await Accommodation.findOne({ name: "Mock Accommodation" });
-        const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
-        expect(res.body.success).toBe(true);
-    });
-
-    test("should fail to delete accommodation due to non-existent accommodation", async () => {
-        const res = await request(app).post("/deleteAccomm").send({ _id: "615ab89dcf32a1a234555555" });
-        expect(res.body).toEqual({
-            "error": "Failed to find and delete accommodation",
-            "msg": "Unsuccessful deleted accommodation",
-            "success": false,
-        });
-    });
-
-    test("should fail to edit owner's property list at accommodation deletion due to incorrect user id", async () => {
-        //adding a mock accommodation
-        const result = await request(app).post("/addAccomm").send(mockAccomm);
-        newAccomm = await Accommodation.findOne({name: mockAccomm.name});
-        
-        //editing the mock accommodation
-        const result1 = await request(app).post("/editAccomm").send({_id: newAccomm._id, owner: "615ab89dcf32a1a2345abcde"});
-        newAccomm = await Accommodation.findOne({name: mockAccomm.name})
-        
-        const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
-        expect(res.body).toEqual({
-            "error": "Failed to find and edit propertyList of current user",
-            "msg": "Unsuccessful deleted accommodation",
-            "success": false
-        });
-    });
+describe("POST /addAccomm", () => {
+    describe("Happy paths", () => {
+        test("should successfully add an accommodation to the database", async() => {
+            //adding a new user to the database
+            await request(app).post("/signup").send(mockUser);
     
+            //adding accommodation to the database
+            const res = await request(app).post("/addAccomm").send(mockAccomm);
+            expect(res.body.success).toBe(true);
+            expect(res.body.msg).toBe("Successfully added accommodation");
+            
+            //Getting added accommodation to be used for future testing
+            newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+    
+            //Mock document to be used for edit tests
+            editAccomm = {
+                _id: newAccomm._id,
+                name: 'Never',
+                landmarks: [ 'Gonna' ],
+                address: {
+                    postCode: 'Give',
+                    street: 'You',
+                    barangay: 'Up',
+                    city: 'Never',
+                    province: 'Gonna',
+                    region: 'Let'
+                },
+                generalLocation: 310771,
+                accommodationType: 'You',
+                amenities: [ 'Down' ],
+                priceRange: {
+                    minPrice: 10000,
+                    maxPrice: 15000
+                },
+                description: 'Never gonna run around and desert you',
+                photos: [ 'and' ],
+                restrictions: ["desert", "you"],
+                security: 'Rick Astley',
+                archived: false
+            }
+        });
+    });
+
+    describe("Unhappy paths", () => {
+        test("should fail to add accommodation due to same name error", async() => {
+            const res = await request(app).post("/addAccomm").send(mockAccomm);
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully added accommodation");
+            expect(res.body.error).toEqual("Accommodation with the same name already exists");
+        });
+
+        test("should fail to add an accommodation due to same address error", async() => {
+            const res = await request(app).post("/addAccomm").send({...mockAccomm, name: "DIFFERENT DORM"});
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully added accommodation");
+            expect(res.body.error).toEqual("Accommodation with the same address already exists");
+        });
+
+        test("should fail to add an accommodation due to 'User not found' error", async() => {
+            const res = await request(app).post("/addAccomm").send({...mockAccomm, owner: "random@email.com"});
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully added accommodation");
+            expect(res.body.error).toEqual("User not found");
+        });
+    });
 });
+
+
+describe("POST /archiveAccomm", () => {
+    describe("Happy paths", () => {
+        test("should successfully archive an accommodation from database", async () => {
+            const res = await request(app).post("/archiveAccomm").send({_id: newAccomm._id});
+            expect(res.body.success).toBe(true);
+        });
+    })
+
+    describe("Unhappy paths", () => {
+        test("should fail in archiving an accommodation from database due to incorrect accommodation id", async () => {
+            const res = await request(app).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully archived accommodation");
+            expect(res.body.error).toEqual("Failed to find and archive accommodation");
+        });
+    })  
+})
+
+describe("POST /unarchiveAccomm", () => {
+    describe("Happy paths", () => {
+        test("should successfully unarchive an accommodation from database due to incorrect accommodation id", async () => {
+            const res = await request(app).post("/unarchiveAccomm").send({_id: newAccomm._id});
+            expect(res.body.success).toBe(true);
+        });
+    })
+
+    describe("Unhappy paths", () => {
+        test("should fail in unarchiving an accommodation from database", async () => {
+            const res = await request(app).post("/unarchiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully unarchived accommodation");
+            expect(res.body.error).toEqual("Failed to find and unarchive accommodation");
+        });
+    })  
+})
+
+describe("POST /editAccomm", () => {
+    describe("Happy paths", () => {
+        test("should successfully edit accommodation from database", async () => {
+            const res = await request(app).post("/editAccomm").send(editAccomm);
+            expect(res.body.success).toBe(true);
+        });
+    })
+
+    describe("Unhappy paths", () => {
+        test("should fail to edit accommodation due to accommodation not existing", async () => {
+            const res = await request(app).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
+            expect(res.body.success).toBe(false);
+            expect(res.body.msg).toBe("Unsuccessfully edited accommodation");
+            expect(res.body.error).toBe("Accommodation not found");
+        });
+    })  
+})
+
+describe("POST /deleteAccomm", () => {
+    describe("Happy paths", () => {
+        test("should successfully delete accommodation", async () => {
+            const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
+            expect(res.body.success).toBe(true);
+        });
+    })
+
+    describe("Unhappy paths", () => {
+        test("should fail to delete accommodation due to non-existent accommodation", async () => {
+            const res = await request(app).post("/deleteAccomm").send({ _id: "615ab89dcf32a1a234555555" });
+            expect(res.body.success).toBe(false);
+            expect(res.body.msg).toBe("Unsuccessfully deleted accommodation");
+            expect(res.body.error).toBe("Failed to find and delete accommodation");
+        });
+
+        test("should fail to edit owner's property list at accommodation deletion due to incorrect user id", async () => {
+            //adding a mock accommodation
+            const result = await request(app).post("/addAccomm").send(mockAccomm);
+            newAccomm = await Accommodation.findOne({name: mockAccomm.name});
+            
+            //editing the mock accommodation
+            const result1 = await request(app).post("/editAccomm").send({_id: newAccomm._id, owner: "615ab89dcf32a1a2345abcde"});
+            newAccomm = await Accommodation.findOne({name: mockAccomm.name})
+            
+            const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
+            expect(res.body.success).toBe(false);
+            expect(res.body.msg).toBe("Unsuccessfully deleted accommodation");
+            expect(res.body.error).toBe("Failed to find and edit propertyList of current user");
+        });
+    })
+})
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
