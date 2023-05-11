@@ -4,8 +4,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../models/Accommodation';
 import User from '../models/User';
-// beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
-beforeAll(() => makeDB('mongodb+srv://STALS-user:password123321@stals-test.bsqn4yg.mongodb.net/jest-test'))
+beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
 const mockUser = {
     userType: "Owner",
