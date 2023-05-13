@@ -42,6 +42,13 @@ const viewReports = async (req, res) => {
     }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: {}});
 }
 
+
+//function for getting data about site traffic
+const getSiteTraffic = () =>{
+    
+}
+
+
 //A JS method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
     try{
