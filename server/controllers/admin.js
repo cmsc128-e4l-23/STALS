@@ -40,7 +40,7 @@ const viewReports = async (req, res) => {
         .catch((error) => {
             res.send({success: false, msg: "Viewing Failed", error: error});
         });
-    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: {}});
+    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: []});
 }
 
 
