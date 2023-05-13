@@ -97,6 +97,7 @@ describe("POST /resolveReport", () =>{
             classification: "Accommodation",
             content: "The place is dirty."
         })
+        
         const result = await request(app).post("/resolveReport").send({_id: "ideeeeeeeee"})
         expect(result.body.success).toBe(false);
         expect(result.body.msg).toBe("Resolving failed");
