@@ -13,7 +13,8 @@ const resolveReport = async (req, res) => {
         { $set: {status: 'Resolved'} }
         )
         .then((result) => {
-            res.send({success: true, msg: "Resolving succeeded"});
+            if(result.modifiedCount < 1){res.send({success: false, msg: "Resolved no reports"})}
+            else {res.send({success: true, msg: "Resolving succeeded"})}
         })
         .catch((error) => {
             res.send({success: false, msg: "Resolving failed", error: error});
@@ -45,7 +46,7 @@ const viewReports = async (req, res) => {
 
 //function for getting data about site traffic
 const getSiteTraffic = () =>{
-    
+
 }
 
 
