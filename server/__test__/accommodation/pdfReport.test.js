@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import app from '../../app';
 import makeDB from '../../mongoose';
+=======
+import app from '../app';
+import makeDB from '../mongoose';
+>>>>>>> b75a9b3 (Tests complete, adjustments to functions)
 import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../../models/Accommodation';
 import User from '../../models/User';
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
+<<<<<<< HEAD
 let savedAccomm;
 const mockAccomm = {
+=======
+
+const mockAccomm = new Accommodation({
+>>>>>>> b75a9b3 (Tests complete, adjustments to functions)
     name: "Mock Accommodation",
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
@@ -31,6 +41,7 @@ const mockAccomm = {
     security: "Security details",
     archived: false,
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
+<<<<<<< HEAD
 };
 const mockAccomm2 = {
     name: "Mock Accommodation 2 Electric Boogaloo",
@@ -75,6 +86,12 @@ const mockUser = {
 // accommodations.insertOne(mockAccomm);
 // users.insertOne(mockUser);
 var signup_details = {
+=======
+});
+const savedAccommodation = await mockAccomm.save();
+//signup from auth test.
+var mockUser = new User({
+>>>>>>> b75a9b3 (Tests complete, adjustments to functions)
     userType: "Student",
     firstName: "Nestor Harvey",
     lastName: "Garcia",
@@ -82,6 +99,7 @@ var signup_details = {
     password: "garcia2020_02948",
     phoneNumber: "09957331927",
     birthday: "2002-05-07",
+<<<<<<< HEAD
     sex: "Male"
 }
 let savedUser;
@@ -121,11 +139,31 @@ describe("POST /generateRep", () => {
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody);
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody2);
         const response = await request(app).post("/generateRep").send({_id: savedUser._id})
+=======
+    sex: "Male",
+    bookmarks: [savedAccommodation._id]
+});
+const savedUser = await mockUser.save();
+
+describe("POST /generateRep", () => {
+    test("Expected input", async () => {
+        const response = await request(app).post("/generateRep").send(mockUser._id)
+        console.log(response.body)
+        expect(response.body.success).toBe(true)
+    })
+    savedUser.bookmarks = [];
+    test("No bookmarks", async () => {
+        const response = await request(app).post("/generateRep").send(mockUser._id)
+>>>>>>> b75a9b3 (Tests complete, adjustments to functions)
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
     test("User not logged in", async () =>{
+<<<<<<< HEAD
         const response = await request(app).post("/generateRep").send({_id: ""})
+=======
+        const response = await request(app).post("/generateRep").send()
+>>>>>>> b75a9b3 (Tests complete, adjustments to functions)
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
