@@ -13,7 +13,8 @@ const resolveReport = async (req, res) => {
         { $set: {status: 'Resolved'} }
         )
         .then((result) => {
-            res.send({success: true, msg: "Resolving succeeded"});
+            if(result.modifiedCount < 1){res.send({success: false, msg: "Resolved no reports"})}
+            else {res.send({success: true, msg: "Resolving succeeded"})}
         })
         .catch((error) => {
             res.send({success: false, msg: "Resolving failed", error: error});
@@ -39,8 +40,15 @@ const viewReports = async (req, res) => {
         .catch((error) => {
             res.send({success: false, msg: "Viewing Failed", error: error});
         });
-    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: {}});
+    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: []});
 }
+
+
+//function for getting data about site traffic
+const getSiteTraffic = () =>{
+
+}
+
 
 //A JS method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
