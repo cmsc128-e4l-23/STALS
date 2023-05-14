@@ -2,33 +2,24 @@ import app from '../../app';
 import makeDB from '../../mongoose.js';
 import mongoose from 'mongoose';
 import request from 'supertest';
-import Report from "../../models/Report.js"
+import Report from "../../models/Report.js";
+import Accommodation from "../../models/Accommodation.js";
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
 const signup_details = {
     userType: "Student",
-    firstName: "Nestor Harvey",
-    lastName: "Garcia",
-    email: "ngarcia@up.edu.ph",
-    password: "garcia2020_02948",
-    phoneNumber: "09957331927",
-    birthday: "2002-05-07",
-    sex: "Male"
-}
-
-const signup_details2 = {
-    userType: "Student",
-    firstName: "Harvey",
-    lastName: "Garcia",
-    email: "ngarcia2@up.edu.ph",
-    password: "garcia2020_029481",
-    phoneNumber: "09967331927",
+    firstName: "Player 1",
+    lastName: "Blank",
+    email: "p1blank@up.edu.ph",
+    password: "player1blank",
+    phoneNumber: "09123456789",
     birthday: "2002-05-07",
     sex: "Male"
 }
 
 var accomm_details = {
     name: "White House",
+    owner: "p1blank@up.edu.ph",
     landmarks: ["Raymundo Gate"],
     address: {
       postCode: "1234",
@@ -51,38 +42,35 @@ var accomm_details = {
 };
 
 describe("POST /viewReports", () =>{
-    
-    //2 pending and 1 resolved
-    test("test if the database is initialized for testing", async () => {
+    it("test if the database is initialized for testing", async () => {
         const user = await request(app).post("/signup").send(signup_details)
-        accomm_details.owner = user.body.data.email;
-        const accomm = await request(app).post("/addAccomm").send(accomm_details)
+        await request(app).post("/addAccomm").send(accomm_details)
+        const accommData = await Accommodation.findOne({name: "White House"});
         await request(app).post("/reportAccomm").send({
             user_id: user.body.data._id,
-            reported_id: accomm.body.data._id,
+            reported_id: accommData._id,
             classification: "Accommodation",
             content: "The place is dirty."
         })
-
         await request(app).post("/reportAccomm").send({
             user_id: user.body.data._id,
-            reported_id: accomm.body.data._id,
+            reported_id: accommData._id,
             classification: "Accommodation",
-            content: "The place is smelly."
+            content: "The place is mid."
         })
 
         const report = await request(app).post("/reportAccomm").send({
             user_id: user.body.data._id,
-            reported_id: accomm.body.data._id,
+            reported_id: accommData._id,
             classification: "Accommodation",
             content: "The place is dull."
         })
+        const resolvedReport = await Report.findOne({content: "The place is dirty."})
         const result = await request(app).post("/resolveReport").send({
-            _id: report.body.data._id
+            _id: resolvedReport._id
         })
-        
-        const test = await Report.count();
-        expect(test).toBe(3);
+        const reportCount = await Report.count();
+        expect(reportCount).toBe(3);
     })
 
     test("get pending reports only", async () => {
@@ -141,12 +129,8 @@ describe("POST /viewReports", () =>{
         expect(reportResults.body.msg).toBe("onlyPending and onlyResolved in the request body have no 'true' values");
         expect(reportResults.body.result.length).toBe(0);
     })
-
-    
-
 })
 
 afterAll(() => {
-    mongoose.connection.db.dropDatabase()
-    .then(() => mongoose.connection.close())
+    mongoose.connection.db.dropDatabase().then(() => mongoose.connection.close())
 })
