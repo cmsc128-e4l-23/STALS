@@ -521,12 +521,12 @@ url = "http://localhost:3001/addAccomm";
 // );
 
 // ========================== GET RECOMMENDATIONS ==========================
-needle.post("http://localhost:3001/recommendAccomm",
-    {
-        searchString: "Laguna",
-        returnLength: 3
-    },
-    (err, res) => {
-        console.log(res.body.msg, res.body.result);
-    }
-);
+// needle.post("http://localhost:3001/recommendAccomm",
+//     {
+//         searchString: "Laguna",
+//         returnLength: 3
+//     },
+//     (err, res) => {
+//         console.log(res.body.msg, res.body.result);
+//     }
+// );
