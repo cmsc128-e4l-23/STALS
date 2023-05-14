@@ -2,6 +2,7 @@ import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import User from "../models/User.js";
 import Review from "../models/Review.js";
+import Visit from "../models/Visit.js";
 
 /*
 Marks the report as resolved
@@ -43,10 +44,51 @@ const viewReports = async (req, res) => {
     }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: []});
 }
 
+//POST method incrementing the number of visits on STALS on a particular date
+/*
+{
+    year: a Number value of the year,
+    month: a Number value of the month,
+    day: a Number value of the day
+}
+*/
+const incNumVisits = async (req, res) => {
+    try{
+        const input = req.body;
+        const visitResult = await Visit.findOne(input);
+        if(visitResult){
 
-//function for getting data about site traffic
-const getSiteTraffic = () =>{
+        }else{
+            let newData = input;
+            newData.numVisits = 1;
+            const newVisit = new Visit(newData);
+            const test = await newVisit.save();
+            console.log(test);
+            res.send({success: true, msg: "incrementing visits succeeded"});    
+        }
 
+        
+    }catch (error) {
+        res.send({success: false, msg: "incrementing visits failed", error: error});    
+    }
+}
+
+//POST method for getting the number of visits on STALS 
+//Input
+/*
+{
+    year: a Number value of the year,
+    month: a Number value of the month,
+    day: a Number value of the day
+}
+*/
+const getNumVisits = (req, res) => {
+    try{
+        const input = req.body;
+
+    }catch (error) {
+        res.send({success: false, msg: "getting numVisits failed", error: error});
+    }
 }
 
 
@@ -72,6 +114,8 @@ const dataAnalytics = async (req, res) => {
 }
 
 export default {
+    incNumVisits,
+    getNumVisits,
     resolveReport, 
     viewReports,
     dataAnalytics
