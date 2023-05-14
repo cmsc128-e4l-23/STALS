@@ -457,3 +457,97 @@ describe("Recommendation Test", () => {
         expect(res.body.result.length).toEqual(0);
     });
 });
+
+describe("Bookmark Test", () => {
+    test("Should bookmark successfully", async () => {
+        const res = await request(url).post("/bookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(true);
+    });
+
+    test("Bookmarking with the same user and accomm should not work", async () => {
+        const res = await request(url).post("/bookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Bookmarking with non-existent user should not work", async () => {
+        const res = await request(url).post("/bookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7dffff',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Bookmarking with non-existent accomm should not work", async () => {
+        const res = await request(url).post("/bookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80ffff'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Bookmarking with non-existent user and accomm should not work", async () => {
+        const res = await request(url).post("/bookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7dffff',
+               accomm_id: '644e58b2f157a1f22a80ffff'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+})
+
+describe("Unbookmark Test", () => {
+    test("Should unbookmark successfully", async () => {
+        const res = await request(url).post("/removeBookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(true);
+    });
+
+    test("Unbookmarking with the same user and accomm should not work", async () => {
+        const res = await request(url).post("/removeBookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Unbookmarking with non-existent user should not work", async () => {
+        const res = await request(url).post("/removeBookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7dffff',
+               accomm_id: '644e58b2f157a1f22a80e741'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Unbookmarking with non-existent accomm should not work", async () => {
+        const res = await request(url).post("/removeBookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7d1513',
+               accomm_id: '644e58b2f157a1f22a80ffff'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+
+    test("Unbookmarking with non-existent user and accomm should not work", async () => {
+        const res = await request(url).post("/removeBookmarkAccomm")
+            .send({
+               user_id: '644cd8a4dad90ff1fc7dffff',
+               accomm_id: '644e58b2f157a1f22a80ffff'
+            },);
+        expect(res.body.success).toBe(false);
+    });
+})
