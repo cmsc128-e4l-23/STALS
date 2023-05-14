@@ -1,32 +1,119 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./AdminLog.css"
 
 export default function AdminLog(){
 
-    const [logEntries, setLogEntries] = useState([]);
+    const [reports, setReports] = useState([]);
+    const [accomRequests, setAccoms] = useState([]);
 
-    // Function that gets log entries from the server
-    // const getEntries = () =>{
-    // }
+    // gets pending reports from the server
+    useEffect(() => {
+        fetch('http://localhost:3001/viewReports', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({onlyPending: true})
+        })
+        .then(res => res.json())
+        .then(data => {
+            setReports(data.result)
+        });
+
+        // Get accomodations that need approving
+        //
+        // fetch('http://localhost:3001/viewReports', {
+        // method: 'POST',
+        // headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify()
+        // })
+        // .then(res => res.json())
+        // .then(data => {
+        //     setAccoms(data.result)
+        // });
+    })
+
+    const closeReport = (_id) => {
+        fetch('http://localhost:3001/resolveReport', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({_id: _id})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(!data.success){
+                alert(data.message);
+            }
+        });
+    }
+
+    const approveAccom = (_id) => {
+        fetch('http://localhost:3001/resolveReport', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({_id: _id})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(!data.success){
+                alert(data.message);
+            }
+        });
+    }
+
+    const rejectAccom = (_id) => {
+        fetch('http://localhost:3001/resolveReport', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({_id: _id})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(!data.success){
+                alert(data.message);
+            }
+        });
+    }
 
     return(
         <>
             <div className="reports-box">
-                <h2>Reports</h2>
-                <div className="reports-container">
-                    <div className="report-item"><span>Report #1</span><button>CLOSE</button></div>
-                    <div className="report-item"><span>Report #1</span><button>CLOSE</button></div>
-                    <div className="report-item"><span>Report #1</span><button>CLOSE</button></div>
+            {reports.length > 0 ? <div>
+                    <h2>Reports</h2>
+                    <div className="reports-container">
+                        {
+                            reports.map((report)=>{
+                                return(
+                                    <>
+                                        <div className="report-item"><span>{report.content}</span><button onClick={closeReport(report._id)}>CLOSE</button></div>
+                                    </>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
+                : <h3>No reports found.</h3>
+            }
             </div>
+            
 
             <div className="add-requests-box">
-                <h2>Add Requests</h2>
-                <div className="add-requests-container">
-                    <div className="add-requests-item"><span>Acommodation #1</span><button>APPROVE</button><button>DENY</button></div>
+            {accomRequests.length > 0 ? 
+                <div>
+                    <h2>Add Requests</h2>
+                    <div className="add-requests-container">
+                        {
+                            accomRequests.map((accommodation)=>{
+                                return(
+                                    <>
+                                        <div className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation._id)}>APPROVE</button><button onClick={rejectAccom(accommodation._id)}>DENY</button></div>
+                                    </>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
+                : <h3>No accommodation requests found.</h3>
+            }
             </div>
-
         </>
     )
 }
