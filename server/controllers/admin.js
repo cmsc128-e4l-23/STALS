@@ -83,12 +83,33 @@ const incNumVisits = async (req, res) => {
     day: a Number value of the day
 }
 */
-const getNumVisits = (req, res) => {
+const getVisits = async (req, res) => {
     try{
+
+        //retrieving the Visit object based on input
         const input = req.body;
+        const findData = {$and: []}
+        if(input.year) findData.$and.push({year: input.year});
+        if(input.month) findData.$and.push({month: input.month});
+        if(input.day) findData.$and.push({day: input.day});
+        let result = await Visit.find(findData);
+        
+        //removed the _id values
+        let returnVals = []
+        for(let i=0; i<result.length; i++){
+            const val = {
+                year:result[i].year,
+                month:result[i].month,
+                day:result[i].day,
+                numVisits: result[i].numVisits
+            }
+            returnVals.push(val);
+        }
+        
+        res.send({success: true, msg: "getting Visits succeeded", return: returnVals});
 
     }catch (error) {
-        res.send({success: false, msg: "getting numVisits failed", error: error});
+        res.send({success: false, msg: "getting Visits failed", error: error});
     }
 }
 
@@ -116,7 +137,7 @@ const dataAnalytics = async (req, res) => {
 
 export default {
     incNumVisits,
-    getNumVisits,
+    getVisits,
     resolveReport, 
     viewReports,
     dataAnalytics
