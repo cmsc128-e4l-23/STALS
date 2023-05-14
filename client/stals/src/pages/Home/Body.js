@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import Filter from "components/Filter";
+import {Link} from "react-router-dom";
 import "./Body.css";
 
 
@@ -34,6 +35,14 @@ export default function Body({ data }) {
 
         if (list.length === 0) updateFetchAccomm(false); // empty list, show "Accommodation not found!"
         else updateFetchAccomm(true); // display accommodations
+    }
+
+    //accomm-page
+    const navigateAccomm = (id) => {
+        const searchPage = document.createElement('a');
+        searchPage.href = "/accommodation-page?id=" + id;
+        document.body.appendChild(searchPage);
+        searchPage.click();
     }
 
     // search
@@ -133,7 +142,7 @@ export default function Body({ data }) {
                                         <div className="slider-wrapper">
                                             <div className="images">
                                                 {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
+                                                    return <img id={"image-" + photo + "-" + index} onClick={ () => navigateAccomm(accomm._id)} src={require("assets/" + photo)} alt='' />
                                                 })}
                                             </div>
                                             {/* slider buttons */}
@@ -174,7 +183,7 @@ export default function Body({ data }) {
                                         <div className="slider-wrapper">
                                             <div className="images">
                                                 {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
+                                                    return <Link to="/accommodation-page"><img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' /> </Link>
                                                 })}
                                             </div>
                                             {/* slider buttons */}
