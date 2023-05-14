@@ -8,12 +8,12 @@ import Visit from "../../models/Visit.js";
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
-describe("POST /resolveReport", () =>{
+describe("POST", () =>{
     test("just testing", async () => {
         const result = await request(app).post("/incNumVisits").send({
             year: 2023,
             month: 5,
-            day: 31
+            day: 29
         })
 
         expect(result.body.success).toBe(true);
@@ -22,19 +22,21 @@ describe("POST /resolveReport", () =>{
         await request(app).post("/incNumVisits").send({
             year: 2023,
             month: 5,
-            day: 31
+            day: 30
         })
 
         await request(app).post("/incNumVisits").send({
             year: 2023,
-            month: 5,
+            month: 3,
             day: 31
         })
 
-        const test = await Visit.find({})
+        const result3 = await request(app).post("/getVisits").send({
+            year: 2023,
+            month: 7
+        })
 
-        console.log(test);
-
+        console.log(result3.body.return);
     })
     
     // test("Correct input for resolveReport method", async () =>{
