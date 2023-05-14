@@ -5,6 +5,7 @@ import request from 'supertest';
 import Accommodation from '../../models/Accommodation';
 import User from '../../models/User';
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
+let savedAccomm;
 const mockAccomm = {
     name: "Mock Accommodation",
     owner: "johndoe@example.com",
@@ -84,17 +85,16 @@ var signup_details = {
     sex: "Male"
 }
 let savedUser;
-let savedAccomm;
 let savedAccomm2;
+
 describe("POST /generateRep", () => {
 
     test("Expected input", async () => {
         const saveUserSuccess = await request(app).post("/signup").send(signup_details)
         savedUser = saveUserSuccess.body.data;
         await request(app).post("/signup").send(mockUser)
-        await request(app).post("/addAccomm").send(mockAccomm)
-
-        savedAccomm = await Accommodation.findOne({name: mockAccomm.name});
+        const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
+        savedAccomm = saveAccommSuccess.body.data;
         const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
@@ -104,8 +104,8 @@ describe("POST /generateRep", () => {
         expect(response.body.success).toBe(true)
     })
     test("More than one in bookmarks", async () => {
-        await request(app).post("/addAccomm").send(mockAccomm2)
-        savedAccomm2 = await Accommodation.findOne({name: mockAccomm2.name});
+        const saveAccommSuccess2 = await request(app).post("/addAccomm").send(mockAccomm2)
+        savedAccomm2 = saveAccommSuccess2.body.data;
         const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
