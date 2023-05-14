@@ -223,7 +223,8 @@ const deleteAccomm = async (req, res) => {
 Search Functionality
 req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
-    - it assumes that search string is empty
+    - a key named "returnLength" which would be the number of accommodations to be returned 
+    - it assumes that the frontend would handle whether the keys are valid or not
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
@@ -237,13 +238,20 @@ A unsuccessful search will result to a res.body that contains
 const searchAccomm = async (req, res) => {
     // searching is not case-sensitive
     const searchString = { "$regex": req.body.searchString, "$options": "i" };
+    const returnLength = parseInt(req.body.returnLength);
+
     const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
-        .filter((key) => {return key.includes("address.")})
-        .map((key) => {return {key: searchString}});
-        
+        .filter((key) => key.includes("address."))
+        .map((val) => {
+           let obj = new Object();
+           obj[val] = searchString;
+           return obj
+        })
+
     Accommodation.find({ $or: [
         { name: searchString },
         ...addressArgs] })
+        .limit(returnLength)
         .then((result) => {
             res.send({ success: true, msg: "Search Accommodation Successful", result: result });
         })
@@ -251,15 +259,15 @@ const searchAccomm = async (req, res) => {
             console.log(error);
             res.send({ success: false, msg: "Search Accommodation Failed", err: error});
         })
+    
 }
 
 /*
 Search Recommendation
 req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
-    - a key named "accommLength" which would be the number of accommodations
-        to be sampled from the database
-    - a key named "returnLength" which would be the number of accommodations to be returned 
+    - a key named "returnLength" which would be the number of accommodations to be returned
+    - it assumes that the frontend would handle whether the keys are valid or not
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
@@ -275,44 +283,40 @@ A unsuccessful search will result to a res.body that contains
     - a key "msg" with a value indicating a failed search
 */
 const recommendAccomm = async (req, res) => {
-    const searchString = req.body.searchString;
+    const searchString = { "$regex": req.body.searchString, "$options": "i" };
     const returnLength = parseInt(req.body.returnLength);
-    const accommLength = parseInt(req.body.accommLength);
-    try {
-        if (!returnLength && returnLength <= 0) throw new Error("Return Length must be a postiive integer");
-        if (!accommLength && accommLength <= 0) throw new Error("Accomm Length must be a positive integer");
-        if (returnLength > accommLength) throw new Error("Return Length must be less than or equal to Accomm Length")
 
-        // search randomly unarchived accomms w/ at least one review
-        const randsearch = await Accommodation.aggregate(
-            [{$match: {archived: false, reviews: {$ne: []}}},
-            {$sample: {size: accommLength}} ]
-        )
-        // from those searches arrange those by the ratings
-        let sortlist = [];
-        for (let accomm of randsearch) {
-            let sum = 0;
-            let reviews = accomm.reviews;
-            let reviewnum = reviews.length;
-            for (let rev of reviews) {
-                let actualrev = await Review.findById(rev._id);
-                sum += actualrev.rating;
-            }
-            // calculate the total rating
-            let rating = (sum/reviewnum).toFixed(2);
-            sortlist.push({accommodation: accomm, rating: rating, ratingNum: reviewnum});
+    const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
+        .filter((key) => key.includes("address."))
+        .map((val) => { // val is interpreted as a symbol not a var for some reason
+            let obj = new Object();
+            obj[val] = searchString;
+            return obj
+        })
+
+    const accommresult = await Accommodation.find({ $or: [{ name: searchString }, ...addressArgs],
+        archived: false, reviews: {$ne: []} })
+        .limit(returnLength)
+        .catch((error) => {
+            console.log(error);
+            return res.send({ success: false, msg: "Search Accommodation Failed", err: error});
+        })
+
+    // from those searches arrange those by the ratings
+    const sortlist = await Promise.all(accommresult.map(async (accomm) => {
+        let sum = 0;
+        for (let rev of accomm.reviews) {
+            let actualrev = await Review.findById(rev._id);
+            sum += actualrev.rating;
         }
-        // then order the sorted list by rating
-        sortlist.sort((a, b)=>{return b.rating - a.rating})
-        // get only the return length
-        if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
+        // calculate the total rating
+        let rating = parseFloat((sum/accomm.reviews.length).toFixed(2));
+        
+        return {accommodation: accomm, rating: rating, ratingNum: accomm.reviews.length};
+        })) // then sort it
+    sortlist.sort((a, b)=>{return b.rating - a.rating})
 
-        res.send({success: true, msg: "Search Recommendation Successful", result: sortlist})
-
-    } catch (error) {
-        res.send({success: false, msg: "Search Recommendation Failed"});
-        console.error(error);
-    }
+    res.send({success: true, msg: "Search Recommendation Successful", result: sortlist})
 }
 
 /*

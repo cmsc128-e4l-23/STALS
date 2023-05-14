@@ -463,14 +463,15 @@ url = "http://localhost:3001/addAccomm";
 // )
 
 // ========================== SEARCH ACCOMMODATION ==========================
-needle.post("http://localhost:3001/searchAccomm",
-    {
-        searchString: "Nawawalang Paraiso"
-    },
-    (err, res) => {
-        console.log(res.body.result);
-    }
-);
+// needle.post("http://localhost:3001/searchAccomm",
+//     {
+//         searchString: "Laguna",
+//         returnLength: 3
+//     },
+//     (err, res) => {
+//         console.log(res.body.result);
+//     }
+// );
 
 // ========================== DELETE ACCOMMODATION ==========================
 // needle.delete("http://localhost:3001/deleteAccomm",
@@ -520,17 +521,12 @@ needle.post("http://localhost:3001/searchAccomm",
 // );
 
 // ========================== GET RECOMMENDATIONS ==========================
-// needle.post("http://localhost:3001/recommendAccomm",
-//     {
-//        returnLength: 3,
-//        accommLength: 10,
-//     //    searchLocs: 'Laguna',
-//     //    searchType: 'Transient',
-//        minPrice: 0,
-//        maxPrice: 200
-
-//     },
-//     (err, res) => {
-//         console.log(res.body.result);
-//     }
-// );
+needle.post("http://localhost:3001/recommendAccomm",
+    {
+        searchString: "Laguna",
+        returnLength: 3
+    },
+    (err, res) => {
+        console.log(res.body.msg, res.body.result);
+    }
+);
