@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import Report from "../../models/Report.js"
 import Accommodation from "../../models/Accommodation.js"
+import Visit from "../../models/Visit.js";
+
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
 describe("POST /resolveReport", () =>{
@@ -16,6 +18,23 @@ describe("POST /resolveReport", () =>{
 
         expect(result.body.success).toBe(true);
         expect(result.body.msg).toBe("incrementing visits succeeded");
+
+        await request(app).post("/incNumVisits").send({
+            year: 2023,
+            month: 5,
+            day: 31
+        })
+
+        await request(app).post("/incNumVisits").send({
+            year: 2023,
+            month: 5,
+            day: 31
+        })
+
+        const test = await Visit.find({})
+
+        console.log(test);
+
     })
     
     // test("Correct input for resolveReport method", async () =>{

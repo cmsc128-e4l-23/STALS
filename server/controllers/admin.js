@@ -57,17 +57,18 @@ const incNumVisits = async (req, res) => {
         const input = req.body;
         const visitResult = await Visit.findOne(input);
         if(visitResult){
-
+            await Visit.findByIdAndUpdate(
+                visitResult._id,
+                {$set: {numVisits: visitResult.numVisits + 1}}
+            );
+            res.send({success: true, msg: "incrementing visits succeeded"});    
         }else{
             let newData = input;
             newData.numVisits = 1;
             const newVisit = new Visit(newData);
-            const test = await newVisit.save();
-            console.log(test);
+            await newVisit.save();
             res.send({success: true, msg: "incrementing visits succeeded"});    
         }
-
-        
     }catch (error) {
         res.send({success: false, msg: "incrementing visits failed", error: error});    
     }
