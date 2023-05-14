@@ -42,8 +42,7 @@ const addAccomm = async (req, res) => {
             if (!result){
                 throw new Error("Error updating user in add accommodation");
             }
-
-            res.send({ success: true, msg: "Successfully added accommodation", data: savedAccommodation});
+            res.send({ success: true, msg: "Successfully added accommodation"});
         } else {
             throw new Error("User not found");
         }
@@ -462,14 +461,14 @@ const reportAccomm = async (req, res) => {
             content: report_details.content,
             status: "Pending"
         });
-        const savedReport = await report.save();
+        await report.save();
         // also add that report to the user
 
         User.updateOne(
             {_id: report_details.user_id},
             { $push: {reports: report._id} }
         ).then((result) => {
-            res.send({success: true, msg: "Successfully appended report to user", data: savedReport});
+            res.send({success: true, msg: "Successfully appended report to user"});
         })
         .catch((error) => {
             console.log(error);
