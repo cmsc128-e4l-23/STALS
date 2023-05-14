@@ -176,6 +176,7 @@ req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
     - a key named "returnLength" which would be the number of accommodations to be returned 
     - it assumes that the frontend would handle whether the keys are valid or not
+    (Do take note of the search string whether it would break the regex or not)
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
@@ -219,6 +220,7 @@ req.body is an object that should have:
     - a key named "searchString" that contains a string to be searched in the database
     - a key named "returnLength" which would be the number of accommodations to be returned
     - it assumes that the frontend would handle whether the keys are valid or not
+    (Do take note of the search string whether it would break the regex or not)
 
 A successful search will result to a res.body that contains
     - a key "success" with a value true
@@ -254,7 +256,7 @@ const recommendAccomm = async (req, res) => {
         })
 
     // from those searches arrange those by the ratings
-    const sortlist = await Promise.all(accommresult.map(async (accomm) => {
+    let sortlist = await Promise.all(accommresult.map(async (accomm) => {
         let sum = 0;
         for (let rev of accomm.reviews) {
             let actualrev = await Review.findById(rev._id);
@@ -287,17 +289,31 @@ A unsuccessful bookmark will result to a res.body that contains
 const bookmarkAccomm = async (req, res) => {
     const bookmark_details = req.body;
 
-    // accomm_id is added to bookmarks array
-    User.updateOne(
-        { _id: bookmark_details.user_id },
-        { $addToSet: { bookmarks: bookmark_details.accomm_id } }
-    ).then((result) => {
-        res.send({ success: true, msg: "Bookmark Success" });
-    })
-    .catch((error) => {
-        console.log(error);
-        res.send({ success: false, msg: "Bookmark Failed", err: error });
-    });
+    try {
+        // first check if the ids are valid
+        const user = await User.findById(bookmark_details.user_id);
+        const accomm = await Accommodation.findById(bookmark_details.accomm_id);
+        if (!user) return res.send({success: false, msg: "User not found" })
+        if (!accomm) return res.send({success: false, msg: "Accommodation not found" })
+
+        // check if it's already bookmarked
+        if (user.bookmarks.includes(accomm._id))
+        return res.send({success: false, msg: "Accommodation already bookmarked" })
+        // accomm_id is added to bookmarks array
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $addToSet: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, msg: "Bookmark Success" });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({ success: false, msg: "Bookmark Failed", err: error });
+        });
+    } catch (error) {
+        console.log(error)
+        res.send({ success: false, msg: error.msg });
+    }
 }
 
 /*
@@ -317,17 +333,33 @@ A unsuccessful bookmark will result to a res.body that contains
 const removeBookmarkAccomm = async (req, res) => {
     const bookmark_details = req.body;
 
-    //accomm_id is removed from bookmark array
-    User.updateOne(
-        { _id: bookmark_details.user_id },
-        { $pull: { bookmarks: bookmark_details.accomm_id } }
-    ).then((result) => {
-        res.send({ success: true, msg: "Remove Bookmark Success" });
-    })
-    .catch((error) => {
-        console.log(error);
-        res.send({ success: false, msg: "Remove Bookmark Failed", err: error });
-    });
+    try {
+        // first check if the ids are valid
+        const user = await User.findById(bookmark_details.user_id);
+        const accomm = await Accommodation.findById(bookmark_details.accomm_id);
+        if (!user) return res.send({success: false, msg: "User not found" })
+        if (!accomm) return res.send({success: false, msg: "Accommodation not found" })
+
+        // check if it's not bookmarked
+        if (!(user.bookmarks.includes(accomm._id)))
+            return res.send({success: false, msg:
+                "Accommodation to be bookmarked is not bookmarked by user in the first place" })
+        
+        //accomm_id is removed from bookmark array
+        User.updateOne(
+            { _id: bookmark_details.user_id },
+            { $pull: { bookmarks: bookmark_details.accomm_id } }
+        ).then((result) => {
+            res.send({ success: true, msg: "Remove Bookmark Success" });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send({ success: false, msg: "Remove Bookmark Failed", err: error });
+        });
+    } catch (error) {
+        console.log(error)
+        res.send({ success: false, msg: error.msg });
+    }
 }
 
 //Function for fetching bookmarks
