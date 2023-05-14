@@ -505,17 +505,12 @@ import mongoose from "mongoose";
 // );
 
 // ========================== GET RECOMMENDATIONS ==========================
-// needle.post("http://localhost:3001/recommendAccomm",
-//     {
-//        returnLength: 3,
-//        accommLength: 10,
-//     //    searchLocs: 'Laguna',
-//     //    searchType: 'Transient',
-//        minPrice: 0,
-//        maxPrice: 200
-
-//     },
-//     (err, res) => {
-//         console.log(res.body.result);
-//     }
-// );
+needle.post("http://localhost:3001/recommendAccomm",
+    {
+       returnLength: 10,
+       searchString: "Metro Manila"
+    },
+    (err, res) => {
+        console.log(res.body.result);
+    }
+);
