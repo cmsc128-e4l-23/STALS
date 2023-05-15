@@ -11,12 +11,17 @@ import Accommodation from '../../models/Accommodation';
 import User from '../../models/User';
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 <<<<<<< HEAD
+<<<<<<< HEAD
 let savedAccomm;
 const mockAccomm = {
 =======
 
 const mockAccomm = new Accommodation({
 >>>>>>> b75a9b3 (Tests complete, adjustments to functions)
+=======
+let savedAccomm;
+const mockAccomm = {
+>>>>>>> 706e624 (fixed accommodation finding in test)
     name: "Mock Accommodation",
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
@@ -100,10 +105,14 @@ var mockUser = new User({
     phoneNumber: "09957331927",
     birthday: "2002-05-07",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 706e624 (fixed accommodation finding in test)
     sex: "Male"
 }
 let savedUser;
 let savedAccomm2;
+<<<<<<< HEAD
 
 describe("POST /generateRep", () => {
 
@@ -144,14 +153,35 @@ describe("POST /generateRep", () => {
     bookmarks: [savedAccommodation._id]
 });
 const savedUser = await mockUser.save();
+=======
+>>>>>>> 706e624 (fixed accommodation finding in test)
 
 describe("POST /generateRep", () => {
     test("Expected input", async () => {
-        const response = await request(app).post("/generateRep").send(mockUser._id)
+        const saveUserSuccess = await request(app).post("/signup").send(signup_details)
+        savedUser = saveUserSuccess.body.data;
+        await request(app).post("/signup").send(mockUser)
+        const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
+        savedAccomm = saveAccommSuccess.body.data;
+        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
+        await request(app).post("/bookmarkAccomm").send(bookmarkBody);
+
+        //actual testing, user has something in its bookmarks array, which the report prints.
+        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
         console.log(response.body)
         expect(response.body.success).toBe(true)
     })
-    savedUser.bookmarks = [];
+    test("More than one in bookmarks", async () => {
+        const saveAccommSuccess2 = await request(app).post("/addAccomm").send(mockAccomm2)
+        savedAccomm2 = saveAccommSuccess2.body.data;
+        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
+        await request(app).post("/bookmarkAccomm").send(bookmarkBody);
+
+        //actual testing, user has something in its bookmarks array, which the report prints.
+        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
+        console.log(response.body)
+        expect(response.body.success).toBe(true)
+    })
     test("No bookmarks", async () => {
         const response = await request(app).post("/generateRep").send(mockUser._id)
 >>>>>>> b75a9b3 (Tests complete, adjustments to functions)
