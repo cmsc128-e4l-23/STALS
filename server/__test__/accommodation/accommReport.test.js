@@ -69,7 +69,7 @@ describe("POST /reportAccomm", () => {
 
         await request(app).post("/signup").send(mockUser)
         const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
-        savedAccomm = saveAccommSuccess.body.data;
+        savedAccomm = await Accommodation.findOne({name: mockAccomm.name});
         const mockReport = {
             user_id: savedUser._id,
             reported_id: savedAccomm._id,
