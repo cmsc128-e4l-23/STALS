@@ -117,16 +117,19 @@ const getVisits = async (req, res) => {
 //A JS method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
     try{
-        const numUsers = await User.count();
-        const numAccomm = await Accommodation.count();
-        const numReports = await Report.count();
-        const numReviews = await Review.count();
+        //Number of registered accounts??? to be asked further
+        const numRegUsers = await User.count();
+
+        //Number of accounts tagged as accommodation owner
+        const numAccommOwners = (await User.find({owner: {$exists: true}})).length;
+
+        //Number of accounts tagged as student
+        const numStudents = (await User.find({userType: "Student"})).length
 
         const db_details = {
-            numUsers: numUsers,
-            numAccomm: numAccomm,
-            numReports: numReports,
-            numReviews: numReviews
+            numRegUsers: numRegUsers,
+            numAccommOwners: numAccommOwners,
+            numStudents: numStudents
         }
         res.send({success: true, msg: "Successfully retrieve admin data", return: db_details});
     }
