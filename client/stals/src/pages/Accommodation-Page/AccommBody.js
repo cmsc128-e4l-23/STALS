@@ -13,11 +13,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
 //npm install react icons
 
 //Images
 import image1 from '../../assets/pexels-christian-paul-del-rosario-1076240.jpg';
+import { Grid } from "@mui/material";
 
 export default function AccommBody({ data }) {
     const [accommData, setAccommData] = useState({});
@@ -25,6 +28,17 @@ export default function AccommBody({ data }) {
     const [accommOwner, setAccommOwner] = useState();
 
     const [openDescription, setOpenDescription] = useState(false);
+    const [openReportForm, setOpenReport] = useState(false);
+
+    const handleOpenReport = () => {
+        setOpenReport(true);
+    };
+
+    const handleCloseReport = () => {
+        setOpenReport(false);
+    }
+
+
 
     const handleClickDescription = () => {
         setOpenDescription(true);
@@ -133,9 +147,30 @@ export default function AccommBody({ data }) {
                             <div>
                                 <button className="book-button" onClick={() => bookButton()}>Check Availability</button>
                             </div>
-                            <div>
-                                <button className="report-button" onClick={() => reportButton()}><FaFlag /> Report this listing</button>
-                            </div>                      
+                            <button className="report-button" onClick={handleOpenReport}><FaFlag /> Report this listing</button>
+                                <Dialog open={openReportForm} onClose={handleCloseReport}>
+                                    <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>
+                                        Please enter detailed description of your report/experience.
+                                    </DialogContentText>
+                                    <br>
+                                    </br>
+                                    <TextField
+                                        fullWidth
+                                        id="outlined-multiline-flexible"
+                                        label="Report Details"
+                                        multiline
+                                        maxRows={5}
+                        
+                                    />
+                                    </DialogContent>
+                                    <DialogActions>
+                                    <Button onClick={handleCloseReport}>Cancel</Button>
+                                    <Button onClick={handleCloseReport}>Report</Button>
+                                    </DialogActions>
+                                </Dialog>
+                   
                         </div>
 
                         <div className="accomm-type-owner">
