@@ -2,7 +2,7 @@ import app from '../app';
 import makeDB from '../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
-beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
+beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
 var signup_details = {
     userType: "Student",

@@ -33,21 +33,17 @@ const addAccomm = async (req, res) => {
             // If both are unique, save the accommodation to the database
             const newAccommodation = new Accommodation(accomm_details);
             const savedAccommodation = await newAccommodation.save();
-            const result = await User.findByIdAndUpdate(
+            await User.findByIdAndUpdate(
                 currUser._id, 
                 { $push: { "owner.propertiesList": savedAccommodation._id }},
                 { "new": true, "upsert": true }
             );
 
-            if (!result){
-                throw new Error("Error updating user in add accommodation");
-            }
-            res.send({ success: true, msg: "Successfully added accommodation"});
+            res.send({ success: true, msg: "Successfully added accommodation" });
         } else {
             throw new Error("User not found");
         }
     } catch(error) {
-        console.log(error);
         res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
     }
 }
@@ -121,19 +117,14 @@ const editAccomm = async (req, res) => {
                 }
             };
 
-            const result = await Accommodation.findByIdAndUpdate(
+            await Accommodation.findByIdAndUpdate(
                 {_id: accomm_details._id},
                 updateObject
             );
 
-            if (result){
-                res.send({ success: true, msg: "Successfully edited accommodation" })
-            } else {
-                throw new Error("An error occured in updating the accommodation");
-            }
-
+            res.send({ success: true, msg: "Successfully edited accommodation" });
         } else {
-            throw new Error("Accommodation not found.");
+            throw new Error("Accommodation not found");
         }
     } catch (error) {
         res.send({ success: false, msg: "Unsuccessfully edited accommodation", error: error.message });
@@ -164,7 +155,7 @@ const deleteAccomm = async (req, res) => {
             throw new Error("Failed to find and delete accommodation");
         }
     } catch (err){
-        res.send({ success: false, msg: "Unsuccessful deleted accommodation", error: err.message });
+        res.send({ success: false, msg: "Unsuccessfully deleted accommodation", error: err.message });
     }
 }
 
