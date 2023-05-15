@@ -50,7 +50,7 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 //Admin
 router.post("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
-router.post("/dataAnalytics", admin.dataAnalytics);
+router.get("/dataAnalytics", admin.dataAnalytics);
 router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
 
