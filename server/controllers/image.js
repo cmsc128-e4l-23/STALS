@@ -3,25 +3,25 @@ import path from "path";
 import multer from "multer";
 import Image from "../models/Image.js";
 
-var storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null,'images')
-    },
+const storage = multer.diskStorage({
+    destination: "./images",
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, `${Date.now()}--${file.originalname}`)
     }
 });
-var upload = multer({storage: storage});
-//upload Image
 
+const upload = multer({storage: storage});
+
+//upload Image
 const uploadImage = async (req, res) => {
-    try{
+    try {
         let image_details = req.body;
+        console.log("ID is: " + image_details.userId);
         const newImage = new Image({
             userId: image_details.userId,
             attachedTo: image_details.propertyId,
             img: {
-                data: fs.readFileSync(path.join('./images/' + req.file.filename)),
+                data: fs.readFileSync(path.join('./images', req.file.filename)),
                 contentType: 'image/png'
             }
         });
@@ -34,5 +34,6 @@ const uploadImage = async (req, res) => {
 }
 
 export default {
-    uploadImage
+    uploadImage,
+    upload // add this middleware to handle the file upload
 }
