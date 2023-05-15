@@ -44,7 +44,6 @@ const addAccomm = async (req, res) => {
             throw new Error("User not found");
         }
     } catch(error) {
-        console.log(error);
         res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
     }
 }
