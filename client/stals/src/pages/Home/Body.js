@@ -130,7 +130,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm, index) => {
                             if (accomm.generalLocation <= 1000) {
-                                return <div key={index} className="body-element">
+                                return <div key={index} onClick={ () => navigateAccomm(accomm._id) } className="body-element">
                                     {/* bookmark button */}
                                     <IconButton id={index} key={index} onClick={() => clickFavBtn(accomm._id)} className="favorite" >
                                         {buttons[accomm._id] ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
@@ -142,7 +142,7 @@ export default function Body({ data }) {
                                         <div className="slider-wrapper">
                                             <div className="images">
                                                 {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} onClick={ () => navigateAccomm(accomm._id)} src={require("assets/" + photo)} alt='' />
+                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
                                                 })}
                                             </div>
                                             {/* slider buttons */}
