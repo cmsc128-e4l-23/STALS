@@ -30,22 +30,25 @@ const addReview = async (req, res) => {
 
             if (user && accomm) {
                 //Creating new review
-                const newReview = new Review({
-                    userId: user._id,
-                    propertyId: review_details.propertyId,
-                    content: review_details.content,
-                    rating: review_details.rating,
-                    photos: review_details.photos
-                });
-                const savedReview = await newReview.save();
+                if (!accomm.owner.equals(user._id)) {
+                    const newReview = new Review({
+                        userId: user._id,
+                        propertyId: review_details.propertyId,
+                        content: review_details.content,
+                        rating: review_details.rating,
+                        photos: review_details.photos
+                    });
+                    const savedReview = await newReview.save();
 
-                //Adding the newly created review to current user and to the accommodation
-                user.reviews.push(savedReview._id);
-                accomm.reviews.push(savedReview._id);
-                await user.save();
-                await accomm.save();
+                    //Adding the newly created review to current user and to the accommodation
+                    user.reviews.push(savedReview._id);
+                    accomm.reviews.push(savedReview._id);
+                    await user.save();
+                    await accomm.save();
 
-                res.send({ success: true, msg: "Successfully added new review" });
+                    res.send({ success: true, msg: "Successfully added new review" });
+                } else throw new Error("Owner cannot review own accommodation");
+
             } else {
                 if (!accomm) throw new Error("Accommodation not found");
             }
