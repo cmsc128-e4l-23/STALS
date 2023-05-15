@@ -16,7 +16,6 @@ const addAccomm = async (req, res) => {
     try{
         //NOTE: The accommodation model states that the 'owner' field contains an object
         const currUser = await User.findOne({ email: accomm_details.owner });
-
         if (currUser){
             accomm_details.owner = currUser._id
             // Check if accommodation name already exists in the database
@@ -43,8 +42,7 @@ const addAccomm = async (req, res) => {
             if (!result){
                 throw new Error("Error updating user in add accommodation");
             }
-
-            res.send({ success: true, msg: "Successfully added accommodation" });
+            res.send({ success: true, msg: "Successfully added accommodation"});
         } else {
             throw new Error("User not found");
         }
@@ -456,7 +454,6 @@ You may refer to test.js to check how it is used
 const reportAccomm = async (req, res) => {
     try {
         const report_details = req.body;
-
         const report = new Report({
             user: report_details.user_id,
             reported: report_details.reported_id,
