@@ -15,7 +15,11 @@ const getAccommOwner = (req, res) => {
             res.send({
                 success: true, 
                 message: "Accommodation owner successfully retrieved", 
-                owner: user.email
+                owner: {
+                    email: user.email,
+                    name: user.firstName + " " + user.lastName,
+                    contact: user.phoneNumber
+                }
             })
         })
         
@@ -53,6 +57,28 @@ const getAccommBasicDetails = (req, res) => {
         res.send({
             success: false,
             message: "Failed to retrieve basic details",
+            error: err
+        })
+    })
+}
+
+const getAccommFullDetails = (req, res) => {
+    let accomm_details = req.body;
+
+    Accommodation.findOne({ _id: accomm_details._id })
+    .then((document) => {
+        if(!document) throw "Accommodation not found"
+
+        res.send({
+            success: true,
+            message: "Accommodation full details successfully retrieved",
+            accommodation: document
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Failed to retrieve full details",
             error: err
         })
     })
@@ -102,6 +128,7 @@ const getAccommReports = (req, res) => {
 export default {
     getAccommOwner,
     getAccommBasicDetails,
+    getAccommFullDetails,
     getAccommReviews,
     getAccommReports
 }
