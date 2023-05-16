@@ -74,6 +74,7 @@ describe("POST /getReview", () => {
             .send({ propertyId: accomm._id });
         console.log(res.body);
         expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toBe(1);
     });
     test("Getting all reviews of a user", async () => {
         review_details.rating = 5;
@@ -84,6 +85,7 @@ describe("POST /getReview", () => {
             .send({ user: user_details.email });
         console.log(res.body);
         expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toBe(2);
     });
     test("Getting all reviews of an unknown user", async () => {
         const res = await request(app).post("/getReview")
