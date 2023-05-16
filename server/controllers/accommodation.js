@@ -33,21 +33,17 @@ const addAccomm = async (req, res) => {
             // If both are unique, save the accommodation to the database
             const newAccommodation = new Accommodation(accomm_details);
             const savedAccommodation = await newAccommodation.save();
-            const result = await User.findByIdAndUpdate(
+            await User.findByIdAndUpdate(
                 currUser._id, 
                 { $push: { "owner.propertiesList": savedAccommodation._id }},
                 { "new": true, "upsert": true }
             );
 
-            if (!result){
-                throw new Error("Error updating user in add accommodation");
-            }
-            res.send({ success: true, msg: "Successfully added accommodation"});
+            res.send({ success: true, msg: "Successfully added accommodation" });
         } else {
             throw new Error("User not found");
         }
     } catch(error) {
-        console.log(error);
         res.send({ success: false, msg: "Unsuccessfully added accommodation", error: error.message });
     }
 }
@@ -121,19 +117,14 @@ const editAccomm = async (req, res) => {
                 }
             };
 
-            const result = await Accommodation.findByIdAndUpdate(
+            await Accommodation.findByIdAndUpdate(
                 {_id: accomm_details._id},
                 updateObject
             );
 
-            if (result){
-                res.send({ success: true, msg: "Successfully edited accommodation" })
-            } else {
-                throw new Error("An error occured in updating the accommodation");
-            }
-
+            res.send({ success: true, msg: "Successfully edited accommodation" });
         } else {
-            throw new Error("Accommodation not found.");
+            throw new Error("Accommodation not found");
         }
     } catch (error) {
         res.send({ success: false, msg: "Unsuccessfully edited accommodation", error: error.message });
@@ -164,7 +155,7 @@ const deleteAccomm = async (req, res) => {
             throw new Error("Failed to find and delete accommodation");
         }
     } catch (err){
-        res.send({ success: false, msg: "Unsuccessful deleted accommodation", error: err.message });
+        res.send({ success: false, msg: "Unsuccessfully deleted accommodation", error: err.message });
     }
 }
 
@@ -367,7 +358,6 @@ const fetchBookmarks = async (userID) => {
 
 
 //Functions that generates a pdf file of the bookmarked accommmodations of the user
-//Functions that generates a pdf file of the bookmarked accommmodations of the user
 const boldFont = "./font/Helvetica-Bold.ttf";
 const regularFont = "./font/Helvetica.ttf";
 const boldOblique = "./font/Helvetica-BoldOblique.ttf";
@@ -385,52 +375,55 @@ const writeToDoc = (doc, header, content, list) =>{
 //Input: Accepts an object containing a key named "_id" with the user ID of the user that will be used
 const generateRep = async (req, res) => {
     try {
-        const bookmarks = await fetchBookmarks(req.body._id);                           // Retrieve bookmarks given user id
-        const downloadFolderPath = path.join(os.homedir(), 'Downloads');
-        const doc = new PDFDocument();    
-        const now = new Date();                                    // Create pdf document
-        const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;                          // Set filename and path. Only for testing with needle
-        //adjusted to immediately head to the downloads folder of the user.
-        const filePath = path.join(downloadFolderPath, fileName);
-        doc.pipe(fs.createWriteStream(filePath));
-        // doc.pipe(res)       // Use instead if implemented on web browser already
-        // Edit the PDF file
-        doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
-        doc.moveDown();
-        bookmarks.forEach((accommodation, index) => {
-            doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
+        const bookmarks = await fetchBookmarks(req.body._id);                         // Retrieve bookmarks given user id
+        if(bookmarks.length == 0){
+            res.send({success: false, msg: "PDF Report Generation Failed.", error: "No bookmarks."})
+        } else {
+            const downloadFolderPath = path.join(os.homedir(), 'Downloads');
+            const doc = new PDFDocument();    
+            const now = new Date();                                    // Create pdf document
+            const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;                          // Set filename and path. Only for testing with needle
+            //adjusted to immediately head to the downloads folder of the user.
+            const filePath = path.join(downloadFolderPath, fileName);
+            doc.pipe(fs.createWriteStream(filePath));
+            // doc.pipe(res)       // Use instead if implemented on web browser already
+            // Edit the PDF file
+            doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
             doc.moveDown();
-            if(accommodation.landmarks){
-                writeToDoc(doc, `Landmarks:`, accommodation.landmarks.map(landmark => `${landmark}`), true);
-            }
-            writeToDoc(doc,`Address: `,`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`, false);
-            writeToDoc(doc,`Accommodation Type: `,`\u0020 ${accommodation.accommodationType}`);
+            bookmarks.forEach((accommodation, index) => {
+                doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
+                doc.moveDown();
+                if(accommodation.landmarks){
+                    writeToDoc(doc, `Landmarks:`, accommodation.landmarks.map(landmark => `${landmark}`), true);
+                }
+                writeToDoc(doc,`Address: `,`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`, false);
+                writeToDoc(doc,`Accommodation Type: `,`\u0020 ${accommodation.accommodationType}`);
 
-            if(accommodation.amenities){
-                writeToDoc(doc, `Amenities:`, accommodation.amenities.map(amenity => `${amenity}`), true);
-            }
-            writeToDoc(doc, `Price Range:`,`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`, false);
-            writeToDoc(doc,`Description:`,`\u0020 ${accommodation.description}`);
-            //Further Implementation
-            // if(accommodation.photos.length > 0){
-            //     for(let i=0; i<accommodation.photos.length; i++){
-            //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
-            //     }
-            // }
-            if(accommodation.restrictions){
-                writeToDoc(doc, `Restrictions:`, accommodation.restrictions.map(restriction => `${restriction}`), true);
-            }
-            doc.moveDown(); 
-            if(accommodation.security){
-                writeToDoc(doc, `Security:`, `\u0020 ${accommodation.security}`, false);
-            }
-            doc.moveDown();
-            //why cant i push
-        });
-        // "Close" the PDF file and send it to where `pipe` specifies it to go
-        doc.end();
-        console.log(`PDF report saved to ${filePath}`);
-        res.send({success: true, msg: "PDF Report Successfully Generated."})
+                if(accommodation.amenities){
+                    writeToDoc(doc, `Amenities:`, accommodation.amenities.map(amenity => `${amenity}`), true);
+                }
+                writeToDoc(doc, `Price Range:`,`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`, false);
+                writeToDoc(doc,`Description:`,`\u0020 ${accommodation.description}`);
+                //Further Implementation
+                // if(accommodation.photos.length > 0){
+                //     for(let i=0; i<accommodation.photos.length; i++){
+                //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
+                //     }
+                // }
+                if(accommodation.restrictions){
+                    writeToDoc(doc, `Restrictions:`, accommodation.restrictions.map(restriction => `${restriction}`), true);
+                }
+                doc.moveDown(); 
+                if(accommodation.security){
+                    writeToDoc(doc, `Security:`, `\u0020 ${accommodation.security}`, false);
+                }
+                doc.moveDown();
+            });
+            // "Close" the PDF file and send it to where `pipe` specifies it to go
+            doc.end();
+            console.log(`PDF report saved to ${filePath}`);
+            res.send({success: true, msg: "PDF Report Successfully Generated."})
+        }
     } catch (error) {
         console.log(error);
         res.send({success: false, msg: "PDF Report Generation Failed.", error: error.message})
@@ -461,19 +454,26 @@ const reportAccomm = async (req, res) => {
             content: report_details.content,
             status: "Pending"
         });
-        await report.save();
-        // also add that report to the user
+        let userReportedExists = await User.findById(report.reported);
+        let accommReportedExists = await Accommodation.findById(report.reported);
+        if(userReportedExists || (accommReportedExists && !accommReportedExists.archived)){
+            await report.save();
+            // also add that report to the user
+    
+            User.updateOne(
+                {_id: report_details.user_id},
+                { $push: {reports: report._id} }
+            ).then((result) => {
+                res.send({success: true, msg: "Successfully appended report to user"});
+            })
+            .catch((error) => {
+                console.log(error);
+                res.send({success: false, msg: "Report Appending Failed",error: error.message});
+            });
+        } else {
+            res.send({success: false, msg: "Report Accommodation Failed, Targets do not exist."})
+        }
 
-        User.updateOne(
-            {_id: report_details.user_id},
-            { $push: {reports: report._id} }
-        ).then((result) => {
-            res.send({success: true, msg: "Successfully appended report to user"});
-        })
-        .catch((error) => {
-            console.log(error);
-            res.send({success: false, msg: "Report Appending Failed",error: error.message});
-        });
     }  catch (error) {
         res.send({success: false, msg: "Report Accommodation Failed", error: error.message})
     }

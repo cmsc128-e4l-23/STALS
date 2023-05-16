@@ -5,6 +5,7 @@ import SignUp from 'pages/Signup/index';
 import AddAccommodation from'pages/Add-Accommodation/index';
 import AccommodationList from 'pages/Accommodation-List/index';
 import AccommPage from 'pages/Accommodation-Page/index';
+import AdminPage from 'pages/Admin';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/add-accommodation" element={<AddAccommodation  />} />
           <Route path="/your-accommodations" element={<AccommodationList />} />
           <Route path="/accommodation-page" element={<AccommPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes> 
       </Router>
     </div>
