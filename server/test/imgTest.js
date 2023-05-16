@@ -2,29 +2,28 @@ import needle from "needle";
 import mongoose from "mongoose";
 import path from "path";
 import fs from "fs";
+import fetch from "node-fetch";
 import FormData from "form-data";
 const userId = "64415c5344582ba43b014e14";
 const propertyId = "643665dccee7fa1d7dd408ea";
 const url = "http://localhost:3001/uploadImage";
-const imgPath = 'C:/Users/John Maui/Documents/GitHub/STALS/server/test/test.png';
-
-
-const testImg = {
-  userId: userId,
-  attachedTo: propertyId,
-  image: {
-      file: imgPath,
-      content_type: 'image/png'
-  }
-}
-const form = new FormData();
-form.append("userId", userId);
-form.append("attachedTo", propertyId);
-form.append("image", fs.createReadStream(imgPath), { filename: "test.png", contentType: "image/png" });
-
-needle.post(url, form, function(err, result) {
-    console.log("result", result.body);
+const imgPath = './test.jpg';
+const imgPath2 = './test.jpg';
+const formData = new FormData();
+formData.append('userId', userId);
+formData.append('attachedTo', propertyId);
+formData.append('images', fs.createReadStream(imgPath), {
+  filename: 'image1.jpg',
+  contentType: 'image/jpeg',
 });
-
-
-//AHVFJGHASF HAHAHHAHA LETS FUCKING GO
+formData.append('images', fs.createReadStream(imgPath2), {
+  filename: 'image2.jpg',
+  contentType: 'image/jpeg',
+});
+fetch(url, {
+  method: 'POST',
+  body: formData,
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
