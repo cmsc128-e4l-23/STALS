@@ -72,23 +72,24 @@ var review_edit = {
 
 describe("POST /editReview", () => {
     test("Edit an existing review with correct parameters", async () => {
+        //populating the db for tests
         await request(app).post("/signup").send(user_details);
         await request(app).post("/signup").send(owner_details);
         await request(app).post("/addAccomm").send(accomm_details);
         accomm = await Accommodation.findOne({ name: accomm_details.name });
         review_details.propertyId = accomm._id;
+        //adding the review to be edited
         await request(app).post("/addReview").send(review_details);
 
         const review = await Review.findOne({})
         review_edit._id = review._id;
         const res = await request(app).post("/editReview").send(review_edit);
-        console.log(res.body);
         expect(res.body.success).toBe(true);
     });
     test("Edit an existing review with wrong review_id", async () => {
+        //changing the id to a random id
         review_edit._id = "644e58b2f157a1f22a80e741"; //random id
         const res = await request(app).post("/editReview").send(review_edit);
-        console.log(res.body);
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("Review not found");
     });

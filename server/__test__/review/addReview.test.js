@@ -64,31 +64,32 @@ let review_details = {
 }
 describe("POST /addReview", () => {
     test("With complete and correct parameters", async () => {
+        //populating the db for tests
         await request(app).post("/signup").send(user_details);
         await request(app).post("/signup").send(owner_details);
         await request(app).post("/addAccomm").send(accomm_details);
         accomm = await Accommodation.findOne({ name: accomm_details.name });
         review_details.propertyId = accomm._id;
 
+        //adding the review
         const res = await request(app).post("/addReview").send(review_details);
-        console.log(res.body);
         expect(res.body.success).toBe(true);
     });
     test("Adding new review with incorrest user credential", async () => {
         let temp = review_details.user;
+        //changing the email to an incorrect one
         review_details.user = "mtatea@gmail.com";
         const res = await request(app).post("/addReview").send(review_details);
         review_details.user = temp;
-        console.log(res.body);
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("User not found");
     });
     test("Adding new review by owner on their accomm", async () => {
         let temp = review_details.user;
+        //changing the email to the email of the owner of the accomm
         review_details.user = "okun@gmail.com";
         const res = await request(app).post("/addReview").send(review_details);
         review_details.user = temp;
-        console.log(res.body);
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("Owner cannot review own accommodation");
     });
