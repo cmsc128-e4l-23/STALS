@@ -19,13 +19,13 @@ const uploadImage = async (req, res) => {
   try {
     //replace 'images' with whatever is in the frontend form's name/id. for example, 'upload-images'.
     upload.array('images')(req, res, async  (error) => {
-      // if (error instanceof multer.MulterError) {
-      //   // A Multer error occurred
-      //   res.send({ success: false, msg: "Multer error in Image storing", error: error.message });
-      // } else if (error) {
-      //   // An unknown error occurred
-      //   res.send({ success: false, msg: "Image upload unsuccessful.", error: error.message });
-      // }
+      if (error instanceof multer.MulterError) {
+        // A Multer error occurred
+        res.send({ success: false, msg: "Multer error in Image storing", error: error.message });
+      } else if (error) {
+        // An unknown error occurred
+        res.send({ success: false, msg: "Image upload unsuccessful.", error: error.message });
+      }
 
       // Access the uploaded files
       const files = req.files;
