@@ -159,182 +159,164 @@ const deleteAccomm = async (req, res) => {
     }
 }
 
-//search functionality
-//req.body is an object that should have:
-//      - a key named "searchString" that contains a string to be searched in the database
+/*
+Search Functionality
+req.body is an object that should have:
+    - a key named "searchString" that contains a string to be searched in the database
+    - a key named "returnLength" which would be the number of accommodations to be returned 
+    - it assumes that the frontend would handle whether the keys are valid or not
 
-//A successful search will result to a res.body that contains
-//  - a key "success" with a value true
-//  - a key result with an array of the documents being searched by the user
+A successful search will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+    - a key result with an array of the documents being searched by the user
 
-//A unsuccessful search will result to a res.body that contains
-//  - a key "success" with a value false
-//  - a key error with a value "Search Failed"
+A unsuccessful search will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed search
+*/
 const searchAccomm = async (req, res) => {
-
+    // searching is not case-sensitive
     const searchString = { "$regex": req.body.searchString, "$options": "i" };
+    const returnLength = parseInt(req.body.returnLength);
 
+    const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
+        .filter((key) => key.includes("address."))
+        .map((val) => {
+           let obj = new Object();
+           obj[val] = searchString;
+           return obj
+        })
 
-    Accommodation.find({ $or: [{ name: searchString }, { "address.postCode": searchString }, { "address.street": searchString }, { "address.barangay": searchString }, { "address.city": searchString }, { "address.province": searchString }, { "address.region": searchString }] })
+    Accommodation.find({ $or: [
+        { name: searchString },
+        ...addressArgs] })
+        .limit(returnLength)
         .then((result) => {
-            res.send({ success: true, result: result });
+            res.send({ success: true, msg: "Search Accommodation Successful", result: result });
         })
-        .catch((err) => {
-            console.log(err);
-            res.send({ success: false, error: "Search Failed" });
+        .catch((error) => {
+            console.log(error);
+            res.send({ success: false, msg: "Search Accommodation Failed", err: error});
         })
-
-
-
-    // res.send("I am searching accommodation");
+    
 }
 
 /*
-Search Recommendation based on overall ratings
-and how much would be returned
-via req.body.returnLength for each category.
-Realistically, due to the number of accommodations present,
-its number should be limited by req.body.accommLength
-The response is ordered by the ratings
-and all of the accommodations are unarchived.
+Search Recommendation
+req.body is an object that should have:
+    - a key named "searchString" that contains a string to be searched in the database
+    - a key named "returnLength" which would be the number of accommodations to be returned
+    - it assumes that the frontend would handle whether the keys are valid or not
 
+A successful search will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+    - a key "result" with an array of objects with at least one rating
+        * The objects contain the following:
+            - a key "accommodation" which contains the accommodation object
+            - a key "rating" which contains the rating
+            - a key "ratingNum" which contains the number of ratings
+
+A unsuccessful search will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed search
 */
 const recommendAccomm = async (req, res) => {
-    // OPTIONAL
-    const searchLocs = req.body.searchLocs;
-    const searchType = req.body.searchType;
-    const minPrice = parseFloat(req.body.minPrice);
-    const maxPrice = parseFloat(req.body.maxPrice);
-    // CRUCIAL
+    const searchString = { "$regex": req.body.searchString, "$options": "i" };
     const returnLength = parseInt(req.body.returnLength);
-    const accommLength = parseInt(req.body.accommLength);
-    // Get the general recommended accomms based
-    // on the top rating of the recommendations
-    try {
-        if (!returnLength && returnLength <= 0) throw new Error("Return Length must be a postiive integer");
-        if (!accommLength && accommLength <= 0) throw new Error("Accomm Length must be a positive integer");
-        // the ultimate return object
-        let returnobject = {}
-        // search randomly unarchived accomms w/ at least one review
-        const randsearch = await Accommodation.aggregate(
-            [{$match: {archived: false, reviews: {$ne: []}}},
-            {$sample: {size: accommLength}} ]
-        )
-        // from those searches arrange those by the ratings
-        let sortlist = [];
-        for (let accomm of randsearch) {
-            let sum = 0;
-            let reviews = accomm.reviews;
-            let reviewnum = reviews.length;
-            for (let rev of reviews) {
-                let actualrev = await Review.findById(rev._id);
-                sum += actualrev.rating;
-            }
-            // calculate the total rating
-            let rating = ((sum+1)/(reviewnum+1)).toFixed(2);// adding 1 to numerator and denominator
-            // to estimate accurate rating in case reviews are too low
-            sortlist.push({accommId: accomm._id, rating: rating});
+
+    const addressArgs = (Object.keys(Accommodation.schema.paths)) // arguments for address
+        .filter((key) => key.includes("address."))
+        .map((val) => { // val is interpreted as a symbol not a var for some reason
+            let obj = new Object();
+            obj[val] = searchString;
+            return obj
+        })
+
+    const accommresult = await Accommodation.find({ $or: [{ name: searchString }, ...addressArgs],
+        archived: false, reviews: {$ne: []} })
+        .limit(returnLength)
+        .catch((error) => {
+            console.log(error);
+            return res.send({ success: false, msg: "Search Accommodation Failed", err: error});
+        })
+
+    // from those searches arrange those by the ratings
+    const sortlist = await Promise.all(accommresult.map(async (accomm) => {
+        let sum = 0;
+        for (let rev of accomm.reviews) {
+            let actualrev = await Review.findById(rev._id);
+            sum += actualrev.rating;
         }
-        // then order the sorted list by rating
-        sortlist.sort((a, b)=>{return b.rating - a.rating})
+        // calculate the total rating
+        let rating = parseFloat((sum/accomm.reviews.length).toFixed(2));
+        
+        return {accommodation: accomm, rating: rating, ratingNum: accomm.reviews.length};
+        })) // then sort it
+    sortlist.sort((a, b)=>{return b.rating - a.rating})
 
-        // get only the return length
-        // this is for the top rated flag
-        if (returnLength <= sortlist.length) sortlist = sortlist.slice(0, returnLength);
-        // append the sortlist to the return object
-        returnobject.topAccomms = sortlist;
-
-        // from searches of other optional requirements
-        if (searchLocs) {
-            let locslist = randsearch.filter((elem)=>{
-                return (elem.address.province.toLowerCase() == searchLocs.toLowerCase())
-            })
-            if (returnLength <= locslist.length) locslist = locslist.slice(0, returnLength);
-            returnobject.nearAccomms = locslist;
-        }
-
-        if (searchType) {
-            let typelist = randsearch.filter((elem)=>{
-                return (elem.accommodationType.toLowerCase() == searchType.toLowerCase())
-            })
-            if (returnLength <= typelist.length) typelist = typelist.slice(0, returnLength);
-            returnobject.similarType = typelist;
-        }
-
-        if (minPrice != null && maxPrice != null) {
-            if (minPrice < 0) throw new Error("Minimum price must be a positive float.");
-            if (maxPrice < 0) throw new Error("Maximum price must be a positive float.");
-            if (minPrice > maxPrice) throw new Error("Minimum price must be less than max price");
-            let pricelist = randsearch.filter((elem)=>{
-                return (parseFloat(elem.priceRange.minPrice) >= minPrice && parseFloat(elem.priceRange.maxPrice) <= maxPrice)
-            })
-            if (returnLength <= pricelist.length) pricelist = pricelist.slice(0, returnLength);
-            returnobject.similarPrice = pricelist;
-        }
-
-        // finally return
-        res.send({success: true, result: returnobject});
-
-    } catch (error) {
-        res.send({success: false, error: "Search Recommendation Failed"});
-        console.error(error);
-    }
-
-    //res.send("I am recommending accommodations.");
+    res.send({success: true, msg: "Search Recommendation Successful", result: sortlist})
 }
 
-//bookmark functionality
-//req.body is an object that should have:
-//      - two ids, the user and the id of accommodation to be bookmarked
-//if success, it will have res.body that contains
-//  - a key "success" with a value true else false
-//  - a key error with a value "Bookmark Success" else "Bookmark Failed"
+/*
+Bookmark Functionality
+req.body is an object that should have:
+    - user_id which is the id of the user
+    - accomm_id which is the id of the accommodation
+
+A successful bookmark will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+
+A unsuccessful bookmark will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed operation
+*/
 const bookmarkAccomm = async (req, res) => {
-    try {
-        const bookmark_details = req.body;
+    const bookmark_details = req.body;
 
-        // accomm_id is added to bookmarks array
-        User.updateOne(
-            { _id: bookmark_details.user_id },
-            { $addToSet: { bookmarks: bookmark_details.accomm_id } }
-        ).then((result) => {
-            res.send({ success: true, message: "Bookmark Success" });
-        })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, error: "Bookmark Failed" });
-            });
-    } catch (err) {
-        res.status(500).send({ error: err.message });
-        console.error(err);
-    }
+    // accomm_id is added to bookmarks array
+    User.updateOne(
+        { _id: bookmark_details.user_id },
+        { $addToSet: { bookmarks: bookmark_details.accomm_id } }
+    ).then((result) => {
+        res.send({ success: true, msg: "Bookmark Success" });
+    })
+    .catch((error) => {
+        console.log(error);
+        res.send({ success: false, msg: "Bookmark Failed", err: error });
+    });
 }
 
-//remove bookmark functionality
-//req.body is an object that should have:
-//      - two ids, the user and the id of accommodation to be removed in bookmarks
-//if success, it will have res.body that contains
-//  - a key "success" with a value true else false
-//  - a key error with a value "Remove Bookmark Success" else "Remove Bookmark Failed"
-const removeBookmarkAccomm = async (req, res) => {
-    try {
-        const bookmark_details = req.body;
+/*
+Remove Bookmark Functionality
+req.body is an object that should have:
+    - user_id which is the id of the user
+    - accomm_id which is the id of the accommodation
 
-        //accomm_id is removed from bookmark array
-        User.updateOne(
-            { _id: bookmark_details.user_id },
-            { $pull: { bookmarks: bookmark_details.accomm_id } }
-        ).then((result) => {
-            res.send({ success: true, message: "Remove Bookmark Success" });
-        })
-            .catch((error) => {
-                console.log(error);
-                res.send({ success: false, error: "Remove Bookmark Failed" });
-            });
-    } catch (err) {
-        res.status(500).send({ error: err.message });
-        console.error(err);
-    }
+A successful bookmark will result to a res.body that contains
+    - a key "success" with a value true
+    - a key "msg" indicating that the operation is successful
+
+A unsuccessful bookmark will result to a res.body that contains
+    - a key "success" with a value false
+    - a key "msg" with a value indicating a failed operation
+*/
+const removeBookmarkAccomm = async (req, res) => {
+    const bookmark_details = req.body;
+
+    //accomm_id is removed from bookmark array
+    User.updateOne(
+        { _id: bookmark_details.user_id },
+        { $pull: { bookmarks: bookmark_details.accomm_id } }
+    ).then((result) => {
+        res.send({ success: true, msg: "Remove Bookmark Success" });
+    })
+    .catch((error) => {
+        console.log(error);
+        res.send({ success: false, msg: "Remove Bookmark Failed", err: error });
+    });
 }
 
 //Function for fetching bookmarks
