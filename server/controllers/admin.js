@@ -113,6 +113,7 @@ const getVisits = async (req, res) => {
     }
 }
 
+//GET method for getting the number of pending applications and its number
 const getPendApp = async (req, res) => {
     try{
         var pendAppsTemp = await Accommodation.find({archived: true});
@@ -136,7 +137,7 @@ const getPendApp = async (req, res) => {
 }
 
 
-//A JS method for acquiring details about the database
+//GET method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
     try{
         //Number of registered accounts to be asked further
