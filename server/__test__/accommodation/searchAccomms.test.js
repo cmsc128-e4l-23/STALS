@@ -3,6 +3,7 @@ import request from "supertest";
 import makeDB from "../../mongoose";
 import mongoose from "mongoose";
 import Accommodation from "../../models/Accommodation";
+import User from "../../models/User";
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
@@ -21,11 +22,11 @@ const manila_names = [
 // list of mock data
 const landchad = {
     userType: "Owner",
-    firstName: "Player 3",
+    firstName: "Player Three",
     lastName: "Blank",
     email: "landchad@up.edu.ph",
-    password: "player3blank",
-    phoneNumber: "06666666666",
+    password: "player3_blank",
+    phoneNumber: "09957331927",
     birthday: "2002-05-09",
     sex: "Male"
 }
@@ -33,6 +34,7 @@ const landchad = {
 const laguna1 = {
     name: "White House",
     owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
     address: {
       postCode: "12345",
       street: "Mock Street",
@@ -41,55 +43,116 @@ const laguna1 = {
       province: "Laguna",
       region: "CALABARZON"
     },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
 };
 
 const laguna2 = {
     name: "Big Bellys",
     owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
     address: {
       postCode: "67890",
       street: "Mock Street",
       barangay: "Mock Barangay",
-      city: "Mock City",
+      city: "Mock Town",
       province: "Laguna",
       region: "CALABARZON"
     },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
 };
 
 const manila1 = {
     name: "Luxury Condo",
     owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
     address: {
       postCode: "11111",
       street: "Mock Street",
       barangay: "Mock Barangay",
-      city: "Mock City",
+      city: "Ipsum City",
       province: "Metro Manila",
       region: "NCR"
     },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
 };
 
 const manila2 = {
     name: "Cozy Apartment",
     owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
     address: {
       postCode: "22222",
       street: "Mock Street",
       barangay: "Mock Barangay",
-      city: "Mock City",
+      city: "Lorem City",
       province: "Metro Manila",
       region: "NCR"
     },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
 };
 
 describe("Searching Test", () => {
 
     it("Mock Database Population", async () => {
-        await request(app).post("/signup").send(landchad)
-        await request(app).post("/addAccomm").send(laguna1)
-        await request(app).post("/addAccomm").send(laguna2)
-        await request(app).post("/addAccomm").send(manila1)
-        await request(app).post("/addAccomm").send(manila2)
+        let result;
+        result = await request(app).post("/signup").send(landchad)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(laguna1)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(laguna2)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(manila1)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(manila2)
+        expect(result.body.success).toBe(true)
         // there should be one user and four accomms
         const usercount = await User.count();
         expect(usercount).toBe(1);
