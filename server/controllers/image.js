@@ -17,13 +17,14 @@ const upload = multer({storage: storage});
 //upload Image
 const uploadImage = async (req, res) => {
   try {
-    upload.array('images')(req, res, async  (err) => {
-      if (err instanceof multer.MulterError) {
+    //replace 'images' with whatever is in the frontend form's name/id. for example, 'upload-images'.
+    upload.array('images')(req, res, async  (error) => {
+      if (error instanceof multer.MulterError) {
         // A Multer error occurred
-        return res.status(400).json({ error: err.message });
-      } else if (err) {
+        res.send({ success: false, msg: "Multer error in Image storing", error: error.message });
+      } else if (error) {
         // An unknown error occurred
-        return res.status(500).json({ error: err.message });
+        res.send({ success: false, msg: "Image upload unsuccessful.", error: error.message });
       }
 
       // Access the uploaded files
@@ -45,12 +46,11 @@ const uploadImage = async (req, res) => {
         fs.unlinkSync(file.path);
         return image;
       });
-      const uploadedImages = await Promise.all(imagePromises);
-
-      res.status(200).json({ message: 'Images uploaded successfully', uploadedImages });
+      //const uploadedImages = await Promise.all(imagePromises);
+      res.send({ success: true, msg: "Succesfully stored image to database"});
     });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.send({ success: false, msg: "Image upload unsuccessful.", error: error.message });
     console.log('Image saving failed.');
   }
 };
