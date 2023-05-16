@@ -1,13 +1,9 @@
 import request from "supertest";
 import mongoose from 'mongoose';
-import makeDB from "../mongoose";
-import Accommodation from "../models/Accommodation";
+import makeDB from "../../mongoose";
+import Accommodation from "../../models/Accommodation";
+import User from "../../models/User";
 
-beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
-
-const url = "http://localhost:3001";
-
-// data of interest
 const lagunaNames = [
     'White House',
     'Big Bellys',
@@ -16,26 +12,29 @@ const lagunaNames = [
     'Four Sisters',
     'Nawawalang Paraiso'
 ]
-const lagunaIds = await Promise.all(lagunaNames.map(async (accname) => {
-    const accomm = await Accommodation.findOne({name: accname})
-    return accomm._id
-}))
-
 const manilaNames = [
     'Luxury Condo',
     'Cozy Apartment'
 ]
-const manilaIds = await Promise.all(manilaNames.map(async (accname) => {
-    const accomm = await Accommodation.findOne({name: accname})
-    return accomm._id
-}))
 
-const trueUser = await User.findOne({email: 'mtate@gmail.com'})
-const trueAccomm = await User.findOne({name: '100% very VERY GOOD rentspACe NO CAP frfr :OOOOO!!1!!'})
-const falseUser = await User.findOne({email: 'fching@gmail.com'})
-const falseAccomm = await User.findOne({name: 'Nawawalang Paraiso'})
+const url = "http://localhost:3001";
+
+beforeAll(async () => {makeDB('mongodb://0.0.0.0:27017/STALS_TEST')});
 
 describe("Searching Test", () => {
+
+    it("Data Initialization", async() => {
+        lagunaIds = await Promise.all(lagunaNames.map(async (accname) => {
+            const accomm = await Accommodation.findOne({name: accname})
+            return accomm._id
+        }))
+        
+        manilaIds = await Promise.all(manilaNames.map(async (accname) => {
+            const accomm = await Accommodation.findOne({name: accname})
+            return accomm._id
+        }))
+    })
+
     test("Should return accomms that has 'Laguna' as province", async () => {
         const res = await request(url).post("/searchAccomm")
             .send({
@@ -129,6 +128,19 @@ describe("Searching Test", () => {
 });
 
 describe("Recommendation Test", () => {
+
+    it("Data Initialization", async() => {
+        lagunaIds = await Promise.all(lagunaNames.map(async (accname) => {
+            const accomm = await Accommodation.findOne({name: accname})
+            return accomm._id
+        }))
+        
+        manilaIds = await Promise.all(manilaNames.map(async (accname) => {
+            const accomm = await Accommodation.findOne({name: accname})
+            return accomm._id
+        }))
+    })
+
     test("Should return recommendations that has 'Laguna' as province", async () => {
         const res = await request(url).post("/recommendAccomm")
             .send({
@@ -221,6 +233,13 @@ describe("Recommendation Test", () => {
 
 describe("Bookmark Test", () => {
 
+    it("Data Initialization", async() => {  
+        trueUser = await User.findOne({email: 'mtate@gmail.com'})
+        trueAccomm = await User.findOne({name: '100% very VERY GOOD rentspACe NO CAP frfr :OOOOO!!1!!'})
+        falseUser = await User.findOne({email: 'fching@gmail.com'})
+        falseAccomm = await User.findOne({name: 'Nawawalang Paraiso'})
+    })
+
     describe("Happy paths", () => {
         test("Should bookmark successfully", async () => {
             const res = await request(url).post("/bookmarkAccomm")
@@ -273,6 +292,13 @@ describe("Bookmark Test", () => {
 })
 
 describe("Unbookmark Test", () => {
+
+    it("Data Initialization", async() => {   
+        trueUser = await User.findOne({email: 'mtate@gmail.com'})
+        trueAccomm = await User.findOne({name: '100% very VERY GOOD rentspACe NO CAP frfr :OOOOO!!1!!'})
+        falseUser = await User.findOne({email: 'fching@gmail.com'})
+        falseAccomm = await User.findOne({name: 'Nawawalang Paraiso'})
+    })
 
     describe("Happy paths", () => {
         test("Should unbookmark successfully", async () => {
