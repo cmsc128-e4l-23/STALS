@@ -51,6 +51,7 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 router.post("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
 router.get("/dataAnalytics", admin.dataAnalytics);
+router.get("/getPendApp", admin.getPendApp);
 router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
 //Images

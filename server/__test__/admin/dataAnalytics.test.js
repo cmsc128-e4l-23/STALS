@@ -88,38 +88,55 @@ var accomm_details2 = {
     restrictions: ["no visitors allowed"]
 };
 
-describe("GET /dataAnalytics", () =>{
+describe("dataAnalytics", () =>{
     it("Initializing the mock database for testing", async () => {
         await request(app).post("/signup").send(signup_details1)
         await request(app).post("/signup").send(signup_details2)
         await request(app).post("/signup").send(signup_details3)
         await request(app).post("/addAccomm").send(accomm_details1)
         await request(app).post("/addAccomm").send(accomm_details2)
-        
-        const userResults = await User.find({});
-        // console.log(userResults);
-
-        const accommResults = await Accommodation.find({});
-        // console.log(accommResults);
-
-
-        const test = await request(app).get("/dataAnalytics")
-        // console.log(test.body);
     })
 
-    test("Correct number of Registered users", async () => {
-        const data = await request(app).get("/dataAnalytics")
-        expect(data.body.return.numRegUsers).toBe(3);
-    })
+    describe("GET /dataAnalytics", () => {
+        test("Correct number of Registered users", async () => {
+            const data = await request(app).get("/dataAnalytics")
+            expect(data.body.return.numRegUsers).toBe(3);
+        })
 
-    test("Correct number of Accommodation owners", async () => {
-        const data = await request(app).get("/dataAnalytics")
-        expect(data.body.return.numAccommOwners).toBe(2);
-    })
+        test("Correct number of Accommodation owners", async () => {
+            const data = await request(app).get("/dataAnalytics")
+            expect(data.body.return.numAccommOwners).toBe(2);
+        })
 
-    test("Correct number of Students", async () => {
-        const data = await request(app).get("/dataAnalytics")
-        expect(data.body.return.numStudents).toBe(1);
+        test("Correct number of Students", async () => {
+            const data = await request(app).get("/dataAnalytics")
+            expect(data.body.return.numStudents).toBe(1);
+        })
+
+        test("Correct number of approved accommodations", async () => {
+            const data = await request(app).get("/dataAnalytics")
+            expect(data.body.return.numApprovedAccomm).toBe(2);
+        })
+    })
+    
+    describe("GET /getPendApp", ()=>{
+        test("Correct number of pending applications", async () => {
+            const accommID1 = (await Accommodation.findOne({name: "White House"}))._id.toString();
+            await request(app).post("/archiveAccomm").send({_id: accommID1});
+            const data1 = await request(app).get("/getPendApp")
+            expect(data1.body.numPendApps).toBe(1);
+            for(let i=0; i<data1.body.numPendApps; i++){
+                expect(data1.body.pendApps[i].archived).toBe(true);
+            }
+
+            const accommID2 = (await Accommodation.findOne({name: "The House"}))._id.toString();
+            await request(app).post("/archiveAccomm").send({_id: accommID2});
+            const data2 = await request(app).get("/getPendApp")
+            expect(data2.body.numPendApps).toBe(2);
+            for(let i=0; i<data2.body.numPendApps; i++){
+                expect(data2.body.pendApps[i].archived).toBe(true);
+            }
+        })
     })
 })
 
