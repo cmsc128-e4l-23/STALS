@@ -6,6 +6,35 @@ import Accommodation from "../models/Accommodation";
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
 const url = "http://localhost:3001";
+
+// data of interest
+const lagunaNames = [
+    'White House',
+    'Big Bellys',
+    'F Park',
+    'Beautiful Villa',
+    'Four Sisters',
+    'Nawawalang Paraiso'
+]
+const lagunaIds = await Promise.all(lagunaNames.map(async (accname) => {
+    const accomm = await Accommodation.findOne({name: accname})
+    return accomm._id
+}))
+
+const manilaNames = [
+    'Luxury Condo',
+    'Cozy Apartment'
+]
+const manilaIds = await Promise.all(manilaNames.map(async (accname) => {
+    const accomm = await Accommodation.findOne({name: accname})
+    return accomm._id
+}))
+
+const trueUser = await User.findOne({email: 'mtate@gmail.com'})
+const trueAccomm = await User.findOne({name: '100% very VERY GOOD rentspACe NO CAP frfr :OOOOO!!1!!'})
+const falseUser = await User.findOne({email: 'fching@gmail.com'})
+const falseAccomm = await User.findOne({name: 'Nawawalang Paraiso'})
+
 describe("Searching Test", () => {
     test("Should return accomms that has 'Laguna' as province", async () => {
         const res = await request(url).post("/searchAccomm")
@@ -14,16 +43,9 @@ describe("Searching Test", () => {
                 returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
+        
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element._id)
+            expect(lagunaIds).toContain(element._id)
         })
     });
 
@@ -34,12 +56,8 @@ describe("Searching Test", () => {
                 returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644ce1aad31be0a75c33df6b',
-            '644ce1aad31be0a75c33df71',
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element._id)
+            expect(manilaIds).toContain(element._id)
         })
         expect(res.body.result.length).toBe(2)
     });
@@ -51,16 +69,8 @@ describe("Searching Test", () => {
                 returnLength: 3,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element._id)
+            expect(lagunaIds).toContain(element._id)
         })
         expect(res.body.result.length).toBe(3);
     });
@@ -72,16 +82,8 @@ describe("Searching Test", () => {
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element._id)
+            expect(lagunaIds).toContain(element._id)
         })
     });
 
@@ -134,16 +136,8 @@ describe("Recommendation Test", () => {
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element.accommodation._id)
+            expect(lagunaIds).toContain(element.accommodation._id)
         })
     });
 
@@ -154,7 +148,8 @@ describe("Recommendation Test", () => {
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        expect("644ce1aad31be0a75c33df6b").toEqual(res.body.result[0].accommodation._id)
+        const targetAccomm = Accommodation.findOne({name: 'Luxury Condo'})
+        expect(targetAccomm._id).toEqual(res.body.result[0].accommodation._id)
         expect(res.body.result.length).toBe(1)
     });
 
@@ -165,16 +160,8 @@ describe("Recommendation Test", () => {
                returnLength: 3,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element.accommodation._id)
+            expect(lagunaIds).toContain(element.accommodation._id)
         })
         expect(res.body.result.length).toBe(3);
     });
@@ -186,16 +173,8 @@ describe("Recommendation Test", () => {
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        const expectids = [
-            '644cdb964c5e0d977fa685ac',
-            '644cdb964c5e0d977fa685af',
-            '644cdb964c5e0d977fa685b2',
-            '644ce1aad31be0a75c33df74',
-            '644e58b2f157a1f22a80e73b',
-            '644e58b2f157a1f22a80e738'
-        ]
         res.body.result.forEach(element => {
-            expect(expectids).toContain(element.accommodation._id)
+            expect(lagunaIds).toContain(element.accommodation._id)
         })
     });
 
@@ -246,8 +225,8 @@ describe("Bookmark Test", () => {
         test("Should bookmark successfully", async () => {
             const res = await request(url).post("/bookmarkAccomm")
                 .send({
-                   user_id: '644cd8a4dad90ff1fc7d1513',
-                   accomm_id: '644e58b2f157a1f22a80e741'
+                    user_id: trueUser._id,
+                    accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(true);
         });
@@ -257,35 +236,35 @@ describe("Bookmark Test", () => {
         test("Bookmarking with the same user and accomm should not work", async () => {
             const res = await request(url).post("/bookmarkAccomm")
                 .send({
-                   user_id: '644cd8a4dad90ff1fc7d1513',
-                   accomm_id: '644e58b2f157a1f22a80e741'
+                   user_id: trueUser._id,
+                   accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
     
-        test("Bookmarking with non-existent user should not work", async () => {
+        test("Bookmarking with incorrect user should not work", async () => {
             const res = await request(url).post("/bookmarkAccomm")
                 .send({
-                   user_id: '644cd8a4dad90ff1fc7dffff',
-                   accomm_id: '644e58b2f157a1f22a80e741'
+                    user_id: falseUser._id,
+                    accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
     
-        test("Bookmarking with non-existent accomm should not work", async () => {
+        test("Bookmarking with incorrect accomm should not work", async () => {
             const res = await request(url).post("/bookmarkAccomm")
                 .send({
-                   user_id: '644cd8a4dad90ff1fc7d1513',
-                   accomm_id: '644e58b2f157a1f22a80ffff'
+                    user_id: trueUser._id,
+                    accomm_id: falseUser._id
                 },);
             expect(res.body.success).toBe(false);
         });
     
-        test("Bookmarking with non-existent user and accomm should not work", async () => {
+        test("Bookmarking with incorrect user and accomm should not work", async () => {
             const res = await request(url).post("/bookmarkAccomm")
                 .send({
-                   user_id: '644cd8a4dad90ff1fc7dffff',
-                   accomm_id: '644e58b2f157a1f22a80ffff'
+                    user_id: falseUser._id,
+                    accomm_id: falseUser._id
                 },);
             expect(res.body.success).toBe(false);
         });
@@ -299,8 +278,8 @@ describe("Unbookmark Test", () => {
         test("Should unbookmark successfully", async () => {
             const res = await request(url).post("/removeBookmarkAccomm")
                 .send({
-                user_id: '644cd8a4dad90ff1fc7d1513',
-                accomm_id: '644e58b2f157a1f22a80e741'
+                    user_id: trueUser._id,
+                    accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(true);
         });
@@ -310,35 +289,35 @@ describe("Unbookmark Test", () => {
         test("Unbookmarking with the same user and accomm should not work", async () => {
             const res = await request(url).post("/removeBookmarkAccomm")
                 .send({
-                user_id: '644cd8a4dad90ff1fc7d1513',
-                accomm_id: '644e58b2f157a1f22a80e741'
+                    user_id: trueUser._id,
+                    accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
 
-        test("Unbookmarking with non-existent user should not work", async () => {
+        test("Unbookmarking with incorrect user should not work", async () => {
             const res = await request(url).post("/removeBookmarkAccomm")
                 .send({
-                user_id: '644cd8a4dad90ff1fc7dffff',
-                accomm_id: '644e58b2f157a1f22a80e741'
+                    user_id: falseUser._id,
+                    accomm_id: trueAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
 
-        test("Unbookmarking with non-existent accomm should not work", async () => {
+        test("Unbookmarking with incorrect accomm should not work", async () => {
             const res = await request(url).post("/removeBookmarkAccomm")
                 .send({
-                user_id: '644cd8a4dad90ff1fc7d1513',
-                accomm_id: '644e58b2f157a1f22a80ffff'
+                    user_id: trueUser._id,
+                    accomm_id: falseAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
 
-        test("Unbookmarking with non-existent user and accomm should not work", async () => {
+        test("Unbookmarking with incorrect user and accomm should not work", async () => {
             const res = await request(url).post("/removeBookmarkAccomm")
                 .send({
-                user_id: '644cd8a4dad90ff1fc7dffff',
-                accomm_id: '644e58b2f157a1f22a80ffff'
+                    user_id: falseUser._id,
+                    accomm_id: falseAccomm._id
                 },);
             expect(res.body.success).toBe(false);
         });
