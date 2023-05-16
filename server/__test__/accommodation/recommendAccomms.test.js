@@ -1,3 +1,4 @@
+import app from "../../app";
 import request from "supertest";
 import makeDB from "../../mongoose";
 import mongoose from "mongoose";
@@ -19,7 +20,7 @@ const laguna_names = [
 describe("Recommendation Test", () => {
 
     test("Should return recommendations that has 'Laguna' as province", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "Laguna",
                returnLength: 10,
@@ -31,7 +32,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return recommend that has 'Metro Manila' as province, should only return one due to some not having reviews", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "Metro Manila",
                returnLength: 10,
@@ -42,7 +43,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return recommendations that has 'Laguna' as province and only return three results", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "Laguna",
                returnLength: 3,
@@ -55,7 +56,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return recommendations that has 'Laguna' as province even with different casings", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "lAguNA",
                returnLength: 10,
@@ -67,7 +68,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return nothing - search by description should not work", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "Affordable dorms for students",
                returnLength: 10,
@@ -77,7 +78,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return nothing - search by price should not work", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "prices below 3700 monthly",
                returnLength: 10,
@@ -87,7 +88,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return nothing - search by amenities should not work", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "swimming pool",
                returnLength: 10,
@@ -97,7 +98,7 @@ describe("Recommendation Test", () => {
     });
 
     test("Should return nothing - nonsensical input", async () => {
-        const res = await request(url).post("/recommendAccomm")
+        const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "loremIpsum dolor sitjkljkldskldfkjljdfskl",
                returnLength: 10,
