@@ -9,14 +9,17 @@ import "./Accommodation.css";
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function Accommodation({ accomm, loggedIn, bookmark }) {
+export default function Accommodation({ data, accomm }) {
     let navigate = useNavigate();
 
     const initBtn = () => {
+        console.log(data.loggedIn);
+        console.log(data.bookmark);
         // if logged in: see if the accommodation is bookmarked
-        if (loggedIn) {
-            if (bookmark == null || bookmark.isEmpty()) return false; // 
-            const state = bookmark.find(a => a == accomm._id);
+        if (data.loggedIn) {
+            if (data.bookmark == null || data.bookmark == []) return false; // 
+            const state = data.bookmark.find(a => a == accomm._id);
+            
             if (state != undefined) return true;
         }
         // else return null
@@ -25,16 +28,62 @@ export default function Accommodation({ accomm, loggedIn, bookmark }) {
 
     const [button, setButton] = useState(initBtn());
     
+    const addBookmark = (accomm_id) => {
+        fetch('http://localhost:3001/bookmarkAccomm', {
+            method: 'POST',
+            creentials: 'include',
+            body: JSON.stringify({
+                user_id: data.userInfo.email,
+                accomm_id: accomm_id
+            }),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    setButton(true);
+                } else {
+                    alert('Error');
+                }
+        })
+    }
 
+    const removeBookmark = (accomm_id) => {
+        fetch('http://localhost:3001/removeBookmarkAccomm', {
+            method: 'POST',
+            creentials: 'include',
+            body: JSON.stringify({
+                user_id: "645b05b1f4f4ba052331d7b1",
+                accomm_id: accomm_id
+            }),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    setButton(false);
+                } else {
+                    alert('Error');
+                }
+        })
+    }
 
     const clickBtn = (id) => {
-        if (!loggedIn) { // can't click the button
+        if (!data.loggedIn) { // can't click the button
             alert("You have to be logged in!"); // change to pop-up
             navigate('/login');
         } else {
             // check button value
-            if (button) setButton(false);
-            else setButton(true);
+            if (button) {
+                removeBookmark(id);
+            }
+            else {
+                addBookmark(id);
+            }
         }
     }
 

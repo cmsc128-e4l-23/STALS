@@ -11,6 +11,13 @@ export default function Body({ data }) {
     const [accommList, udpateAccomm] = useState([]);
     const [bookmarkList, updateBookmark] = useState(null);
     const [fetchedAccomm, updateFetchAccomm] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
+    
+    var data = {
+        loggedIn: isLoggedIn,
+        bookmark: bookmarkList,
+        userInfo: userInfo
+    }
 
 
     // updates accommodation list (accommList) and whether there are accommodations fetched (fetchedAccomm)
@@ -21,11 +28,12 @@ export default function Body({ data }) {
         else updateFetchAccomm(true); // display accommodations
     }
 
-    const fetchBookmark = useCallback(() => {
-        fetch('http://localhost:3001/getUserBookmarks', {
+    // fetch user info
+    const fetchUserInfo = () => {
+        fetch('http://localhost:3001/getUserBasicDetails', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({userID: ""}),
+            body: JSON.stringify({ email: "owner3@gmail.com" }),
             headers: {
                 'Content-Type': "application/json"
             }
@@ -33,10 +41,13 @@ export default function Body({ data }) {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    updateBookmark(body.bookmarks);
-                } else updateBookmark(null);
+                    const user = body.user;
+                    setUserInfo(user);
+                    data.userInfo = user;
+                    fetchBookmark();
+            }
         })
-    }, [isLoggedIn]);
+    }
 
     // search
     // use `data` prop
@@ -56,6 +67,25 @@ export default function Body({ data }) {
             })
     }, [data]);
 
+    const fetchBookmark = useCallback(() => {
+        fetch('http://localhost:3001/getUserBookmarks', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({email: "owner3@gmail.com"}),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                console.log(body);
+                if (body.success) {
+                    updateBookmark(body.bookmarks);
+                    data.bookmark = bookmarkList;
+                } else updateBookmark(null);
+        })
+    }, [bookmarkList]);
+
     // check if logged in
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
@@ -68,7 +98,8 @@ export default function Body({ data }) {
             if(body.isLoggedIn){
                 // get bookmarks (type: ObjectID)
                 setLoggedIn(body.isLoggedIn);
-                fetchBookmark();
+                data.loggedIn = isLoggedIn
+                fetchUserInfo();
             }
             fetchAccomm();
         })
@@ -98,7 +129,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
-                                return < Accommodation accomm={accomm} loggedIn={isLoggedIn} bookmark={bookmarkList} />
+                                return < Accommodation data={data} accomm={accomm} />
                             }
                         })}
                     </div>
@@ -106,7 +137,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
-                                return < Accommodation accomm={accomm} loggedIn={isLoggedIn} bookmark={bookmarkList} />
+                                return < Accommodation data={data} accomm={accomm}  />
                             }
                         })}
                     </div>
@@ -135,7 +166,7 @@ export default function Body({ data }) {
                     <div className="body-container">
                         <div className="body-group">
                             {accommList.map((accomm) => {
-                                return < Accommodation accomm={accomm} loggedIn={isLoggedIn} bookmark={bookmarkList} />
+                                return < Accommodation data={data} accomm={accomm} />
                             })}
                         </div>
                     </div>
