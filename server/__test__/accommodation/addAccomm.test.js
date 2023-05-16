@@ -3,7 +3,12 @@ import makeDB from '../../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
+<<<<<<< HEAD
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
+=======
+// beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
+beforeAll(() => makeDB('mongodb+srv://STALS-user:password123321@stals-test.bsqn4yg.mongodb.net/'));
+>>>>>>> 1b4432f (test: separated tests from accommodation.test.js into different files. Deleted accommodation.test.js)
 
 const mockUser = {
     userType: "Owner",
