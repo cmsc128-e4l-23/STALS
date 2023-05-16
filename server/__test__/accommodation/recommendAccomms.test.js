@@ -2,6 +2,8 @@ import app from "../../app";
 import request from "supertest";
 import makeDB from "../../mongoose";
 import mongoose from "mongoose";
+import Accommodation from "../../models/Accommodation";
+import User from "../../models/User";
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
@@ -11,13 +13,229 @@ const url = "http://localhost:3001";
 const laguna_names = [
     'White House',
     'Big Bellys',
-    'F Park',
-    'Beautiful Villa',
-    'Four Sisters',
-    'Nawawalang Paraiso'
+]
+const manila_names = [
+    'Luxury Condo',
+    'Cozy Apartment'
 ]
 
+// list of mock data
+
+// add mock data
+const user1 = {
+    userType: "Student",
+    firstName: "Player 1",
+    lastName: "Blank",
+    email: "one@up.edu.ph",
+    password: "player1blank",
+    phoneNumber: "09123456789",
+    birthday: "2002-05-07",
+    sex: "Male"
+}
+
+const user2 = {
+    userType: "Student",
+    firstName: "Player 2",
+    lastName: "Blank",
+    email: "two@up.edu.ph",
+    password: "player2blank",
+    phoneNumber: "09987654321",
+    birthday: "2002-05-08",
+    sex: "Male"
+}
+
+const landchad = {
+    userType: "Owner",
+    firstName: "Player Three",
+    lastName: "Blank",
+    email: "landchad@up.edu.ph",
+    password: "player3_blank",
+    phoneNumber: "09957331927",
+    birthday: "2002-05-09",
+    sex: "Male"
+}
+
+const laguna1 = {
+    name: "White House",
+    owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
+    address: {
+      postCode: "12345",
+      street: "Mock Street",
+      barangay: "Mock Barangay",
+      city: "Mock City",
+      province: "Laguna",
+      region: "CALABARZON"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
+};
+
+const laguna2 = {
+    name: "Big Bellys",
+    owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
+    address: {
+      postCode: "67890",
+      street: "Mock Street",
+      barangay: "Mock Barangay",
+      city: "Mock Town",
+      province: "Laguna",
+      region: "CALABARZON"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
+};
+
+const manila1 = {
+    name: "Luxury Condo",
+    owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
+    address: {
+      postCode: "11111",
+      street: "Mock Street",
+      barangay: "Mock Barangay",
+      city: "Ipsum City",
+      province: "Metro Manila",
+      region: "NCR"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
+};
+
+const manila2 = {
+    name: "Cozy Apartment",
+    owner: "landchad@up.edu.ph",
+    landmarks: ["Landmark 1", "Landmark 2"],
+    address: {
+      postCode: "22222",
+      street: "Mock Street",
+      barangay: "Mock Barangay",
+      city: "Lorem City",
+      province: "Metro Manila",
+      region: "NCR"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: [] // Example review IDs
+};
+
+// the second manila one intentionally has no reviews
+let laguna1check, laguna2check, manila1check; // check the avg rating
+
 describe("Recommendation Test", () => {
+
+    it("Mock Database Population", async () => {
+        let result;
+        result = await request(app).post("/signup").send(user1)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/signup").send(user2)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/signup").send(landchad)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(laguna1)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(laguna2)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(manila1)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(manila2)
+        expect(result.body.success).toBe(true)
+        // there should be three users and four accomms
+        const usercount = await User.count();
+        expect(usercount).toBe(3);
+        const accommcount = await Accommodation.count();
+        expect(accommcount).toBe(4);
+        // add reviews here, 10 per accomm
+
+        const laguna1data = await Accommodation.findOne({name: "White House"})
+        for (let i=0; i<10; i++) {
+            const randrate = Math.floor(Math.random() * 6)
+            laguna1check += randrate
+            result = await request(app).post("/addReview").send({
+                user: "one@up.edu.ph",
+                propertyId: (laguna1data._id).toString(),
+                content: "Sample Content",
+                rating: randrate,
+                photos: [{ filename: "Photo1" }]
+            })
+            expect(result.body.success).toBe(true)
+        }
+        laguna1check = laguna1check / 10
+
+        const laguna2data = await Accommodation.findOne({name: "Big Bellys"})
+        for (let i=0; i<10; i++) {
+            const randrate = Math.floor(Math.random() * 6)
+            laguna2check += randrate
+            result = await request(app).post("/addReview").send({
+                user: "two@up.edu.ph",
+                propertyId: (laguna2data._id).toString(),
+                content: "Sample Content",
+                rating: randrate,
+                photos: [{ filename: "Photo1" }]
+            })
+            expect(result.body.success).toBe(true)
+        }
+        laguna2check = laguna2check / 10
+
+        const manila1data = await Accommodation.findOne({name: "Luxury Condo"})
+        for (let i=0; i<10; i++) {
+            const randrate = Math.floor(Math.random() * 6)
+            manila1check += randrate
+            result = await request(app).post("/addReview").send({
+                user: "one@up.edu.ph",
+                propertyId: (manila1data._id).toString(),
+                content: "Sample Content",
+                rating: randrate,
+                photos: [{ filename: "Photo1" }]
+            })
+            expect(result.body.success).toBe(true)
+        }
+        manila1check = manila1check / 10
+    })
 
     test("Should return recommendations that has 'Laguna' as province", async () => {
         const res = await request(app).post("/recommendAccomm")
@@ -42,17 +260,17 @@ describe("Recommendation Test", () => {
         expect(res.body.result.length).toBe(1)
     });
 
-    test("Should return recommendations that has 'Laguna' as province and only return three results", async () => {
+    test("Should return recommendations that has 'Laguna' as province and only return one result", async () => {
         const res = await request(app).post("/recommendAccomm")
             .send({
                searchString: "Laguna",
-               returnLength: 3,
+               returnLength: 1,
             },);
         expect(res.body.success).toBe(true);
         res.body.result.forEach(element => {
             expect(laguna_names).toContain(element.accommodation.name)
         })
-        expect(res.body.result.length).toBe(3);
+        expect(res.body.result.length).toBe(1);
     });
 
     test("Should return recommendations that has 'Laguna' as province even with different casings", async () => {
