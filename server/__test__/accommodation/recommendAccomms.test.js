@@ -163,9 +163,6 @@ const manila2 = {
     reviews: [] // Example review IDs
 };
 
-// the second manila one intentionally has no reviews
-let laguna1check, laguna2check, manila1check; // check the avg rating
-
 describe("Recommendation Test", () => {
 
     it("Mock Database Population", async () => {
@@ -194,7 +191,6 @@ describe("Recommendation Test", () => {
         const laguna1data = await Accommodation.findOne({name: "White House"})
         for (let i=0; i<10; i++) {
             const randrate = Math.floor(Math.random() * 6)
-            laguna1check += randrate
             result = await request(app).post("/addReview").send({
                 user: "one@up.edu.ph",
                 propertyId: (laguna1data._id).toString(),
@@ -204,12 +200,10 @@ describe("Recommendation Test", () => {
             })
             expect(result.body.success).toBe(true)
         }
-        laguna1check = laguna1check / 10
 
         const laguna2data = await Accommodation.findOne({name: "Big Bellys"})
         for (let i=0; i<10; i++) {
             const randrate = Math.floor(Math.random() * 6)
-            laguna2check += randrate
             result = await request(app).post("/addReview").send({
                 user: "two@up.edu.ph",
                 propertyId: (laguna2data._id).toString(),
@@ -219,22 +213,19 @@ describe("Recommendation Test", () => {
             })
             expect(result.body.success).toBe(true)
         }
-        laguna2check = laguna2check / 10
 
         const manila1data = await Accommodation.findOne({name: "Luxury Condo"})
         for (let i=0; i<10; i++) {
-            const randrate = Math.floor(Math.random() * 6)
-            manila1check += randrate
             result = await request(app).post("/addReview").send({
                 user: "one@up.edu.ph",
                 propertyId: (manila1data._id).toString(),
                 content: "Sample Content",
-                rating: randrate,
+                rating: i%5,
                 photos: [{ filename: "Photo1" }]
             })
             expect(result.body.success).toBe(true)
         }
-        manila1check = manila1check / 10
+        // the second manila one intentionally has no reviews
     })
 
     test("Should return recommendations that has 'Laguna' as province", async () => {
@@ -257,6 +248,19 @@ describe("Recommendation Test", () => {
             },);
         expect(res.body.success).toBe(true);
         expect(res.body.result[0].accommodation.name).toEqual('Luxury Condo')
+        expect(res.body.result.length).toBe(1)
+    });
+
+    test("Should return an accurate rating", async () => {
+        const res = await request(app).post("/recommendAccomm")
+            .send({
+               searchString: "Metro Manila",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result[0].accommodation.name).toEqual('Luxury Condo')
+        expect(res.body.result[0].rating).toBeCloseTo(2)
+        expect(res.body.result[0].ratingNum).toEqual(10)
         expect(res.body.result.length).toBe(1)
     });
 
