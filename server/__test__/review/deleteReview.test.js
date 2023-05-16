@@ -68,41 +68,42 @@ var review_delete = {
     propertyId: ""
 };
 
-// //change id of review for deletion
 describe("POST /deleteReview", () => {
     test("Deleting a review with wrong user email", async () => {
+        //populating the db for tests
         await request(app).post("/signup").send(user_details);
         await request(app).post("/signup").send(owner_details);
         await request(app).post("/addAccomm").send(accomm_details);
+
+        //setting up the object for testing
         accomm = await Accommodation.findOne({ name: accomm_details.name });
         review_details.propertyId = accomm._id;
         await request(app).post("/addReview").send(review_details);
-
         const review = await Review.findOne({})
         review_delete._id = review._id;
         review_delete.propertyId = accomm._id
+
         const res = await request(app).post("/deleteReview")
             .send(review_delete);
-        console.log(res.body);
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("Accomodation/User not found");
     });
+
     test("Deleting a review with correct parameters", async () => {
+        //correcting the email
         review_delete.user = user_details.email;
         const res = await request(app).post("/deleteReview")
             .send(review_delete);
-        console.log(res.body);
         expect(res.body.success).toBe(true);
     });
     test("Deleting an already deleted review", async () => {
+        //repeating the delete request
         const res = await request(app).post("/deleteReview")
             .send(review_delete);
-        console.log(res.body);
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("Review not found");
     });
 });
-
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
