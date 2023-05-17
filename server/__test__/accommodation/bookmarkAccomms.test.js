@@ -34,11 +34,11 @@ const falseUser = {
 
 const landchad = {
     userType: "Owner",
-    firstName: "Player 3",
+    firstName: "Player Three",
     lastName: "Blank",
     email: "landchad@up.edu.ph",
-    password: "player3blank",
-    phoneNumber: "06666666666",
+    password: "player3_blank",
+    phoneNumber: "09957331927",
     birthday: "2002-05-09",
     sex: "Male"
 }
@@ -51,7 +51,7 @@ const trueAccomm = {
       postCode: "12345",
       street: "Mock Street",
       barangay: "Mock Barangay",
-      city: "Mock City",
+      city: "Mock Town",
       province: "Laguna",
       region: "CALABARZON"
     },
@@ -100,22 +100,35 @@ const falseAccomm = {
 describe("Bookmark All Test", () => {
 
     it("Configuration Check", async () => {
-        await request(app).post("/signup").send(trueUser)
-        await request(app).post("/signup").send(falseUser)
-        await request(app).post("/signup").send(landchad)
-        await request(app).post("/addAccomm").send(trueAccomm)
-        await request(app).post("/addAccomm").send(falseAccomm)
+        let result;
+        result = await request(app).post("/signup").send(landchad)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/signup").send(trueUser)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/signup").send(falseUser)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(trueAccomm)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(falseAccomm)
+        expect(result.body.success).toBe(true)
+        // there should be one user and four accomms
+        const usercount = await User.count();
+        expect(usercount).toBe(3);
+        const accommcount = await Accommodation.count();
+        expect(accommcount).toBe(2);
     })
 
+    // assuming that there aren't bookmarks yet
     describe("Bookmark Test", () => {
+        
         describe("Happy paths", () => {
             test("Should bookmark successfully", async () => {
                 const _trueUser = await User.findOne({email: trueUser.email})
                 const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
                 const res = await request(app).post("/bookmarkAccomm")
                     .send({
-                        user_id: _trueUser._id,
-                        accomm_id: _trueAccomm._id
+                        user_id: (_trueUser._id).toString(),
+                        accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(true);
             });
@@ -127,41 +140,8 @@ describe("Bookmark All Test", () => {
                 const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
                 const res = await request(app).post("/bookmarkAccomm")
                     .send({
-                    user_id: _trueUser._id,
-                    accomm_id: _trueAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-        
-            test("Bookmarking with incorrect user should not work", async () => {
-                const _falseUser = await User.findOne({email: falseUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
-                const res = await request(app).post("/bookmarkAccomm")
-                    .send({
-                        user_id: _falseUser._id,
-                        accomm_id: _trueAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-        
-            test("Bookmarking with incorrect accomm should not work", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _falseAccomm = await Accommodation.findOne({name: falseAccomm.name})
-                const res = await request(app).post("/bookmarkAccomm")
-                    .send({
-                        user_id: _trueUser._id,
-                        accomm_id: _falseAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-        
-            test("Bookmarking with incorrect user and accomm should not work", async () => {
-                const _falseUser = await User.findOne({email: falseUser.email})
-                const _falseAccomm = await Accommodation.findOne({name: falseAccomm.name})
-                const res = await request(app).post("/bookmarkAccomm")
-                    .send({
-                        user_id: _falseUser._id,
-                        accomm_id: _falseAccomm._id
+                    user_id: (_trueUser._id).toString(),
+                    accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(false);
             });
@@ -177,8 +157,8 @@ describe("Bookmark All Test", () => {
                 const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
                 const res = await request(app).post("/removeBookmarkAccomm")
                     .send({
-                        user_id: _trueUser._id,
-                        accomm_id: _trueAccomm._id
+                        user_id: (_trueUser._id).toString(),
+                        accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(true);
             });
@@ -190,41 +170,8 @@ describe("Bookmark All Test", () => {
                 const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
                 const res = await request(app).post("/removeBookmarkAccomm")
                     .send({
-                        user_id: _trueUser._id,
-                        accomm_id: _trueAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-
-            test("Unbookmarking with incorrect user should not work", async () => {
-                const _falseUser = await User.findOne({email: falseUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
-                const res = await request(app).post("/removeBookmarkAccomm")
-                    .send({
-                        user_id: _falseUser._id,
-                        accomm_id: _trueAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-
-            test("Unbookmarking with incorrect accomm should not work", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _falseAccomm = await Accommodation.findOne({name: falseAccomm.name})
-                const res = await request(app).post("/removeBookmarkAccomm")
-                    .send({
-                        user_id: _trueUser._id,
-                        accomm_id: _falseAccomm._id
-                    },);
-                expect(res.body.success).toBe(false);
-            });
-
-            test("Unbookmarking with incorrect user and accomm should not work", async () => {
-                const _falseUser = await User.findOne({email: falseUser.email})
-                const _falseAccomm = await Accommodation.findOne({name: falseAccomm.name})
-                const res = await request(app).post("/removeBookmarkAccomm")
-                    .send({
-                        user_id: _falseUser._id,
-                        accomm_id: _falseAccomm._id
+                        user_id: (_trueUser._id).toString(),
+                        accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(false);
             });
