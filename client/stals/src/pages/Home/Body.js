@@ -11,12 +11,12 @@ export default function Body({ data }) {
     const [accommList, udpateAccomm] = useState([]);
     const [bookmarkList, updateBookmark] = useState(null);
     const [fetchedAccomm, updateFetchAccomm] = useState(null);
-    const [userInfo, setUserInfo] = useState(null);
+    const [userEmail, setUserEmail] = useState(null);
     
     var passData = {
         loggedIn: isLoggedIn,
         bookmark: bookmarkList,
-        userInfo: userInfo
+        userEmail: userEmail
     }
 
     // updates accommodation list (accommList) and whether there are accommodations fetched (fetchedAccomm)
@@ -42,30 +42,11 @@ export default function Body({ data }) {
                 if (body.success) {
                     updateBookmark(body.bookmarks);
                     passData.bookmark = bookmarkList;
+                    setUserEmail(localStorage.getItem("email"));
+                    passData.userEmail = userEmail;
                 } else updateBookmark(null);
         })
     }, [bookmarkList]);
-
-    // fetch user info
-    const fetchUserInfo = () => {
-        fetch('http://localhost:3001/getUserBasicDetails', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({ email: "owner3@gmail.com" }),
-            headers: {
-                'Content-Type': "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    console.log(body.user);
-                    setUserInfo(body.user);
-                    passData.userInfo = body.user;
-                    fetchBookmark();
-            }
-        })
-    }
 
     // search
     // use `data` prop
@@ -98,7 +79,7 @@ export default function Body({ data }) {
                 // get bookmarks (type: ObjectID)
                 setLoggedIn(body.isLoggedIn);
                 passData.loggedIn = isLoggedIn;
-                fetchUserInfo();
+                fetchBookmark();
             }
             fetchAccomm();
         })

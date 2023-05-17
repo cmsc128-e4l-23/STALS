@@ -13,8 +13,6 @@ export default function Accommodation({ data, accomm }) {
     let navigate = useNavigate();
 
     const initBtn = () => {
-        console.log("isLoggedIn: " + data.loggedIn);
-        console.log(data.bookmark);
         // if logged in: see if the accommodation is bookmarked
         if (data.loggedIn) {
             if (data.bookmark == null || data.bookmark == []) return false; // 
@@ -33,7 +31,7 @@ export default function Accommodation({ data, accomm }) {
             method: 'POST',
             creentials: 'include',
             body: JSON.stringify({
-                user_id: data.userInfo.email,
+                email: data.userEmail,
                 accomm_id: accomm_id
             }),
             headers: {
@@ -55,7 +53,7 @@ export default function Accommodation({ data, accomm }) {
             method: 'POST',
             creentials: 'include',
             body: JSON.stringify({
-                user_id: "645b05b1f4f4ba052331d7b1",
+                email: data.userEmail,
                 accomm_id: accomm_id
             }),
             headers: {
