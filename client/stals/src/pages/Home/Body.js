@@ -13,12 +13,11 @@ export default function Body({ data }) {
     const [fetchedAccomm, updateFetchAccomm] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     
-    var data = {
+    var passData = {
         loggedIn: isLoggedIn,
         bookmark: bookmarkList,
         userInfo: userInfo
     }
-
 
     // updates accommodation list (accommList) and whether there are accommodations fetched (fetchedAccomm)
     const updateData = (list) => {
@@ -27,6 +26,25 @@ export default function Body({ data }) {
         if (list.length === 0) updateFetchAccomm(false); // empty list, show "Accommodation not found!"
         else updateFetchAccomm(true); // display accommodations
     }
+
+    // fetch user's bookmarks if looged in
+    const fetchBookmark = useCallback(() => {
+        fetch('http://localhost:3001/getUserBookmarks', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({email: "owner3@gmail.com"}),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    updateBookmark(body.bookmarks);
+                    passData.bookmark = bookmarkList;
+                } else updateBookmark(null);
+        })
+    }, [bookmarkList]);
 
     // fetch user info
     const fetchUserInfo = () => {
@@ -41,9 +59,9 @@ export default function Body({ data }) {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    const user = body.user;
-                    setUserInfo(user);
-                    data.userInfo = user;
+                    console.log(body.user);
+                    setUserInfo(body.user);
+                    passData.userInfo = body.user;
                     fetchBookmark();
             }
         })
@@ -67,25 +85,6 @@ export default function Body({ data }) {
             })
     }, [data]);
 
-    const fetchBookmark = useCallback(() => {
-        fetch('http://localhost:3001/getUserBookmarks', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({email: "owner3@gmail.com"}),
-            headers: {
-                'Content-Type': "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(body => {
-                console.log(body);
-                if (body.success) {
-                    updateBookmark(body.bookmarks);
-                    data.bookmark = bookmarkList;
-                } else updateBookmark(null);
-        })
-    }, [bookmarkList]);
-
     // check if logged in
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
@@ -98,12 +97,12 @@ export default function Body({ data }) {
             if(body.isLoggedIn){
                 // get bookmarks (type: ObjectID)
                 setLoggedIn(body.isLoggedIn);
-                data.loggedIn = isLoggedIn
+                passData.loggedIn = isLoggedIn;
                 fetchUserInfo();
             }
             fetchAccomm();
         })
-    }, []);
+    }, [isLoggedIn]);
 
     // loading
     if (fetchedAccomm == null) {
@@ -129,7 +128,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
-                                return < Accommodation data={data} accomm={accomm} />
+                                return < Accommodation data={passData} accomm={accomm} />
                             }
                         })}
                     </div>
@@ -137,7 +136,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
-                                return < Accommodation data={data} accomm={accomm}  />
+                                return < Accommodation data={passData} accomm={accomm}  />
                             }
                         })}
                     </div>
@@ -166,7 +165,7 @@ export default function Body({ data }) {
                     <div className="body-container">
                         <div className="body-group">
                             {accommList.map((accomm) => {
-                                return < Accommodation data={data} accomm={accomm} />
+                                return < Accommodation data={passData} accomm={accomm} />
                             })}
                         </div>
                     </div>

@@ -13,7 +13,7 @@ export default function Accommodation({ data, accomm }) {
     let navigate = useNavigate();
 
     const initBtn = () => {
-        console.log(data.loggedIn);
+        console.log("isLoggedIn: " + data.loggedIn);
         console.log(data.bookmark);
         // if logged in: see if the accommodation is bookmarked
         if (data.loggedIn) {
