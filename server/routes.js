@@ -5,7 +5,7 @@ import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
 import userinfo from "./controllers/userinfo.js";
 import accomminfo from "./controllers/accomminfo.js";
-
+import image from "./controllers/image.js";
 const router = express.Router();
 
 //Authentication
@@ -50,8 +50,12 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 //Admin
 router.post("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
-router.post("/dataAnalytics", admin.dataAnalytics);
-
+router.get("/dataAnalytics", admin.dataAnalytics);
+router.get("/getPendApp", admin.getPendApp);
+router.post("/incNumVisits", admin.incNumVisits);
+router.post("/getVisits", admin.getVisits);
+//Images
+router.post("/uploadImage", image.uploadImage);
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
 
