@@ -5,8 +5,10 @@ import SignUp from 'pages/Signup/index';
 import AddAccommodation from'pages/Add-Accommodation/index';
 import AccommodationList from 'pages/Accommodation-List/index';
 import AdminPage from 'pages/Admin';
+import DataAnalytics from 'pages/Data-Analytics';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+
 
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
           <Route path="/add-accommodation" element={<AddAccommodation  />} />
           <Route path="/your-accommodations" element={<AccommodationList />} />
           <Route path="/admin" element={<AdminPage />} />
-
+          <Route path="/admin/data-analytics" element={<DataAnalytics />} />
         </Routes> 
       </Router>
     </div>

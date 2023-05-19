@@ -1,24 +1,11 @@
 import React from 'react';
 import './admin.css';
+import AnalyticsBanner from 'pages/Data-Analytics/Banner';
 
 const Body = () => {
     return (
         <div className='admin-container'>
-        <div className="container">
-          <h2>Site Traffic</h2>
-        </div>
-        <div className="container">
-          <h2>A</h2>
-        </div>
-        <div className="container">
-          <h2>B</h2>
-        </div>
-        <div className="container">
-          <h2>C</h2>
-        </div>
-        <div className="container">
-          <h2>D</h2>
-        </div>
+        <AnalyticsBanner />
         <div></div> <div className='separator'></div> 
             <div className="app-container">
                 <h2>Application 1</h2>
@@ -39,9 +26,9 @@ const Body = () => {
                     <button className="decline">Decline</button>
                 </div>
         </div>
-      </div>
+    </div>
     );
-  };
+};
 
 
 
