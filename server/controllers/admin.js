@@ -113,11 +113,34 @@ const getVisits = async (req, res) => {
     }
 }
 
+//GET method for getting the number of pending applications and its number
+const getPendApp = async (req, res) => {
+    try{
+        var pendAppsTemp = await Accommodation.find({archived: true});
+        const numPendApps = pendAppsTemp.length;
+        
+        //removed id for security reasons, except for the id in the price range
+        //which idk why is there an id in price range 
+        let pendApps = [];
+        for(let i=0; i<pendAppsTemp.length; i++){
+            let doc = pendAppsTemp[i].toJSON();
+            delete doc._id;
+            delete doc.__v;
+            const user = await User.findById(doc.owner)
+            doc.owner = user.email;
+            pendApps.push(doc);
+        }
+        res.send({ success: true, msg: "Successfully retrieve pending applications", numPendApps: numPendApps, pendApps: pendApps});
+    }catch(error){
+        res.send({ success: false, msg: "Unsuccessfully retrieve pending applications", error: error });
+    }
+}
 
-//A JS method for acquiring details about the database
+
+//GET method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
     try{
-        //Number of registered accounts??? to be asked further
+        //Number of registered accounts to be asked further
         const numRegUsers = await User.count();
 
         //Number of accounts tagged as accommodation owner
@@ -126,10 +149,14 @@ const dataAnalytics = async (req, res) => {
         //Number of accounts tagged as student
         const numStudents = (await User.find({userType: "Student"})).length
 
+        //Number of approved accommodations
+        const numApprovedAccomm = (await Accommodation.find({archived: false})).length
+
         const db_details = {
             numRegUsers: numRegUsers,
             numAccommOwners: numAccommOwners,
-            numStudents: numStudents
+            numStudents: numStudents,
+            numApprovedAccomm: numApprovedAccomm
         }
         res.send({success: true, msg: "Successfully retrieve admin data", return: db_details});
     }
@@ -139,6 +166,7 @@ const dataAnalytics = async (req, res) => {
 }
 
 export default {
+    getPendApp,
     incNumVisits,
     getVisits,
     resolveReport, 

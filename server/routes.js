@@ -5,7 +5,7 @@ import review from "./controllers/review.js";
 import admin from "./controllers/admin.js";
 import userinfo from "./controllers/userinfo.js";
 import accomminfo from "./controllers/accomminfo.js";
-
+import image from "./controllers/image.js";
 const router = express.Router();
 
 //Authentication
@@ -24,6 +24,7 @@ router.post("/getUserBookmarks", userinfo.getUserBookmarks);
 //Accommodation Info
 router.post("/getAccommOwner", accomminfo.getAccommOwner);
 router.post("/getAccommBasicDetails", accomminfo.getAccommBasicDetails);
+router.post("/getAccommFullDetails", accomminfo.getAccommFullDetails);
 router.post("/getAccommReviews", accomminfo.getAccommReviews);
 router.post("/getAccommReports", accomminfo.getAccommReports);
 
@@ -51,9 +52,11 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 router.post("/viewReports", admin.viewReports);
 router.post("/resolveReport", admin.resolveReport);
 router.get("/dataAnalytics", admin.dataAnalytics);
+router.get("/getPendApp", admin.getPendApp);
 router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
-
+//Images
+router.post("/uploadImage", image.uploadImage);
 //for testing
 router.get("/viewAccomm", accommodation.viewAccomm);
 
