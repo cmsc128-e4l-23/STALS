@@ -9,23 +9,16 @@ import "./Accommodation.css";
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function Accommodation({ data, accomm }) {
+export default function AccommCard({ data, accomm }) {
     let navigate = useNavigate();
-
-    const navigateAccomm = (accomm_id) => {
-        const accommPage = document.createElement('a');
-        accommPage.href = "/accomm?id=" + accomm_id;
-        document.body.appendChild(accommPage);
-        accommPage.click();
-    }
 
     const initBtn = () => {
         // if logged in: see if the accommodation is bookmarked
         if (data.loggedIn) {
-            if (data.bookmark == null || data.bookmark == []) return false; // 
-            const state = data.bookmark.find(a => a == accomm._id);
+            if (data.bookmark === null || data.bookmark === []) return false; // 
+            const state = data.bookmark.find(a => a === accomm._id);
             
-            if (state != undefined) return true;
+            if (state !== undefined) return true;
         }
         // else return null
         else return false;
@@ -93,7 +86,7 @@ export default function Accommodation({ data, accomm }) {
     }
 
     return (
-        <div className="body-element" onClick={() => {navigateAccomm(accomm._id)}}>
+        <div className="body-element" onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
                 {button ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
