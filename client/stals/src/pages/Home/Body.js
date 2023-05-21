@@ -2,7 +2,7 @@ import { React, useState, useEffect, useCallback } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Filter from "components/Filter";
-import Accommodation from "pages/Home/Accommodation";
+import AccommCard from "pages/Home/AccommCard";
 import "./Body.css";
 
 
@@ -109,7 +109,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
-                                return < Accommodation data={passData} accomm={accomm} />
+                                return <AccommCard data={passData} accomm={accomm} />
                             }
                         })}
                     </div>
@@ -117,7 +117,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
-                                return < Accommodation data={passData} accomm={accomm}  />
+                                return <AccommCard data={passData} accomm={accomm}  />
                             }
                         })}
                     </div>
@@ -129,7 +129,7 @@ export default function Body({ data }) {
     else {
         // display results accordingly
         // accommodation not found
-        if (fetchedAccomm == false) {
+        if (fetchedAccomm === false) {
             return (
                 <div className="body-div">
                     <Filter />
@@ -146,7 +146,7 @@ export default function Body({ data }) {
                     <div className="body-container">
                         <div className="body-group">
                             {accommList.map((accomm) => {
-                                return < Accommodation data={passData} accomm={accomm} />
+                                return <AccommCard data={passData} accomm={accomm} />
                             })}
                         </div>
                     </div>
