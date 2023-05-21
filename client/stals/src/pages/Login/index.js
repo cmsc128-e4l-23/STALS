@@ -49,6 +49,8 @@ export default function Login() {
             sameSite: "lax"
           }
         );
+
+        localStorage.setItem("id", data.id);
         localStorage.setItem("username", data.fname);
         localStorage.setItem("email", data.email);
         localStorage.setItem("usertype", data.type)
