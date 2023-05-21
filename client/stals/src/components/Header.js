@@ -48,11 +48,14 @@ export default function Header() {
     // called when the search button is clicked
     const search = () => {
         const regex = new RegExp('^ *$'); // regex for spaces only input
+        const searchPage = document.createElement('a');
         
         // redirect to search if searchInput is not empty
         if (!regex.test(searchInput))
-            navigate("/home?search=" + searchInput);
-        else navigate("/home");
+            searchPage.href = "/home?search=" + searchInput;
+        else searchPage.href = "/home";
+        document.body.appendChild(searchPage);
+        searchPage.click();
     }
 
     const handleOptions = (option,link) => {
