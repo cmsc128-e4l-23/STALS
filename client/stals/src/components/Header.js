@@ -13,6 +13,8 @@ export default function Header() {
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
+    const [userId, setId] = useState(null);
+    
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
         method: 'POST',
@@ -22,10 +24,33 @@ export default function Header() {
         .then(data => {
             setLoggedIn(data.isLoggedIn);
             if(data.isLoggedIn){
+                setId(localStorage.getItem('id'));
                 setName(localStorage.getItem('username'));
             }
         })
     }, []);
+
+    const generateReport = () => { 
+        fetch('http://localhost:3001/generateRep', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({_id: userId}),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    alert(body.msg);
+                }else{
+                    alert(body.msg);
+                }
+            })
+            .catch((error) => {
+                alert("An error has occurred");
+            })
+    }
 
     const logout = (e) => {
         e.preventDefault();
@@ -33,6 +58,7 @@ export default function Header() {
         const cookies = new Cookies();
         cookies.remove("authToken");
 
+        localStorage.removeItem("id");
         localStorage.removeItem("username");
         localStorage.removeItem("email");
         setLoggedIn(false);
@@ -52,7 +78,7 @@ export default function Header() {
         if (!regex.test(searchInput))
             searchPage.href = "/home?search=" + searchInput;
         else searchPage.href = "/home";
-        document.body.appendChild(searchPage);
+        document.body.userNameappendChild(searchPage);
         searchPage.click();
     }
 
@@ -107,6 +133,7 @@ export default function Header() {
                             <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li> : <></>
                         }
                             <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            <li id='option-btn' onClick={generateReport}>GENERATE A REPORT</li>
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
                         <ul>
