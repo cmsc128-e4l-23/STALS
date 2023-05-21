@@ -12,6 +12,13 @@ import "./Accommodation.css";
 export default function Accommodation({ data, accomm }) {
     let navigate = useNavigate();
 
+    const navigateAccomm = (accomm_id) => {
+        const accommPage = document.createElement('a');
+        accommPage.href = "/accomm?id=" + accomm_id;
+        document.body.appendChild(accommPage);
+        accommPage.click();
+    }
+
     const initBtn = () => {
         // if logged in: see if the accommodation is bookmarked
         if (data.loggedIn) {
@@ -86,7 +93,7 @@ export default function Accommodation({ data, accomm }) {
     }
 
     return (
-        <div className="body-element">
+        <div className="body-element" onClick={() => {navigateAccomm(accomm._id)}}>
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
                 {button ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
