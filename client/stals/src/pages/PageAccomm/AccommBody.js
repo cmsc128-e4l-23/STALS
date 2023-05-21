@@ -98,7 +98,7 @@ export default function AccommBody({ data }) {
     }, []);
 
 
-    if(loading == true){
+    if(loading === true){
         return (
             <div className="accomm-page-div">
                 <Box alignItems={"center"}>
@@ -144,9 +144,9 @@ export default function AccommBody({ data }) {
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
                                 {/* <h2 className="book-review"><FaStar /> 4.62 • 52 reviews</h2> */}
                             </div>
-                            <div>
+                            {/* <div>
                                 <button className="book-button" onClick={() => bookButton()}>Check Availability</button>
-                            </div>
+                            </div> */}
                             <button className="report-button" onClick={handleOpenReport}><FaFlag /> Report this listing</button>
                                 <Dialog open={openReportForm} onClose={handleCloseReport}>
                                     <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
