@@ -90,7 +90,7 @@ const logIn = async (req, res) => {
                 
                 
                 //NOTE: you must send the token for authentication to work
-                return res.send({ success: result, token, fname: document.firstName, lname: document.lastName, email: document.email, type: document.userType });
+                return res.send({ success: result, token, fname: document.firstName, lname: document.lastName, email: document.email, type: document.userType, id: document._id});
             });
         })
         .catch((error) => res.send({ success: false, error: "User not found"}))
