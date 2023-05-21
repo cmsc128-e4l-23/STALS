@@ -3,8 +3,8 @@ import Home from 'pages/Home/index';
 import LogIn from 'pages/Login/index';
 import SignUp from 'pages/Signup/index';
 import AddAccommodation from'pages/Add-Accommodation/index';
-import AccommodationList from 'pages/Accommodation-List/index';
-import AccommPage from 'pages/Accommodation-Page/index';
+import AccommodationList from 'pages/ListAccomm/index';
+import AccommPage from 'pages/PageAccomm/index';
 import AdminPage from 'pages/Admin';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
