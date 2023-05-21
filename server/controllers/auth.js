@@ -112,7 +112,6 @@ const checkIfLoggedIn = async (req, res) => {
     process.env.SECRET,
     (err, tokenPayload) => {
         if(err) {
-            console.log(req.cookies);
             return res.send({ isLoggedIn: false, error: err });
         }
 
