@@ -54,6 +54,8 @@ export default function Login() {
         localStorage.setItem("usertype", data.type)
         
         navigate('/home');
+      }else{
+        alert(data.error);
       }
     });
   }
