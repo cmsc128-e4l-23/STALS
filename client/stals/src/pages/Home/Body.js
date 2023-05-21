@@ -2,7 +2,7 @@ import { React, useState, useEffect, useCallback } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Filter from "components/Filter";
-import Accommodation from "components/Accommodation";
+import Accommodation from "pages/Home/Accommodation";
 import "./Body.css";
 
 
