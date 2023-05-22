@@ -72,10 +72,10 @@ describe("POST /getReview", () => {
         await request(app).post("/addReview").send(review_details);
 
         //gets the review on an accomm
-        const res = await request(app).post("/getReview")
-            .send({ propertyId: accomm._id });
+        const res = await request(app).post("/getAccommReviews")
+            .send({ _id: accomm._id });
         expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toBe(1);
+        expect(res.body.reviews.length).toBe(1);
     });
     test("Getting all reviews of a user", async () => {
         review_details.rating = 5;
@@ -84,15 +84,15 @@ describe("POST /getReview", () => {
         await request(app).post("/addReview").send(review_details);
 
         //gets the reviews made by the user
-        const res = await request(app).post("/getReview")
-            .send({ user: user_details.email });
+        const res = await request(app).post("/getUserReviews")
+            .send({ email: user_details.email });
         expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toBe(2);
+        expect(res.body.reviews.length).toBe(2);
     });
     test("Getting all reviews of an unknown user", async () => {
         //getting the reviews of someone not in db
-        const res = await request(app).post("/getReview")
-            .send({ user: "unknown@gmail.com" });
+        const res = await request(app).post("/getUserReviews")
+            .send({ email: "unknown@gmail.com" });
         expect(res.body.success).toBe(false);
         expect(res.body.error).toBe("User not found");
     });

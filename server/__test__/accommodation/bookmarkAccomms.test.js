@@ -48,19 +48,19 @@ const trueAccomm = {
     owner: "landchad@up.edu.ph",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
-      postCode: "12345",
-      street: "Mock Street",
-      barangay: "Mock Barangay",
-      city: "Mock Town",
-      province: "Laguna",
-      region: "CALABARZON"
+        postCode: "12345",
+        street: "Mock Street",
+        barangay: "Mock Barangay",
+        city: "Mock Town",
+        province: "Laguna",
+        region: "CALABARZON"
     },
     generalLocation: 1,
     accommodationType: "Transient",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
-      minPrice: 1000,
-      maxPrice: 2000
+        minPrice: 1000,
+        maxPrice: 2000
     },
     description: "This is a mock accommodation.",
     photos: ["photo1.jpg", "photo2.jpg"],
@@ -75,19 +75,19 @@ const falseAccomm = {
     owner: "landchad@up.edu.ph",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
-      postCode: "55555",
-      street: "Mock Street",
-      barangay: "Mock Barangay",
-      city: "Mock City",
-      province: "Metro Manila",
-      region: "NCR"
+        postCode: "55555",
+        street: "Mock Street",
+        barangay: "Mock Barangay",
+        city: "Mock City",
+        province: "Metro Manila",
+        region: "NCR"
     },
     generalLocation: 7,
     accommodationType: "Transient",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
-      minPrice: 1000,
-      maxPrice: 2000
+        minPrice: 1000,
+        maxPrice: 2000
     },
     description: "This is a mock accommodation.",
     photos: ["photo1.jpg", "photo2.jpg"],
@@ -120,14 +120,14 @@ describe("Bookmark All Test", () => {
 
     // assuming that there aren't bookmarks yet
     describe("Bookmark Test", () => {
-        
+
         describe("Happy paths", () => {
             test("Should bookmark successfully", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
+                const _trueUser = await User.findOne({ email: trueUser.email })
+                const _trueAccomm = await Accommodation.findOne({ name: trueAccomm.name })
                 const res = await request(app).post("/bookmarkAccomm")
                     .send({
-                        user_id: (_trueUser._id).toString(),
+                        user: trueUser.email,
                         accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(true);
@@ -136,28 +136,28 @@ describe("Bookmark All Test", () => {
 
         describe("Unhappy paths", () => {
             test("Bookmarking with the same user and accomm should not work", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
+                const _trueUser = await User.findOne({ email: trueUser.email })
+                const _trueAccomm = await Accommodation.findOne({ name: trueAccomm.name })
                 const res = await request(app).post("/bookmarkAccomm")
                     .send({
-                    user_id: (_trueUser._id).toString(),
-                    accomm_id: (_trueAccomm._id).toString()
+                        user: trueUser.email,
+                        accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(false);
             });
         })
-        
+
     })
 
     describe("Unbookmark Test", () => {
 
         describe("Happy paths", () => {
             test("Should unbookmark successfully", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
+                const _trueUser = await User.findOne({ email: trueUser.email })
+                const _trueAccomm = await Accommodation.findOne({ name: trueAccomm.name })
                 const res = await request(app).post("/removeBookmarkAccomm")
                     .send({
-                        user_id: (_trueUser._id).toString(),
+                        user: trueUser.email,
                         accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(true);
@@ -166,11 +166,11 @@ describe("Bookmark All Test", () => {
 
         describe("Unhappy paths", () => {
             test("Unbookmarking with the same user and accomm should not work", async () => {
-                const _trueUser = await User.findOne({email: trueUser.email})
-                const _trueAccomm = await Accommodation.findOne({name: trueAccomm.name})
+                const _trueUser = await User.findOne({ email: trueUser.email })
+                const _trueAccomm = await Accommodation.findOne({ name: trueAccomm.name })
                 const res = await request(app).post("/removeBookmarkAccomm")
                     .send({
-                        user_id: (_trueUser._id).toString(),
+                        user: trueUser.email,
                         accomm_id: (_trueAccomm._id).toString()
                     },);
                 expect(res.body.success).toBe(false);
@@ -183,5 +183,5 @@ describe("Bookmark All Test", () => {
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
-    .then(() => mongoose.connection.close())
+        .then(() => mongoose.connection.close())
 })

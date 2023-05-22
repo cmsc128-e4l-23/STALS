@@ -18,19 +18,19 @@ const mockAccomm = {
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
-      postCode: "12345",
-      street: "Mock Street",
-      barangay: "Mock Barangay",
-      city: "Mock City",
-      province: "Laguna",
-      region: "CALABARZON"
+        postCode: "12345",
+        street: "Mock Street",
+        barangay: "Mock Barangay",
+        city: "Mock City",
+        province: "Laguna",
+        region: "CALABARZON"
     },
     generalLocation: 1,
     accommodationType: "Transient",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
-      minPrice: 1000,
-      maxPrice: 2000
+        minPrice: 1000,
+        maxPrice: 2000
     },
     description: "This is a mock accommodation.",
     photos: ["photo1.jpg", "photo2.jpg"],
@@ -69,9 +69,9 @@ describe("POST /reportAccomm", () => {
 
         await request(app).post("/signup").send(mockUser)
         const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
-        savedAccomm = await Accommodation.findOne({name: mockAccomm.name});
+        savedAccomm = await Accommodation.findOne({ name: mockAccomm.name });
         const mockReport = {
-            user_id: savedUser._id,
+            user: savedUser.email,
             reported_id: savedAccomm._id,
             classification: "Accommodation",
             content: "It sucks here. Slow network. Water's got rust in it. I hear whispers from the walls.",
@@ -84,7 +84,7 @@ describe("POST /reportAccomm", () => {
     test("Accommodation does not exist", async () => {
         //actual testing, user has something in its bookmarks array, which the report prints.
         const mockReport = {
-            user_id: savedUser._id,
+            user: savedUser.email,
             reported_id: new mongoose.Types.ObjectId(),
             classification: "Accommodation",
             content: "It sucks here. Slow network. Water's got rust in it. I hear whispers from the walls.",
@@ -96,9 +96,9 @@ describe("POST /reportAccomm", () => {
     })
     test("Accommodation is archived", async () => {
         //actual testing, user has something in its bookmarks array, which the report prints.
-        await request(app).post("/archiveAccomm").send({_id: savedAccomm._id});
+        await request(app).post("/archiveAccomm").send({ _id: savedAccomm._id });
         const mockReport = {
-            user_id: savedUser._id,
+            user: savedUser.email,
             reported_id: savedAccomm._id,
             classification: "Accommodation",
             content: "It sucks here. Slow network. Water's got rust in it. I hear whispers from the walls.",
@@ -122,5 +122,5 @@ describe("POST /reportAccomm", () => {
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
-    .then(() => mongoose.connection.close())
+        .then(() => mongoose.connection.close())
 })

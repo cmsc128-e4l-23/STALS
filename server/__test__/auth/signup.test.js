@@ -98,6 +98,7 @@ describe("POST /signup", () => {
 // Test to check if missing fields are handled.
 describe("POST /signup", () => {
     test("Field with missing information", async () => {
+        signup_details.birthday = "2021-07-01"
         signup_details.firstName = ""                       // Represents an empty field
         const response = await request(app).post("/signup").send(signup_details)
         console.log(response.body)
@@ -107,5 +108,5 @@ describe("POST /signup", () => {
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
-    .then(() => mongoose.connection.close())
+        .then(() => mongoose.connection.close())
 })
