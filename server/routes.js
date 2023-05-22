@@ -40,13 +40,12 @@ router.post("/generateRep", accommodation.generateRep);
 
 router.post("/bookmarkAccomm", accommodation.bookmarkAccomm);
 router.post("/removeBookmarkAccomm", accommodation.removeBookmarkAccomm);
+router.post("/reportAccomm", accommodation.reportAccomm);
 
 //Review
 router.post("/addReview", review.addReview);
 router.post("/editReview", review.editReview);
 router.post("/deleteReview", review.deleteReview);
-router.post("/getReview", review.getReview);
-router.post("/reportAccomm", accommodation.reportAccomm);
 
 //Admin
 router.post("/viewReports", admin.viewReports);
@@ -57,7 +56,5 @@ router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
 //Images
 router.post("/uploadImage", image.uploadImage);
-//for testing
-router.get("/viewAccomm", accommodation.viewAccomm);
 
 export default router;
