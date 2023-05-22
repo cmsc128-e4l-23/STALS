@@ -10,6 +10,8 @@ export default function AddAccommodation() {
   let navigate = useNavigate();
 
   const [page, setPage] = useState(0);
+  
+  const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     owner: localStorage.getItem('email'),
@@ -37,6 +39,7 @@ export default function AddAccommodation() {
   });
 
   const submit = () => {
+    console.log(formData);
     fetch("http://localhost:3001/addAccomm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -68,7 +71,7 @@ export default function AddAccommodation() {
       case 2:
         return (
           <div>
-            <OtherInfo formData={formData} setFormData={setFormData} />
+            <OtherInfo formData={formData} setFormData={setFormData} images={images} setImages={setImages} />
             <button
               style={{
                 position: "absolute",

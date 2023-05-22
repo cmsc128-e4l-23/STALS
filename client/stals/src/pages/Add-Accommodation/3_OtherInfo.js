@@ -2,8 +2,7 @@
 import React from "react";
 import { useState } from "react";
 
-export default function OtherInfo({ formData, setFormData }) {
-  const [images, setImages] = useState([]);
+export default function OtherInfo({ formData, setFormData, images, setImages }) {
   const [pdfs, setPdfs] = useState([]);
 
   const handleImagesDeleteClick = () => {
@@ -16,6 +15,7 @@ export default function OtherInfo({ formData, setFormData }) {
 
   const handleImageChange = (event) => {
     setImages([...images, event.target.files[0]]);
+    setFormData({...formData, photos: images});
   };
   const handlePdfChange = (event) => {
     const newPdfs = [...pdfs];
