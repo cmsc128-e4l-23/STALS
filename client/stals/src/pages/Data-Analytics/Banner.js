@@ -1,8 +1,11 @@
 import { React, useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import './Analytics.css';
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 
 export default function AnalyticsBanner() {
+    let navigate = useNavigate();
     const [data, setData] = useState(null);
     const [siteTraffic, setSiteTraffic] = useState(null);
     const today = new Date();
@@ -30,6 +33,10 @@ export default function AnalyticsBanner() {
                     console.log(body);
                 }
         })
+    }
+
+    const goToPage = () => {
+        navigate('/admin/data-analytics')
     }
 
     // get site traffic
@@ -66,6 +73,7 @@ export default function AnalyticsBanner() {
             <div className="container">
                 <h2>D</h2>
             </div>
+            <IconButton onClick={goToPage}><ArrowForwardIosOutlinedIcon/></IconButton>
         </div>
     );
 }
