@@ -107,7 +107,7 @@ export default function Body({ data }) {
                 <div className="body-container">
                     <h1>Within UPLB Vicinity</h1>
                     <div id="inside" className="body-group">
-                        {accommList.map((accomm) => {
+                        {accommList.length === 0 ? <div><br/><br/></div>:accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
                                 return < AccommCard data={passData} accomm={accomm} />
                             }
@@ -115,7 +115,7 @@ export default function Body({ data }) {
                     </div>
                     <h1>Outside UPLB Vicinity</h1>
                     <div id="inside" className="body-group">
-                        {accommList.map((accomm) => {
+                        {accommList.length === 0 ? <div><br/><br/></div>:accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
                                 return < AccommCard data={passData} accomm={accomm}  />
                             }
