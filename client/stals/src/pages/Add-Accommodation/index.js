@@ -5,7 +5,7 @@ import BasicInfo from "./1_BasicInfo";
 import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
 import { useNavigate } from "react-router-dom";
-
+import FormData from "form-data";
 export default function AddAccommodation() {
   let navigate = useNavigate();
 
@@ -38,22 +38,39 @@ export default function AddAccommodation() {
     archived: true,
   });
 
+  const {photos, ...noPhotos} = formData;
   const submit = () => {
-    console.log(formData);
     fetch("http://localhost:3001/addAccomm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(noPhotos),
     })
     .then((res) => res.json())
     .then((data) => {
       if(data.success){
-        alert(data.msg)
+        const {accommId, userId, ...otherdata} = data;
+        var sheesh = accommId.toString();
+        alert(data.msg);
+        const sendData = new FormData();
+        sendData.append('userId', userId);
+        sendData.append('attachedTo', accommId);
+        for (let i = 0; i < photos.length; i++) {
+          sendData.append("images", photos[i],photos[i].name);
+        }
+        return fetch("http://localhost:3001/uploadImage", {
+          method: 'POST',
+          body: sendData,
+        })
         navigate("/home")
       }else{
         alert(data.error)
       }
     })
+    .then(response => response.json())
+    .then(data =>{
+      console.log(data)
+    })
+    .catch(error => console.error(error));
   };
 
   const FormTitles = [

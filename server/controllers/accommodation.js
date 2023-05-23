@@ -12,7 +12,6 @@ import Review from "../models/Review.js";
 const addAccomm = async (req, res) => {
     //Getting the input
     let accomm_details = req.body;
-
     try{
         //NOTE: The accommodation model states that the 'owner' field contains an object
         const currUser = await User.findOne({ email: accomm_details.owner });
