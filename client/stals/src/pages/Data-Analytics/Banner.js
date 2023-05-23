@@ -1,8 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import './Analytics.css';
+import Grid from '@mui/material/Grid';
 import { CircularProgress, IconButton } from "@mui/material";
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import './Analytics.css';
 
 export default function AnalyticsBanner() {
     let navigate = useNavigate();
@@ -57,21 +58,21 @@ export default function AnalyticsBanner() {
     }, []);
 
     return (
-        <div id="data-alaytics-banner">
+        <div id="data-analytics-banner">
             <div className="container">
-                {siteTraffic == null ? <CircularProgress /> : <h2>Site Traffic: { siteTraffic.numVisits }</h2>}
+                {siteTraffic == null ? <CircularProgress /> : <><h2>SITE TRAFFIC: </h2>{ siteTraffic.numVisits }</>}
             </div>
             <div className="container">
-                <h2>A</h2>
+                {data == null ? <CircularProgress /> : <><h2>ACCOMMODATION OWNERS</h2> { data.numAccommOwners }</>}
             </div>
             <div className="container">
-                <h2>B</h2>
+                {data == null ? <CircularProgress /> : <><h2>APPROVED ACCOMMODATIONS</h2> { data.numApprovedAccomm }</>}
             </div>
             <div className="container">
-                <h2>C</h2>
+                {data == null ? <CircularProgress /> : <><h2>REGISTERED USERS</h2> { data.numRegUsers }</>}
             </div>
             <div className="container">
-                <h2>D</h2>
+                {data == null ? <CircularProgress /> : <><h2>STUDENTS</h2> { data.numStudents }</>}
             </div>
             <IconButton onClick={goToPage}><ArrowForwardIosOutlinedIcon/></IconButton>
         </div>
