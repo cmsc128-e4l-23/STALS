@@ -2,7 +2,7 @@ import { React, useState, useEffect, useCallback } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Filter from "components/Filter";
-import Accommodation from "components/Accommodation";
+import AccommCard from "./AccommCard";
 import "./Body.css";
 
 
@@ -19,12 +19,12 @@ export default function Body({ data }) {
         userEmail: userEmail
     }
 
-    // updates accommodation list (accommList) and whether there are accommodations fetched (fetchedAccomm)
+    // updates AccommCard list (accommList) and whether there are AccommCards fetched (fetchedAccomm)
     const updateData = (list) => {
         udpateAccomm(list);
 
-        if (list.length === 0) updateFetchAccomm(false); // empty list, show "Accommodation not found!"
-        else updateFetchAccomm(true); // display accommodations
+        if (list.length === 0) updateFetchAccomm(false); // empty list, show "AccommCard not found!"
+        else updateFetchAccomm(true); // display AccommCards
     }
 
     // fetch user's bookmarks if looged in
@@ -109,7 +109,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
-                                return < Accommodation data={passData} accomm={accomm} />
+                                return < AccommCard data={passData} accomm={accomm} />
                             }
                         })}
                     </div>
@@ -117,7 +117,7 @@ export default function Body({ data }) {
                     <div id="inside" className="body-group">
                         {accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
-                                return < Accommodation data={passData} accomm={accomm}  />
+                                return < AccommCard data={passData} accomm={accomm}  />
                             }
                         })}
                     </div>
@@ -128,17 +128,17 @@ export default function Body({ data }) {
     // return search results
     else {
         // display results accordingly
-        // accommodation not found
+        // AccommCard not found
         if (fetchedAccomm == false) {
             return (
                 <div className="body-div">
                     <Filter />
-                    <h3 id="not-found">Accommodation not found</h3>
+                    <h3 id="not-found">AccommCard not found</h3>
                 </div>
             );
         }
         else {
-            // accommodation found
+            // AccommCard found
             return (
                 // the whole body
                 <div className="body-div">
@@ -146,7 +146,7 @@ export default function Body({ data }) {
                     <div className="body-container">
                         <div className="body-group">
                             {accommList.map((accomm) => {
-                                return < Accommodation data={passData} accomm={accomm} />
+                                return < AccommCard data={passData} accomm={accomm} />
                             })}
                         </div>
                     </div>
