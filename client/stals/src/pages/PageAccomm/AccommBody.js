@@ -29,6 +29,23 @@ export default function AccommBody({ data }) {
 
     const [openDescription, setOpenDescription] = useState(false);
     const [openReportForm, setOpenReport] = useState(false);
+    const [openWriteReview, setOpenWriteReview] = useState(false);
+    const [openSeeReview, setOpenSeeReview] = useState(false);
+
+    const [reviewValue, setReviewValue] = useState(0);
+    const [hoverValue, setHoverValue] = useState(undefined);
+
+    const handleClickStar = value => {
+        setReviewValue(value);
+    }
+
+    const handleStarHover = value => {
+        setHoverValue(value);
+    }
+
+    const handleStarHoverLeave = () => {
+        setHoverValue(undefined);
+    }
 
     const handleOpenReport = () => {
         setOpenReport(true);
@@ -38,6 +55,50 @@ export default function AccommBody({ data }) {
         setOpenReport(false);
     }
 
+    const handleClickWriteReview = () => {
+        setOpenWriteReview(true);
+    };
+
+    const handleCloseWriteReview = () => {
+        setOpenWriteReview(false);
+    };
+
+    const handleClickSeeReview = () => {
+        setOpenSeeReview(true);
+    };
+
+    const handleCloseSeeReview = () => {
+        setOpenSeeReview(false);
+    };
+
+    const stars = Array(5).fill(0);
+
+    const colors = {
+        orange: "#FFBA5A",
+        gray: "#a9a9a9"
+    }
+
+    const styles = {
+        container: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        },
+        textarea: {
+            border: "1px solid #a9a9a9",
+            borderRadius: 5,
+            width: 300,
+            margin: "20px 0",
+            minHeight: 100,
+            padding: 10
+        },
+        button: {
+            border: "1px solid #a9a9a9",
+            borderRadius: 5,
+            width: 300,
+            padding: 10
+        }
+    }
 
 
     const handleClickDescription = () => {
@@ -113,6 +174,7 @@ export default function AccommBody({ data }) {
                 <div className="accomm-name-details">
                     <div className="accomm-name-div">              
                         <h1>{accommData.name}</h1>
+                        {console.log(accommData)}
                     </div>
                     <div className="accomm-details-div">
                         <p> <FaStar /> 4.62 • { accommData.reviews.length } reviews • {` ${accommData.address.barangay}, ${accommData.address.city}`} </p>
@@ -208,6 +270,83 @@ export default function AccommBody({ data }) {
 
                     </div>
                     
+                </div>
+
+                <div className="review-container">
+                    <div className="review-buttons">
+                        <div className="see-reviews">
+                            <button className="see-all-button" onClick={handleClickSeeReview}>See Reviews</button>
+                            <Dialog
+                                open={openSeeReview}
+                                onClose={handleCloseSeeReview}
+                                aria-labelledby="see-review-dialog-title"
+                                aria-describedby="see-review-dialog-description"
+                            >
+                                <DialogTitle id="see-review-dialog-title" style={styles.container}>
+                                    All Reviews
+                                </DialogTitle>
+                                <DialogContent>
+                                    <div className="user-review-container">
+                                        <div className="review-user-detail">
+                                            <img className="reviewProfileImage" src={image1} alt='' />
+                                            <div className="user-details">
+                                                {/* review username */}
+                                                <h1>FirstName LastName</h1>
+                                                <h2>Rating: <FaStar className="review-star"/> <FaStar className="review-star"/><FaStar className="review-star"/><FaStar className="review-star"/><FaStar className="review-star"/></h2>
+                                                <p>
+                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                        <div className="write-review">
+                            <button className="see-all-button" onClick={handleClickWriteReview}>Write Review</button>
+                            <Dialog
+                                open={openWriteReview}
+                                onClose={handleCloseWriteReview}
+                            >
+                                <DialogContent>
+                                    <div style={styles.container}>
+                                        <h1 className="review-button-title">Give this accommodation a rating</h1>
+                                        <div className="review-stars" style={styles.stars}>
+                                            {stars.map((_, index) => {
+                                                return (
+                                                    <FaStar 
+                                                        key={index}
+                                                        size={24}
+                                                        style={{
+                                                            marginRight: 10,
+                                                            cursor: "pointer"
+                                                        }}
+                                                        color={(hoverValue || reviewValue) > index ? colors.orange : colors.gray}
+                                                        onClick={() => handleClickStar(index+1)}
+                                                        onMouseOver={() => handleStarHover(index+1)}
+                                                        onMouseLeave={handleStarHoverLeave}
+                                                    />
+                                                )
+                                                
+                                            })}
+                                        </div>
+                                    </div>
+                                    <div style={styles.container}>
+                                        <textarea 
+                                            placeholder="What's your feedback?"
+                                            style={styles.textarea}
+                                        />
+                                        <button style={styles.button} onClick={handleCloseWriteReview}>Submit</button>
+                                    </div>
+                                    
+                                    <DialogContentText id="write-review-dialog-description">
+                                    {/* {accommData.description} */}
+                                    </DialogContentText>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                    </div>
                 </div>
                 
                 
