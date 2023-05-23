@@ -134,7 +134,6 @@ const deleteReview = async (req, res) => {
                     // for additional security measures
                     if (!doc.user.equals(user.email)) throw new Error("User id mismatch! Report found but incorrect userId");
                     if (!doc.propertyId.equals(accomm._id)) throw new Error("Accomm id mismatch! Report found but incorrect propertyId");
-
                 }
             } catch (err) { throw new Error("Accomodation/User not found"); }
         } else throw new Error("Review not found");
@@ -143,47 +142,8 @@ const deleteReview = async (req, res) => {
     }
 }
 
-//get review functionality
-//req.body is an object that should have:
-//     _id: #id of review#,
-//     user: #email of the user#,
-//     propertyId: #id of property/accomm#,
-
-//A successful search will result to a res.body that contains
-//  - a key "success" with a value true
-//  - a key msg with string Successfully deleted review
-// - a key "result" with all reviews of a given user or a property
-
-//A unsuccessful search will result to a res.body that contains
-//  - a key "success" with a value false
-//  - a key msg with a value of the error encountered
-const getReview = async (req, res) => {
-    const review_details = req.body;
-    let queryObject;
-
-    try {
-        if (review_details.user) {
-            const user = await User.findOne({ email: review_details.user });
-            if (user) queryObject = { userId: user._id };
-            else throw new Error("User not found");
-
-        } else if (review_details.propertyId) {
-            queryObject = { propertyId: review_details.propertyId };
-        }
-
-        const doc = await Review.find(queryObject);
-
-        if (doc) res.send({ success: true, msg: "Successfully retrieved reviews", result: doc });
-        else throw new Error("Cannot retrieve reviews");
-    } catch (err) {
-        res.send({ success: false, msg: "Retrieval of reviews failed", error: err.message });
-    }
-
-}
-
 export default {
     addReview,
     editReview,
     deleteReview,
-    getReview
 }
