@@ -49,7 +49,6 @@ export default function AddAccommodation() {
     .then((data) => {
       if(data.success){
         const {accommId, userId, ...otherdata} = data;
-        var sheesh = accommId.toString();
         alert(data.msg);
         const sendData = new FormData();
         sendData.append('userId', userId);
@@ -61,7 +60,6 @@ export default function AddAccommodation() {
           method: 'POST',
           body: sendData,
         })
-        
       }else{
         alert(data.error)
       }
