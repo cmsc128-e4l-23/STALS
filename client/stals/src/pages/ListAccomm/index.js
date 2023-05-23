@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import List from './List';
+import Header from "components/Header";
 
 
 export default function AccommodationList(){
@@ -35,11 +36,14 @@ export default function AccommodationList(){
     }, [navigate, isLoggedIn]);
 
     return(
-        <>
+        <div>
         {
+            
             loading ?
-            <div>Loading</div> :
+            
+            <div><Header/>Loading</div> :
             <div>
+                <Header/>
                 <div id='user-info'>
                     {name}'s Accommodations
                 </div>
@@ -48,6 +52,6 @@ export default function AccommodationList(){
                 </div>
             </div>
         }
-        </>
+        </div>
     );
 }
