@@ -1,7 +1,6 @@
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import User from "../models/User.js";
-import Review from "../models/Review.js";
 import Visit from "../models/Visit.js";
 
 /*
@@ -11,14 +10,14 @@ const resolveReport = async (req, res) => {
     const report_details = req.body;
     Report.updateOne(
         { _id: report_details._id },
-        { $set: {status: 'Resolved'} }
-        )
+        { $set: { status: 'Resolved' } }
+    )
         .then((result) => {
-            if(result.modifiedCount < 1){res.send({success: false, msg: "Resolved no reports"})}
-            else {res.send({success: true, msg: "Resolving succeeded"})}
+            if (result.modifiedCount < 1) { res.send({ success: false, msg: "Resolved no reports" }) }
+            else { res.send({ success: true, msg: "Resolving succeeded" }) }
         })
         .catch((error) => {
-            res.send({success: false, msg: "Resolving failed", error: error});
+            res.send({ success: false, msg: "Resolving failed", error: error });
         })
 }
 
@@ -31,17 +30,17 @@ Both could be true to view both
 const viewReports = async (req, res) => {
     const body = req.body;
     let query = []
-    if (body.onlyPending===true)  query.push({status: 'Pending'});
-    if (body.onlyResolved===true) query.push({status: 'Resolved'});
-    if (query.length>0) {
-        Report.find({$or: query})
-        .then((result) =>{
-            res.send({success: true, msg: "Viewing Succeeded", result: result});
-        })
-        .catch((error) => {
-            res.send({success: false, msg: "Viewing Failed", error: error});
-        });
-    }else res.send({success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: []});
+    if (body.onlyPending === true) query.push({ status: 'Pending' });
+    if (body.onlyResolved === true) query.push({ status: 'Resolved' });
+    if (query.length > 0) {
+        Report.find({ $or: query })
+            .then((result) => {
+                res.send({ success: true, msg: "Viewing Succeeded", result: result });
+            })
+            .catch((error) => {
+                res.send({ success: false, msg: "Viewing Failed", error: error });
+            });
+    } else res.send({ success: false, msg: "onlyPending and onlyResolved in the request body have no 'true' values", result: [] });
 }
 
 //POST method incrementing the number of visits on STALS on a particular date
@@ -53,24 +52,24 @@ const viewReports = async (req, res) => {
 }
 */
 const incNumVisits = async (req, res) => {
-    try{
+    try {
         const input = req.body;
         const visitResult = await Visit.findOne(input);
-        if(visitResult){
+        if (visitResult) {
             await Visit.findByIdAndUpdate(
                 visitResult._id,
-                {$set: {numVisits: visitResult.numVisits + 1}}
+                { $set: { numVisits: visitResult.numVisits + 1 } }
             );
-            res.send({success: true, msg: "incrementing visits succeeded"});    
-        }else{
+            res.send({ success: true, msg: "incrementing visits succeeded" });
+        } else {
             let newData = input;
             newData.numVisits = 1;
             const newVisit = new Visit(newData);
             await newVisit.save();
-            res.send({success: true, msg: "incrementing visits succeeded"});    
+            res.send({ success: true, msg: "incrementing visits succeeded" });
         }
-    }catch (error) {
-        res.send({success: false, msg: "incrementing visits failed", error: error});    
+    } catch (error) {
+        res.send({ success: false, msg: "incrementing visits failed", error: error });
     }
 }
 
@@ -84,45 +83,45 @@ const incNumVisits = async (req, res) => {
 }
 */
 const getVisits = async (req, res) => {
-    try{
+    try {
 
         //retrieving the Visit object based on input
         const input = req.body;
-        const findData = {$and: []}
-        if(input.year) findData.$and.push({year: input.year});
-        if(input.month) findData.$and.push({month: input.month});
-        if(input.day) findData.$and.push({day: input.day});
+        const findData = { $and: [] }
+        if (input.year) findData.$and.push({ year: input.year });
+        if (input.month) findData.$and.push({ month: input.month });
+        if (input.day) findData.$and.push({ day: input.day });
         let result = await Visit.find(findData);
-        
+
         //removed the _id values
         let returnVals = []
-        for(let i=0; i<result.length; i++){
+        for (let i = 0; i < result.length; i++) {
             const val = {
-                year:result[i].year,
-                month:result[i].month,
-                day:result[i].day,
+                year: result[i].year,
+                month: result[i].month,
+                day: result[i].day,
                 numVisits: result[i].numVisits
             }
             returnVals.push(val);
         }
-        
-        res.send({success: true, msg: "getting Visits succeeded", return: returnVals});
 
-    }catch (error) {
-        res.send({success: false, msg: "getting Visits failed", error: error});
+        res.send({ success: true, msg: "getting Visits succeeded", return: returnVals });
+
+    } catch (error) {
+        res.send({ success: false, msg: "getting Visits failed", error: error });
     }
 }
 
 //GET method for getting the number of pending applications and its number
 const getPendApp = async (req, res) => {
-    try{
-        var pendAppsTemp = await Accommodation.find({archived: true});
+    try {
+        var pendAppsTemp = await Accommodation.find({ archived: true });
         const numPendApps = pendAppsTemp.length;
-        
+
         //removed id for security reasons, except for the id in the price range
         //which idk why is there an id in price range 
         let pendApps = [];
-        for(let i=0; i<pendAppsTemp.length; i++){
+        for (let i = 0; i < pendAppsTemp.length; i++) {
             let doc = pendAppsTemp[i].toJSON();
             delete doc._id;
             delete doc.__v;
@@ -130,27 +129,26 @@ const getPendApp = async (req, res) => {
             doc.owner = user.email;
             pendApps.push(doc);
         }
-        res.send({ success: true, msg: "Successfully retrieve pending applications", numPendApps: numPendApps, pendApps: pendApps});
-    }catch(error){
+        res.send({ success: true, msg: "Successfully retrieve pending applications", numPendApps: numPendApps, pendApps: pendApps });
+    } catch (error) {
         res.send({ success: false, msg: "Unsuccessfully retrieve pending applications", error: error });
     }
 }
 
-
 //GET method for acquiring details about the database
 const dataAnalytics = async (req, res) => {
-    try{
+    try {
         //Number of registered accounts to be asked further
         const numRegUsers = await User.count();
 
         //Number of accounts tagged as accommodation owner
-        const numAccommOwners = (await User.find({owner: {$exists: true}})).length;
+        const numAccommOwners = (await User.find({ owner: { $exists: true } })).length;
 
         //Number of accounts tagged as student
-        const numStudents = (await User.find({userType: "Student"})).length
+        const numStudents = (await User.find({ userType: "Student" })).length
 
         //Number of approved accommodations
-        const numApprovedAccomm = (await Accommodation.find({archived: false})).length
+        const numApprovedAccomm = (await Accommodation.find({ archived: false })).length
 
         const db_details = {
             numRegUsers: numRegUsers,
@@ -158,9 +156,9 @@ const dataAnalytics = async (req, res) => {
             numStudents: numStudents,
             numApprovedAccomm: numApprovedAccomm
         }
-        res.send({success: true, msg: "Successfully retrieve admin data", return: db_details});
+        res.send({ success: true, msg: "Successfully retrieve admin data", return: db_details });
     }
-    catch (error){
+    catch (error) {
         res.send({ success: false, msg: "Unsuccessfully retrieve admin data", error: error });
     }
 }
@@ -169,7 +167,7 @@ export default {
     getPendApp,
     incNumVisits,
     getVisits,
-    resolveReport, 
+    resolveReport,
     viewReports,
     dataAnalytics
 }

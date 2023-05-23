@@ -22,50 +22,50 @@ var accomm_details = {
     owner: "p1blank@up.edu.ph",
     landmarks: ["Raymundo Gate"],
     address: {
-      postCode: "1234",
-      street: "Street 10",
-      barangay: "Barangay 11",
-      city: "City 12",
-      province: "Laguna",
-      region: "CALABARZON"
+        postCode: "1234",
+        street: "Street 10",
+        barangay: "Barangay 11",
+        city: "City 12",
+        province: "Laguna",
+        region: "CALABARZON"
     },
     generalLocation: 1,
     accommodationType: "Transient",
     amenities: "Free Wi-Fi",
     priceRange: {
-      minPrice: 5000,
-      maxPrice: 10000
+        minPrice: 5000,
+        maxPrice: 10000
     },
     description: "A place to stay at!",
     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
     restrictions: ["no visitors allowed"]
 };
 
-describe("POST /viewReports", () =>{
+describe("POST /viewReports", () => {
     it("test if the database is initialized for testing", async () => {
         const user = await request(app).post("/signup").send(signup_details)
         await request(app).post("/addAccomm").send(accomm_details)
-        const accommData = await Accommodation.findOne({name: "White House"});
+        const accommData = await Accommodation.findOne({ name: "White House" });
         await request(app).post("/reportAccomm").send({
-            user_id: user.body.data._id,
+            user: user.body.data.email,
             reported_id: accommData._id,
             classification: "Accommodation",
             content: "The place is dirty."
         })
         await request(app).post("/reportAccomm").send({
-            user_id: user.body.data._id,
+            user: user.body.data.email,
             reported_id: accommData._id,
             classification: "Accommodation",
             content: "The place is mid."
         })
 
         const report = await request(app).post("/reportAccomm").send({
-            user_id: user.body.data._id,
+            user: user.body.data.email,
             reported_id: accommData._id,
             classification: "Accommodation",
             content: "The place is dull."
         })
-        const resolvedReport = await Report.findOne({content: "The place is dirty."})
+        const resolvedReport = await Report.findOne({ content: "The place is dirty." })
         const result = await request(app).post("/resolveReport").send({
             _id: resolvedReport._id
         })
