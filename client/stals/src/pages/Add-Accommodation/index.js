@@ -61,7 +61,7 @@ export default function AddAccommodation() {
           method: 'POST',
           body: sendData,
         })
-        navigate("/home")
+        
       }else{
         alert(data.error)
       }
@@ -69,6 +69,7 @@ export default function AddAccommodation() {
     .then(response => response.json())
     .then(data =>{
       console.log(data)
+      navigate("/home")
     })
     .catch(error => console.error(error));
   };
