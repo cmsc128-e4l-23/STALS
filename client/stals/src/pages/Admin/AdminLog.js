@@ -19,16 +19,16 @@ export default function AdminLog(){
         });
 
         // Get accomodations that need approving
-        
-        fetch('http://localhost:3001/getPendApp', {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify()
-        })
-        .then(res => res.json())
-        .then(data => {
-            setAccoms(data.pendApps)
-        });
+        //
+        // fetch('http://localhost:3001/viewReports', {
+        // method: 'POST',
+        // headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify()
+        // })
+        // .then(res => res.json())
+        // .then(data => {
+        //     setAccoms(data.result)
+        // });
     })
 
     const closeReport = (_id) => {
