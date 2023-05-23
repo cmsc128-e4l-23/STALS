@@ -29,6 +29,7 @@ export default function AccommBody({ data }) {
 
     const [openDescription, setOpenDescription] = useState(false);
     const [openReportForm, setOpenReport] = useState(false);
+    const [openReviewForm, setOpenReview] = useState(false);
 
     const handleOpenReport = () => {
         setOpenReport(true);
@@ -147,6 +148,30 @@ export default function AccommBody({ data }) {
                             {/* <div>
                                 <button className="book-button" onClick={() => bookButton()}>Check Availability</button>
                             </div> */}
+                            <button className="review-button" onClick={() => {setOpenReview(true)}}><FaStar/> Review this listing</button>
+                                <Dialog open={openReviewForm} onClose={() => setOpenReview(false)}>
+                                    <DialogTitle padding={5} lineHeight={.5}><h2>Review an accommodation</h2></DialogTitle>
+                                    <DialogContent>
+                                    <DialogContentText>
+                                        Please enter detailed description of your review/experience.
+                                    </DialogContentText>
+                                    <br>
+                                    </br>
+                                    <TextField
+                                        fullWidth
+                                        id="outlined-multiline-flexible"
+                                        label="Review Details"
+                                        multiline
+                                        maxRows={5}
+                        
+                                    />
+                                    </DialogContent>
+                                    <DialogActions>
+                                    <Button onClick={() => setOpenReview(false)}>Cancel</Button>
+                                    <Button onClick={() => setOpenReview(false)}>Submit Review</Button>
+                                    </DialogActions>
+                                </Dialog>
+                                <br/>
                             <button className="report-button" onClick={handleOpenReport}><FaFlag /> Report this listing</button>
                                 <Dialog open={openReportForm} onClose={handleCloseReport}>
                                     <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
@@ -167,7 +192,7 @@ export default function AccommBody({ data }) {
                                     </DialogContent>
                                     <DialogActions>
                                     <Button onClick={handleCloseReport}>Cancel</Button>
-                                    <Button onClick={handleCloseReport}>Report</Button>
+                                    <Button onClick={handleCloseReport}>Submit Report</Button>
                                     </DialogActions>
                                 </Dialog>
                    
