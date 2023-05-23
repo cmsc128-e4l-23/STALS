@@ -34,7 +34,7 @@ const accommodationSchema = new mongoose.Schema({
   accommodationType: {
     type: String,
     required: true,
-    enum: ['Transient', 'Dorm', 'Rent']
+    enum: ['Transient', 'Dorm', 'Apartment', 'House for rent']
   },
   amenities: {
     type: [String],
