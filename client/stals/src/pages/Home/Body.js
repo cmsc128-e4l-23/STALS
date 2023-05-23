@@ -103,7 +103,7 @@ export default function Body({ data }) {
             // the whole body
             <div className="body-div">
                 {/* filter component */}
-                <Filter />
+                {/* <Filter /> */}
                 <div className="body-container">
                     <h1>Within UPLB Vicinity</h1>
                     <div id="inside" className="body-group">
