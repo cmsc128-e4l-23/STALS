@@ -46,3 +46,8 @@
 .add-requests-item button:hover, .report-item button:hover{
     cursor: pointer;
 }
+
+.reports-box, .add-requests-box{
+    width: 40%;
+    float: left;
+}
