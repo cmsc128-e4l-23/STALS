@@ -37,7 +37,7 @@ const addAccomm = async (req, res) => {
                 { "new": true, "upsert": true }
             );
 
-            res.send({ success: true, msg: "Successfully added accommodation" });
+            res.send({ success: true, accommId: savedAccommodation._id, userId: currUser._id, msg: "Successfully added accommodation" });
         } else {
             throw new Error("User not found");
         }
