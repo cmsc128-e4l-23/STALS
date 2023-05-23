@@ -24,7 +24,6 @@ router.post("/getUserBookmarks", userinfo.getUserBookmarks);
 //Accommodation Info
 router.post("/getAccommOwner", accomminfo.getAccommOwner);
 router.post("/getAccommBasicDetails", accomminfo.getAccommBasicDetails);
-router.post("/getAccommFullDetails", accomminfo.getAccommFullDetails);
 router.post("/getAccommReviews", accomminfo.getAccommReviews);
 router.post("/getAccommReports", accomminfo.getAccommReports);
 

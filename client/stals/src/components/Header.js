@@ -37,8 +37,6 @@ export default function Header() {
         localStorage.removeItem("email");
         setLoggedIn(false);
         optionsToggle(false);
-
-        window.location.reload();
     }
 
     const handleInput = (e) => {

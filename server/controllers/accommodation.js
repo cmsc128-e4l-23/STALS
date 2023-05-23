@@ -39,10 +39,6 @@ const addAccomm = async (req, res) => {
                 { "new": true, "upsert": true }
             );
 
-            if (!result){
-                throw new Error("Error updating user in add accommodation");
-            }
-
             res.send({ success: true, msg: "Successfully added accommodation" });
         } else {
             throw new Error("User not found");
@@ -268,7 +264,6 @@ Bookmark Functionality
 req.body is an object that should have:
     - user_id which is the id of the user
     - accomm_id which is the id of the accommodation
-<<<<<<< HEAD
 
 A successful bookmark will result to a res.body that contains
     - a key "success" with a value true
@@ -306,31 +301,6 @@ const bookmarkAccomm = async (req, res) => {
         console.log(error)
         res.send({ success: false, msg: error.msg });
     }
-=======
-
-A successful bookmark will result to a res.body that contains
-    - a key "success" with a value true
-    - a key "msg" indicating that the operation is successful
-
-A unsuccessful bookmark will result to a res.body that contains
-    - a key "success" with a value false
-    - a key "msg" with a value indicating a failed operation
-*/
-const bookmarkAccomm = async (req, res) => {
-    const bookmark_details = req.body;
-
-    // accomm_id is added to bookmarks array
-    User.updateOne(
-        { _id: bookmark_details.user_id },
-        { $addToSet: { bookmarks: bookmark_details.accomm_id } }
-    ).then((result) => {
-        res.send({ success: true, msg: "Bookmark Success" });
-    })
-    .catch((error) => {
-        console.log(error);
-        res.send({ success: false, msg: "Bookmark Failed", err: error });
-    });
->>>>>>> 04a9d60 (update: added whether the test is a happy or a sad path)
 }
 
 /*
@@ -350,7 +320,6 @@ A unsuccessful bookmark will result to a res.body that contains
 const removeBookmarkAccomm = async (req, res) => {
     const bookmark_details = req.body;
 
-<<<<<<< HEAD
     try {
         // first check if the ids are valid
         const user = await User.findById(bookmark_details.user_id);
@@ -378,19 +347,6 @@ const removeBookmarkAccomm = async (req, res) => {
         console.log(error)
         res.send({ success: false, msg: error.msg });
     }
-=======
-    //accomm_id is removed from bookmark array
-    User.updateOne(
-        { _id: bookmark_details.user_id },
-        { $pull: { bookmarks: bookmark_details.accomm_id } }
-    ).then((result) => {
-        res.send({ success: true, msg: "Remove Bookmark Success" });
-    })
-    .catch((error) => {
-        console.log(error);
-        res.send({ success: false, msg: "Remove Bookmark Failed", err: error });
-    });
->>>>>>> 04a9d60 (update: added whether the test is a happy or a sad path)
 }
 
 //Function for fetching bookmarks

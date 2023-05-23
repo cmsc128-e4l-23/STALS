@@ -1,27 +1,11 @@
-<<<<<<< HEAD
 import app from '../../app';
 import makeDB from '../../mongoose';
-=======
-import app from '../app';
-import makeDB from '../mongoose';
->>>>>>> b75a9b3 (Tests complete, adjustments to functions)
 import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../../models/Accommodation';
 import User from '../../models/User';
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
-<<<<<<< HEAD
-<<<<<<< HEAD
-let savedAccomm;
 const mockAccomm = {
-=======
-
-const mockAccomm = new Accommodation({
->>>>>>> b75a9b3 (Tests complete, adjustments to functions)
-=======
-let savedAccomm;
-const mockAccomm = {
->>>>>>> 706e624 (fixed accommodation finding in test)
     name: "Mock Accommodation",
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
@@ -46,7 +30,6 @@ const mockAccomm = {
     security: "Security details",
     archived: false,
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
-<<<<<<< HEAD
 };
 const mockAccomm2 = {
     name: "Mock Accommodation 2 Electric Boogaloo",
@@ -91,12 +74,6 @@ const mockUser = {
 // accommodations.insertOne(mockAccomm);
 // users.insertOne(mockUser);
 var signup_details = {
-=======
-});
-const savedAccommodation = await mockAccomm.save();
-//signup from auth test.
-var mockUser = new User({
->>>>>>> b75a9b3 (Tests complete, adjustments to functions)
     userType: "Student",
     firstName: "Nestor Harvey",
     lastName: "Garcia",
@@ -104,24 +81,20 @@ var mockUser = new User({
     password: "garcia2020_02948",
     phoneNumber: "09957331927",
     birthday: "2002-05-07",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 706e624 (fixed accommodation finding in test)
     sex: "Male"
 }
 let savedUser;
+let savedAccomm;
 let savedAccomm2;
-<<<<<<< HEAD
-
 describe("POST /generateRep", () => {
 
     test("Expected input", async () => {
         const saveUserSuccess = await request(app).post("/signup").send(signup_details)
         savedUser = saveUserSuccess.body.data;
         await request(app).post("/signup").send(mockUser)
-        const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
-        savedAccomm = saveAccommSuccess.body.data;
+        await request(app).post("/addAccomm").send(mockAccomm)
+
+        savedAccomm = await Accommodation.findOne({name: mockAccomm.name});
         const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
@@ -131,8 +104,8 @@ describe("POST /generateRep", () => {
         expect(response.body.success).toBe(true)
     })
     test("More than one in bookmarks", async () => {
-        const saveAccommSuccess2 = await request(app).post("/addAccomm").send(mockAccomm2)
-        savedAccomm2 = saveAccommSuccess2.body.data;
+        await request(app).post("/addAccomm").send(mockAccomm2)
+        savedAccomm2 = await Accommodation.findOne({name: mockAccomm2.name});
         const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
@@ -148,52 +121,11 @@ describe("POST /generateRep", () => {
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody);
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody2);
         const response = await request(app).post("/generateRep").send({_id: savedUser._id})
-=======
-    sex: "Male",
-    bookmarks: [savedAccommodation._id]
-});
-const savedUser = await mockUser.save();
-=======
->>>>>>> 706e624 (fixed accommodation finding in test)
-
-describe("POST /generateRep", () => {
-    test("Expected input", async () => {
-        const saveUserSuccess = await request(app).post("/signup").send(signup_details)
-        savedUser = saveUserSuccess.body.data;
-        await request(app).post("/signup").send(mockUser)
-        const saveAccommSuccess = await request(app).post("/addAccomm").send(mockAccomm)
-        savedAccomm = saveAccommSuccess.body.data;
-        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
-        await request(app).post("/bookmarkAccomm").send(bookmarkBody);
-
-        //actual testing, user has something in its bookmarks array, which the report prints.
-        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
-        console.log(response.body)
-        expect(response.body.success).toBe(true)
-    })
-    test("More than one in bookmarks", async () => {
-        const saveAccommSuccess2 = await request(app).post("/addAccomm").send(mockAccomm2)
-        savedAccomm2 = saveAccommSuccess2.body.data;
-        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
-        await request(app).post("/bookmarkAccomm").send(bookmarkBody);
-
-        //actual testing, user has something in its bookmarks array, which the report prints.
-        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
-        console.log(response.body)
-        expect(response.body.success).toBe(true)
-    })
-    test("No bookmarks", async () => {
-        const response = await request(app).post("/generateRep").send(mockUser._id)
->>>>>>> b75a9b3 (Tests complete, adjustments to functions)
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
     test("User not logged in", async () =>{
-<<<<<<< HEAD
         const response = await request(app).post("/generateRep").send({_id: ""})
-=======
-        const response = await request(app).post("/generateRep").send()
->>>>>>> b75a9b3 (Tests complete, adjustments to functions)
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
