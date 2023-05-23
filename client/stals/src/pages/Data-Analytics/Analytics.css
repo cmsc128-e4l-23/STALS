@@ -18,5 +18,12 @@
 
 #data-analytics-banner .container h2 {
     margin-top: 20px;
-    font-size: 10px;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    #data-analytics-banner .container {
+    width: 100%;
+    margin-right: 0;
+    }
 }
