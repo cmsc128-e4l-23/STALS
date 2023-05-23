@@ -1,0 +1,53 @@
+.add-requests-item, .report-item{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px rgb(45,45,45) solid;
+}
+
+.add-requests-item span, .report-item span{
+    float: left;
+    text-align: left;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.report-item span{
+    width: calc(100% - 100px);
+}
+
+
+.add-requests-item span{
+    width: calc(100% - 200px);
+
+}
+
+.add-requests-item button, .report-item button{
+    width: 70px;
+    margin-left: 10px;
+    height: 15px;
+    border: none;
+    line-height: 15px;
+    padding: 0px 10px 0px 10px;
+    font-size: 10px;
+    border-radius: 10px;
+    background-color: rgb(45,45,45);
+    color: white;
+}   
+
+
+.add-requests-item button:hover, .report-item button:hover{
+    cursor: pointer;
+}
+
+.reports-box, .add-requests-box{
+    width: 40%;
+    float: left;
+}
