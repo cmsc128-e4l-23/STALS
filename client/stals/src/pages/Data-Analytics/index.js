@@ -4,6 +4,7 @@ import './Analytics.css';
 import Header from "components/Header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CircularProgress, IconButton } from "@mui/material";
+import UserStats from "./UserStats";
 
 // page
 export default function DataAnalytics() {
@@ -23,7 +24,7 @@ export default function DataAnalytics() {
                         GRAPH 1
                     </div>
                     <div className="container">
-                        GRAPH 2
+                        <UserStats />
                     </div>
                 </div>
                 

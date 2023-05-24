@@ -21,6 +21,11 @@
     font-size: 12px;
 }
 
+#polarChart {
+    width: 50%;
+    height: auto;
+}
+
 @media (max-width: 768px) {
     #data-analytics-banner .container {
     width: 100%;
