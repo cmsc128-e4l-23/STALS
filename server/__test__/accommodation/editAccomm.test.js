@@ -58,60 +58,61 @@ const mockAccomm = {
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
 };
 
-let newAccomm;
-let editAccomm;
+let newAccomm, editAccomm;
 
 //Testing
 describe("POST /editAccomm", () => {
 
-    describe("Happy paths", () => {
-        test("should successfully edit accommodation from database", async () => {
+    it("Mock Database Population", async () => {
+        let result;
+        result = await request(app).post("/signup").send(mockUser);
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(mockAccomm);
+        expect(result.body.success).toBe(true)
+        newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+        expect(newAccomm).not.toBeNull();
 
-            //Creating mock user and accommodation for testing
-            await request(app).post("/signup").send(mockUser);
-            await request(app).post("/addAccomm").send(mockAccomm);
-            newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
-            
-            //Mock Accommodation for edit
-            editAccomm = {
-                _id: newAccomm._id,
-                name: 'Never',
-                landmarks: [ 'Gonna' ],
-                address: {
-                    postCode: 'Give',
-                    street: 'You',
-                    barangay: 'Up',
-                    city: 'Never',
-                    province: 'Gonna',
-                    region: 'Let'
-                },
-                generalLocation: 310771,
-                accommodationType: 'You',
-                amenities: [ 'Down' ],
-                priceRange: {
-                    minPrice: 10000,
-                    maxPrice: 15000
-                },
-                description: 'Never gonna run around and desert you',
-                photos: [ 'and' ],
-                restrictions: ["desert", "you"],
-                security: 'Rick Astley',
-                archived: false
-            }
-
-            const res = await request(app).post("/editAccomm").send(editAccomm);
-            expect(res.body.success).toBe(true);
-        });
+        //Mock Accommodation for edit
+        editAccomm = {
+            _id: newAccomm._id,
+            name: 'Never',
+            landmarks: [ 'Gonna' ],
+            address: {
+                postCode: 'Give',
+                street: 'You',
+                barangay: 'Up',
+                city: 'Never',
+                province: 'Gonna',
+                region: 'Let'
+            },
+            generalLocation: 310771,
+            accommodationType: 'You',
+            amenities: [ 'Down' ],
+            priceRange: {
+                minPrice: 10000,
+                maxPrice: 15000
+            },
+            description: 'Never gonna run around and desert you',
+            photos: [ 'and' ],
+            restrictions: ["desert", "you"],
+            security: 'Rick Astley',
+            archived: false
+        }
     })
+    test("should successfully edit accommodation from database", async () => {
+        const res = await request(app).post("/editAccomm").send(editAccomm);
+        expect(res.body.success).toBe(true);
+    });
 
-    describe("Unhappy paths", () => {
-        test("should fail to edit accommodation due to accommodation not existing", async () => {
-            const res = await request(app).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
-            expect(res.body.success).toBe(false);
-            expect(res.body.msg).toBe("Unsuccessfully edited accommodation");
-            expect(res.body.error).toBe("Accommodation not found");
-        });
-    })  
+    /* unnecessary, users shouldn't search by id directly */
+    // describe("Unhappy paths", () => {
+    //     test("should fail to edit accommodation due to accommodation not existing", async () => {
+    //         const res = await request(app).post("/editAccomm").send({...editAccomm, _id: "64534e45d46998fe6b1edb69"});
+    //         expect(res.body.success).toBe(false);
+    //         expect(res.body.msg).toBe("Unsuccessfully edited accommodation");
+    //         expect(res.body.error).toBe("Accommodation not found");
+    //     });
+    // })  
 })
 
 afterAll(() => {

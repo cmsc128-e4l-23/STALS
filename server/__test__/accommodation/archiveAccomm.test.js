@@ -76,6 +76,7 @@ describe("POST /archiveAccomm", () => {
     expect(accommcount).toBe(1);
     // get the new accomm
     newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+    expect(newAccomm).not.toBeNull();
     // set it to unarchived
     result = await Accommodation.findByIdAndUpdate(
       newAccomm._id,
