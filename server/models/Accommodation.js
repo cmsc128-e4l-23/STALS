@@ -64,7 +64,10 @@ const accommodationSchema = new mongoose.Schema({
   },
   archived: {
     type: Boolean,
-    required: true,
+    default: false
+  },
+  approved: {
+    type: Boolean,
     default: false
   },
   reviews: [{type: mongoose.Schema.Types.ObjectID, ref:"Review"}]
