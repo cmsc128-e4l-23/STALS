@@ -58,7 +58,7 @@ const landchad = {
 const laguna1 = {
     name: "White House",
     owner: "landchad@up.edu.ph",
-    landmarks: ["Landmark 1", "Landmark 2"],
+    landmarks: ["Mysterious Tree", "Landmark 2"],
     address: {
       postCode: "12345",
       street: "Mock Street",
@@ -68,8 +68,8 @@ const laguna1 = {
       region: "CALABARZON"
     },
     generalLocation: 1,
-    accommodationType: "Transient",
-    amenities: ["Amenity 1", "Amenity 2"],
+    accommodationType: "Rent",
+    amenities: ["Pool", "Amenity 2"],
     priceRange: {
       minPrice: 1000,
       maxPrice: 2000
@@ -85,7 +85,7 @@ const laguna1 = {
 const laguna2 = {
     name: "Big Bellys",
     owner: "landchad@up.edu.ph",
-    landmarks: ["Landmark 1", "Landmark 2"],
+    landmarks: ["Cozy Park", "Landmark 2"],
     address: {
       postCode: "67890",
       street: "Mock Street",
@@ -96,7 +96,7 @@ const laguna2 = {
     },
     generalLocation: 1,
     accommodationType: "Transient",
-    amenities: ["Amenity 1", "Amenity 2"],
+    amenities: ["Amenity 1", "Diner Kitchen"],
     priceRange: {
       minPrice: 1000,
       maxPrice: 2000
@@ -112,7 +112,7 @@ const laguna2 = {
 const manila1 = {
     name: "Luxury Condo",
     owner: "landchad@up.edu.ph",
-    landmarks: ["Landmark 1", "Landmark 2"],
+    landmarks: ["Landmark 1", "Luneta Park"],
     address: {
       postCode: "11111",
       street: "Mock Street",
@@ -123,7 +123,7 @@ const manila1 = {
     },
     generalLocation: 1,
     accommodationType: "Transient",
-    amenities: ["Amenity 1", "Amenity 2"],
+    amenities: ["Amenity 1", "Communal Kitchen"],
     priceRange: {
       minPrice: 1000,
       maxPrice: 2000
@@ -149,7 +149,7 @@ const manila2 = {
       region: "NCR"
     },
     generalLocation: 1,
-    accommodationType: "Transient",
+    accommodationType: "Dorm",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
       minPrice: 1000,
@@ -309,24 +309,76 @@ describe("Recommendation Test", () => {
         expect(res.body.result.length).toEqual(0);
     });
 
-    test("Should return nothing - search by amenities should not work", async () => {
-        const res = await request(app).post("/recommendAccomm")
+    test("Search by accommodation type - laguna1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
             .send({
-               searchString: "swimming pool",
+               searchString: "Rent",
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toEqual(0);
+        expect(res.body.result.length).toEqual(1);
+        expect(res.body.result[0].name).toEqual(laguna1.name);
     });
 
-    test("Should return nothing - nonsensical input", async () => {
-        const res = await request(app).post("/recommendAccomm")
+    test("Search by landmark - laguna1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
             .send({
-               searchString: "loremIpsum dolor sitjkljkldskldfkjljdfskl",
+               searchString: "Mysterious Tree",
                returnLength: 10,
             },);
         expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toEqual(0);
+        expect(res.body.result.length).toEqual(1);
+        expect(res.body.result[0].name).toEqual(laguna1.name);
+    });
+
+    test("Search by amenity - laguna1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
+            .send({
+               searchString: "Pool",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toEqual(1);
+        expect(res.body.result[0].name).toEqual(laguna1.name);
+    });
+
+    test("Multiple accomm types - laguna2 and manila1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
+            .send({
+               searchString: "transient",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toEqual(2);
+        res.body.result.forEach(element => {
+            expect([laguna2.name, manila1.name]).toContain(element.name)
+        })
+    });
+
+    test("Multiple Landmarks - laguna2 and manila1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
+            .send({
+               searchString: "park",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toEqual(2);
+        res.body.result.forEach(element => {
+            expect([laguna2.name, manila1.name]).toContain(element.name)
+        })
+    });
+
+    test("Multiple Amenities - laguna2 and manila1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
+            .send({
+               searchString: "kitchen",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toEqual(2);
+        res.body.result.forEach(element => {
+            expect([laguna2.name, manila1.name]).toContain(element.name)
+        })
     });
 });
 

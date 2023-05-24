@@ -233,7 +233,9 @@ const searchAccomm = async (req, res) => {
 /*
 Search Recommendation
 req.body is an object that should have:
-    - a key named "searchString" that contains a string to be searched in the database
+    - a key named "searchString" that contains a string to be searched in the database.
+        The string is used to search the accommodation name, type, nearby landmarks,
+        amenities involved, and address.
     - a key named "returnLength" which would be the number of accommodations to be returned
     - it assumes that the frontend would handle whether the keys are valid or not
 
@@ -262,7 +264,12 @@ const recommendAccomm = async (req, res) => {
             return obj
         })
 
-    const accommresult = await Accommodation.find({ $or: [{ name: searchString }, ...addressArgs],
+    const accommresult = await Accommodation.find({ $or: [
+        { name: searchString },
+        { accommodationType: searchString },
+        { landmarks: searchString },
+        { amenities: searchString },
+        ...addressArgs],
         archived: false, reviews: {$ne: []} })
         .limit(returnLength)
         .catch((error) => {

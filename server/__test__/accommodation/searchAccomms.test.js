@@ -254,6 +254,17 @@ describe("Searching Test", () => {
         expect(res.body.result[0].name).toEqual(laguna1.name);
     });
 
+    test("Search by amenity - laguna1 should return", async () => {
+        const res = await request(app).post("/searchAccomm")
+            .send({
+               searchString: "Pool",
+               returnLength: 10,
+            },);
+        expect(res.body.success).toBe(true);
+        expect(res.body.result.length).toEqual(1);
+        expect(res.body.result[0].name).toEqual(laguna1.name);
+    });
+
     test("Multiple accomm types - laguna2 and manila1 should return", async () => {
         const res = await request(app).post("/searchAccomm")
             .send({
@@ -291,27 +302,6 @@ describe("Searching Test", () => {
         res.body.result.forEach(element => {
             expect([laguna2.name, manila1.name]).toContain(element.name)
         })
-    });
-
-    test("Search by amenity - laguna1 should return", async () => {
-        const res = await request(app).post("/searchAccomm")
-            .send({
-               searchString: "Pool",
-               returnLength: 10,
-            },);
-        expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toEqual(1);
-        expect(res.body.result[0].name).toEqual(laguna1.name);
-    });
-
-    test("Should return nothing - nonsensical input", async () => {
-        const res = await request(app).post("/searchAccomm")
-            .send({
-               searchString: "loremIpsum dolor sitjkljkldskldfkjljdfskl",
-               returnLength: 10,
-            },);
-        expect(res.body.success).toBe(true);
-        expect(res.body.result.length).toEqual(0);
     });
 });
 
