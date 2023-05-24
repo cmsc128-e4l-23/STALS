@@ -185,7 +185,9 @@ const deleteAccomm = async (req, res) => {
 /*
 Search Functionality
 req.body is an object that should have:
-    - a key named "searchString" that contains a string to be searched in the database
+    - a key named "searchString" that contains a string to be searched in the database.
+        The string is used to search the accommodation name, type, nearby landmarks,
+        amenities involved, and address.
     - a key named "returnLength" which would be the number of accommodations to be returned 
     - it assumes that the frontend would handle whether the keys are valid or not
 
@@ -213,6 +215,9 @@ const searchAccomm = async (req, res) => {
 
     Accommodation.find({ $or: [
         { name: searchString },
+        { accommodationType: searchString },
+        { landmarks: searchString },
+        { amenities: searchString },
         ...addressArgs] })
         .limit(returnLength)
         .then((result) => {
