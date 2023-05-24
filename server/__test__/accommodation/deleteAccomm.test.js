@@ -2,6 +2,7 @@ import app from '../../app';
 import makeDB from '../../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
+import User from '../../models/User';
 import Accommodation from '../../models/Accommodation';
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
@@ -61,13 +62,23 @@ const mockAccomm = {
 let newAccomm;
 
 describe("POST /deleteAccomm", () => {
+
+    it("Mock Database Population", async () => {
+        let result;
+        result = await request(app).post("/signup").send(mockUser)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/addAccomm").send(mockAccomm)
+        expect(result.body.success).toBe(true)
+        // there should be one user and one accomm
+        const usercount = await User.count();
+        expect(usercount).toBe(1);
+        const accommcount = await Accommodation.count();
+        expect(accommcount).toBe(1);
+        newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+    })
+
     describe("Happy paths", () => {
         test("should successfully delete accommodation", async () => {
-            //Initializing mock data
-            await request(app).post("/signup").send(mockUser);
-            await request(app).post("/addAccomm").send(mockAccomm);
-            newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
-
             const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
             expect(res.body.success).toBe(true);
         });
