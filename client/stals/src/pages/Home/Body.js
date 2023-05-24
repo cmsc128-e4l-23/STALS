@@ -1,40 +1,52 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { IconButton } from '@mui/material';
 import Filter from "components/Filter";
+import AccommCard from "./AccommCard";
 import "./Body.css";
 
 
 export default function Body({ data }) {
-    let navigate = useNavigate();
-
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [accommList, udpateAccomm] = useState([]);
-    const [bookmarkList, updateBookmark] = useState([]);
-    const [buttons, updateButtons] = useState({});
-    const [success, setSuccess] = useState(false);
+    const [bookmarkList, updateBookmark] = useState(null);
     const [fetchedAccomm, updateFetchAccomm] = useState(null);
-
-    // initialize buttons
-    const initButton = () => {
-        var btns = {};
-        accommList.forEach((accomm, index) => {
-            btns[accomm._id] = false;
-        });
-        return btns;
+    const [userEmail, setUserEmail] = useState(null);
+    
+    var passData = {
+        loggedIn: isLoggedIn,
+        bookmark: bookmarkList,
+        userEmail: userEmail
     }
 
-    // updates accommodation list (accommList) and whether there are accommodations fetched (fetchedAccomm)
+    // updates AccommCard list (accommList) and whether there are AccommCards fetched (fetchedAccomm)
     const updateData = (list) => {
         udpateAccomm(list);
 
-        if (list.length === 0) updateFetchAccomm(false); // empty list, show "Accommodation not found!"
-        else updateFetchAccomm(true); // display accommodations
+        if (list.length === 0) updateFetchAccomm(false); // empty list, show "AccommCard not found!"
+        else updateFetchAccomm(true); // display AccommCards
     }
+
+    // fetch user's bookmarks if looged in
+    const fetchBookmark = useCallback(() => {
+        fetch('http://localhost:3001/getUserBookmarks', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({email: localStorage.getItem("email")}),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    updateBookmark(body.bookmarks);
+                    passData.bookmark = bookmarkList;
+                    setUserEmail(localStorage.getItem("email"));
+                    passData.userEmail = userEmail;
+                } else updateBookmark(null);
+        })
+    }, [passData, userEmail, bookmarkList]);
 
     // search
     // use `data` prop
@@ -49,11 +61,7 @@ export default function Body({ data }) {
         })
             .then(res => res.json())
             .then(body => {
-                setSuccess(body.success);
-                if (body.success) {
-                    updateData(body.result);
-                    updateButtons(initButton());
-                }
+                if (body.success) updateData(body.result);
                 else udpateAccomm([]);
             })
     }, [data]);
@@ -69,29 +77,13 @@ export default function Body({ data }) {
             setLoggedIn(body.isLoggedIn);
             if(body.isLoggedIn){
                 // get bookmarks (type: ObjectID)
-                // fetchBookmark();
                 setLoggedIn(body.isLoggedIn);
+                passData.loggedIn = isLoggedIn;
+                fetchBookmark();
             }
             fetchAccomm();
         })
-    }, []);
-
-    // changes the state of the button on click
-    const clickFavBtn = (id) => {
-        console.log(id)
-        console.log(isLoggedIn);
-
-        if (isLoggedIn) {
-            var btns = buttons;
-            btns[id] = !btns[id];
-            console.log(btns[id]);
-            updateButtons(btns);
-        } else {
-            alert("You have to be logged in!"); // change to pop-up
-            navigate('/login');
-        }
-        
-    }
+    }, [isLoggedIn]);
 
     // loading
     if (fetchedAccomm == null) {
@@ -104,7 +96,6 @@ export default function Body({ data }) {
             </div>
         );
     }
-
     // not searching anything
     // Homepage
     if (data === "") {
@@ -113,86 +104,20 @@ export default function Body({ data }) {
             <div className="body-div">
                 {/* filter component */}
                 <Filter />
-                {/* body-container: contains the category title and the accommodation card */}
                 <div className="body-container">
                     <h1>Within UPLB Vicinity</h1>
-                {/* body-group: multiple body-elements */}
-                {/* body-element: image and button/s */}
                     <div id="inside" className="body-group">
-                        {accommList.map((accomm, index) => {
+                        {accommList.map((accomm) => {
                             if (accomm.generalLocation <= 1000) {
-                                return <div key={index} className="body-element">
-                                    {/* bookmark button */}
-                                    <IconButton id={index} key={index} onClick={() => clickFavBtn(accomm._id)} className="favorite" >
-                                        {buttons[accomm._id] ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
-                                    </IconButton>
-                                
-                                {/* image/s */}
-                                { /* reference: https://www.youtube.com/watch?v=McPdzhLRzCg */ }
-                                    <div className="img-container">
-                                        <div className="slider-wrapper">
-                                            <div className="images">
-                                                {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
-                                                })}
-                                            </div>
-                                            {/* slider buttons */}
-                                            <div className="slider-btns">
-                                                {accomm.photos.map((photo, index) => {
-                                                    return <a href={"#image-" + photo + "-" + index}></a>
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* details */}
-                                    <div className="details">
-                                        <h3>{ accomm.name}</h3>
-                                        <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
-                                        <p>{`Type: ${accomm.accommodationType}`}</p>
-                                        <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
-                                    </div>
-                            </div>
+                                return < AccommCard data={passData} accomm={accomm} />
                             }
                         })}
                     </div>
-                </div>
-                <div id="outside" className="body-container">
-                    <h1>Outside UPLB</h1>
-                    <div className="body-group">
-                    {accommList.map((accomm, index) => {
+                    <h1>Outside UPLB Vicinity</h1>
+                    <div id="inside" className="body-group">
+                        {accommList.map((accomm) => {
                             if (accomm.generalLocation > 1000) {
-                                return <div key={index} className="body-element">
-                                    {/* favorite button */}
-                                    <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
-                                        {/* {favBtnState[accomm._id].obj} */}
-                                        <BookmarkBorderIcon key={accomm._id} />
-                                    </IconButton>
-                                
-                                {/* image/s */}
-                                { /* reference: https://www.youtube.com/watch?v=McPdzhLRzCg */ }
-                                    <div className="img-container">
-                                        <div className="slider-wrapper">
-                                            <div className="images">
-                                                {accomm.photos.map((photo, index) => {
-                                                    return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
-                                                })}
-                                            </div>
-                                            {/* slider buttons */}
-                                            <div className="slider-btns">
-                                                {accomm.photos.map((photo, index) => {
-                                                    return <a href={"#image-" + photo + "-" + index}></a>
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* details */}
-                                    <div className="details">
-                                        <h3>{ accomm.name}</h3>
-                                        <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
-                                        <p>{`Type: ${accomm.accommodationType}`}</p>
-                                        <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
-                                    </div>
-                            </div>
+                                return < AccommCard data={passData} accomm={accomm}  />
                             }
                         })}
                     </div>
@@ -200,70 +125,33 @@ export default function Body({ data }) {
             </div>
         );
     }
-
     // return search results
     else {
         // display results accordingly
-        // accommodation not found
+        // AccommCard not found
         if (fetchedAccomm == false) {
             return (
                 <div className="body-div">
                     <Filter />
-                    <h3 id="not-found">Accommodation not found</h3>
+                    <h3 id="not-found">AccommCard not found</h3>
                 </div>
             );
         }
-
         else {
-            // accommodation found
+            // AccommCard found
             return (
                 // the whole body
                 <div className="body-div">
                     <Filter />
-                    {/* body-container: contains the category title and the accommodation card */}
                     <div className="body-container">
-                    {/* body-group: multiple body-elements */}
-                    {/* body-element: image and button/s */}
                         <div className="body-group">
-                            {accommList.map((accomm, index) => {
-                                return <div key={index} className="body-element">
-                                        {/* favorite button */}
-                                        <IconButton onClick={() => clickFavBtn(accomm._id)} className="favorite" >
-                                        {/* {favBtnState[accomm._id].obj} */}
-                                        <BookmarkBorderIcon key={accomm._id} />
-                                        </IconButton>
-                                    
-                                    {/* image/s */}
-                                    { /* reference: https://www.youtube.com/watch?v=McPdzhLRzCg */ }
-                                        <div className="img-container">
-                                            <div className="slider-wrapper">
-                                                <div className="images">
-                                                    {accomm.photos.map((photo, index) => {
-                                                        return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
-                                                    })}
-                                                </div>
-                                                {/* slider buttons */}
-                                                <div className="slider-btns">
-                                                    {accomm.photos.map((photo, index) => {
-                                                        return <a href={"#image-" + photo + "-" + index}></a>
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/* details */}
-                                        <div className="details">
-                                            <h3>{ accomm.name}</h3>
-                                            <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
-                                            <p>{`Type: ${accomm.accommodationType}`}</p>
-                                            <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
-                                        </div>
-                                </div>
+                            {accommList.map((accomm) => {
+                                return < AccommCard data={passData} accomm={accomm} />
                             })}
                         </div>
                     </div>
                 </div>
             );
         }
-
     }
 }

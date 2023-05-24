@@ -10,19 +10,19 @@ const mockAccomm = {
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
-      postCode: "12345",
-      street: "Mock Street",
-      barangay: "Mock Barangay",
-      city: "Mock City",
-      province: "Laguna",
-      region: "CALABARZON"
+        postCode: "12345",
+        street: "Mock Street",
+        barangay: "Mock Barangay",
+        city: "Mock City",
+        province: "Laguna",
+        region: "CALABARZON"
     },
     generalLocation: 1,
     accommodationType: "Transient",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
-      minPrice: 1000,
-      maxPrice: 2000
+        minPrice: 1000,
+        maxPrice: 2000
     },
     description: "This is a mock accommodation.",
     photos: ["photo1.jpg", "photo2.jpg"],
@@ -36,19 +36,19 @@ const mockAccomm2 = {
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
     address: {
-      postCode: "123452",
-      street: "Mock Street 2",
-      barangay: "Mock Barangay 2",
-      city: "Mock City 2",
-      province: "Laguna 2",
-      region: "CALABARZON 2"
+        postCode: "123452",
+        street: "Mock Street 2",
+        barangay: "Mock Barangay 2",
+        city: "Mock City 2",
+        province: "Laguna 2",
+        region: "CALABARZON 2"
     },
     generalLocation: 1,
     accommodationType: "Transient",
     amenities: ["Amenity 1", "Amenity 2"],
     priceRange: {
-      minPrice: 1000,
-      maxPrice: 2000
+        minPrice: 1000,
+        maxPrice: 2000
     },
     description: "This is a mock accommodation.",
     photos: ["photo1.jpg", "photo2.jpg"],
@@ -94,38 +94,38 @@ describe("POST /generateRep", () => {
         await request(app).post("/signup").send(mockUser)
         await request(app).post("/addAccomm").send(mockAccomm)
 
-        savedAccomm = await Accommodation.findOne({name: mockAccomm.name});
-        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
+        savedAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+        const bookmarkBody = { user: savedUser.email, accomm_id: savedAccomm._id };
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
         //actual testing, user has something in its bookmarks array, which the report prints.
-        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
+        const response = await request(app).post("/generateRep").send({ user: savedUser.email })
         console.log(response.body)
         expect(response.body.success).toBe(true)
     })
     test("More than one in bookmarks", async () => {
         await request(app).post("/addAccomm").send(mockAccomm2)
-        savedAccomm2 = await Accommodation.findOne({name: mockAccomm2.name});
-        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
+        savedAccomm2 = await Accommodation.findOne({ name: mockAccomm2.name });
+        const bookmarkBody = { user: savedUser.email, accomm_id: savedAccomm2._id };
         await request(app).post("/bookmarkAccomm").send(bookmarkBody);
 
         //actual testing, user has something in its bookmarks array, which the report prints.
-        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
+        const response = await request(app).post("/generateRep").send({ user: savedUser.email })
         console.log(response.body)
         expect(response.body.success).toBe(true)
     })
     test("No bookmarks", async () => {
         //if there are no bookmarks
-        const bookmarkBody = {user_id: savedUser._id, accomm_id: savedAccomm._id};
-        const bookmarkBody2 = {user_id: savedUser._id, accomm_id: savedAccomm2._id};
+        const bookmarkBody = { user: savedUser.email, accomm_id: savedAccomm._id };
+        const bookmarkBody2 = { user: savedUser.email, accomm_id: savedAccomm2._id };
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody);
         await request(app).post("/removeBookmarkAccomm").send(bookmarkBody2);
-        const response = await request(app).post("/generateRep").send({_id: savedUser._id})
+        const response = await request(app).post("/generateRep").send({ user: savedUser.email })
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
-    test("User not logged in", async () =>{
-        const response = await request(app).post("/generateRep").send({_id: ""})
+    test("User not logged in", async () => {
+        const response = await request(app).post("/generateRep").send({ user: "" })
         console.log(response.body)
         expect(response.body.success).toBe(false)
     })
@@ -133,5 +133,5 @@ describe("POST /generateRep", () => {
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()
-    .then(() => mongoose.connection.close())
+        .then(() => mongoose.connection.close())
 })

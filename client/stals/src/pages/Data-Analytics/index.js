@@ -5,6 +5,7 @@ import Header from "components/Header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CircularProgress, IconButton } from "@mui/material";
 import UserStats from "./UserStats";
+import AccommStats from "./AccommStats";
 
 // page
 export default function DataAnalytics() {
@@ -21,13 +22,12 @@ export default function DataAnalytics() {
                 <IconButton onClick={goBack}><ArrowBackIosNewOutlinedIcon /> <p>{ "ADMIN PAGE"}</p></IconButton>
                 <div id="graphs">
                     <div className="container">
-                        GRAPH 1
-                    </div>
-                    <div className="container">
                         <UserStats />
                     </div>
+                    <div className="container">
+                        <AccommStats />
+                    </div>
                 </div>
-                
             </div>
         </>
     )

@@ -3,7 +3,7 @@ import {CChart} from "@coreui/react-chartjs";
 import { CircularProgress } from "@mui/material";
 import "./Analytics.css"
 
-export default function UserStats() {
+export default function AccommStats() {
     // [{ value: 15 }, { value: 30 }, { value: 26 }, { value: 40 }]
     const [userData, setUserData] = useState(null);
     
@@ -51,16 +51,16 @@ export default function UserStats() {
         return (
             <div id="polarChart">
                 <div className="container">
-                        USERS STATISTICS
+                        ACCOMMODATION STATISTICS
                 </div>
                 <CChart
                     type="polarArea"
                     data={{
-                        labels: ['Students', 'Accommodation Owners'],
+                        labels: ['Approved', 'Pending'],
                         datasets: [
                             {
                                 backgroundColor: ['#41B883', '#E46651'],
-                                data: [userData.students, userData.owners]
+                                data: [appAccomm, pendAccomm]
                             },
                         ],
                     }}

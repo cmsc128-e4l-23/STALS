@@ -18,12 +18,10 @@ const accommodationSchema = new mongoose.Schema({
     city: String,
     province: {
       type: String,
-      required: true,
       default: 'Laguna'
     },
     region: {
       type: String,
-      required: true,
       default: 'CALABARZON'
     }
   },
@@ -34,7 +32,7 @@ const accommodationSchema = new mongoose.Schema({
   accommodationType: {
     type: String,
     required: true,
-    enum: ['Transient', 'Dorm', 'Rent']
+    enum: ['Transient', 'Dorm', 'Apartment', 'House for rent']
   },
   amenities: {
     type: [String],
@@ -58,13 +56,13 @@ const accommodationSchema = new mongoose.Schema({
   },
   photos: [String],
   restrictions: [String],
-  security: {
-    type: String,
-    required: false
-  },
+  security: String,
   archived: {
     type: Boolean,
-    required: true,
+    default: false
+  },
+  approved: {
+    type: Boolean,
     default: false
   },
   reviews: [{type: mongoose.Schema.Types.ObjectID, ref:"Review"}]

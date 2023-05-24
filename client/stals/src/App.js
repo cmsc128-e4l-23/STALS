@@ -3,9 +3,11 @@ import Home from 'pages/Home/index';
 import LogIn from 'pages/Login/index';
 import SignUp from 'pages/Signup/index';
 import AddAccommodation from'pages/Add-Accommodation/index';
-import AccommodationList from 'pages/Accommodation-List/index';
+import AccommodationList from 'pages/ListAccomm/index';
+import AccommPage from 'pages/PageAccomm/index';
 import AdminPage from 'pages/Admin';
 import DataAnalytics from 'pages/Data-Analytics';
+import Profile from './pages/Profile/index';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -55,8 +57,12 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/add-accommodation" element={<AddAccommodation  />} />
           <Route path="/your-accommodations" element={<AccommodationList />} />
+          <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          
           <Route path="/admin/data-analytics" element={<DataAnalytics />} />
+          <Route path="/profile-page" element={<Profile/>} />
+
         </Routes> 
       </Router>
     </div>

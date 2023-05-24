@@ -108,7 +108,7 @@ export default function AccommInfo({ formData, setFormData }) {
               marginRight: "10px",
             }}
           >
-            Price:
+            Min Price:
           </p>
           <input
             style={{
@@ -120,16 +120,52 @@ export default function AccommInfo({ formData, setFormData }) {
             }}
             type="number"
             min="1"
+            max={formData.priceRange.maxPrice}
+            value={formData.priceRange.minPrice} 
+                onChange={(e) =>
+                    setFormData({ ...formData, priceRange: { ...formData.priceRange, minPrice: parseFloat(e.target.value) }})
+                }
+          />
+          <input
+            style={{width: "350px"}}
+            type="range"
+            min="0"
+            max={formData.priceRange.maxPrice}
+            value={formData.priceRange.minPrice}
+            onChange={(e) =>
+              setFormData({ ...formData, priceRange: { ...formData.priceRange, minPrice: parseFloat(e.target.value) }})
+            }
+            />
+          <p
+            style={{
+              fontSize: "larger",
+              fontWeight: "bold",
+              color: "#751518",
+              marginRight: "10px",
+            }}
+          >
+            Max Price:
+          </p>
+          <input
+            style={{
+              width: "100px",
+              fontSize: "large",
+              height: "20px",
+              alignSelf: "center",
+              marginRight: "10px",
+            }}
+            type="number"
+            min={formData.priceRange.minPrice}
             max="50000"
             value={formData.priceRange.maxPrice} 
                 onChange={(e) =>
                     setFormData({ ...formData, priceRange: { ...formData.priceRange, maxPrice: parseFloat(e.target.value) }})
                 }
-          />
+          />  
           <input
             style={{ width: "350px" }}
             type="range"
-            min="1"
+            min={formData.priceRange.minPrice}
             max="50000"
             value={formData.priceRange.maxPrice} 
                 onChange={(e) =>
