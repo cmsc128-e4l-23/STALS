@@ -132,7 +132,7 @@ export default function AccommBody({ data }) {
                                 {/* slider buttons */}
                                 <div className="slider-btns">
                                     {accommData.photos.map((photo, index) => {
-                                        return <a href={"#image-" + photo + "-" + index}></a>
+                                        return <image href={"#image-" + photo + "-" + index}></image>
                                     })}
                                 </div>
                             </div>
