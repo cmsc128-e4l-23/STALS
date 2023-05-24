@@ -3,10 +3,11 @@ import makeDB from '../../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../../models/Accommodation';
+import User from '../../models/User';
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
-const mockUser = {
+var mockUser = {
     userType: "Owner",
     firstName: "John",
     lastName: "Doe",
@@ -31,7 +32,7 @@ const mockUser = {
     }
 };
 
-const mockAccomm = {
+var mockAccomm = {
     name: "Mock Accommodation",
     owner: "johndoe@example.com",
     landmarks: ["Landmark 1", "Landmark 2"],
@@ -58,29 +59,45 @@ const mockAccomm = {
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
 };
 
-let newAccomm;
+var newAccomm;
 
 describe("POST /archiveAccomm", () => {
-    describe("Happy paths", () => {
-        test("should successfully archive an accommodation from database", async () => {
-            //Creating mock user and accommodation for testing
-            await request(app).post("/signup").send(mockUser);
-            await request(app).post("/addAccomm").send(mockAccomm);
-            newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
 
-            const res = await request(app).post("/archiveAccomm").send({_id: newAccomm._id});
-            expect(res.body.success).toBe(true);
-        });
-    })
+  it("Mock Database Population", async () => {
+    let result;
+    result = await request(app).post("/signup").send(mockUser)
+    expect(result.body.success).toBe(true)
+    result = await request(app).post("/addAccomm").send(mockAccomm)
+    expect(result.body.success).toBe(true)
+    // there should be one user and one accomms
+    const usercount = await User.count();
+    expect(usercount).toBe(1);
+    const accommcount = await Accommodation.count();
+    expect(accommcount).toBe(1);
+    // get the new accomm
+    newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
+    // set it to unarchived
+    result = await Accommodation.findByIdAndUpdate(
+      newAccomm._id,
+      { $set: { archived: false }}
+    ); expect(result).not.toBeNull();
+})
 
-    describe("Unhappy paths", () => {
-        test("should fail in archiving an accommodation from database due to incorrect accommodation id", async () => {
-            const res = await request(app).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
-            expect(res.body.success).toEqual(false);
-            expect(res.body.msg).toEqual("Unsuccessfully archived accommodation");
-            expect(res.body.error).toEqual("Failed to find and archive accommodation");
-        });
-    })  
+  describe("Happy paths", () => {
+      test("should successfully archive an accommodation from database", async () => {
+          const res = await request(app).post("/archiveAccomm").send({_id: newAccomm._id});
+          expect(res.body.success).toBe(true);
+      });
+  })
+
+  describe("Unhappy paths", () => {
+      test("should fail : accommodation already archived", async () => {
+          const res = await request(app).post("/archiveAccomm").send({ _id: newAccomm._id });
+          expect(res.body.success).toEqual(false);
+          expect(res.body.msg).toEqual("Unsuccessfully archived accommodation");
+          expect(res.body.error).toEqual("Accommodation already archived");
+      });
+  })  
 })
 
 afterAll(() => {

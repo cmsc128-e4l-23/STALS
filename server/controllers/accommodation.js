@@ -51,19 +51,28 @@ const addAccomm = async (req, res) => {
 //Method for archiving accommodations
 const archiveAccomm = async (req, res) => {
 
-    const accomm_details = req.body;
-
     try{
-        const result = await Accommodation.findByIdAndUpdate(
-            accomm_details._id,
-            { $set: { archived: true }}
-        );
-
-        if (result){
-            res.send({ success: true, msg: "Successfully archived accommodation" });
+        const accomm_details = req.body;
+        // the accommodation should exist
+        // and not archived in the first place
+        const accomm = await Accommodation.findById(accomm_details._id);
+        if (!accomm) {
+            throw new Error("Accommodation does not exist");
+        } else if (accomm.archived) {
+            throw new Error("Accommodation already archived");
         } else {
-            throw new Error("Failed to find and archive accommodation");
+            const result = await Accommodation.findByIdAndUpdate(
+                accomm_details._id,
+                { $set: { archived: true }}
+            );
+    
+            if (result){
+                res.send({ success: true, msg: "Successfully archived accommodation" });
+            } else {
+                throw new Error("Failed to find and archive accommodation");
+            }
         }
+       
     } catch (error){
         res.send({ success: false, msg: "Unsuccessfully archived accommodation", error: error.message });
     }
@@ -72,19 +81,28 @@ const archiveAccomm = async (req, res) => {
 //Function for unarchiving accommodations
 const unarchiveAccomm = async (req, res) => {
 
-    const accomm_details = req.body;
-
     try{
-        const result = await Accommodation.findByIdAndUpdate(
-            accomm_details._id,
-            { $set: { archived: false }}
-        );
-
-        if (result){
-            res.send({ success: true, msg: "Successfully unarchived accommodation" });
+        const accomm_details = req.body;
+        // the accommodation should exist
+        // and archived in the first place
+        const accomm = await Accommodation.findById(accomm_details._id);
+        if (!accomm) {
+            throw new Error("Accommodation does not exist");
+        } else if (!accomm.archived) {
+            throw new Error("Accommodation already unarchived");
         } else {
-            throw new Error("Failed to find and unarchive accommodation");
+            const result = await Accommodation.findByIdAndUpdate(
+                accomm_details._id,
+                { $set: { archived: false }}
+            );
+    
+            if (result){
+                res.send({ success: true, msg: "Successfully unarchived accommodation" });
+            } else {
+                throw new Error("Failed to find and unarchive accommodation");
+            }
         }
+       
     } catch (error){
         res.send({ success: false, msg: "Unsuccessfully unarchived accommodation", error: error.message });
     }
