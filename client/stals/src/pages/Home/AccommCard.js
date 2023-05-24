@@ -86,7 +86,7 @@ export default function AccommCard({ data, accomm }) {
     }
 
     return (
-        <div className="body-element" onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
+        <div className="body-element">
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
                 {button ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
@@ -94,27 +94,30 @@ export default function AccommCard({ data, accomm }) {
         
         {/* image/s */}
         { /* reference: https://www.youtube.com/watch?v=McPdzhLRzCg */ }
-            <div className="img-container">
-                <div className="slider-wrapper">
-                    <div className="images">
-                        {accomm.photos.map((photo, index) => {
-                            return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
-                        })}
-                    </div>
-                    {/* slider buttons */}
-                    <div className="slider-btns">
-                        {accomm.photos.map((photo, index) => {
-                            return <a href={"#image-" + photo + "-" + index}></a>
-                        })}
+            
+            <div onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
+                <div className="img-container">
+                    <div className="slider-wrapper">
+                        <div className="images">
+                            {accomm.photos.map((photo, index) => {
+                                return <img id={"image-" + photo + "-" + index} src={require("assets/" + photo)} alt='' />
+                            })}
+                        </div>
+                        {/* slider buttons */}
+                        <div className="slider-btns">
+                            {accomm.photos.map((photo, index) => {
+                                return <a href={"#image-" + photo + "-" + index}></a>
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
-            {/* details */}
-            <div className="details">
-                <h3>{ accomm.name}</h3>
-                <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
-                <p>{`Type: ${accomm.accommodationType}`}</p>
-                <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
+                {/* details */}
+                <div className="details">
+                    <h3>{ accomm.name}</h3>
+                    <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
+                    <p>{`Type: ${accomm.accommodationType}`}</p>
+                    <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
+                </div>
             </div>
         </div>
     )
