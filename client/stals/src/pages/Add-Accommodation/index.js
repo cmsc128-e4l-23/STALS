@@ -21,8 +21,6 @@ export default function AddAccommodation() {
         street: "",
         barangay: "",
         city: "",
-        province: "Laguna",
-        region: "CALABARZON",
     },
     generalLocation: 0,
     accommodationType: "Transient",
@@ -33,9 +31,6 @@ export default function AddAccommodation() {
     },
     description: "",
     photos: [],
-    restrictions: [],
-    security: "",
-    archived: true,
   });
 
   const {photos, ...noPhotos} = formData;

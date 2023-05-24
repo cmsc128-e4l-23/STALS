@@ -18,12 +18,10 @@ const accommodationSchema = new mongoose.Schema({
     city: String,
     province: {
       type: String,
-      required: true,
       default: 'Laguna'
     },
     region: {
       type: String,
-      required: true,
       default: 'CALABARZON'
     }
   },
@@ -58,10 +56,7 @@ const accommodationSchema = new mongoose.Schema({
   },
   photos: [String],
   restrictions: [String],
-  security: {
-    type: String,
-    required: false
-  },
+  security: String,
   archived: {
     type: Boolean,
     default: false
