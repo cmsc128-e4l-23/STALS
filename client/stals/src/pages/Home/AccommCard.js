@@ -43,7 +43,7 @@ export default function AccommCard({ data, accomm }) {
                 if (body.success) {
                     setButton(true);
                 } else {
-                    alert('Error');
+                    alert(body.msg);
                 }
         })
     }

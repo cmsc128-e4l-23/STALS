@@ -32,7 +32,7 @@ export default function Body({ data }) {
         fetch('http://localhost:3001/getUserBookmarks', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({email: "owner3@gmail.com"}),
+            body: JSON.stringify({email: localStorage.getItem("email")}),
             headers: {
                 'Content-Type': "application/json"
             }
@@ -46,7 +46,7 @@ export default function Body({ data }) {
                     passData.userEmail = userEmail;
                 } else updateBookmark(null);
         })
-    }, [bookmarkList]);
+    }, [passData, userEmail, bookmarkList]);
 
     // search
     // use `data` prop

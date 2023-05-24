@@ -278,7 +278,7 @@ const bookmarkAccomm = async (req, res) => {
 
     try {
         // first check if the ids are valid
-        const user = await User.findOne({ email: bookmark_details.user });
+        const user = await User.findOne({ email: bookmark_details.email });
         const accomm = await Accommodation.findById(bookmark_details.accomm_id);
 
         if (!user) throw new Error("User not found");
