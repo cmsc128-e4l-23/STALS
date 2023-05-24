@@ -98,6 +98,13 @@ describe("POST /archiveAccomm", () => {
           expect(res.body.msg).toEqual("Unsuccessfully archived accommodation");
           expect(res.body.error).toEqual("Accommodation already archived");
       });
+
+      test("should fail in archiving an accommodation from database due to incorrect accommodation id", async () => {
+        const res = await request(app).post("/archiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+        expect(res.body.success).toEqual(false);
+        expect(res.body.msg).toEqual("Unsuccessfully archived accommodation");
+        expect(res.body.error).toEqual("Accommodation does not exist");
+      });
   })  
 })
 

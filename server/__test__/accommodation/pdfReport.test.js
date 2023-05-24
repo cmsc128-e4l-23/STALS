@@ -57,7 +57,7 @@ const mockAccomm2 = {
     archived: false,
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
 };
-// const savedAccommodation = await mockAccomm.save();
+
 //signup from auth test.
 const mockUser = {
     userType: "Owner",
@@ -69,10 +69,7 @@ const mockUser = {
     birthday: "1990-01-01",
     sex: "Male",
 };
-// const accommodations = mongoose.connection.db.collection('accommodations');
-// const users = mongoose.connection.db.collection('users');
-// accommodations.insertOne(mockAccomm);
-// users.insertOne(mockUser);
+
 var signup_details = {
     userType: "Student",
     firstName: "Nestor Harvey",
@@ -86,6 +83,7 @@ var signup_details = {
 let savedUser;
 let savedAccomm;
 let savedAccomm2;
+
 describe("POST /generateRep", () => {
 
     test("Expected input", async () => {

@@ -99,6 +99,13 @@ describe("POST /unarchiveAccomm", () => {
           expect(res.body.msg).toEqual("Unsuccessfully unarchived accommodation");
           expect(res.body.error).toEqual("Accommodation already unarchived");
       });
+
+      test("should fail in unarchiving an accommodation from database", async () => {
+        const res = await request(app).post("/unarchiveAccomm").send({ _id: "645a23db01e8d52bb114278b" });
+        expect(res.body.success).toEqual(false);
+        expect(res.body.msg).toEqual("Unsuccessfully unarchived accommodation");
+        expect(res.body.error).toEqual("Accommodation does not exist");
+    });
   })  
 })
 

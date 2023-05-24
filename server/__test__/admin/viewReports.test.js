@@ -7,7 +7,7 @@ import Accommodation from "../../models/Accommodation.js";
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
 const signup_details = {
-    userType: "Student",
+    userType: "Owner",
     firstName: "Player 1",
     lastName: "Blank",
     email: "p1blank@up.edu.ph",

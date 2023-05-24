@@ -62,6 +62,7 @@ const mockUser = {
     sex: "Male",
 };
 describe("POST /reportAccomm", () => {
+
     test("All fields valid.", async () => {
         //actual testing, user has something in its bookmarks array, which the report prints.
         const saveUserSuccess = await request(app).post("/signup").send(signup_details);

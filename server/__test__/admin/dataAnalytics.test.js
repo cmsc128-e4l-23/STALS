@@ -8,7 +8,7 @@ import User from '../../models/User';
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
 const signup_details1 = {
-    userType: "Teacher",
+    userType: "Owner",
     firstName: "Player 1",
     lastName: "Blank",
     email: "p1blank@up.edu.ph",
@@ -30,7 +30,7 @@ const signup_details2 = {
 }
 
 const signup_details3 = {
-    userType: "Student",
+    userType: "Owner",
     firstName: "Player 3",
     lastName: "Shiro",
     email: "p3shiro@up.edu.ph",
@@ -38,6 +38,17 @@ const signup_details3 = {
     phoneNumber: "09753126480",
     birthday: "2002-05-07",
     sex: "Female"
+}
+
+const signup_details4 = {
+    userType: "Student",
+    firstName: "Player 4",
+    lastName: "Kong",
+    email: "p4sora@up.edu.ph",
+    password: "player4sora",
+    phoneNumber: "09876543211",
+    birthday: "2002-05-09",
+    sex: "Male"
 }
 
 var accomm_details1 = {
@@ -93,6 +104,7 @@ describe("dataAnalytics", () =>{
         await request(app).post("/signup").send(signup_details1)
         await request(app).post("/signup").send(signup_details2)
         await request(app).post("/signup").send(signup_details3)
+        await request(app).post("/signup").send(signup_details4)
         await request(app).post("/addAccomm").send(accomm_details1)
         await request(app).post("/addAccomm").send(accomm_details2)
     })
@@ -100,7 +112,7 @@ describe("dataAnalytics", () =>{
     describe("GET /dataAnalytics", () => {
         test("Correct number of Registered users", async () => {
             const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numRegUsers).toBe(3);
+            expect(data.body.return.numRegUsers).toBe(4);
         })
 
         test("Correct number of Accommodation owners", async () => {

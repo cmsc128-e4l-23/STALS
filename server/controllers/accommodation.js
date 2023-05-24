@@ -476,9 +476,10 @@ const generateRep = async (req, res) => {
         res.send({success: false, msg: "PDF Report Generation Failed.", error: error.message})
     }
 };
+
 //for testing
 const viewAccomm = async (req, res) => {
-    Accommodation.findById("643665dccee7fa1d7dd408ea")
+    Accommodation.findById(req.body._id)
         .then((result) => {
             res.send({ result: result });
         })
@@ -503,6 +504,7 @@ const reportAccomm = async (req, res) => {
         });
         let userReportedExists = await User.findById(report.reported);
         let accommReportedExists = await Accommodation.findById(report.reported);
+        
         if(userReportedExists || (accommReportedExists && !accommReportedExists.archived)){
             await report.save();
             // also add that report to the user
