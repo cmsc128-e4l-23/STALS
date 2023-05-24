@@ -2,6 +2,7 @@ import app from '../../app';
 import makeDB from '../../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
+import User from '../../models/User';
 
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
@@ -13,6 +14,31 @@ const mockUser = {
     password: "password123",
     phoneNumber: "09123456789",
     birthday: "1990-01-01",
+    profilePhoto: "https://example.com/profile-photo.jpg",
+    sex: "Male",
+    verificationFiles: ["https://example.com/verification-file1.jpg", "https://example.com/verification-file2.jpg"],
+    reviews: [],
+    reports: [],
+    bookmarks: [],
+    owner: {
+      propertiesList: [],
+      archivedList: [],
+      status: "active"
+    },
+    admin: {
+      pendingApplications: [],
+      pendingReports: []
+    }
+};
+
+const nonOwner = {
+    userType: "Student",
+    firstName: "John",
+    lastName: "Mark",
+    email: "johnmark@example.com",
+    password: "password12323",
+    phoneNumber: "09123546789",
+    birthday: "1991-01-01",
     profilePhoto: "https://example.com/profile-photo.jpg",
     sex: "Male",
     verificationFiles: ["https://example.com/verification-file1.jpg", "https://example.com/verification-file2.jpg"],
@@ -57,12 +83,48 @@ const mockAccomm = {
     reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
 };
 
+const falseAccomm = {
+    name: "False Accommodation",
+    owner: "johnmark@example.com",
+    landmarks: ["Landmark 1", "Landmark 2"],
+    address: {
+      postCode: "12435",
+      street: "Mock Street",
+      barangay: "Mock Barangay",
+      city: "Mock Town",
+      province: "Batangas",
+      region: "CALABARZON"
+    },
+    generalLocation: 1,
+    accommodationType: "Transient",
+    amenities: ["Amenity 1", "Amenity 2"],
+    priceRange: {
+      minPrice: 1000,
+      maxPrice: 2000
+    },
+    description: "This is a mock accommodation.",
+    photos: ["photo1.jpg", "photo2.jpg"],
+    restrictions: ["Restriction 1", "Restriction 2"],
+    security: "Security details",
+    archived: false,
+    reviews: ["615ab89dcf32a1a234567891", "615ab89dcf32a1a234567892"] // Example review IDs
+};
+
 describe("POST /addAccomm", () => {
+
+    it("Mock Database Population", async () => {
+        let result;
+        result = await request(app).post("/signup").send(mockUser)
+        expect(result.body.success).toBe(true)
+        result = await request(app).post("/signup").send(nonOwner)
+        expect(result.body.success).toBe(true)
+        // there should be two users
+        const usercount = await User.count();
+        expect(usercount).toBe(2);
+    })
+
     describe("Happy paths", () => {
         test("should successfully add an accommodation to the database", async() => {
-            //adding a new user to the database
-            await request(app).post("/signup").send(mockUser);
-    
             //adding accommodation to the database
             const res = await request(app).post("/addAccomm").send(mockAccomm);
             expect(res.body.success).toBe(true);
@@ -73,7 +135,7 @@ describe("POST /addAccomm", () => {
     describe("Unhappy paths", () => {
 
         test("should fail to add accommodation due to user not an owner", async() => {
-            const res = await request(app).post("/addAccomm").send(mockAccomm);
+            const res = await request(app).post("/addAccomm").send(falseAccomm);
             expect(res.body.success).toEqual(false);
             expect(res.body.msg).toEqual("Unsuccessfully added accommodation");
             expect(res.body.error).toEqual("The user inputted is not an owner");
