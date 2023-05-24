@@ -17,6 +17,11 @@ const addAccomm = async (req, res) => {
         //NOTE: The accommodation model states that the 'owner' field contains an object
         const currUser = await User.findOne({ email: accomm_details.owner });
         if (currUser){
+            // check if the user is an owner
+            if (currUser.userType != "Owner") {
+                throw new Error("The user inputted is not an owner");
+            }
+
             accomm_details.owner = currUser._id
             // Check if accommodation name already exists in the database
             const existingNameAccommodation = await Accommodation.findOne({ name: accomm_details.name });

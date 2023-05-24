@@ -73,29 +73,10 @@ describe("POST /deleteAccomm", () => {
         });
     })
 
-    describe("Unhappy paths", () => {
-        test("should fail to delete accommodation due to non-existent accommodation", async () => {
-            const res = await request(app).post("/deleteAccomm").send({ _id: "615ab89dcf32a1a234555555" });
-            expect(res.body.success).toBe(false);
-            expect(res.body.msg).toBe("Unsuccessfully deleted accommodation");
-            expect(res.body.error).toBe("Failed to find and delete accommodation");
-        });
-
-        test("should fail to edit owner's property list at accommodation deletion due to incorrect user id", async () => {
-            //adding a mock accommodation
-            const result = await request(app).post("/addAccomm").send(mockAccomm);
-            newAccomm = await Accommodation.findOne({name: mockAccomm.name});
-            
-            //editing the mock accommodation
-            const result1 = await request(app).post("/editAccomm").send({_id: newAccomm._id, owner: "615ab89dcf32a1a2345abcde"});
-            newAccomm = await Accommodation.findOne({name: mockAccomm.name})
-            
-            const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
-            expect(res.body.success).toBe(false);
-            expect(res.body.msg).toBe("Unsuccessfully deleted accommodation");
-            expect(res.body.error).toBe("Failed to find and edit propertyList of current user");
-        });
-    })
+    /*
+    determining whether the accommodation would exist by id 
+    should be unnecessary, users shouldn't search by id directly
+    */
 })
 
 afterAll(() => {

@@ -71,6 +71,14 @@ describe("POST /addAccomm", () => {
     });
 
     describe("Unhappy paths", () => {
+
+        test("should fail to add accommodation due to user not an owner", async() => {
+            const res = await request(app).post("/addAccomm").send(mockAccomm);
+            expect(res.body.success).toEqual(false);
+            expect(res.body.msg).toEqual("Unsuccessfully added accommodation");
+            expect(res.body.error).toEqual("The user inputted is not an owner");
+        });
+
         test("should fail to add accommodation due to same name error", async() => {
             const res = await request(app).post("/addAccomm").send(mockAccomm);
             expect(res.body.success).toEqual(false);
