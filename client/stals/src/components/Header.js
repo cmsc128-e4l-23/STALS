@@ -13,6 +13,8 @@ export default function Header() {
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
+    const [showOptions, setShowOptions] = useState(false);
+
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
         method: 'POST',
@@ -24,7 +26,19 @@ export default function Header() {
             if(data.isLoggedIn){
                 setName(localStorage.getItem('username'));
             }
-        })
+        });
+    
+        if(!isLoggedIn){
+            if(window.innerWidth < 1200){   
+                delete options['Log In'];   
+                handleOptions('Sign Up', '/signup'); 
+                setShowOptions(true);   
+            }
+    
+            if(window.innerWidth < 725){    
+                handleOptions('Log In', '/login');
+            }
+        }
     }, []);
 
     const logout = (e) => {
@@ -68,6 +82,11 @@ export default function Header() {
     let auth_section;
     if(isLoggedIn){
         auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+
+        if(localStorage.getItem("usertype") === "Accommodation Owner"){
+            setShowOptions(true);
+        }
+
     }else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
@@ -77,11 +96,12 @@ export default function Header() {
         optionsToggle(false);
 
         if(!isLoggedIn){
-            if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; }
-            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');    }
+            if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; setShowOptions(false); }
+            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup'); setShowOptions(true);   }
             if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
         }
     };
+
     window.addEventListener('resize',windowResize);
 
     return (
@@ -100,17 +120,19 @@ export default function Header() {
                 </form>
             </div>
         </div>
-        
         <div id='right-side-btns'>
             <div id='btn-container'>
-                <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
+                {showOptions ? <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button> : null}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
                         {   localStorage.getItem("usertype") === "Accommodation Owner" ? 
-                            <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li> : <></>
-                        }
+                            <>
+                            <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li>
                             <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            </>
+                            : <></>
+                        }
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
                         <ul>
