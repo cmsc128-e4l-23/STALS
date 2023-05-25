@@ -1,14 +1,16 @@
-import './AccommBody.css'
-import { useState } from 'react'
+import './AccommBody.css';
+import { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import DialogActions from '@mui/material/DialogActions';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import { 
+    Dialog, 
+    DialogContent, 
+    DialogTitle, 
+    TextField, 
+    Button, 
+    DialogActions, 
+    Rating, 
+    Typography 
+    } from '@mui/material';
 
 export default function ReviewForm({ accommId, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)

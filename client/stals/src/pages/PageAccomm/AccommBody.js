@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./AccommBody.css";
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
+import { Box, CircularProgress } from '@mui/material';
 import { FaStar } from 'react-icons/fa';
-import { FaFlag } from 'react-icons/fa';
-import ReportForm from "./ReportForm";
+
 //npm install react icons
 
 //Images
 import image1 from '../../assets/pexels-christian-paul-del-rosario-1076240.jpg';
-import { Grid } from "@mui/material";
+
 import Description from "./Description";
+import ReportForm from "./ReportForm";
 import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
 
@@ -114,7 +113,6 @@ export default function AccommBody({ data, isLoggedIn }) {
                         </div>
 
                         <div className="accomm-type-owner">
-                            {/* temporary accommodation owner name */}
                             <h1>
                                 {accommData.accommodationType} hosted by <br/> {accommOwner.name}
                                 <h2>2 guests • 1 bedroom • 2 beds</h2> {/* TODO: make dynamic */}

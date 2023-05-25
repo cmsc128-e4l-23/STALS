@@ -1,13 +1,15 @@
-import './AccommBody.css'
-import { useState } from 'react'
+import './AccommBody.css';
+import { useState } from 'react';
 import { FaFlag } from 'react-icons/fa';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import DialogActions from '@mui/material/DialogActions';
+import { 
+    Dialog, 
+    DialogContent, 
+    DialogContentText, 
+    DialogTitle, 
+    TextField, 
+    Button, 
+    DialogActions 
+    } from '@mui/material';
 
 export default function ReportForm({ accommId, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
