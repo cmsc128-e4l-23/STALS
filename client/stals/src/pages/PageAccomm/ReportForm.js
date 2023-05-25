@@ -1,6 +1,6 @@
 import './AccommBody.css'
 import { useState } from 'react'
-import { FaStar, FaFlag } from 'react-icons/fa';
+import { FaFlag } from 'react-icons/fa';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
