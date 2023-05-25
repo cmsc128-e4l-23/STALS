@@ -452,7 +452,7 @@ const reportAccomm = async (req, res) => {
 
             user.reports.push(report._id);
             await user.save();
-            res.send({ success: true, msg: "Successfully appended report to user" });
+            res.send({ success: true, msg: "Successfully reported accommodation" });
 
         } else {
             res.send({ success: false, msg: "Report Accommodation Failed, Targets do not exist." })
