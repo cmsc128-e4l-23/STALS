@@ -4,23 +4,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { FaStar } from 'react-icons/fa';
 import { FaFlag } from 'react-icons/fa';
-//import { TbAirConditioning } from 'react-icons/tb';
-//import { AiFillCar } from 'react-icons/ai';
-//import { MdPets } from 'react-icons/md';
-//import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-//import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import DialogActions from '@mui/material/DialogActions';
+import ReportForm from "./ReportForm";
 //npm install react icons
 
 //Images
 import image1 from '../../assets/pexels-christian-paul-del-rosario-1076240.jpg';
 import { Grid } from "@mui/material";
+import Description from "./Description";
 
 export default function AccommBody({ data }) {
     const [accommData, setAccommData] = useState({});
@@ -147,29 +137,7 @@ export default function AccommBody({ data }) {
                             {/* <div>
                                 <button className="book-button" onClick={() => bookButton()}>Check Availability</button>
                             </div> */}
-                            <button className="report-button" onClick={handleOpenReport}><FaFlag /> Report this listing</button>
-                                <Dialog open={openReportForm} onClose={handleCloseReport}>
-                                    <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>
-                                        Please enter detailed description of your report/experience.
-                                    </DialogContentText>
-                                    <br>
-                                    </br>
-                                    <TextField
-                                        fullWidth
-                                        id="outlined-multiline-flexible"
-                                        label="Report Details"
-                                        multiline
-                                        maxRows={5}
-                        
-                                    />
-                                    </DialogContent>
-                                    <DialogActions>
-                                    <Button onClick={handleCloseReport}>Cancel</Button>
-                                    <Button onClick={handleCloseReport}>Report</Button>
-                                    </DialogActions>
-                                </Dialog>
+                            <ReportForm />
                    
                         </div>
 
@@ -185,27 +153,7 @@ export default function AccommBody({ data }) {
                             <img className="profileImage" src={image1} alt='' />
                         </div>
 
-                        <div className="accomm-description">
-                            <h1>Description</h1>
-                            <p>{accommData.description}</p>
-                        </div>
-                        <button className="see-all-button" onClick={handleClickDescription}>See More</button>
-                        <Dialog
-                            open={openDescription}
-                            onClose={handleCloseDescription}
-                            aria-labelledby="description-dialog-title"
-                            aria-describedby="Description-dialog-description"
-                        >
-                            <DialogTitle id="Description-dialog-title">
-                            {"Description"}
-                            </DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="Description-dialog-description">
-                                {accommData.description}
-                                </DialogContentText>
-                            </DialogContent>
-                        </Dialog>
-
+                        <Description description={accommData.description}/>
                     </div>
                     
                 </div>
