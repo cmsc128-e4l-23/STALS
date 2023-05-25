@@ -20,7 +20,7 @@ export default function AnalyticsBanner() {
             credentials: 'include',
             body: JSON.stringify({
                 year: year,
-                month: month,
+                month: month+1,
                 day: day
             }),
             headers: {
@@ -30,8 +30,8 @@ export default function AnalyticsBanner() {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    setSiteTraffic(body.return);
-                    console.log(body);
+                    setSiteTraffic(body.return[0].numVisits);
+                    console.log(body.return[0].numVisits);
                 }
         })
     }
@@ -60,7 +60,7 @@ export default function AnalyticsBanner() {
     return (
         <div id="data-analytics-banner">
             <div className="container">
-                {siteTraffic == null ? <CircularProgress /> : <><h2>SITE TRAFFIC: </h2>{ siteTraffic.numVisits }</>}
+                {siteTraffic == null ? <CircularProgress /> : <><h2>SITE TRAFFIC: </h2>{ siteTraffic }</>}
             </div>
             <div className="container">
                 {data == null ? <CircularProgress /> : <><h2>ACCOMMODATION OWNERS</h2> { data.numAccommOwners }</>}
