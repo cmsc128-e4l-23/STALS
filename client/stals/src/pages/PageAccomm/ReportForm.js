@@ -9,12 +9,32 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
-export default function ReportForm(){
+export default function ReportForm({ accommId }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
     
     const submitReport = () => {
-        alert(content);
+        let newReport = {
+            user: localStorage.getItem('email'),
+            reported_id: accommId,
+            classification: "Accommodation",
+            content: content,
+        }
+        fetch("http://localhost:3001/reportAccomm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newReport),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.success){
+                alert(data.msg)
+
+            }else{
+                alert(data.error)
+            }
+            setDialogOpen(false)
+        })
     }
 
     return(
