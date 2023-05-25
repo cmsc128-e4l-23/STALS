@@ -11,40 +11,13 @@ import ReportForm from "./ReportForm";
 import image1 from '../../assets/pexels-christian-paul-del-rosario-1076240.jpg';
 import { Grid } from "@mui/material";
 import Description from "./Description";
+import ReviewForm from "./ReviewForm";
+import ContactDetails from "./ContactDetails";
 
 export default function AccommBody({ data }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
-
-    const [openDescription, setOpenDescription] = useState(false);
-    const [openReportForm, setOpenReport] = useState(false);
-
-    const handleOpenReport = () => {
-        setOpenReport(true);
-    };
-
-    const handleCloseReport = () => {
-        setOpenReport(false);
-    }
-
-
-
-    const handleClickDescription = () => {
-        setOpenDescription(true);
-    };
-
-    const handleCloseDescription = () => {
-        setOpenDescription(false);
-    };
-
-    const bookButton = () => {
-        console.log("Book")
-    }
-
-    const reportButton = () => {
-        console.log("Report")
-    }
 
     const fetchOwner = () => {
         fetch('http://localhost:3001/getAccommOwner', {
@@ -98,7 +71,8 @@ export default function AccommBody({ data }) {
         );
     } else {
         return(
-            <div className="accomm-page-div">
+            <>
+                        <div className="accomm-page-div">
                 {/* Accomm Name and Details */}
                 <div className="accomm-name-details">
                     <div className="accomm-name-div">              
@@ -132,11 +106,9 @@ export default function AccommBody({ data }) {
                         <div className="accomm-book">
                             <div className="accomm-price">
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
-                                {/* <h2 className="book-review"><FaStar /> 4.62 • 52 reviews</h2> */}
                             </div>
-                            {/* <div>
-                                <button className="book-button" onClick={() => bookButton()}>Check Availability</button>
-                            </div> */}
+                            <ContactDetails contact={accommOwner.contact} />
+                            <ReviewForm />
                             <ReportForm />
                    
                         </div>
@@ -144,24 +116,17 @@ export default function AccommBody({ data }) {
                         <div className="accomm-type-owner">
                             {/* temporary accommodation owner name */}
                             <h1>
-                                {accommData.accommodationType} hosted by {accommOwner.name}
+                                {accommData.accommodationType} hosted by <br/> {accommOwner.name}
                                 <h2>2 guests • 1 bedroom • 2 beds</h2> {/* TODO: make dynamic */}
-                            </h1>             
-                            {/* temporary profile pic
-                                clickable - will redirect to profile page of owner
-                            */}
-                            <img className="profileImage" src={image1} alt='' />
+                            </h1>
                         </div>
 
                         <Description description={accommData.description}/>
                     </div>
-                    
                 </div>
-                
-                
-                
-                
             </div>
+            </>
+
             
         ) 
     }
