@@ -108,7 +108,7 @@ export default function AccommBody({ data }) {
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
-                            <ReviewForm />
+                            <ReviewForm accommId={data} />
                             <ReportForm accommId={data}/>
                    
                         </div>
