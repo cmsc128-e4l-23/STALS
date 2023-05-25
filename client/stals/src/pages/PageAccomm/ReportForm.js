@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
-export default function ReportForm({ accommId }){
+export default function ReportForm({ accommId, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
     
@@ -37,9 +37,18 @@ export default function ReportForm({ accommId }){
         })
     }
 
+    const openDialog = () => {
+        if(!isLoggedIn) alert("Log in required to make a review.")
+
+        else if(localStorage.getItem('usertype') === "Accommodation Owner")
+            alert("Accommodation owners are not allowed to make reviews.")
+        
+        else setDialogOpen(true)
+    }
+
     return(
         <>
-            <button className="report-button" onClick={() => {setDialogOpen(true)}}><FaFlag /> Report this listing</button>
+            <button className="report-button" onClick={openDialog}><FaFlag /> Report this listing</button>
             <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
                 <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
                 <DialogContent>

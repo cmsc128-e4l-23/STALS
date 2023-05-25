@@ -14,7 +14,7 @@ import Description from "./Description";
 import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
 
-export default function AccommBody({ data }) {
+export default function AccommBody({ data, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
@@ -108,8 +108,8 @@ export default function AccommBody({ data }) {
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
-                            <ReviewForm accommId={data} />
-                            <ReportForm accommId={data}/>
+                            <ReviewForm accommId={data} isLoggedIn={isLoggedIn} />
+                            <ReportForm accommId={data} isLoggedIn={isLoggedIn} />
                    
                         </div>
 

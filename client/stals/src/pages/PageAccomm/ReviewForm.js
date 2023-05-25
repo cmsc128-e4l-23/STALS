@@ -10,7 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 
-export default function ReviewForm({ accommId }){
+export default function ReviewForm({ accommId, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
     const [rating, setRating] = useState(0)
@@ -39,9 +39,18 @@ export default function ReviewForm({ accommId }){
         })
     }
 
+    const openDialog = () => {
+        if(!isLoggedIn) alert("Log in required to make a review.")
+
+        else if(localStorage.getItem('usertype') === "Accommodation Owner")
+            alert("Accommodation owners are not allowed to make reviews.")
+        
+        else setDialogOpen(true)
+    }
+
     return(
         <>
-            <button className="report-button" onClick={() => {setDialogOpen(true)}}><FaStar /> Review this listing</button>
+            <button className="report-button" onClick={openDialog}><FaStar /> Review this listing</button>
             <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
                 <DialogTitle padding={5} lineHeight={.5}><h2>Review an accommodation</h2></DialogTitle>
                 <DialogContent>
