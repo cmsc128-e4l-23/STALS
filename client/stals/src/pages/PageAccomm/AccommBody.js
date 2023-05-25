@@ -115,7 +115,6 @@ export default function AccommBody({ data, isLoggedIn }) {
                         <div className="accomm-type-owner">
                             <h1>
                                 {accommData.accommodationType} hosted by <br/> {accommOwner.name}
-                                <h2>2 guests • 1 bedroom • 2 beds</h2> {/* TODO: make dynamic */}
                             </h1>
                         </div>
 

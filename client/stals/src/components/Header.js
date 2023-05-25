@@ -38,7 +38,8 @@ export default function Header() {
         setLoggedIn(false);
         optionsToggle(false);
 
-        window.location.reload();
+        navigate("/home");
+        navigate(0);
     }
 
     const handleInput = (e) => {

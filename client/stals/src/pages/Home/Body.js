@@ -102,8 +102,6 @@ export default function Body({ data }) {
         return (
             // the whole body
             <div className="body-div">
-                {/* filter component */}
-                <Filter />
                 <div className="body-container">
                     <h1>Within UPLB Vicinity</h1>
                     <div id="inside" className="body-group">
