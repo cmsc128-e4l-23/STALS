@@ -24,7 +24,7 @@ function App() {
           <Route path="/your-accommodations" element={<AccommodationList />} />
           <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/profile-page" element={<Profile/>} />
+          <Route path="/profile" element={<Profile/>} />
         </Routes> 
       </Router>
     </div>

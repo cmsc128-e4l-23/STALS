@@ -46,16 +46,18 @@ export default function Header() {
     }
 
     // called when the search button is clicked
-    const search = () => {
+    const search = (e) => {
+        e.preventDefault();
         const regex = new RegExp('^ *$'); // regex for spaces only input
-        const searchPage = document.createElement('a');
         
         // redirect to search if searchInput is not empty
-        if (!regex.test(searchInput))
-            searchPage.href = "/home?search=" + searchInput;
-        else searchPage.href = "/home";
-        document.body.appendChild(searchPage);
-        searchPage.click();
+        if (!regex.test(searchInput)){
+            navigate("/home?search=" + searchInput)
+            navigate(0)
+        }else{
+            navigate("/home")
+            navigate(0)
+        }
     }
 
     const handleOptions = (option,link) => {
@@ -86,29 +88,35 @@ export default function Header() {
 
     return (
     <div id='header'>
-        <div id='logo' onClick={() => navigate('/home')}>
+        <div id='logo' onClick={() => {navigate('/home'); navigate(0)}}>
             <h1>STALS</h1>
         </div>
 
         <div id='search-section'>
             <div id='search-bar'>
+                <form>
                     <input id='search-text' type='text' placeholder='What are you looking for?' onChange={handleInput} value={searchInput} />
-                <button id='search-submit' type='submit' onClick={search}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass}/>
-                </button>
+                    <button id='search-submit' type='submit' onClick={search}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    </button>
+                </form>
             </div>
         </div>
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
+                {(isLoggedIn || Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
-                        {   localStorage.getItem("usertype") === "Accommodation Owner" ? 
-                            <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li> : <></>
+                            <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
+                        {   localStorage.getItem("usertype") === "Accommodation Owner" && 
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li>
+                                <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            </>
                         }
-                            <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
                         <ul>
