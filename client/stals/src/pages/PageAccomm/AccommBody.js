@@ -109,7 +109,7 @@ export default function AccommBody({ data }) {
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
                             <ReviewForm />
-                            <ReportForm />
+                            <ReportForm accommId={data}/>
                    
                         </div>
 
