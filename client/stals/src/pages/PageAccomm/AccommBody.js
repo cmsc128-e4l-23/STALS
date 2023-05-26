@@ -127,7 +127,7 @@ export default function AccommBody({ data, isLoggedIn }) {
                     width: 0.9,
                     background: 'grey',
                 }}/>
-                <ReviewList />
+                <ReviewList reviews={accommData.reviews} />
             </div>
             </>
 
