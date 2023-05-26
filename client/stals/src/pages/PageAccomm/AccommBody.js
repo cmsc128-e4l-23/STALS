@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AccommBody.css";
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Divider } from '@mui/material';
 import { FaStar } from 'react-icons/fa';
 
 //npm install react icons
@@ -12,6 +12,7 @@ import Description from "./Description";
 import ReportForm from "./ReportForm";
 import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
+import ReviewList from "./ReviewList";
 
 export default function AccommBody({ data, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
@@ -71,7 +72,7 @@ export default function AccommBody({ data, isLoggedIn }) {
     } else {
         return(
             <>
-                        <div className="accomm-page-div">
+            <div className="accomm-page-div">
                 {/* Accomm Name and Details */}
                 <div className="accomm-name-details">
                     <div className="accomm-name-div">              
@@ -121,6 +122,12 @@ export default function AccommBody({ data, isLoggedIn }) {
                         <Description description={accommData.description}/>
                     </div>
                 </div>
+                <Divider variant="middle" sx={{
+                    marginTop: 5,
+                    width: 0.9,
+                    background: 'grey',
+                }}/>
+                <ReviewList />
             </div>
             </>
 
