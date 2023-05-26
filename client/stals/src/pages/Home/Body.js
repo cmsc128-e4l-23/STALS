@@ -1,7 +1,6 @@
 import { React, useState, useEffect, useCallback } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import Filter from "components/Filter";
 import AccommCard from "./AccommCard";
 import "./Body.css";
 
@@ -89,7 +88,6 @@ export default function Body({ data }) {
     if (fetchedAccomm == null) {
         return (
             <div className="body-div">
-                <Filter />
                 <Box alignItems={"center"}>
                     <CircularProgress />
                 </Box>
@@ -130,7 +128,6 @@ export default function Body({ data }) {
         if (fetchedAccomm == false) {
             return (
                 <div className="body-div">
-                    <Filter />
                     <h3 id="not-found">AccommCard not found</h3>
                 </div>
             );
@@ -140,7 +137,6 @@ export default function Body({ data }) {
             return (
                 // the whole body
                 <div className="body-div">
-                    <Filter />
                     <div className="body-container">
                         <div className="body-group">
                             {accommList.map((accomm) => {
