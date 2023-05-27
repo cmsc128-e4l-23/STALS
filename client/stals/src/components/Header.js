@@ -114,7 +114,7 @@ export default function Header() {
                         {   userType === "Student" &&
                             <>
                                 <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
-                                <li id='option-btn' onClick={() => {navigate('/bookmarks')}}>YOUR BOOKMARKS</li>
+                                <li id='option-btn' onClick={() => {navigate('/your-bookmarks')}}>YOUR BOOKMARKS</li>
                             </>
                         }
                         {   userType === "Accommodation Owner" && 

@@ -28,7 +28,7 @@ function App() {
           <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/profile" element={<Profile/>} />
-          <Route path="/bookmarks" element={<BookmarkList/>} />
+          <Route path="/your-bookmarks" element={<BookmarkList/>} />
         </Routes> 
       </Router>
     </div>
