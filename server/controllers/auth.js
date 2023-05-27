@@ -111,7 +111,7 @@ const checkIfLoggedIn = async (req, res) => {
                         return res.send({ isLoggedIn: false, error: "No user found" });
                     }
 
-                    return res.send({ isLoggedIn: true, usertype: document.userType, email: document.email, msg: "User is logged in" });
+                    return res.send({ isLoggedIn: true, usertype: document.userType, email: document.email, name: document.firstName, msg: "User is logged in" });
                 }
             )
                 .catch((error) => res.send({ success: false, error: error }));
