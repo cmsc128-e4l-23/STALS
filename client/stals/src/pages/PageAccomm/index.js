@@ -1,13 +1,16 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Header from "components/Header";
 import AccommBody from "./AccommBody";
 
 
 export default function AccommodationPage() {
     // extract search parameter from the URL
     const [isLoggedIn, setLoggedIn] = useState(false)
+    const [email, setEmail] = useState('')
+    const [userType, setUserType] = useState('')
+    const [loading, setLoading] = useState(true)
+
     const [searchInput] = useSearchParams();
     let data = searchInput.get("id")===null ? "" : searchInput.get("id");
     // let id = props.location.state.id;
@@ -18,11 +21,23 @@ export default function AccommodationPage() {
         })
         .then(res => res.json())
         .then(data => {
-          setLoggedIn(data.isLoggedIn);
+            setLoggedIn(data.isLoggedIn)
+            setEmail(data.email)
+            setUserType(data.usertype)
+            setLoading(false)
         })
-      });
-
+      }, []);
+    
+    
+    
     return(
-        <AccommBody data={data} isLoggedIn={isLoggedIn} />
+        <body>
+          {loading ?
+            <h3>Loading . . . </h3>
+            :
+            <AccommBody data={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
+          }
+        </body>
+      
     );
 }
