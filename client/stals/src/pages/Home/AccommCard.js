@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -9,27 +9,38 @@ import "./Accommodation.css";
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function AccommCard({ isLoggedIn, bookmarkList, email, accomm }) {
+export default function AccommCard({ isLoggedIn, email, accomm }) {
     let navigate = useNavigate();
-
-    const initBtn = () => {
-        // if logged in: see if the accommodation is bookmarked
+    const [bookmarked, setBookmarked] = useState(false);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
         if (isLoggedIn) {
-            if (bookmarkList === [] || bookmarkList === null) return false; // 
-            const state = bookmarkList.find(a => a === accomm._id);
-            
-            if (state !== undefined) return true;
+            fetch('http://localhost:3001/checkIfBookmarked', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({
+                    user: email,
+                    accomm: accomm._id   
+                }),
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(body => {
+                if(body.success){
+                    setBookmarked(body.bookmarked)
+                }
+            })
         }
-        // else return null
-        else return false;
-    }
-
-    const [bookmarked, setBookmarked] = useState(initBtn());
+        setLoading(false)
+    }, [])
+    
     
     const addBookmark = (accomm_id) => {
         fetch('http://localhost:3001/bookmarkAccomm', {
             method: 'POST',
-            creentials: 'include',
+            credentials: 'include',
             body: JSON.stringify({
                 email: email,
                 accomm_id: accomm_id
@@ -51,7 +62,7 @@ export default function AccommCard({ isLoggedIn, bookmarkList, email, accomm }) 
     const removeBookmark = (accomm_id) => {
         fetch('http://localhost:3001/removeBookmarkAccomm', {
             method: 'POST',
-            creentials: 'include',
+            credentials: 'include',
             body: JSON.stringify({
                 user: email,
                 accomm_id: accomm_id
@@ -84,9 +95,12 @@ export default function AccommCard({ isLoggedIn, bookmarkList, email, accomm }) 
             }
         }
     }
-
     return (
-        <div className="body-element">
+        <>
+            {loading ?
+            <h3>Loading. . . </h3>
+            :
+            <div className="body-element">
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
                 {bookmarked ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
@@ -120,5 +134,8 @@ export default function AccommCard({ isLoggedIn, bookmarkList, email, accomm }) 
                 </div>
             </div>
         </div>
+
+            }
+        </>
     )
 }

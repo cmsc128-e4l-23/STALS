@@ -8,7 +8,6 @@ import "./Body.css";
 export default function Body({ isLoggedIn, email, data }) {
     const [loading, setLoading] = useState(true);
     const [accommList, updateAccommList] = useState([]);
-    const [bookmarkList, updateBookmark] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:3001/searchAccomm', {
@@ -23,29 +22,10 @@ export default function Body({ isLoggedIn, email, data }) {
             .then(data => {
                 if (data.success) {
                     updateAccommList(data.result);
-                    fetchBookmark();
                 }else throw Error
-                setLoading(false)
             })
+        setLoading(false)
     }, [data])
-
-    // fetch user's bookmarks if looged in
-    const fetchBookmark = useCallback(() => {
-        fetch('http://localhost:3001/getUserBookmarks', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({email: email}),
-            headers: {
-                'Content-Type': "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    updateBookmark(body.bookmarks);
-                } else updateBookmark(null);
-        })
-    }, [email, bookmarkList]);
 
     return(
         <div className="body-div">
@@ -64,7 +44,6 @@ export default function Body({ isLoggedIn, email, data }) {
                         <h1>Accommodations: </h1>
                         <AccommList 
                             isLoggedIn={isLoggedIn}
-                            bookmarkList={bookmarkList}
                             email={email}
                             accommList={accommList} 
                         />
