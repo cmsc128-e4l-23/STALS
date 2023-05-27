@@ -19,7 +19,7 @@ const AdminPage = () => {
     })
   });
   return (
-  <>
+  <body>
   { isAdmin ? 
       <Body/>
       :
@@ -29,7 +29,7 @@ const AdminPage = () => {
 
       
     }
-  </>
+  </body>
     
     
   );

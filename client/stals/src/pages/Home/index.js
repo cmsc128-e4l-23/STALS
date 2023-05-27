@@ -27,7 +27,7 @@ export default function Home() {
     }, [isLoggedIn]);
 
     return(
-        <>
+        <body>
             {loading ?
             <h3>loading</h3>
             :
@@ -35,6 +35,6 @@ export default function Home() {
 
             }
             
-        </>
+        </body>
     );
 }

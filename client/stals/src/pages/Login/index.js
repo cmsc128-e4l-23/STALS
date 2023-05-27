@@ -10,7 +10,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setLoggedIn] = useState(null);
-  
+
   useEffect(() => {
     fetch('http://localhost:3001/checkifloggedin', {
       method: 'POST',
@@ -60,7 +60,7 @@ export default function Login() {
 
 
   return (
-    <>
+    <body>
       <div className="login-container">
         <h1>Log In</h1>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -74,7 +74,7 @@ export default function Login() {
           <button type="submit">Login</button>
         </form>
       </div>
-    </>
+    </body>
   );
 }
 
