@@ -73,6 +73,55 @@ const incNumVisits = async (req, res) => {
     }
 }
 
+//Convert a month number to the string of the month name
+const numToMonth = (num) => {
+    switch(num){
+        case 1:
+            return "January";
+        case 2:
+            return "February";
+        case 3:
+            return "March";
+        case 4:
+            return "April";        
+        case 5:
+            return "May";
+        case 6:
+            return "June";
+        case 7:
+            return "July";
+        case 8:
+            return "August";        
+        case 9:
+            return "September";
+        case 10:
+            return "October";
+        case 11:
+            return "November";
+        case 12:
+            return "December";        
+    }
+}
+
+//Returns an object with zero visits throughout all months
+const year_init = () =>{
+    return {
+        January: 0,
+        February: 0,
+        March: 0,
+        April: 0,
+        May: 0,
+        June: 0,
+        July: 0,
+        August: 0,
+        September: 0,
+        October: 0,
+        November: 0,
+        December: 0
+    };
+}
+
+
 //POST method for getting the number of visits on STALS 
 //Input
 /*
@@ -84,28 +133,18 @@ const incNumVisits = async (req, res) => {
 */
 const getVisits = async (req, res) => {
     try {
-
         //retrieving the Visit object based on input
-        const input = req.body;
-        const findData = { $and: [] }
-        if (input.year) findData.$and.push({ year: input.year });
-        if (input.month) findData.$and.push({ month: input.month });
-        if (input.day) findData.$and.push({ day: input.day });
-        let result = await Visit.find(findData);
-
+        let result = await Visit.find({});
         //removed the _id values
-        let returnVals = []
+        let returnVal = {}
         for (let i = 0; i < result.length; i++) {
-            const val = {
-                year: result[i].year,
-                month: result[i].month,
-                day: result[i].day,
-                numVisits: result[i].numVisits
+            if(!returnVal[result[i].year]){
+                returnVal[result[i].year] = year_init();
             }
-            returnVals.push(val);
+            returnVal[result[i].year][numToMonth(result[i].month)] += result[i].numVisits;
         }
 
-        res.send({ success: true, msg: "getting Visits succeeded", return: returnVals });
+        res.send({ success: true, msg: "getting Visits succeeded", return: returnVal});
 
     } catch (error) {
         res.send({ success: false, msg: "getting Visits failed", error: error });
