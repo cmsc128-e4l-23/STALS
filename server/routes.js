@@ -55,6 +55,7 @@ router.get("/dataAnalytics", admin.dataAnalytics);
 router.get("/getPendApp", admin.getPendApp);
 router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
+router.post("/approveAccomm", admin.approveAccomm);
 //Images
 router.post("/uploadImage", image.uploadImage);
 

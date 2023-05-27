@@ -163,11 +163,25 @@ const dataAnalytics = async (req, res) => {
     }
 }
 
+const approveAccomm = async (req, res) => {
+    try{
+        const input = req.body;
+        console.log()
+
+
+    }
+    catch (error){
+        res.send({ success: false, msg: "Unsuccessfully approve accommodation", error: error });
+        
+    }
+}
+
 export default {
     getPendApp,
     incNumVisits,
     getVisits,
     resolveReport,
     viewReports,
-    dataAnalytics
+    dataAnalytics,
+    approveAccomm
 }

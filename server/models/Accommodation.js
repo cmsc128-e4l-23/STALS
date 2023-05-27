@@ -54,9 +54,8 @@ const accommodationSchema = new mongoose.Schema({
   },
   photos: [String],
   archived: {
-    type: String,
-    default: "pending",
-    enum:["pending", "approved"]
+    type: Boolean,
+    default: false
   },
   approved: {
     type: Boolean,
