@@ -115,27 +115,31 @@ describe("dataAnalytics", () =>{
 
         test("Correct number of approved accommodations", async () => {
             const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numApprovedAccomm).toBe(2);
+            expect(data.body.return.numApprovedAccomm).toBe(0);
         })
     })
     
     describe("GET /getPendApp", ()=>{
         test("Correct number of pending applications", async () => {
-            const accommID1 = (await Accommodation.findOne({name: "White House"}))._id.toString();
-            await request(app).post("/archiveAccomm").send({_id: accommID1});
             const data1 = await request(app).get("/getPendApp")
-            expect(data1.body.numPendApps).toBe(1);
+            expect(data1.body.numPendApps).toBe(2);
             for(let i=0; i<data1.body.numPendApps; i++){
-                expect(data1.body.pendApps[i].archived).toBe(true);
+                expect(data1.body.pendApps[i].approved).toBe(false);
+            }
+
+
+            const accommID1 = (await Accommodation.findOne({name: "White House"}))._id.toString();
+            await request(app).post("/approveAccomm").send({accomm_id: accommID1});
+            const data2 = await request(app).get("/getPendApp")
+            expect(data2.body.numPendApps).toBe(1);
+            for(let i=0; i<data2.body.numPendApps; i++){
+                expect(data2.body.pendApps[i].approved).toBe(false);
             }
 
             const accommID2 = (await Accommodation.findOne({name: "The House"}))._id.toString();
-            await request(app).post("/archiveAccomm").send({_id: accommID2});
-            const data2 = await request(app).get("/getPendApp")
-            expect(data2.body.numPendApps).toBe(2);
-            for(let i=0; i<data2.body.numPendApps; i++){
-                expect(data2.body.pendApps[i].archived).toBe(true);
-            }
+            await request(app).post("/approveAccomm").send({accomm_id: accommID2});
+            const data3 = await request(app).get("/getPendApp")
+            expect(data3.body.numPendApps).toBe(0);
         })
     })
 })

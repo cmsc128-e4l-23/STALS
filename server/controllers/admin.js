@@ -115,7 +115,7 @@ const getVisits = async (req, res) => {
 //GET method for getting the number of pending applications and its number
 const getPendApp = async (req, res) => {
     try {
-        var pendAppsTemp = await Accommodation.find({ archived: true });
+        var pendAppsTemp = await Accommodation.find({ approved: false });
         const numPendApps = pendAppsTemp.length;
 
         //removed id for security reasons, except for the id in the price range
@@ -129,6 +129,7 @@ const getPendApp = async (req, res) => {
             doc.owner = user.email;
             pendApps.push(doc);
         }
+        // console.log(pendApps);
         res.send({ success: true, msg: "Successfully retrieve pending applications", numPendApps: numPendApps, pendApps: pendApps });
     } catch (error) {
         res.send({ success: false, msg: "Unsuccessfully retrieve pending applications", error: error });
@@ -148,7 +149,7 @@ const dataAnalytics = async (req, res) => {
         const numStudents = (await User.find({ userType: "Student" })).length
 
         //Number of approved accommodations
-        const numApprovedAccomm = (await Accommodation.find({ archived: false })).length
+        const numApprovedAccomm = (await Accommodation.find({ approved: true })).length
 
         const db_details = {
             numRegUsers: numRegUsers,
