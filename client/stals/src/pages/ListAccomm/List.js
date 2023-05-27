@@ -75,6 +75,7 @@ export default function List({email}){
                             }
                         )
                     }
+                    
                     <h2>Pending Acommodations:</h2>
                     {
                         accomms.map(
