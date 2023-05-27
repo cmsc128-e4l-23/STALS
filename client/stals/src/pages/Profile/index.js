@@ -11,9 +11,8 @@ export default function Profile() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [usertype, setUserType] = useState('');
-
+  const [loading, isLoading] = useState(true);
   const [isLoggedIn, setLoggedIn] = useState(null);
-  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
 
@@ -28,17 +27,22 @@ export default function Profile() {
           setName(data.name);
           setEmail(data.email);
           setUserType(data.usertype);
-          if (usertype === "Accommodation Owner") setIsOwner(true)
-
         }
+      
       })
+  setLoading(false);
   }
 
     , [isLoggedIn]);
 
   return (
     <div>
-      {isOwner ? <OwnerPage user={email} /> : <UserPage user={email} />}
+    { loading ?
+      <h3> Loading . . . . </h3>
+      :
+      <>
+      {userType === "Accommodation Owner" ? <OwnerPage user={email} /> : <UserPage user={email} />}
+      </>
 
     </div>
   );
