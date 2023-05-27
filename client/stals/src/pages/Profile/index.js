@@ -14,6 +14,7 @@ export default function Profile() {
 
   const [isLoggedIn, setLoggedIn] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+
   useEffect(() => {
 
     fetch('http://localhost:3001/checkifloggedin', {
@@ -27,7 +28,8 @@ export default function Profile() {
           setName(data.name);
           setEmail(data.email);
           setUserType(data.usertype);
-          if (usertype === "Owner") setIsOwner(true)
+          if (usertype === "Accommodation Owner") setIsOwner(true)
+
         }
       })
   }
@@ -36,7 +38,7 @@ export default function Profile() {
 
   return (
     <div>
-      {isOwner ? <OwnerPage data={data} /> : <UserPage data={data} />}
+      {isOwner ? <OwnerPage user={email} /> : <UserPage user={email} />}
 
     </div>
   );
