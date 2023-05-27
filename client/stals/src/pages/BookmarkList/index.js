@@ -24,7 +24,7 @@ export default function BookmarkList(){
                 setLoggedIn(data.isLoggedIn);
                 setName(data.name);
                 setEmail(data.email);
-                setUserType(data.userType);
+                setUserType(data.usertype);
             }
             setLoading(false);
         })   
