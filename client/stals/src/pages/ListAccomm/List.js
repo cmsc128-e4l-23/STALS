@@ -28,7 +28,7 @@ export default function List({email}){
 
 
     return(
-        <div>  
+        <div id="lists">  
         {accomms.length > 0 ?
                 <div>
                     <h2>Active Acommodations:</h2>
@@ -37,12 +37,12 @@ export default function List({email}){
                             (accomm) => {
                                 return(
                                     <ul>{
-                                        accomm.archived === false &&
+                                        (!accomm.archived && accomm.approved) &&
                                     
                                         <li>
                                             <div id='li-container'>
                                                 <h3 id='accomm-name'>{accomm.name}</h3>
-                                                <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
+                                                <ArchiveButton accommodation={accomm} setLoading={setLoading} />
                                                 <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                             </div>
                                         </li>
@@ -61,11 +61,30 @@ export default function List({email}){
                             (accomm) => {
                             return(
                             <ul>{
-                                accomm.archived === true &&
+                                (accomm.archived && accomm.approved) &&
                                 <li>
                                     <div id='li-container'>
                                         <h3 id='accomm-name'>{accomm.name}</h3>
                                         <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
+                                        <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                    </div>
+                                </li>
+                            }
+                            </ul>
+                            )   
+                            }
+                        )
+                    }
+                    <h2>Pending Acommodations:</h2>
+                    {
+                        accomms.map(
+                            (accomm) => {
+                            return(
+                            <ul>{
+                                accomm.approved === false &&
+                                <li>
+                                    <div id='li-container'>
+                                        <h3 id='accomm-name'>{accomm.name}</h3>
                                         <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                     </div>
                                 </li>
