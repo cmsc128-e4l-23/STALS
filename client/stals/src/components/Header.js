@@ -8,11 +8,13 @@ import Cookies from 'universal-cookie';
 export default function Header() {
     let navigate = useNavigate();
 
-    const [userName, setName] = useState(null);
+    const [name, setName] = useState(null);
+    const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
+
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
         method: 'POST',
@@ -20,12 +22,13 @@ export default function Header() {
         })
         .then(res => res.json())
         .then(data => {
-            setLoggedIn(data.isLoggedIn);
-            if(data.isLoggedIn){
-                setName(localStorage.getItem('username'));
+            setLoggedIn(data.isLoggedIn)
+            if(isLoggedIn){
+                setName(data.name)
+                setUserType(data.usertype)
             }
         })
-    }, []);
+    });
 
     const logout = (e) => {
         e.preventDefault();
@@ -33,8 +36,6 @@ export default function Header() {
         const cookies = new Cookies();
         cookies.remove("authToken");
 
-        localStorage.removeItem("username");
-        localStorage.removeItem("email");
         setLoggedIn(false);
         optionsToggle(false);
 
@@ -70,7 +71,7 @@ export default function Header() {
 
     let auth_section;
     if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
     }else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
@@ -110,11 +111,22 @@ export default function Header() {
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
-                            <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
-                        {   localStorage.getItem("usertype") === "Accommodation Owner" && 
+                        {   userType === "Student" &&
                             <>
+                                <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
+                                <li id='option-btn' onClick={() => {navigate('/bookmarks')}}>YOUR BOOKMARKS</li>
+                            </>
+                        }
+                        {   userType === "Accommodation Owner" && 
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
                                 <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li>
                                 <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            </>
+                        }
+                        {   userType === "Admin" &&
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/admin')}}>ADMIN DASHBOARD</li>
                             </>
                         }
                             
