@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./AccommBody.css";
 import { Box, CircularProgress, Divider } from '@mui/material';
 import { FaStar } from 'react-icons/fa';
-
-//npm install react icons
-
-//Images
 import image1 from '../../assets/pexels-christian-paul-del-rosario-1076240.jpg';
 
 import Description from "./Description";
