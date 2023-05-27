@@ -27,6 +27,7 @@ router.post("/getAccommBasicDetails", accomminfo.getAccommBasicDetails);
 router.post("/getAccommFullDetails", accomminfo.getAccommFullDetails);
 router.post("/getAccommReviews", accomminfo.getAccommReviews);
 router.post("/getAccommReports", accomminfo.getAccommReports);
+router.post("/checkIfBookmarked", accomminfo.checkIfBookmarked);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);

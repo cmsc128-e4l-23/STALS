@@ -125,10 +125,24 @@ const getAccommReports = (req, res) => {
     })
 }
 
+const checkIfBookmarked = (req, res) => {
+    let req_details = req.body;
+
+    User.findOne({email: req_details.user})
+    .then((document) => {
+        if(document) res.send({ success: true, bookmarked: document.bookmarks.includes(req_details.accomm) })
+        else throw Error
+    })
+    .catch((err) => {
+        res.send({ success: false, msg: "Could not check if bookmarked" })
+    })
+}
+
 export default {
     getAccommOwner,
     getAccommBasicDetails,
     getAccommFullDetails,
     getAccommReviews,
-    getAccommReports
+    getAccommReports,
+    checkIfBookmarked
 }
