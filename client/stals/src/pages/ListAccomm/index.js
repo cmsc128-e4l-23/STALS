@@ -22,8 +22,8 @@ export default function AccommodationList(){
             .then(data => {
                 if(data.isLoggedIn){
                     setLoggedIn(data.isLoggedIn);
-                    setName(localStorage.getItem('username'));
-                    setEmail(localStorage.getItem('email'));
+                    setName(data.name);
+                    setEmail(data.email);
                     setLoading(false);
                 }else{
                     navigate('/home');

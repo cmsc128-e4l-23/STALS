@@ -9,8 +9,8 @@ export default function Login() {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isLoggedIn, setLoggedIn] = useState(null);
+  
   useEffect(() => {
     fetch('http://localhost:3001/checkifloggedin', {
       method: 'POST',
@@ -20,7 +20,8 @@ export default function Login() {
     .then(data => {
       setLoggedIn(data.isLoggedIn);
       if(isLoggedIn){
-        navigate('/home');
+        navigate('/home')
+        navigate(0)
       }
     })
   });
@@ -48,12 +49,9 @@ export default function Login() {
             path: "localhost:3001/",
             sameSite: "lax"
           }
-        );
-        localStorage.setItem("username", data.fname);
-        localStorage.setItem("email", data.email);
-        localStorage.setItem("usertype", data.type)
-        
-        navigate('/home');
+        )
+        navigate('/home')
+        navigate(0)
       }else{
         alert(data.error);
       }
