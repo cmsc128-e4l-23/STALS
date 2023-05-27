@@ -6,6 +6,7 @@ const OwnerPage = ({ user }) => {
     // const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
     
     const [imageArray, setImageArray] = useState(null);
+    const [bookmarksArray, setBookmarksArray] = useState(null);
 
     useEffect(() => {
         const fetchOwnedAccomms = async () => {
@@ -23,7 +24,23 @@ const OwnerPage = ({ user }) => {
             }
         }
 
+        const fetchBookmarks = async () => {
+            const response = await fetch('http://localhost:3001/getUserBookmarks', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({ email: user.email }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const json = await response.json();
+            if(response.success){
+                setBookmarksArray(json.accommodations);
+            }
+        }
+
         fetchOwnedAccomms();
+        fetchBookmarks();
     }, [imageArray])
 
 
@@ -40,7 +57,6 @@ const OwnerPage = ({ user }) => {
         if (file) {
             reader.readAsDataURL(file); // Add this line to read the file contents
         }
-
     }
 
     //Render Page

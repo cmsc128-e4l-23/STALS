@@ -36,7 +36,8 @@ export default function Profile() {
 
   return (
     <div>
-      {isOwner ? <OwnerPage /> : <UserPage data={data} />}
+      {isOwner ? <OwnerPage data={data} /> : <UserPage data={data} />}
+
     </div>
   );
 }
