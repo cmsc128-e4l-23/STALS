@@ -41,9 +41,8 @@ export default function AccommodationList(){
             
             loading ?
             
-            <div><Header/>Loading</div> :
+            <div>Loading</div> :
             <div>
-                <Header/>
                 <div id='user-info'>
                     {name}'s Accommodations
                 </div>

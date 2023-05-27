@@ -10,11 +10,12 @@ export default function AddAccommodation() {
   let navigate = useNavigate();
 
   const [page, setPage] = useState(0);
-  
+  const [isAccommOwner, setAccommOwner] = useState(false);
+  const [email, setEmail] = useState('');
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
-    owner: localStorage.getItem('email'),
+    owner: email,
     landmarks: [],
     address: {
         postCode: "",
@@ -32,8 +33,25 @@ export default function AddAccommodation() {
     description: "",
     photos: [],
   });
-
   const {photos, ...noPhotos} = formData;
+  
+  useEffect(() => {
+    fetch("http://localhost:3001/checkifloggedin", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (
+          data.isLoggedIn &&
+          (data.usertype === "Accommodation Owner" || data.usertype === "Admin")
+        ) {
+          setAccommOwner(true)
+          setEmail(data.email)
+        }
+      });
+  }, [navigate]);
+  
   const submit = () => {
     fetch("http://localhost:3001/addAccomm", {
       method: "POST",
@@ -113,69 +131,57 @@ export default function AddAccommodation() {
     }
   };
 
-  useEffect(() => {
-    fetch("http://localhost:3001/checkifloggedin", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (
-          data.isLoggedIn &&
-          localStorage.getItem("usertype") === "Accommodation Owner"
-        ) {
-        } else {
-          alert("You are not an accommodation owner");
-          navigate("/home");
-        }
-      });
-  }, [navigate]);
-
   return (
     <>
-      <div className="page-header">
-        <Header />
-      </div>
-      <div
-        className="form"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "100px",
-        }}
-      >
-        <div className="progress-bar"></div>
-        <div
-          className="form-container"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div className="form-header">
-            <h1>{FormTitles[page]}</h1>
-          </div>
-          <div className="form-body">{RenderPage()}</div>
-          <div className="form-footer">
-            <button
-              style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
-              disabled={page === 0}
-              onClick={() => {
-                setPage((currPage) => currPage - 1);
+      {
+        isAccommOwner ? 
+          <>
+            <div
+              className="form"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "100px",
               }}
             >
-              Prev
-            </button>
-            <button
-              style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
-              disabled={page === FormTitles.length - 1}
-              onClick={() => {
-                setPage((currPage) => currPage + 1);
-              }}
-            >
-              Next
-            </button>
-          </div>
+              <div className="progress-bar"></div>
+              <div
+                className="form-container"
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <div className="form-header">
+                  <h1>{FormTitles[page]}</h1>
+                </div>
+                <div className="form-body">{RenderPage()}</div>
+                <div className="form-footer">
+                  <button
+                    style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
+                    disabled={page === 0}
+                    onClick={() => {
+                      setPage((currPage) => currPage - 1);
+                    }}
+                  >
+                    Prev
+                  </button>
+                  <button
+                    style={{marginRight:"20px", border:"1px solid maroon", width:"100px", height:"50px", borderRadius:"5px", fontSize:"larger", cursor:"pointer"}}
+                    disabled={page === FormTitles.length - 1}
+                    onClick={() => {
+                      setPage((currPage) => currPage + 1);
+                    }}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        :
+        <div>
+          <h1>404 not found</h1>
         </div>
-      </div>
+      }
     </>
   );
 }

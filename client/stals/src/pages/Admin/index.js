@@ -21,10 +21,8 @@ const AdminPage = () => {
   return (
   <>
   { isAdmin ? 
-      <div> 
-        <Header/>
-        <Body/>
-      </div> :
+      <Body/>
+      :
       <div>
         <h2>404 not found</h2>
       </div>

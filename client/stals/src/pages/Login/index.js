@@ -63,7 +63,6 @@ export default function Login() {
 
   return (
     <>
-      <Header />
       <div className="login-container">
         <h1>Log In</h1>
         <form className="login-form" onSubmit={handleSubmit}>

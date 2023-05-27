@@ -23,9 +23,6 @@ export default function AccommodationPage() {
       });
 
     return(
-        <>
-        <Header />
         <AccommBody data={data} isLoggedIn={isLoggedIn} />
-        </>
     );
 }

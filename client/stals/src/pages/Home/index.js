@@ -11,8 +11,7 @@ export default function Home() {
 
     return(
         <>
-        <Header />
-        <Body data={data} />
+            <Body data={data} />
         </>
     );
 }
