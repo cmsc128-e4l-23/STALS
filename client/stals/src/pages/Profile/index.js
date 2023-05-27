@@ -26,16 +26,17 @@ export default function Profile() {
           setLoggedIn(data.isLoggedIn);
           setName(data.name);
           setEmail(data.email);
-          setUserType(data.usertype)
+          setUserType(data.usertype);
           if (usertype === "Owner") setIsOwner(true)
         }
       })
   }
 
     , [isLoggedIn]);
+
   return (
     <div>
-      {isOwner ? <OwnerPage /> : <UserPage email={email} />}
+      {isOwner ? <OwnerPage /> : <UserPage data={data} />}
     </div>
   );
 }

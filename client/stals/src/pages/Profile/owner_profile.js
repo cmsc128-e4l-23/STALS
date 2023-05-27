@@ -12,24 +12,19 @@ const OwnerPage = ({ user }) => {
             const response = await fetch('http://localhost:3001/getOwnerAccomms', {
                 method: 'POST',
                 credentials: 'include',
-                body: JSON.stringify({ email: data }),
+                body: JSON.stringify({ email: user.email }),
                 headers: {
                     'Content-Type': 'application/json'
                 },
             });
             const json = await response.json();
-
-            console.log(json.accommodations);
-
             if (response.success){
                 setImageArray(json.accommodations);
-            } else {
-                console.log(response.error);
             }
         }
 
         fetchOwnedAccomms();
-    }, [])
+    }, [imageArray])
 
 
     //Profile Picture changer
@@ -59,7 +54,7 @@ const OwnerPage = ({ user }) => {
                         <input id="file-upload" type="file" style={{ display: "none" }} accept="image/*" onChange={handleImageChange}></input>
                     </div>
                     <ol>
-                    <li>name</li>  
+                    <li>{ user.name }</li>  
                     <li>email</li>
                     <li>number</li>
                     </ol>
