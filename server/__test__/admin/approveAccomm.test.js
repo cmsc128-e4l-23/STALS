@@ -98,16 +98,34 @@ describe("POST /approveAccomm", () =>{
         await request(app).post("/addAccomm").send(accomm_details2)
     })
 
-    test("Just testing", async () => {
-        const accomm1 = (await Accommodation.findOne({name: "White House"}));
-        console.log(accomm1);
+    test("Testing correct input", async () => {
+        const accomm_before = (await Accommodation.findOne({name: "White House"}));
+        expect(accomm_before.approved).toBe(false);
 
-        await request(app).post("/approveAccomm").send({
-            
-        })        
+        const result = (await request(app).post("/approveAccomm").send({
+            accomm_id: accomm_before._id.toString()
+        })).body
+        
+        expect(result.success).toBe(true);
+        expect(result.msg).toBe("Successfully approve accommodation");
+
+        const accomm_after = (await Accommodation.findOne({name: "White House"}));
+        expect(accomm_after.approved).toBe(true);
     })
 
+    test("Testing incorrect input", async () => {
+        const accomm_before = (await Accommodation.findOne({name: "The House"}));
+        expect(accomm_before.approved).toBe(false);
 
+        const result = (await request(app).post("/approveAccomm").send({})).body
+        
+        expect(result.success).toBe(false);
+        expect(result.msg).toBe("Unsuccessfully approve accommodation");
+        expect(result.error).toBe("No accomm_id input provided");
+
+        const accomm_after = (await Accommodation.findOne({name: "The House"}));
+        expect(accomm_after.approved).toBe(false);
+    })
 })
 
 
