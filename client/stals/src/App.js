@@ -7,14 +7,17 @@ import AccommodationList from 'pages/ListAccomm/index';
 import AccommPage from 'pages/PageAccomm/index';
 import AdminPage from 'pages/Admin';
 import Profile from './pages/Profile/index';
+import Header from './components/Header';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import BookmarkList from 'pages/BookmarkList';
 
 
 function App() {
   return (
     <div className="App">
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home data={""} />} />
@@ -24,7 +27,8 @@ function App() {
           <Route path="/your-accommodations" element={<AccommodationList />} />
           <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          <Route path="/profile-page" element={<Profile/>} />
+          <Route path="/profile" element={<Profile/>} />
+          <Route path="/your-bookmarks" element={<BookmarkList/>} />
         </Routes> 
       </Router>
     </div>

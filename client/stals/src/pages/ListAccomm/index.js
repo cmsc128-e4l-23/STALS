@@ -10,6 +10,7 @@ export default function AccommodationList(){
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState(true);
 
     const [isLoggedIn, setLoggedIn] = useState(null);
@@ -23,8 +24,9 @@ export default function AccommodationList(){
             .then(data => {
                 if(data.isLoggedIn){
                     setLoggedIn(data.isLoggedIn);
-                    setName(localStorage.getItem('username'));
-                    setEmail(localStorage.getItem('email'));
+                    setName(data.name);
+                    setEmail(data.email);
+                    setUserType(data.usertype);
                     setLoading(false);
                 }else{
                     navigate('/home');
@@ -37,28 +39,28 @@ export default function AccommodationList(){
     }, [navigate, isLoggedIn]);
 
     return(
-        <div id="accomm-list">
-        <header>
-            <Header />
-        </header>
         <body>
-        {
-            loading ?
-            <div>
-            
-                Loading
-            </div> :
-            <div>
-                <h1>
-                    {name}'s Accommodations
-                </h1>
+            {userType === "Accommodation Owner" ?
                 <div>
-                    <List email={email}/>
+                {
+                    
+                    loading ?
+                    
+                    <div>Loading</div> :
+                    <div>
+                        <div id='user-info'>
+                            {name}'s Accommodations
+                        </div>
+                        <div id='list-container'>
+                            <List email={email}/>
+                        </div>
+                    </div>
+                }
                 </div>
-            </div>
-        }
+                :                
+                <h1>404 not found</h1>
+
+            }
         </body>
-        
-        </div>
-    );
+    )
 }

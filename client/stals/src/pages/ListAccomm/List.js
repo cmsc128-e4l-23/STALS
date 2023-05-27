@@ -28,8 +28,7 @@ export default function List({email}){
 
 
     return(
-        <>
-        <div id="lists">    
+        <div>  
         {accomms.length > 0 ?
                 <div>
                     <h2>Active Acommodations:</h2>
@@ -80,9 +79,5 @@ export default function List({email}){
                  : <div>No Accommodations found</div>
             }
         </div>
-        <div>
-            
-        </div>
-        </>
     )
 }

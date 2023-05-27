@@ -8,11 +8,13 @@ import Cookies from 'universal-cookie';
 export default function Header() {
     let navigate = useNavigate();
 
-    const [userName, setName] = useState(null);
+    const [name, setName] = useState(null);
+    const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
+
     useEffect(() => {
         fetch('http://localhost:3001/checkifloggedin', {
         method: 'POST',
@@ -20,12 +22,13 @@ export default function Header() {
         })
         .then(res => res.json())
         .then(data => {
-            setLoggedIn(data.isLoggedIn);
-            if(data.isLoggedIn){
-                setName(localStorage.getItem('username'));
+            setLoggedIn(data.isLoggedIn)
+            if(isLoggedIn){
+                setName(data.name)
+                setUserType(data.usertype)
             }
         })
-    }, []);
+    });
 
     const logout = (e) => {
         e.preventDefault();
@@ -33,12 +36,11 @@ export default function Header() {
         const cookies = new Cookies();
         cookies.remove("authToken");
 
-        localStorage.removeItem("username");
-        localStorage.removeItem("email");
         setLoggedIn(false);
         optionsToggle(false);
 
-        window.location.reload();
+        navigate("/home");
+        navigate(0);
     }
 
     const handleInput = (e) => {
@@ -46,16 +48,18 @@ export default function Header() {
     }
 
     // called when the search button is clicked
-    const search = () => {
+    const search = (e) => {
+        e.preventDefault();
         const regex = new RegExp('^ *$'); // regex for spaces only input
-        const searchPage = document.createElement('a');
         
         // redirect to search if searchInput is not empty
-        if (!regex.test(searchInput))
-            searchPage.href = "/home?search=" + searchInput;
-        else searchPage.href = "/home";
-        document.body.appendChild(searchPage);
-        searchPage.click();
+        if (!regex.test(searchInput)){
+            navigate("/home?search=" + searchInput)
+            navigate(0)
+        }else{
+            navigate("/home")
+            navigate(0)
+        }
     }
 
     const handleOptions = (option,link) => {
@@ -67,7 +71,7 @@ export default function Header() {
 
     let auth_section;
     if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{userName}!</b></div></>
+        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
     }else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
@@ -86,29 +90,46 @@ export default function Header() {
 
     return (
     <div id='header'>
-        <div id='logo' onClick={() => navigate('/home')}>
+        <div id='logo' onClick={() => {navigate('/home'); navigate(0)}}>
             <h1>STALS</h1>
         </div>
 
         <div id='search-section'>
             <div id='search-bar'>
+                <form>
                     <input id='search-text' type='text' placeholder='What are you looking for?' onChange={handleInput} value={searchInput} />
-                <button id='search-submit' type='submit' onClick={search}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass}/>
-                </button>
+                    <button id='search-submit' type='submit' onClick={search}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    </button>
+                </form>
             </div>
         </div>
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>
+                {(isLoggedIn || Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
-                        {   localStorage.getItem("usertype") === "Accommodation Owner" ? 
-                            <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li> : <></>
+                        {   userType === "Student" &&
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
+                                <li id='option-btn' onClick={() => {navigate('/your-bookmarks')}}>YOUR BOOKMARKS</li>
+                            </>
                         }
-                            <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                        {   userType === "Accommodation Owner" && 
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
+                                <li id='option-btn' onClick={() => {navigate('/your-accommodations')}}>YOUR ACCOMMODATIONS</li>
+                                <li id='option-btn' onClick={() => {navigate('/add-accommodation')}}>ADD AN ACCOMMODATION</li>
+                            </>
+                        }
+                        {   userType === "Admin" &&
+                            <>
+                                <li id='option-btn' onClick={() => {navigate('/admin')}}>ADMIN DASHBOARD</li>
+                            </>
+                        }
+                            
                             <li id='option-btn' onClick={logout}>LOG OUT</li>
                         </ul> :
                         <ul>

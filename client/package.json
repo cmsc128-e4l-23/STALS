@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "npx": "^10.2.2"
+    "npx": "^10.2.2",
+    "react-scripts": "^5.0.1"
   }
 }

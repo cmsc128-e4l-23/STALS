@@ -46,6 +46,7 @@ router.post("/reportAccomm", accommodation.reportAccomm);
 router.post("/addReview", review.addReview);
 router.post("/editReview", review.editReview);
 router.post("/deleteReview", review.deleteReview);
+router.get("/getReview", review.getReview);
 
 //Admin
 router.post("/viewReports", admin.viewReports);

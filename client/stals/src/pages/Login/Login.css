@@ -4,12 +4,11 @@ h1 {
 }
 
 .login-container {
-    margin-top: 70px;
     flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
 } 
   
 .login-form {

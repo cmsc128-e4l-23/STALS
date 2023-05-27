@@ -40,6 +40,11 @@
     margin-top: 15px;
     padding: 10px;
     border:none;
+    font-size: 15px;
+}
+
+#search-bar{
+    margin-top: .5vh;
 }
 
 #search-text:focus{
@@ -50,8 +55,9 @@
     border-radius: 0em 20em 20em 0em;
     height: 40px;
     width: 50px;
-    margin-top: 15px;
     border: none;
+    position: relative;
+    top: -1px;
 }
 
 #right-side-btns{
@@ -64,12 +70,8 @@
 #btn-container{
     
     float: right;
-    margin-top: .5em;
+    margin-top: 1em;
     margin-right: 1em;
-    /* float: right;
-    margin-top: 15px;
-    margin-left: 5%;
-    margin-right: 5%; */
 }
 
 #add-accom{
@@ -88,12 +90,6 @@
 
 .auth-sect{
     float: right;
-    margin-top: .5em;
-    /* float: right;
-    line-height: 40px;
-    color: white;
-    padding-right: 20%;
-    margin-top: 10px; */
 }
 
 .auth-sect button{
@@ -106,6 +102,11 @@
     border: none;
     padding-left: 1.5em;
     padding-right: 1.5em;
+    margin-top: 2.5vh;
+}
+
+.auth-sect button:hover{
+    cursor: pointer;
 }
 
 
@@ -138,7 +139,7 @@
 }
 
 #auth-confirmed{
-    margin-top: .5em;
+    margin-top: 1em;
     color: white;
     line-height: 40px;
     user-select: none;
@@ -148,6 +149,10 @@
 #more-options{
     background-color: rgb(153, 2, 2);
     color: white;
+}
+
+#more-options:hover{
+    cursor: pointer;
 }
 
 #options-menu{
