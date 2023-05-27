@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import  './profile.css';
 const OwnerPage = ({ user }) => {
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
-    const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
-    const handleImageChange = (e) => { //this makes the profile picture changeable when clicked
+    // const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
+    
+    const [imageArray, setImageArray] = useState(null);
+
+    useEffect(() => {
+        const fetchOwnedAccomms = async () => {
+            const response = await fetch('http://localhost:3001/getOwnerAccomms', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({ email: data }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const json = await response.json();
+
+            console.log(json.accommodations);
+
+            if (response.success){
+                setImageArray(json.accommodations);
+            } else {
+                console.log(response.error);
+            }
+        }
+
+        fetchOwnedAccomms();
+    }, [])
+
+
+    //Profile Picture changer
+        //Enables the profile picture to be clicked for modifications
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -17,6 +47,8 @@ const OwnerPage = ({ user }) => {
         }
 
     }
+
+    //Render Page
     return (
         <div style={{ display: "flex", flexDirection: "row",  marginTop: "100px" }}>
                 <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
