@@ -10,6 +10,7 @@ import Profile from './pages/Profile/index';
 import Header from './components/Header';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import BookmarkList from 'pages/BookmarkList';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/your-bookmarks" element={<BookmarkList/>} />
         </Routes> 
       </Router>
     </div>

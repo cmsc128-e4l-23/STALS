@@ -27,8 +27,7 @@ export default function List({email}){
 
 
     return(
-        <>
-        <div>    
+        <div>  
         {accomms.length > 0 ?
                 <div>
                     Active Acommodations:
@@ -73,9 +72,5 @@ export default function List({email}){
                  : <div>No Accommodations found</div>
             }
         </div>
-        <div>
-            
-        </div>
-        </>
     )
 }

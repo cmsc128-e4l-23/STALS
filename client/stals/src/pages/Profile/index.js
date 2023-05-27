@@ -8,9 +8,9 @@ export default function Profile() {
   // Example condition: isAdmin determines whether to show admin page or user page
   const isOwner = true; //boolean to indicate which page will be rendered
   return (
-    <div>
+    <body>
       {isOwner?<OwnerPage/>:<UserPage/>}
-    </div>
+    </body>
   );
 }
 

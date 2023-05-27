@@ -57,6 +57,9 @@ export default function Signup() {
     })
 }
   return (
+    <body>
+
+
     <div className="signup-container">
       <Header />
       <h1>SIGNUP</h1>
@@ -93,5 +96,6 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
     </div>
+    </body>
   );
 }

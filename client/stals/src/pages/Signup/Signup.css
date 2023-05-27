@@ -3,12 +3,11 @@ h1 {
   color: maroon;
 }
 .signup-container {
-  margin-top: 15%;
   flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 67vh;
 } 
 
 .signup-form {
@@ -39,7 +38,7 @@ label {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 15px;
-    width: 80%;
+    width: 95%;
 }
 
 

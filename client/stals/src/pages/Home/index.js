@@ -7,7 +7,7 @@ export default function Home() {
     // extract search parameter from the URL
     const [email, setEmail] = useState('')
     const [isLoggedIn, setLoggedIn] = useState(false)
-
+    const [loading, setLoading] = useState(true)
     const [searchInput] = useSearchParams();
     let data = searchInput.get("search")===null ? "" : searchInput.get("search");
 
@@ -22,12 +22,19 @@ export default function Home() {
             if(isLoggedIn){
                 setEmail(data.email)
             }
+            setLoading(false)
         })
     }, [isLoggedIn]);
 
     return(
-        <>
-            <Body isLoggedIn= {isLoggedIn} email={email} data={data} />
-        </>
+        <body>
+            {loading ?
+            <h3>loading</h3>
+            :
+            <Body isLoggedIn={isLoggedIn} email={email} data={data} />
+
+            }
+            
+        </body>
     );
 }

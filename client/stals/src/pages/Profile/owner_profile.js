@@ -18,7 +18,7 @@ const OwnerPage = ({ user }) => {
 
     }
     return (
-        <div style={{ display: "flex", flexDirection: "row",  marginTop: "100px" }}>
+        <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
                     <div>
                         <label for="file-upload">

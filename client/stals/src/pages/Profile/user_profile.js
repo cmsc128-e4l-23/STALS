@@ -18,7 +18,7 @@ const UserPage = ({ user }) => {
 
     }
     return (
-        <div style={{ display: "flex", flexDirection: "row", border: "2px solid green", marginTop: "100px" }}>
+        <div style={{ display: "flex", flexDirection: "row", border: "2px solid green" }}>
                 <div style={{ display: "flex", flexDirection: "column", width: "400px", border: "2px solid purple"}}>
                     <div>
                         <label for="file-upload">

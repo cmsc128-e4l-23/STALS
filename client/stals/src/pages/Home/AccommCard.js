@@ -9,14 +9,14 @@ import "./Accommodation.css";
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function AccommCard({ data, accomm }) {
+export default function AccommCard({ isLoggedIn, bookmarkList, email, accomm }) {
     let navigate = useNavigate();
 
     const initBtn = () => {
         // if logged in: see if the accommodation is bookmarked
-        if (data.loggedIn) {
-            if (data.bookmark === null || data.bookmark === []) return false; // 
-            const state = data.bookmark.find(a => a === accomm._id);
+        if (isLoggedIn) {
+            if (bookmarkList === [] || bookmarkList === null) return false; // 
+            const state = bookmarkList.find(a => a === accomm._id);
             
             if (state !== undefined) return true;
         }
@@ -24,14 +24,14 @@ export default function AccommCard({ data, accomm }) {
         else return false;
     }
 
-    const [button, setButton] = useState(initBtn());
+    const [bookmarked, setBookmarked] = useState(initBtn());
     
     const addBookmark = (accomm_id) => {
         fetch('http://localhost:3001/bookmarkAccomm', {
             method: 'POST',
             creentials: 'include',
             body: JSON.stringify({
-                email: data.userEmail,
+                email: email,
                 accomm_id: accomm_id
             }),
             headers: {
@@ -41,7 +41,7 @@ export default function AccommCard({ data, accomm }) {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    setButton(true);
+                    setBookmarked(true);
                 } else {
                     alert(body.msg);
                 }
@@ -53,30 +53,30 @@ export default function AccommCard({ data, accomm }) {
             method: 'POST',
             creentials: 'include',
             body: JSON.stringify({
-                email: data.userEmail,
+                user: email,
                 accomm_id: accomm_id
             }),
             headers: {
                 'Content-Type': "application/json"
             }
         })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    setButton(false);
-                } else {
-                    alert('Error');
-                }
+        .then(res => res.json())
+        .then(body => {
+            if (body.success) {
+                setBookmarked(false);
+            } else {
+                alert(body.msg);
+            }
         })
     }
 
     const clickBtn = (id) => {
-        if (!data.loggedIn) { // can't click the button
-            alert("You have to be logged in!"); // change to pop-up
+        if (!isLoggedIn) { // can't click the button
+            alert("Please log in to bookmark this accommodation."); // change to pop-up
             navigate('/login');
         } else {
             // check button value
-            if (button) {
+            if (bookmarked) {
                 removeBookmark(id);
             }
             else {
@@ -89,7 +89,7 @@ export default function AccommCard({ data, accomm }) {
         <div className="body-element">
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
-                {button ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
+                {bookmarked ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
             </IconButton>
         
         {/* image/s */}
