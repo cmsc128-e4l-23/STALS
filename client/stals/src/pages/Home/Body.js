@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import AccommList from "./AccommList";
 import "./Body.css";
+import Loading from "components/Loading";
 
 
 export default function Body({ isLoggedIn, email, data }) {
@@ -31,9 +32,7 @@ export default function Body({ isLoggedIn, email, data }) {
         <div className="body-div">
             {
                 loading ? 
-                <Box alignItems={"center"}>
-                    <CircularProgress />
-                </Box>
+                <Loading />
                 :
                 <>
                 {

@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import List from './List';
+import Loading from "components/Loading";
 
 
 export default function BookmarkList(){
@@ -36,7 +37,7 @@ export default function BookmarkList(){
             
             loading ?
             
-            <div>Loading</div> :
+            <Loading /> :
             <>
                 {userType === "Student" ?
                     <>

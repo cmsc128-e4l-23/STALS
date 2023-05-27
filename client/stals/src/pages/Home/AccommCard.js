@@ -4,6 +4,7 @@ import { IconButton } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import "./Accommodation.css";
+import Loading from "components/Loading";
 
 
 // the accommodation card
@@ -98,7 +99,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     return (
         <>
             {loading ?
-            <h3>Loading. . . </h3>
+            <Loading />
             :
             <div className="body-element">
             {/* bookmark button */}

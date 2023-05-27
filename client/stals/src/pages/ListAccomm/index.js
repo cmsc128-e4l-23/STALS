@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import List from './List';
 import Header from "components/Header";
 import "./index.css";
+import Loading from "components/Loading";
 
 
 export default function AccommodationList(){
@@ -46,7 +47,7 @@ export default function AccommodationList(){
                     
                     loading ?
                     
-                    <div>Loading</div> :
+                    <Loading /> :
                     <div>
                         <div id='user-info'>
                             {name}'s Accommodations

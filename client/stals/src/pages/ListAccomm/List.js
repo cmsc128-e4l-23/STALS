@@ -22,8 +22,9 @@ export default function List({email}){
         .then(res => res.json())
         .then(data => {
             setAccomms(data.accommodations)
-            setLoading(false)
+            
         });
+        setLoading(false)
     }, [email, loading])
 
 

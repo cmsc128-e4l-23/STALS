@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Body from "./Body";
+import Loading from "components/Loading";
 
 
 export default function Home() {
@@ -29,7 +30,7 @@ export default function Home() {
     return(
         <body>
             {loading ?
-            <h3>loading</h3>
+            <Loading />
             :
             <Body isLoggedIn={isLoggedIn} email={email} data={data} />
 

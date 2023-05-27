@@ -2,6 +2,7 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AccommBody from "./AccommBody";
+import Loading from "components/Loading";
 
 
 export default function AccommodationPage() {
@@ -33,7 +34,7 @@ export default function AccommodationPage() {
     return(
         <body>
           {loading ?
-            <h3>Loading . . . </h3>
+            <Loading />
             :
             <AccommBody data={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
           }
