@@ -5,18 +5,20 @@ import AccommCard from "./AccommCard";
 import "./Body.css";
 
 
-export default function Body({ data }) {
-    const [isLoggedIn, setLoggedIn] = useState(null);
+export default function Body({ isLoggedIn, email, data }) {
     const [accommList, udpateAccomm] = useState([]);
     const [bookmarkList, updateBookmark] = useState(null);
     const [fetchedAccomm, updateFetchAccomm] = useState(null);
-    const [userEmail, setUserEmail] = useState(null);
     
     var passData = {
         loggedIn: isLoggedIn,
         bookmark: bookmarkList,
-        userEmail: userEmail
+        userEmail: email
     }
+
+    useEffect(() => {
+        fetchAccomm();
+    }, [])
 
     // updates AccommCard list (accommList) and whether there are AccommCards fetched (fetchedAccomm)
     const updateData = (list) => {
@@ -31,7 +33,7 @@ export default function Body({ data }) {
         fetch('http://localhost:3001/getUserBookmarks', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({email: localStorage.getItem("email")}),
+            body: JSON.stringify({email: email}),
             headers: {
                 'Content-Type': "application/json"
             }
@@ -41,11 +43,10 @@ export default function Body({ data }) {
                 if (body.success) {
                     updateBookmark(body.bookmarks);
                     passData.bookmark = bookmarkList;
-                    setUserEmail(localStorage.getItem("email"));
-                    passData.userEmail = userEmail;
+                    passData.userEmail = email;
                 } else updateBookmark(null);
         })
-    }, [passData, userEmail, bookmarkList]);
+    }, [passData, email, bookmarkList]);
 
     // search
     // use `data` prop
@@ -60,29 +61,14 @@ export default function Body({ data }) {
         })
             .then(res => res.json())
             .then(body => {
-                if (body.success) updateData(body.result);
+                console.log(body)
+                if (body.success) {
+                    updateData(body.result);
+                }
                 else udpateAccomm([]);
             })
     }, [data]);
 
-    // check if logged in
-    useEffect(() => {
-        fetch('http://localhost:3001/checkifloggedin', {
-        method: 'POST',
-        credentials: 'include'
-        })
-        .then(res => res.json())
-        .then(body => {
-            setLoggedIn(body.isLoggedIn);
-            if(body.isLoggedIn){
-                // get bookmarks (type: ObjectID)
-                setLoggedIn(body.isLoggedIn);
-                passData.loggedIn = isLoggedIn;
-                fetchBookmark();
-            }
-            fetchAccomm();
-        })
-    }, [isLoggedIn]);
 
     // loading
     if (fetchedAccomm == null) {
