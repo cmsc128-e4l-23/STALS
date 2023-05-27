@@ -5,7 +5,8 @@ import Image from "../models/Image.js";
 import Accommodation from "../models/Accommodation.js";
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        cb(null,'uploads')
+        const savePath = "../client/stals/src/assets";
+        cb(null,savePath)
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}--${file.originalname}`)
@@ -38,18 +39,19 @@ const uploadImage = async (req, res) => {
         const image = new Image({
             userId: req.body.userId,
             attachedTo: req.body.attachedTo,
+            filename: file.filename,
             img: {
                 data: fs.readFileSync(file.path),
                 contentType: file.mimetype,
             },
         });
         let savedImage = await image.save();
-        fs.unlinkSync(file.path);
+        //fs.unlinkSync(file.path);
         return image;
       });
       const uploadedImages = await Promise.all(imagePromises);
       for(let i = 0; i < uploadedImages.length; i++){
-        imageIds[i] = uploadedImages[i]._id;
+        imageIds[i] = uploadedImages[i].filename;
       }
       let currAccomm = await Accommodation.findById(req.body.attachedTo);
       const updateObject = {
