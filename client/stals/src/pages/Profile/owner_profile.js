@@ -41,7 +41,7 @@ const OwnerPage = ({ user }) => {
 
         fetchOwnedAccomms();
         fetchBookmarks();
-    }, [imageArray])
+    }, [imageArray, bookmarksArray])
 
 
     //Profile Picture changer
