@@ -15,6 +15,7 @@ export default function AccommBody({ data, isLoggedIn }) {
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
 
+
     const fetchOwner = () => {
         fetch('http://localhost:3001/getAccommOwner', {
             method: 'POST',

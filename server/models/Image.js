@@ -11,6 +11,10 @@ const imageSchema = new mongoose.Schema({
 		type : mongoose.SchemaTypes.ObjectId,
         ref : "Accommodation"
 	},
+    filename: {
+        type: String,
+        required: true
+    },
     img:
     {
         data: Buffer,

@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import List from './List';
 import Header from "components/Header";
+import "./index.css";
 
 
 export default function AccommodationList(){
