@@ -2,6 +2,8 @@ import { React, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import List from './List';
 import Header from "components/Header";
+import "./index.css";
+import Loading from "components/Loading";
 
 
 export default function AccommodationList(){
@@ -9,6 +11,7 @@ export default function AccommodationList(){
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState(true);
 
     const [isLoggedIn, setLoggedIn] = useState(null);
@@ -22,8 +25,9 @@ export default function AccommodationList(){
             .then(data => {
                 if(data.isLoggedIn){
                     setLoggedIn(data.isLoggedIn);
-                    setName(localStorage.getItem('username'));
-                    setEmail(localStorage.getItem('email'));
+                    setName(data.name);
+                    setEmail(data.email);
+                    setUserType(data.usertype);
                     setLoading(false);
                 }else{
                     navigate('/home');
@@ -36,22 +40,28 @@ export default function AccommodationList(){
     }, [navigate, isLoggedIn]);
 
     return(
-        <div>
-        {
-            
-            loading ?
-            
-            <div><Header/>Loading</div> :
-            <div>
-                <Header/>
-                <div id='user-info'>
-                    {name}'s Accommodations
+        <body>
+            {userType === "Accommodation Owner" ?
+                <div>
+                {
+                    
+                    loading ?
+                    
+                    <Loading /> :
+                    <div>
+                        <div id='user-info'>
+                            {name}'s Accommodations
+                        </div>
+                        <div id='list-container'>
+                            <List email={email}/>
+                        </div>
+                    </div>
+                }
                 </div>
-                <div id='list-container'>
-                    <List email={email}/>
-                </div>
-            </div>
-        }
-        </div>
-    );
+                :                
+                <h1>404 not found</h1>
+
+            }
+        </body>
+    )
 }

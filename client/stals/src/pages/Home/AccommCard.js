@@ -1,37 +1,50 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import "./Accommodation.css";
+import Loading from "components/Loading";
 
 
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function AccommCard({ data, accomm }) {
+export default function AccommCard({ isLoggedIn, email, accomm }) {
     let navigate = useNavigate();
-
-    const initBtn = () => {
-        // if logged in: see if the accommodation is bookmarked
-        if (data.loggedIn) {
-            if (data.bookmark === null || data.bookmark === []) return false; // 
-            const state = data.bookmark.find(a => a === accomm._id);
-            
-            if (state !== undefined) return true;
+    const [bookmarked, setBookmarked] = useState(false);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetch('http://localhost:3001/checkIfBookmarked', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({
+                    user: email,
+                    accomm: accomm._id   
+                }),
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(body => {
+                if(body.success){
+                    setBookmarked(body.bookmarked)
+                }
+                setLoading(false)
+            })
         }
-        // else return null
-        else return false;
-    }
-
-    const [button, setButton] = useState(initBtn());
+        setLoading(false)
+    }, [])
+    
     
     const addBookmark = (accomm_id) => {
         fetch('http://localhost:3001/bookmarkAccomm', {
             method: 'POST',
-            creentials: 'include',
+            credentials: 'include',
             body: JSON.stringify({
-                email: data.userEmail,
+                email: email,
                 accomm_id: accomm_id
             }),
             headers: {
@@ -41,7 +54,7 @@ export default function AccommCard({ data, accomm }) {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    setButton(true);
+                    setBookmarked(true);
                 } else {
                     alert(body.msg);
                 }
@@ -51,32 +64,32 @@ export default function AccommCard({ data, accomm }) {
     const removeBookmark = (accomm_id) => {
         fetch('http://localhost:3001/removeBookmarkAccomm', {
             method: 'POST',
-            creentials: 'include',
+            credentials: 'include',
             body: JSON.stringify({
-                email: data.userEmail,
+                user: email,
                 accomm_id: accomm_id
             }),
             headers: {
                 'Content-Type': "application/json"
             }
         })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    setButton(false);
-                } else {
-                    alert('Error');
-                }
+        .then(res => res.json())
+        .then(body => {
+            if (body.success) {
+                setBookmarked(false);
+            } else {
+                alert(body.msg);
+            }
         })
     }
 
     const clickBtn = (id) => {
-        if (!data.loggedIn) { // can't click the button
-            alert("You have to be logged in!"); // change to pop-up
+        if (!isLoggedIn) { // can't click the button
+            alert("Please log in to bookmark this accommodation."); // change to pop-up
             navigate('/login');
         } else {
             // check button value
-            if (button) {
+            if (bookmarked) {
                 removeBookmark(id);
             }
             else {
@@ -84,12 +97,15 @@ export default function AccommCard({ data, accomm }) {
             }
         }
     }
-
     return (
-        <div className="body-element">
+        <>
+            {loading ?
+            <Loading />
+            :
+            <div className="body-element">
             {/* bookmark button */}
             <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
-                {button ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
+                {bookmarked ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
             </IconButton>
         
         {/* image/s */}
@@ -120,5 +136,8 @@ export default function AccommCard({ data, accomm }) {
                 </div>
             </div>
         </div>
+
+            }
+        </>
     )
 }

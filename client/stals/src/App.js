@@ -8,6 +8,8 @@ import AccommPage from 'pages/PageAccomm/index';
 import AdminPage from 'pages/Admin';
 import DataAnalytics from 'pages/Data-Analytics';
 import Profile from './pages/Profile/index';
+import Header from './components/Header';
+import BookmarkList from 'pages/BookmarkList';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -50,6 +52,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home data={""} />} />
@@ -59,10 +62,9 @@ function App() {
           <Route path="/your-accommodations" element={<AccommodationList />} />
           <Route path="/accomm" element={<AccommPage />} />
           <Route path="/admin" element={<AdminPage />} />
-          
           <Route path="/admin/data-analytics" element={<DataAnalytics />} />
-          <Route path="/profile-page" element={<Profile/>} />
-
+          <Route path="/profile" element={<Profile/>} />
+          <Route path="/your-bookmarks" element={<BookmarkList/>} />
         </Routes> 
       </Router>
     </div>

@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import Report from "../../models/Report.js"
 import Accommodation from "../../models/Accommodation.js"
-import User from '../../models/User';
+import Visit from "../../models/Visit.js";
+
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'))
 
 const signup_details1 = {
@@ -88,7 +89,7 @@ var accomm_details2 = {
     restrictions: ["no visitors allowed"]
 };
 
-describe("dataAnalytics", () =>{
+describe("POST /approveAccomm", () =>{
     it("Initializing the mock database for testing", async () => {
         await request(app).post("/signup").send(signup_details1)
         await request(app).post("/signup").send(signup_details2)
@@ -97,52 +98,36 @@ describe("dataAnalytics", () =>{
         await request(app).post("/addAccomm").send(accomm_details2)
     })
 
-    describe("GET /dataAnalytics", () => {
-        test("Correct number of Registered users", async () => {
-            const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numRegUsers).toBe(3);
-        })
+    test("Testing correct input", async () => {
+        const accomm_before = (await Accommodation.findOne({name: "White House"}));
+        expect(accomm_before.approved).toBe(false);
 
-        test("Correct number of Accommodation owners", async () => {
-            const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numAccommOwners).toBe(2);
-        })
+        const result = (await request(app).post("/approveAccomm").send({
+            accomm_id: accomm_before._id.toString()
+        })).body
+        
+        expect(result.success).toBe(true);
+        expect(result.msg).toBe("Successfully approve accommodation");
 
-        test("Correct number of Students", async () => {
-            const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numStudents).toBe(1);
-        })
-
-        test("Correct number of approved accommodations", async () => {
-            const data = await request(app).get("/dataAnalytics")
-            expect(data.body.return.numApprovedAccomm).toBe(0);
-        })
+        const accomm_after = (await Accommodation.findOne({name: "White House"}));
+        expect(accomm_after.approved).toBe(true);
     })
-    
-    describe("GET /getPendApp", ()=>{
-        test("Correct number of pending applications", async () => {
-            const data1 = await request(app).get("/getPendApp")
-            expect(data1.body.numPendApps).toBe(2);
-            for(let i=0; i<data1.body.numPendApps; i++){
-                expect(data1.body.pendApps[i].approved).toBe(false);
-            }
 
+    test("Testing incorrect input", async () => {
+        const accomm_before = (await Accommodation.findOne({name: "The House"}));
+        expect(accomm_before.approved).toBe(false);
 
-            const accommID1 = (await Accommodation.findOne({name: "White House"}))._id.toString();
-            await request(app).post("/approveAccomm").send({accomm_id: accommID1});
-            const data2 = await request(app).get("/getPendApp")
-            expect(data2.body.numPendApps).toBe(1);
-            for(let i=0; i<data2.body.numPendApps; i++){
-                expect(data2.body.pendApps[i].approved).toBe(false);
-            }
+        const result = (await request(app).post("/approveAccomm").send({})).body
+        
+        expect(result.success).toBe(false);
+        expect(result.msg).toBe("Unsuccessfully approve accommodation");
+        expect(result.error).toBe("No accomm_id input provided");
 
-            const accommID2 = (await Accommodation.findOne({name: "The House"}))._id.toString();
-            await request(app).post("/approveAccomm").send({accomm_id: accommID2});
-            const data3 = await request(app).get("/getPendApp")
-            expect(data3.body.numPendApps).toBe(0);
-        })
+        const accomm_after = (await Accommodation.findOne({name: "The House"}));
+        expect(accomm_after.approved).toBe(false);
     })
 })
+
 
 afterAll(() => {
     mongoose.connection.db.dropDatabase()

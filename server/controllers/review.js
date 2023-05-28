@@ -142,8 +142,29 @@ const deleteReview = async (req, res) => {
     }
 }
 
+const getReview = async (req, res) => {
+    const reviewId = req.query.id
+    
+    try {
+        let review = await Review.findById(reviewId);
+
+        if(review){
+            let user = await User.findById(review.userId);
+            res.send({ 
+                success: true, 
+                msg: "Review retrieved successfully", 
+                review: review, 
+                user: user.firstName + " " + user.lastName 
+            });
+        }
+    } catch(err) {
+        res.send({ success: false, msg: "Failed to get review", error: err.message })
+    }
+}
+
 export default {
     addReview,
     editReview,
     deleteReview,
+    getReview
 }
