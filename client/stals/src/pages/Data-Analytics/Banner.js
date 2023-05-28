@@ -30,7 +30,8 @@ export default function AnalyticsBanner() {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    setSiteTraffic(body.return[0].numVisits);
+                    if (body.return.length == 0) setSiteTraffic(0);
+                    else setSiteTraffic(body.return[0].numVisits);
                     console.log(body.return[0].numVisits);
                 }
         })

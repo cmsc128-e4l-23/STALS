@@ -23,7 +23,7 @@ function App() {
       credentials: 'include',
       body: JSON.stringify({
         year: date.getFullYear(),
-        month: date.getMonth(),
+        month: date.getMonth()+1,
         day: date.getDate()
       }),
       headers: {
