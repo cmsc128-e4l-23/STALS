@@ -7,6 +7,7 @@ export default function Profile() {
   const data = []; // put the user data here
   // Example condition: isAdmin determines whether to show admin page or user page
   const isOwner = true; //boolean to indicate which page will be rendered
+  
   return (
     <body>
       {isOwner?<OwnerPage/>:<UserPage/>}

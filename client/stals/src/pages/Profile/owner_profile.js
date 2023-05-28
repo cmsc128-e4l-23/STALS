@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import  './profile.css';
+import List from '../ListAccomm/List.js'
 const OwnerPage = ({ user }) => {
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
     const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
@@ -15,8 +16,9 @@ const OwnerPage = ({ user }) => {
         if (file) {
             reader.readAsDataURL(file); // Add this line to read the file contents
         }
-
     }
+
+    
     return (
         <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
@@ -41,9 +43,9 @@ const OwnerPage = ({ user }) => {
                     </a>
                     
                 )
-
                 )}
                 </div>
+                <List email = {"ivlisboa@up.edu.ph"}/>
                 </div>
                 
         </div>

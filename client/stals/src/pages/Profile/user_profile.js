@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import  './profile.css';
+import List from '../ListAccomm/List.js'
 const UserPage = ({ user }) => {
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
     const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
@@ -15,11 +16,12 @@ const UserPage = ({ user }) => {
         if (file) {
             reader.readAsDataURL(file); // Add this line to read the file contents
         }
-
     }
+
+    
     return (
-        <div style={{ display: "flex", flexDirection: "row", border: "2px solid green" }}>
-                <div style={{ display: "flex", flexDirection: "column", width: "400px", border: "2px solid purple"}}>
+        <div style={{ display: "flex", flexDirection: "row"}}>
+                <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
                     <div>
                         <label for="file-upload">
                             <img src={image} alt="Clickable Image" style={{ width: "90%", height: "100%", borderRadius: "50%" }}></img>
@@ -33,14 +35,17 @@ const UserPage = ({ user }) => {
                     </ol>
                 </div>
                 <div>
-                <div><h4>My Favorites</h4></div>
+                <div><h4>My Accommodations</h4></div>
                 <div class="image-grid">
                 {imageArray.map((img,index)=>(
-                    <img src={img} alt="myFavorites"></img>
+                    <a href={"http://localhost:3000/home"}>
+                        <img src={img} alt="myFavorites"></img>
+                    </a>
+                    
                 )
-
                 )}
                 </div>
+                <List email = {"lisboainno@yahoo.com"}/>
                 </div>
                 
         </div>
