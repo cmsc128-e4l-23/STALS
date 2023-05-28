@@ -32,6 +32,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                 if(body.success){
                     setBookmarked(body.bookmarked)
                 }
+                setLoading(false)
             })
         }
         setLoading(false)
