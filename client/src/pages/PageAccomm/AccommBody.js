@@ -85,10 +85,11 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         <div className="img-container">
                             <div className="slider-wrapper">
                                 <div className="images">
-                                {imageList.length > 0 ?
+                                {accommData.photos.length > 0 ?
                                     <>
                                         {accommData.photos.map((photo, index) => {
-                                        //return <img id={"image-" + photo + "-" + index} src={require("../../assets/" + photo)} alt='' />
+                                        var base64Image = photo;
+                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
 
                                         })}
                                     </>
@@ -98,10 +99,11 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                 </div>
                                 {/* slider buttons */}
                                 <div className="slider-btns">
-                                {imageList.length > 0 &&
+                                {accommData.photos.length > 0 &&
                                     <>
                                         {accommData.photos.map((photo, index) => {
-                                        return <div href={"#image-" + photo + "-" + index}></div>
+                                        var base64Image = photo;
+                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
                                         })}
                                     </>
                                 }

@@ -114,7 +114,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                 <div className="img-container">
                     <div className="slider-wrapper">
                         <div className="images">
-                        {imageList.length > 0 ?
+                        {accomm.photos.length > 0 ?
                             <>
                             {accomm.photos.map((photo, index) => {
                                 var base64Image = photo;
@@ -127,10 +127,11 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                         </div>
                         {/* slider buttons */}
                         <div className="slider-btns">
-                        {imageList.length > 0 &&
+                        {accomm.photos.length > 0 &&
                             <>
                             {accomm.photos.map((photo, index) => {
-                                return <a href={"#image-" + photo + "-" + index}></a>
+                                var base64Image = photo;
+                                return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
                             })}
                             </>
                         }
