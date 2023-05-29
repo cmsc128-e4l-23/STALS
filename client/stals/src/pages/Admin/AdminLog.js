@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import "./AdminLog.css"
+import ReportModal from "./ReportModal.js";
 
 export default function AdminLog(){
 
@@ -31,11 +32,11 @@ export default function AdminLog(){
         });
     })
 
-    const closeReport = (_id) => {
+    const closeReport = (report) => {
         fetch('http://localhost:3001/resolveReport', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify(report)
         })
         .then(res => res.json())
         .then(data => {
@@ -45,11 +46,11 @@ export default function AdminLog(){
         });
     }
 
-    const approveAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+    const approveAccom = (accom) => {
+        fetch('http://localhost:3001/unarchiveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify(accom)
         })
         .then(res => res.json())
         .then(data => {
@@ -59,11 +60,11 @@ export default function AdminLog(){
         });
     }
 
-    const rejectAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+    const rejectAccom = (accom) => {
+        fetch('http://localhost:3001/deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify(accom)
         })
         .then(res => res.json())
         .then(data => {
@@ -72,9 +73,12 @@ export default function AdminLog(){
             }
         });
     }
+
+    const [modalOpen, setModalOpen] = useState(false);
 
     return(
         <>
+
             <div className="reports-box">
             {reports.length > 0 ? <div>
                     <h2>Reports</h2>
@@ -83,7 +87,8 @@ export default function AdminLog(){
                             reports.map((report)=>{
                                 return(
                                     <>
-                                        <div className="report-item"><span>{report.content}</span><button onClick={closeReport(report._id)}>CLOSE</button></div>
+                                        {modalOpen && <ReportModal setModalOpen={setModalOpen} report={report} />}
+                                        <div className="report-item"><span>{report.content}</span><button onClick={closeReport(report)}>CLOSE</button></div>
                                     </>
                                 )
                             })
@@ -104,7 +109,7 @@ export default function AdminLog(){
                             accomRequests.map((accommodation)=>{
                                 return(
                                     <>
-                                        <div className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation._id)}>APPROVE</button><button onClick={rejectAccom(accommodation._id)}>DENY</button></div>
+                                        <div onClick={() => {navigate("/accomm?id=" + accommodation._id)}} className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation)}>APPROVE</button><button onClick={rejectAccom(accommodation)}>DENY</button></div>
                                     </>
                                 )
                             })
