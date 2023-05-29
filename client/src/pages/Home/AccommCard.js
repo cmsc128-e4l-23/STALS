@@ -10,11 +10,10 @@ import Loading from '../../components/Loading';
 // the accommodation card
 // displays: photos of the accommodation
 //           details below
-export default function AccommCard({ isLoggedIn, email, accomm }) {
+export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
     let navigate = useNavigate();
     const [bookmarked, setBookmarked] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [imageList, setImageList] = useState([]);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -83,17 +82,16 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     }
 
     const clickBtn = (id) => {
-        if (!isLoggedIn) { // can't click the button
-            alert("Please log in to bookmark this accommodation."); // change to pop-up
-            navigate('/login');
-        } else {
-            // check button value
+        if(isLoggedIn && userType === "Student"){
             if (bookmarked) {
                 removeBookmark(id);
             }
             else {
                 addBookmark(id);
             }
+        }
+        else { // can't click the button
+            alert("Only logged in students can bookmark accommodations.");
         }
     }
     return (

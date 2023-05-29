@@ -10,6 +10,7 @@ export default function Home() {
     const cookies = new Cookies();
     const [email, setEmail] = useState('')
     const [isLoggedIn, setLoggedIn] = useState(false)
+    const [userType, setUserType] = useState('')
     const [loading, setLoading] = useState(true)
     const [searchInput] = useSearchParams();
     let data = searchInput.get("search")===null ? "" : searchInput.get("search");
@@ -28,6 +29,7 @@ export default function Home() {
             setLoggedIn(data.isLoggedIn);
             if(isLoggedIn){
                 setEmail(data.email)
+                setUserType(data.usertype)
             }
             setLoading(false)
         })
@@ -38,7 +40,7 @@ export default function Home() {
             {loading ?
             <Loading />
             :
-            <Body isLoggedIn={isLoggedIn} email={email} data={data} />
+            <Body isLoggedIn={isLoggedIn} userType={userType} email={email} data={data} />
 
             }
             
