@@ -37,14 +37,13 @@
     border-radius: 20em 0 0 20em;
     height: 20px;
     width: calc(100% - 70px);
-    margin-top: 15px;
     padding: 10px;
     border:none;
     font-size: 15px;
 }
 
 #search-bar{
-    margin-top: .5vh;
+    margin-top: 1em;
 }
 
 #search-text:focus{
@@ -57,7 +56,7 @@
     width: 50px;
     border: none;
     position: relative;
-    top: -1px;
+    top: -2px;
 }
 
 #right-side-btns{
@@ -90,6 +89,7 @@
 
 .auth-sect{
     float: right;
+    margin-top: 1em;
 }
 
 .auth-sect button{
@@ -102,13 +102,11 @@
     border: none;
     padding-left: 1.5em;
     padding-right: 1.5em;
-    margin-top: 2.5vh;
 }
 
 .auth-sect button:hover{
     cursor: pointer;
 }
-
 
 #auth-confirmed:hover ul{
     margin-top: 10px;
