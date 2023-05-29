@@ -130,7 +130,7 @@ export default function Header() {
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                {((showOptions || isLoggedIn) && Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
+                {((showOptions && Object.keys(options).length !== 0) || isLoggedIn)  && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
