@@ -242,7 +242,7 @@
     overflow-y: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
+    -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
     white-space: pre-wrap; /* let the text wrap preserving spaces */
 }
 
@@ -256,7 +256,7 @@
 
 
 .review-container {
-    width: 81vw;
+    width: 30vw;
     display: flex;
     flex-direction: column;
     min-height: 10vh;
