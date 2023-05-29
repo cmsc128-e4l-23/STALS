@@ -10,7 +10,7 @@ export default function ArchiveButton({ accommodation, setLoading }){
 
     return(
         <>
-        {modalOpen && <ArchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
+        {modalOpen && <ArchiveModal modalOpen={modalOpen} setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
         
         <button className='archive-btn' onClick={() => setModalOpen(true)}> 
             Archive

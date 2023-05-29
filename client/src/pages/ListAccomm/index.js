@@ -44,7 +44,7 @@ export default function AccommodationList(){
     }, [navigate, isLoggedIn]);
 
     return(
-        <body>
+        <body className="accomm-list-body">
             {userType === "Accommodation Owner" ?
                 <div>
                 {
@@ -54,7 +54,7 @@ export default function AccommodationList(){
                     <Loading /> :
                     <div>
                         <div id='user-info'>
-                            {name}'s Accommodations
+                            <h1>{name}'s Accommodations</h1>
                         </div>
                         <div id='list-container'>
                             <List email={email}/>
