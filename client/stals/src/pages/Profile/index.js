@@ -10,8 +10,8 @@ export default function Profile() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [usertype, setUserType] = useState('');
-  const [loading, isLoading] = useState(true);
+  const [userType, setUserType] = useState('');
+  const [loading, setLoading] = useState(true);
   const [isLoggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Profile() {
         }
       
       })
-  setLoading(false);
+    setLoading(false);
   }
 
     , [isLoggedIn]);
