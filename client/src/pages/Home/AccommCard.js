@@ -117,8 +117,8 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                         {imageList.length > 0 ?
                             <>
                             {accomm.photos.map((photo, index) => {
-                                var base64Image = photo.toString('base64');
-                                return <img id={"image-"+ index} src={base64Image} alt='' />
+                                var base64Image = photo;
+                                return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
                             })}
                             </>
                             :
