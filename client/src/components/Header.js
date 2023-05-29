@@ -8,6 +8,8 @@ import Cookies from 'universal-cookie';
 export default function Header() {
     let navigate = useNavigate();
 
+    const cookies = new Cookies();
+    console.log(cookies.get("authToken"));
     const [name, setName] = useState(null);
     const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
@@ -16,19 +18,24 @@ export default function Header() {
     const [searchInput, setInput] = useState("");
 
     useEffect(() => {
-        fetch('http://localhost:3001/checkifloggedin', {
-        method: 'POST',
-        credentials: 'include'
+        let credentials = {
+          auth: cookies.get("authToken")
+        }
+        console.log(credentials);
+        fetch(process.env.REACT_APP_API + 'checkifloggedin', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials)
         })
         .then(res => res.json())
         .then(data => {
-            setLoggedIn(data.isLoggedIn)
-            if(isLoggedIn){
-                setName(data.name)
-                setUserType(data.usertype)
-            }
+          setLoggedIn(data.isLoggedIn);
+          if(data.isLoggedIn){
+            setName(data.name)
+            setUserType(data.usertype)
+          }
         })
-    });
+      }, []);
 
     const logout = (e) => {
         e.preventDefault();

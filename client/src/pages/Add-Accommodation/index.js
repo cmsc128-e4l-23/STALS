@@ -5,10 +5,11 @@ import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
 import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
+import Cookies from "universal-cookie";
 
 export default function AddAccommodation() {
   let navigate = useNavigate();
-
+  const cookies = new Cookies();
   const [page, setPage] = useState(0);
   const [isAccommOwner, setAccommOwner] = useState(false);
   const [email, setEmail] = useState('');
@@ -36,9 +37,13 @@ export default function AddAccommodation() {
   const {photos, ...noPhotos} = formData;
   
   useEffect(() => {
-    fetch("http://localhost:3001/checkifloggedin", {
-      method: "POST",
-      credentials: "include",
+    let credentials = {
+      auth: cookies.get("authToken")
+    }
+    fetch(process.env.REACT_APP_API + 'checkifloggedin', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials)
     })
       .then((res) => res.json())
       .then((data) => {

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import List from './List';
 import "./index.css";
 import Loading from '../../components/Loading';
+import Cookies from "universal-cookie";
 
 
 export default function AccommodationList(){
     let navigate = useNavigate();
-
+    const cookies = new Cookies();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState('');
@@ -16,9 +17,13 @@ export default function AccommodationList(){
     const [isLoggedIn, setLoggedIn] = useState(null);
     useEffect(() => {
         try{
-            fetch('http://localhost:3001/checkifloggedin', {
-            method: 'POST',
-            credentials: 'include'
+            let credentials = {
+                auth: cookies.get("authToken")
+              }
+            fetch(process.env.REACT_APP_API + 'checkifloggedin', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(credentials)
             })
             .then(res => res.json())
             .then(data => {

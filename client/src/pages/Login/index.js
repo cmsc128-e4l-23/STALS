@@ -5,25 +5,29 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   let navigate = useNavigate();
-  
+  const cookies =  new Cookies();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/checkifloggedin', {
+    let credentials = {
+      auth: cookies.get("authToken")
+    }
+    fetch(process.env.REACT_APP_API + 'checkifloggedin', {
       method: 'POST',
-      credentials: 'include'
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials)
     })
     .then(res => res.json())
     .then(data => {
       setLoggedIn(data.isLoggedIn);
-      if(isLoggedIn){
+      if(data.isLoggedIn){
         navigate('/home')
         navigate(0)
       }
     })
-  });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ export default function Login() {
       password: password
     }
 
-    fetch('http://localhost:3001/login', {
+    fetch(process.env.REACT_APP_API + 'login', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials)
@@ -45,8 +49,9 @@ export default function Login() {
           "authToken",
           data.token,
           {
-            path: "localhost:3001/",
-            sameSite: "lax"
+            path: process.env.REACT_APP_API,
+            sameSite: "none",
+            secure: true,
           }
         )
         navigate('/home')

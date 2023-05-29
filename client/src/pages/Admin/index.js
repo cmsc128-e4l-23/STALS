@@ -1,16 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import Loading from '../../components/Loading';
 import Body from './Body';
+import Cookies from "universal-cookie";
 
 
 const AdminPage = () => {
+  const cookies = new Cookies();
   const [isAdmin, setAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/checkifloggedin', {
+    let credentials = {
+      auth: cookies.get("authToken")
+    }
+    fetch(process.env.REACT_APP_API + 'checkifloggedin', {
       method: 'POST',
-      credentials: 'include'
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials)
     })
     .then(res => res.json())
     .then(data => {
