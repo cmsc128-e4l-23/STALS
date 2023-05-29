@@ -113,7 +113,8 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                     <div className="slider-wrapper">
                         <div className="images">
                             {accomm.photos.map((photo, index) => {
-                                // return <img id={"image-" + photo + "-" + index} src={require("../../assets/" + photo)} alt='' />
+                                var base64Image = photo.toString('base64');
+                                return <img id={"image-"+ index} src={base64Image} alt='' />
                             })}
                         </div>
                         {/* slider buttons */}

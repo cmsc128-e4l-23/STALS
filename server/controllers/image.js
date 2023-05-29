@@ -51,7 +51,7 @@ const uploadImage = async (req, res) => {
       });
       const uploadedImages = await Promise.all(imagePromises);
       for(let i = 0; i < uploadedImages.length; i++){
-        imageIds[i] = uploadedImages[i].filename;
+        imageIds[i] = uploadedImages[i].img.data;
       }
       let currAccomm = await Accommodation.findById(req.body.attachedTo);
       const updateObject = {
