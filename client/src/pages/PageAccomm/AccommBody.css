@@ -239,7 +239,7 @@
     margin-top: 3%;
     font-size: 13px;
     line-height: 150%;
-    overflow: hidden;
+    overflow-y: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
@@ -249,7 +249,7 @@
 .see-all-button {
     height: 30px;
     width: 200px;
-    margin-left: 30%;
+    margin-left: 5%;
     background-color: white;
     border-radius: 10px 10px 10px 10px;
 }

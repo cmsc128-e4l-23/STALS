@@ -1,0 +1,10 @@
+.review-title {
+    display: flex;
+    margin-left: 40%;
+    margin-bottom: 0;
+}
+
+.no-reviews {
+    display: flex;
+    margin-left: 39.6%;
+}
