@@ -1,0 +1,39 @@
+.delete-btn{
+    background-color: rgb(150,0,0);
+    color: white;
+
+}
+
+.archive-btn, .delete-btn, .unarchive-btn{
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    position: relative;
+}
+
+.archive-btn, .unarchive-btn:hover{
+    background-color: rgb(47, 47, 47);
+    color: white;
+}
+
+.archive-btn:hover, .delete-btn:hover, .unarchive-btn{
+    cursor: pointer;
+    background-color: white;
+}
+
+.archive-btn:hover, .unarchive-btn{
+    border: 1px solid rgb(47, 47, 47);
+    color: rgb(47,47,47);
+}
+
+.delete-btn:hover{
+    color: rgb(150,0,0);
+    border: 1px solid rgb(150,0,0);
+}
+
+.btn-icon{
+    margin-left: 10px;
+}

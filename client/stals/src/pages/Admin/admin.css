@@ -1,0 +1,81 @@
+.separator {
+  margin-top: 5%;
+}
+
+.container {
+  width: 10%;
+  height: 100px;
+  border: 1px solid black;
+  display: inline-block;
+  margin-right: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.container h2 {
+  margin-top: 20px;
+}
+
+/* Application Containers */
+.app-container {
+  width: 45%;
+  height: 200px;
+  border: 1px solid black;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.app-container h2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button-container-left {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.button-container-right {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.button-container-left button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.button-container-right button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.button-container-left button.accept {
+  background-color: #4CAF50;
+}
+
+.button-container-right button.decline {
+  background-color: #f44336;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container, .app-container {
+    width: 100%;
+    margin-right: 0;
+  }
+}

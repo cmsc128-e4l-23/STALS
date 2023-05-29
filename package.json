@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "mongosh": "^1.8.2",
+    "react": "^18.2.0",
+    "react-scripts": "^5.0.1"
+  },
+  "scripts": {
+    "build": "npm run -s build-server & npm run -s build-client & npm start",
+    "build-client": "cd client & npm i & cd stals & npm i",
+    "build-server": "cd server & npm i",
+    "start": "start npm run start-server && npm run start-client",
+    "start-server": "cd server & npm start",
+    "start-client": "cd client/stals & npm start"
+  }
+}
