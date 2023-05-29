@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import  './profile.css';
 import List from '../ListAccomm/List.js'
 const UserPage = ({ user }) => {
@@ -41,6 +41,7 @@ const UserPage = ({ user }) => {
                 alert("An error has occurred");
             })
     }, []);
+
     console.log(userData);
     return (
         <div style={{ display: "flex", flexDirection: "row", border: "2px solid green" }}>
