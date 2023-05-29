@@ -47,10 +47,10 @@ export default function AdminLog(){
     }
 
     const approveAccom = (accom) => {
-        fetch('http://localhost:3001/unarchiveAccomm', {
+        fetch('http://localhost:3001/approveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(accom)
+            body: JSON.stringify({accomm_id: accom._id})
         })
         .then(res => res.json())
         .then(data => {
