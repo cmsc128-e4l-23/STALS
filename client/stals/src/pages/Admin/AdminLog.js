@@ -32,8 +32,12 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             setAccoms(data.pendApps)
-        });
-    })
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        ;
+    }, [])
 
     const closeReport = (report) => {
         fetch('http://localhost:3001/resolveReport', {
@@ -115,8 +119,8 @@ export default function AdminLog(){
                             accomRequests.map((accommodation)=>{
                                 return(
                                     <>
-                                        <div onClick={() => {navigate("/accomm?id=" + accommodation._id)}} className="add-requests-item">
-                                            <span>{accommodation.title}</span>
+                                        <div  className="add-requests-item">
+                                            <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation.name}</span>
                                             <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
                                             <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
                                         </div>
