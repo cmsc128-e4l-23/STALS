@@ -5,7 +5,7 @@ import Image from "../models/Image.js";
 import Accommodation from "../models/Accommodation.js";
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        const savePath = "/test";
+        const savePath = "./test";
         cb(null,savePath)
     },
     filename: (req, file, cb) => {
