@@ -43,7 +43,7 @@ export default function Profile() {
       <>
       {userType === "Accommodation Owner" ? <OwnerPage user={email} /> : <UserPage user={email} />}
       </>
-
+    }
     </div>
   );
 }
