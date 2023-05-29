@@ -46,7 +46,7 @@ export default function AdminLog(){
     }
 
     const approveAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+        fetch('http://localhost:3001/approveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({_id: _id})
@@ -54,7 +54,7 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             if(!data.success){
-                alert(data.message);
+                alert(data.msg);
             }
         });
     }
@@ -104,7 +104,7 @@ export default function AdminLog(){
                             accomRequests.map((accommodation)=>{
                                 return(
                                     <>
-                                        <div className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation._id)}>APPROVE</button><button onClick={rejectAccom(accommodation._id)}>DENY</button></div>
+                                        <div className="add-requests-item"><span>{accommodation.name}</span><button onClick={approveAccom(accommodation._id)}>APPROVE</button><button onClick={rejectAccom(accommodation._id)}>DENY</button></div>
                                     </>
                                 )
                             })
