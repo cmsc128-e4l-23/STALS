@@ -49,6 +49,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         .then(body => {
             if (body.success){
                 setAccommData(body.accommodation)
+                console.log(accommData)
                 fetchOwner(data);
             }
             else {

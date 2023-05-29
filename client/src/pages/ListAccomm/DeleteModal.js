@@ -1,7 +1,12 @@
 import React from "react";
 import "./Modal.css";
+import "./Button.css"
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-export default function DeleteModal({ setModalOpen, setLoading, accommodation }) {
+export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accommodation }) {
     const deleteAccomm = () => {
         fetch(process.env.REACT_APP_API + 'deleteAccomm', {
             method: 'POST',
@@ -21,38 +26,69 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation })
 
 
     return (
-        <div className="modalBackground">
-            <div className="modalContainer">
-                <div className="titleCloseBtn">
-                    <button
-                        onClick={() => {
-                        setModalOpen(false);
-                        }}
-                    >
-                        X
-                    </button>
-                </div>
-                <div className="title">
-                    <h1>Are You Sure You Want to Delete?</h1>
-                </div>
-                <div className="footer">
-                    <button
-                        onClick={() => {
-                            setModalOpen(false);
-                        }}
-                        id="cancelBtn"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={() => {
-                            deleteAccomm();
-                        }} 
-                    >
-                        Continue
-                    </button>
-                </div>
-            </div>
-        </div>
+        // <div className="modalBackground">
+        //     <div className="modalContainer">
+        //         <div className="titleCloseBtn">
+        //             <button
+        //                 onClick={() => {
+        //                 setModalOpen(false);
+        //                 }}
+        //             >
+        //                 X
+        //             </button>
+        //         </div>
+        //         <div className="title">
+        //             <h1>Are You Sure You Want to Delete?</h1>
+        //         </div>
+        //         <div className="footer">
+        //             <button
+        //                 onClick={() => {
+        //                     setModalOpen(false);
+        //                 }}
+        //                 id="cancelBtn"
+        //             >
+        //                 Cancel
+        //             </button>
+        //             <button
+        //                 onClick={() => {
+        //                     deleteAccomm();
+        //                 }} 
+        //             >
+        //                 Continue
+        //             </button>
+        //         </div>
+        //     </div>
+        // </div>
+
+        <Dialog
+            open={modalOpen}
+            onClose={() => {setModalOpen(false)}}
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-description"
+        >
+            <DialogTitle id="delete-dialog-title">
+                {"Are You Sure You Want to Delete?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="delete-dialog-description">
+                    <div className="footer">
+                        <button className="delete-btn"
+                            onClick={() => {
+                                setModalOpen(false);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button className="archive-btn"
+                            onClick={() => {
+                                deleteAccomm();
+                            }} 
+                        >
+                            Continue
+                        </button>
+                    </div>
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>
     );
 }

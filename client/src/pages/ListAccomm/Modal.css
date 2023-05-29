@@ -48,7 +48,7 @@
     text-align: center;
   }
   
-  .modalContainer .footer {
+  .footer {
     flex: 20%;
     display: flex;
     justify-content: center;
