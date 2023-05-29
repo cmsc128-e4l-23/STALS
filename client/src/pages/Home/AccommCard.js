@@ -14,6 +14,8 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     let navigate = useNavigate();
     const [bookmarked, setBookmarked] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [imageList, setImageList] = useState([]);
+
     useEffect(() => {
         if (isLoggedIn) {
             fetch(process.env.REACT_APP_API + 'checkIfBookmarked', {
@@ -112,16 +114,26 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                 <div className="img-container">
                     <div className="slider-wrapper">
                         <div className="images">
+                        {imageList.length > 0 ?
+                            <>
                             {accomm.photos.map((photo, index) => {
                                 var base64Image = photo.toString('base64');
                                 return <img id={"image-"+ index} src={base64Image} alt='' />
                             })}
+                            </>
+                            :
+                            <Loading />
+                        }   
                         </div>
                         {/* slider buttons */}
                         <div className="slider-btns">
+                        {imageList.length > 0 &&
+                            <>
                             {accomm.photos.map((photo, index) => {
                                 return <a href={"#image-" + photo + "-" + index}></a>
                             })}
+                            </>
+                        }
                         </div>
                     </div>
                 </div>

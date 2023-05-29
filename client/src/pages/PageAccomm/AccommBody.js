@@ -8,11 +8,13 @@ import ReportForm from "./ReportForm";
 import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
 import ReviewList from "./ReviewList";
+import Loading from "../../components/Loading";
 
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
+    cosnt [imageList, setImageList] = useState([]);
 
 
     const fetchOwner = () => {
@@ -83,15 +85,26 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         <div className="img-container">
                             <div className="slider-wrapper">
                                 <div className="images">
-                                    {accommData.photos.map((photo, index) => {
+                                {imageList.length > 0 ?
+                                    <>
+                                        {accommData.photos.map((photo, index) => {
                                         //return <img id={"image-" + photo + "-" + index} src={require("../../assets/" + photo)} alt='' />
-                                    })}
+
+                                        })}
+                                    </>
+                                    :
+                                    <Loading />
+                                }
                                 </div>
                                 {/* slider buttons */}
                                 <div className="slider-btns">
-                                    {accommData.photos.map((photo, index) => {
+                                {imageList.length > 0 &&
+                                    <>
+                                        {accommData.photos.map((photo, index) => {
                                         return <div href={"#image-" + photo + "-" + index}></div>
-                                    })}
+                                        })}
+                                    </>
+                                }
                                 </div>
                             </div>
                         </div>
