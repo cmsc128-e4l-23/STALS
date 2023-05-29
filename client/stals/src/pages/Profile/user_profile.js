@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import  './profile.css';
 import List from '../ListAccomm/List.js'
-const UserPage = ({ user }) => {
+const UserPage = ({ email }) => {
     const [userData, setUserData] = useState({});
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
     const [imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg", "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
@@ -24,7 +24,7 @@ const UserPage = ({ user }) => {
         fetch('http://localhost:3001/getUserBasicDetails', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({ email: user }),
+            body: JSON.stringify({ email: email }),
             headers: {
                 'Content-Type': "application/json"
             }
@@ -42,7 +42,6 @@ const UserPage = ({ user }) => {
             })
     }, []);
 
-    console.log(userData);
     return (
         <div style={{ display: "flex", flexDirection: "row", border: "2px solid green" }}>
             <div style={{ display: "flex", flexDirection: "column", width: "400px", border: "2px solid purple" }}>
@@ -54,7 +53,7 @@ const UserPage = ({ user }) => {
                 </div>
                 <ol>
                     <li>{userData.firstName}</li>
-                    <li>{user}</li>
+                    <li>{email}</li>
                     <li>{userData.phoneNumber}</li>
                 </ol>
             </div>

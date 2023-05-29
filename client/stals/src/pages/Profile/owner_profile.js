@@ -2,48 +2,69 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import  './profile.css';
 import List from '../ListAccomm/List.js'
-const OwnerPage = ({ user }) => {
+const OwnerPage = ({ email }) => {
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
     // const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
     
-    const [imageArray, setImageArray] = useState(null);
-    const [bookmarksArray, setBookmarksArray] = useState(null);
+    const [accomms, setAccomms] = useState(true);
+    const [imageArray, setImageArray] = useState([]);
+    const [bookmarksArray, setBookmarks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    //Getting fetched owned accommodations
     useEffect(() => {
         const fetchOwnedAccomms = async () => {
             const response = await fetch('http://localhost:3001/getOwnerAccomms', {
                 method: 'POST',
                 credentials: 'include',
-                body: JSON.stringify({ email: user.email }),
+                body: JSON.stringify({ email: email }),
                 headers: {
                     'Content-Type': 'application/json'
                 },
             });
             const json = await response.json();
+            console.log("ETO UNG JSON = ",json);
             if (response.success){
                 setImageArray(json.accommodations);
-            }
-        }
-
-        const fetchBookmarks = async () => {
-            const response = await fetch('http://localhost:3001/getUserBookmarks', {
-                method: 'POST',
-                credentials: 'include',
-                body: JSON.stringify({ email: user.email }),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            const json = await response.json();
-            if(response.success){
-                setBookmarksArray(json.accommodations);
+                setLoading(false);
             }
         }
 
         fetchOwnedAccomms();
-        fetchBookmarks();
     }, [imageArray, bookmarksArray])
 
+    // //Getting user bookmarks for favorites list
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/getUserBookmarks', {
+    //     method: 'POST',
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({email: email})
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         setAccomms(data.bookmarks)
+    //         setLoading(false)   
+    //     });
+        
+    // }, [])
+
+    // useEffect(()=>{
+    //     if(!loading){
+    //         accomms.map((id) => {
+    //             fetch('http://localhost:3001/getAccommFullDetails',{
+    //                 method: 'POST',
+    //                 headers: { "Content-Type": "application/json" },
+    //                 body: JSON.stringify({_id: id})
+    //             }).then(res => res.json())
+    //             .then(data => {
+    //                 console.log("print this "+data.accommodation.name)
+    //                 const newBookmark = data.accommodation
+    //                 setBookmarks((prevBookmarks) => [...prevBookmarks, newBookmark]);
+    //             });
+    //         })
+    //     }
+       
+    // },[email,loading]);
 
     //Profile Picture changer
         //Enables the profile picture to be clicked for modifications
@@ -71,7 +92,7 @@ const OwnerPage = ({ user }) => {
                         <input id="file-upload" type="file" style={{ display: "none" }} accept="image/*" onChange={handleImageChange}></input>
                     </div>
                     <ol>
-                    <li>{ user.name }</li>  
+                    <li>name</li>  
                     <li>email</li>
                     <li>number</li>
                     </ol>
@@ -87,7 +108,7 @@ const OwnerPage = ({ user }) => {
                 )
                 )}
                 </div>
-                <List email = {"ivlisboa@up.edu.ph"}/>
+                <List email = {email}/>
                 </div>
                 
         </div>

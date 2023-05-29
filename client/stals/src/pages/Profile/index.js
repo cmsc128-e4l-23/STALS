@@ -15,7 +15,6 @@ export default function Profile() {
   const [isLoggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
-
     fetch('http://localhost:3001/checkifloggedin', {
       method: 'POST',
       credentials: 'include'
@@ -28,20 +27,17 @@ export default function Profile() {
           setEmail(data.email);
           setUserType(data.usertype);
         }
-      
+        setLoading(false);
       })
-    setLoading(false);
-  }
-
-    , [isLoggedIn]);
-
+  }, [isLoggedIn]);
+  
   return (
     <div>
     { loading ?
       <h3> Loading . . . . </h3>
       :
       <>
-      {userType === "Accommodation Owner" ? <OwnerPage user={email} /> : <UserPage user={email} />}
+      {userType === "Accommodation Owner" ? <OwnerPage email={email} /> : <UserPage email={email} />}
       </>
     }
     </div>

@@ -4,6 +4,7 @@ import Accommodation from "../models/Accommodation.js";
 const getOwnerAccomms = (req, res) => {
     let user_details = req.body;
 
+    console.log("THIS IS THE USER DETAILS = ", user_details);
     User.findOne({ email: user_details.email })
     .then((document) => {
         if(!document){
