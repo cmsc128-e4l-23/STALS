@@ -53,9 +53,9 @@ export default function AccommodationList(){
                     
                     <Loading /> :
                     <div>
-                        <div id='user-info'>
+                        <h1 id='user-info'>
                             {name}'s Accommodations
-                        </div>
+                        </h1>
                         <div id='list-container'>
                             <List email={email}/>
                         </div>
