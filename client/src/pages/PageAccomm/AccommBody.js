@@ -18,7 +18,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const fetchOwner = () => {
         fetch(process.env.REACT_APP_API + 'getAccommOwner', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({ _id: data }),
             headers: {
                 'Content-Type': "application/json"

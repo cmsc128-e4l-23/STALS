@@ -18,7 +18,6 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
         if (isLoggedIn) {
             fetch(process.env.REACT_APP_API + 'checkIfBookmarked', {
                 method: 'POST',
-                credentials: 'include',
                 body: JSON.stringify({
                     user: email,
                     accomm: accomm._id   
@@ -42,7 +41,6 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     const addBookmark = (accomm_id) => {
         fetch(process.env.REACT_APP_API + 'bookmarkAccomm', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({
                 email: email,
                 accomm_id: accomm_id
@@ -64,7 +62,6 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     const removeBookmark = (accomm_id) => {
         fetch(process.env.REACT_APP_API + 'removeBookmarkAccomm', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({
                 user: email,
                 accomm_id: accomm_id
