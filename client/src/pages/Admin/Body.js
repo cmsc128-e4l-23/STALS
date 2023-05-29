@@ -1,5 +1,7 @@
 import React from 'react';
 import './admin.css';
+import AdminLog from './AdminLog';
+
 
 const Body = () => {
     return (
@@ -20,7 +22,7 @@ const Body = () => {
           <h2>D</h2>
         </div>
         <div></div> <div className='separator'></div> 
-            <div className="app-container">
+            {/* <div className="app-container">
                 <h2>Application 1</h2>
                 <div className="button-container-left">
                     <button className="accept">Accept</button>
@@ -38,7 +40,8 @@ const Body = () => {
                 <div className='button-container-right'>
                     <button className="decline">Decline</button>
                 </div>
-        </div>
+        </div> */}
+        <AdminLog />
       </div>
     );
   };
