@@ -8,7 +8,6 @@ import AccommPage from 'pages/PageAccomm/index';
 import AdminPage from 'pages/Admin';
 import Profile from './pages/Profile/index';
 import Header from './components/Header';
-import AdminLog from 'pages/Admin/AdminLog';
 
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import BookmarkList from 'pages/BookmarkList';
@@ -30,7 +29,6 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/your-bookmarks" element={<BookmarkList/>} />
-          <Route path="/admin-log-test" element={<AdminLog/>} />
         </Routes> 
       </Router>
     </div>
