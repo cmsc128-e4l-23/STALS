@@ -87,7 +87,7 @@ const logIn = async (req, res) => {
 //else, returns an isLoggedIn value of false
 const checkIfLoggedIn = async (req, res) => {
     //check if there are cookies
-    console.log(req.cookies);
+    console.log(req);
     if (!req.cookies || !req.cookies.authToken) {
         return res.send({ isLoggedin: false, error: "No cookies found" });
     }
