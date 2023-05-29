@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DeleteButton from "./DeleteButton";
 import ArchiveButton from "./ArchiveButton";
 import UnarchiveButton from "./UnarchiveButton";
+import './index.css'
 
 
 
@@ -27,24 +28,26 @@ export default function List({email}){
 
 
     return(
-        <div>  
+        <div id="lists">  
         {accomms.length > 0 ?
                 <div>
-                    Active Acommodations:
+                    <h2>Active Acommodations:</h2>
                     {
                         accomms.map(
                             (accomm) => {
                                 return(
-                                    <>{
-                                        accomm.archived === false &&
+                                    <ul>{
+                                        (!accomm.archived && accomm.approved) &&
                                     
                                         <li>
-                                            {accomm.name}
-                                            <ArchiveButton accommodation={accomm} setLoading={setLoading} />
-                                            <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                            <div id='li-container'>
+                                                <h3 id='accomm-name'>{accomm.name}</h3>
+                                                <ArchiveButton accommodation={accomm} setLoading={setLoading} />
+                                                <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                            </div>
                                         </li>
                                     }   
-                                    </>
+                                    </ul>
                                 )
                                     
                                     
@@ -52,19 +55,43 @@ export default function List({email}){
                             }
                         )
                     }
-                    <br />
-                    Archived Acommodations:
+                    <h2>Archived Acommodations:</h2>
                     {
                         accomms.map(
                             (accomm) => {
-                            return(<>{
-                                accomm.archived === true &&
+                            return(
+                            <ul>{
+                                (accomm.archived && accomm.approved) &&
                                 <li>
-                                    {accomm.name}
-                                    <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
-                                    <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                    <div id='li-container'>
+                                        <h3 id='accomm-name'>{accomm.name}</h3>
+                                        <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
+                                        <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                    </div>
                                 </li>
-                            }</>)   
+                            }
+                            </ul>
+                            )   
+                            }
+                        )
+                    }
+                    
+                    <h2>Pending Acommodations:</h2>
+                    {
+                        accomms.map(
+                            (accomm) => {
+                            return(
+                            <ul>{
+                                accomm.approved === false &&
+                                <li>
+                                    <div id='li-container'>
+                                        <h3 id='accomm-name'>{accomm.name}</h3>
+                                        <DeleteButton accommodation={accomm} setLoading={setLoading} />
+                                    </div>
+                                </li>
+                            }
+                            </ul>
+                            )   
                             }
                         )
                     }

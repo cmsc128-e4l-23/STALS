@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import  './profile.css';
+import List from '../ListAccomm/List.js'
 const OwnerPage = ({ user }) => {
     const [image, setImage] = useState("https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg")
     // const[imageArray, setImageArray] = useState(["https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg","https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"])
@@ -84,9 +85,9 @@ const OwnerPage = ({ user }) => {
                     </a>
                     
                 )
-
                 )}
                 </div>
+                <List email = {"ivlisboa@up.edu.ph"}/>
                 </div>
                 
         </div>

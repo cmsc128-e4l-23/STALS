@@ -48,6 +48,7 @@ export default function AddAccommodation() {
         ) {
           setAccommOwner(true)
           setEmail(data.email)
+          setFormData({ ...formData, owner: data.email })
         }
       });
   }, [navigate]);
@@ -81,6 +82,7 @@ export default function AddAccommodation() {
     .then(data =>{
       console.log(data)
       navigate("/home")
+      navigate(0)
     })
     .catch(error => console.error(error));
   };

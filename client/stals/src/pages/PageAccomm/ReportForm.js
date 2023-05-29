@@ -11,13 +11,13 @@ import {
     DialogActions 
     } from '@mui/material';
 
-export default function ReportForm({ accommId, isLoggedIn }){
+export default function ReportForm({ accommId, email, userType, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
     
     const submitReport = () => {
         let newReport = {
-            user: localStorage.getItem('email'),
+            user: email,
             reported_id: accommId,
             classification: "Accommodation",
             content: content,
@@ -42,7 +42,7 @@ export default function ReportForm({ accommId, isLoggedIn }){
     const openDialog = () => {
         if(!isLoggedIn) alert("Log in required to make a review.")
 
-        else if(localStorage.getItem('usertype') === "Accommodation Owner")
+        else if(userType === "Accommodation Owner")
             alert("Accommodation owners are not allowed to make reviews.")
         
         else setDialogOpen(true)

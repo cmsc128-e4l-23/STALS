@@ -12,14 +12,14 @@ import {
     Typography 
     } from '@mui/material';
 
-export default function ReviewForm({ accommId, isLoggedIn }){
+export default function ReviewForm({ accommId, email, userType, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
     const [rating, setRating] = useState(0)
     
     const submitReview = () => {
         let newReview = {
-            user: localStorage.getItem("email"),
+            user: email,
             propertyId: accommId,
             content: content,
             rating: rating,
@@ -44,7 +44,7 @@ export default function ReviewForm({ accommId, isLoggedIn }){
     const openDialog = () => {
         if(!isLoggedIn) alert("Log in required to make a review.")
 
-        else if(localStorage.getItem('usertype') === "Accommodation Owner")
+        else if(userType === "Accommodation Owner")
             alert("Accommodation owners are not allowed to make reviews.")
         
         else setDialogOpen(true)

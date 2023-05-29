@@ -10,10 +10,11 @@ import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
 import ReviewList from "./ReviewList";
 
-export default function AccommBody({ data, isLoggedIn }) {
+export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
+
 
     const fetchOwner = () => {
         fetch('http://localhost:3001/getAccommOwner', {
@@ -56,7 +57,6 @@ export default function AccommBody({ data, isLoggedIn }) {
         })
     }, []);
 
-
     if(loading === true){
         return (
             <div className="accomm-page-div">
@@ -92,7 +92,7 @@ export default function AccommBody({ data, isLoggedIn }) {
                                 {/* slider buttons */}
                                 <div className="slider-btns">
                                     {accommData.photos.map((photo, index) => {
-                                        return <image href={"#image-" + photo + "-" + index}></image>
+                                        return <div href={"#image-" + photo + "-" + index}></div>
                                     })}
                                 </div>
                             </div>
@@ -104,8 +104,8 @@ export default function AccommBody({ data, isLoggedIn }) {
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
-                            <ReviewForm accommId={data} isLoggedIn={isLoggedIn} />
-                            <ReportForm accommId={data} isLoggedIn={isLoggedIn} />
+                            <ReviewForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
+                            <ReportForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
                    
                         </div>
 

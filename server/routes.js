@@ -27,6 +27,7 @@ router.post("/getAccommBasicDetails", accomminfo.getAccommBasicDetails);
 router.post("/getAccommFullDetails", accomminfo.getAccommFullDetails);
 router.post("/getAccommReviews", accomminfo.getAccommReviews);
 router.post("/getAccommReports", accomminfo.getAccommReports);
+router.post("/checkIfBookmarked", accomminfo.checkIfBookmarked);
 
 //Accommodation
 router.post("/addAccomm", accommodation.addAccomm);
@@ -55,6 +56,7 @@ router.get("/dataAnalytics", admin.dataAnalytics);
 router.get("/getPendApp", admin.getPendApp);
 router.post("/incNumVisits", admin.incNumVisits);
 router.post("/getVisits", admin.getVisits);
+router.post("/approveAccomm", admin.approveAccomm);
 //Images
 router.post("/uploadImage", image.uploadImage);
 

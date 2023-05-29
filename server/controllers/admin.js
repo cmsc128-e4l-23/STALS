@@ -163,11 +163,33 @@ const dataAnalytics = async (req, res) => {
     }
 }
 
+const approveAccomm = async (req, res) => {
+    try{
+        const input = req.body;
+
+        if(input.accomm_id){
+            await Accommodation.updateOne(
+                { _id: input.accomm_id },
+                { $set: { approved: true } }
+            )
+            res.send({ success: true, msg: "Successfully approve accommodation" });
+        }else{
+            res.send({ success: false, msg: "Unsuccessfully approve accommodation", error: "No accomm_id input provided"});
+        }
+        
+    }
+    catch (error){
+        res.send({ success: false, msg: "Unsuccessfully approve accommodation", error: error });
+        
+    }
+}
+
 export default {
     getPendApp,
     incNumVisits,
     getVisits,
     resolveReport,
     viewReports,
-    dataAnalytics
+    dataAnalytics,
+    approveAccomm
 }
