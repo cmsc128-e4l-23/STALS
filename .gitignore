@@ -1,5 +1,4 @@
 /client/node_modules
-/client/src/assets/
 /server/node_modules
 .vscode/
 
