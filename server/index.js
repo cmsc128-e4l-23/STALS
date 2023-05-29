@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import makeDB from "./mongoose.js";
 
 /* DB SETUP */
-dotenv.config({path:'.env'}); //dotenv.config();
+dotenv.config(); //dotenv.config();
 const port = process.env.PORT || 6001;
 
 makeDB(process.env.MONGO_URL).then(() => app.listen(port, () => console.log(`SERVER PORT: ${port}`)))
