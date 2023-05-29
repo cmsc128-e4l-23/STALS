@@ -9,7 +9,6 @@ export default function Header() {
     let navigate = useNavigate();
 
     const cookies = new Cookies();
-    console.log(cookies.get("authToken"));
     const [name, setName] = useState(null);
     const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
@@ -22,7 +21,6 @@ export default function Header() {
         let credentials = {
           auth: cookies.get("authToken")
         }
-        console.log(credentials);
         fetch(process.env.REACT_APP_API + 'checkifloggedin', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },

@@ -3,13 +3,14 @@ import "./Modal.css";
 
 export default function DeleteModal({ setModalOpen, setLoading, accommodation, email }) {
     const deleteAccomm = () => {
+        console.log(email)
         fetch(process.env.REACT_APP_API +'removeBookmarkAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(
                 {
                     accomm_id:accommodation._id,
-                    email:email
+                    user:email
                 }
             )
         })
@@ -18,8 +19,6 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation, e
             if(data.success){
                 setModalOpen(false);
                 setLoading(true);
-            }else{
-                alert(data.message);
             }
         });
     }

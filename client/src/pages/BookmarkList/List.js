@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import DeleteButton from "../ListAccomm/DeleteButton";
 import '../ListAccomm/index.css' 
+import Loading from "../../components/Loading";
+import BookmarkBody from "./BookmarkBody";
 
 export default function List({email}){
-    const [accomms, setAccomms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bookmarks, setBookmarks] = useState([]);
 
@@ -16,64 +17,37 @@ export default function List({email}){
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-            setAccomms(data.bookmarks)
+                setBookmarks(data.bookmarks)
             }
+            setLoading(false)
         });
-        const temp = []
-        accomms.map((id) => {
-            console.log(id)
-            fetch(process.env.REACT_APP_API +'getAccommFullDetails',{
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({_id: id})
-            }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if(data.success){
-                let newBookmark = data.accommodation
-                temp.push(newBookmark);
-                setLoading(false)
-                }
-            });
-            
-        })
-        setBookmarks(temp)
-        console.log(temp)
         
     }, [email, loading])
 
- 
-
     return(
         <div>  
-        {accomms.length > 0 ?
+        { !loading ? 
+        <>
+        {bookmarks.length > 0 ?
                 <div>
                     <h2>Bookmarked Acommodations:</h2>
+                    <ul id="lists">
                     {
                         bookmarks.map(
-                            (accomm) => {
-                                return(
-                                    <ul>{
-                                    
-                                        <li>
-                                            <div id='li-container'>
-                                                <h3 id='accomm-name'>{accomm.name}</h3>
-                                                <DeleteButton accommodation={accomm} email={email} setLoading={setLoading} />
-                                            </div>
-                                        </li>
-                                    }   
-                                    </ul>
-                                )
-                                    
-                                    
-                                
+                            (bookmark) => {
+                                return <BookmarkBody bookmark_id={bookmark} email={email} setLoading={setLoading} />
                             }
                         )
                     }
+                    </ul>
                    
                 </div>
                  : <div>No Bookmarked accommodations found</div>
             }
+        </>    
+        :
+        <Loading />
+    }
         </div>
     )
 }

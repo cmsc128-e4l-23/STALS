@@ -34,14 +34,14 @@ export default function AccommodationList(){
                     setUserType(data.usertype);
                     setLoading(false);
                 }else{
-                    navigate('/home');
+                    navigate('/home'); 
                 }
             })
         }catch{
             navigate('/home');
         }
         
-    }, [navigate, isLoggedIn]);
+    }, []);
 
     return(
         <body>
@@ -53,9 +53,9 @@ export default function AccommodationList(){
                     
                     <Loading /> :
                     <div>
-                        <div id='user-info'>
+                        <h1>
                             {name}'s Bookmarks
-                        </div>
+                        </h1>
                         <div id='list-container'>
                             <List email={email}/>
                         </div>

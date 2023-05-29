@@ -7,6 +7,7 @@
 }
 
 #lists li {
+    list-style-type: none;
     text-align: center;
     width: 95%;
 }
