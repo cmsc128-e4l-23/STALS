@@ -94,7 +94,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                         })}
                                     </>
                                     :
-                                    <Loading />
+                                    <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
                                 }
                                 </div>
                                 {/* slider buttons */}

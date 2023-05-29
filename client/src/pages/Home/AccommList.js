@@ -9,7 +9,8 @@ export default function AccommList({ isLoggedIn, userType, bookmarkList, email, 
         id="inside">
             {
                 accommList.map((accomm) => {
-                    return <AccommCard isLoggedIn={isLoggedIn} userType={userType} bookmarkList={bookmarkList} email={email} accomm={accomm} />
+                    if(accomm.approved && !accomm.archived)
+                        return <AccommCard isLoggedIn={isLoggedIn} userType={userType} bookmarkList={bookmarkList} email={email} accomm={accomm} />
                 })
             }
         </div>

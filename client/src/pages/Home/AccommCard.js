@@ -120,7 +120,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                             })}
                             </>
                             :
-                            <Loading />
+                            <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
                         }   
                         </div>
                         {/* slider buttons */}

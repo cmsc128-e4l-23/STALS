@@ -24,8 +24,8 @@
 }
 
 .body-element img {
-    width: 300px;
-    height: 300px;
+    width: 10rem;
+    height: 18rem;
     border-radius: 10%;
     object-fit: cover;
 }
@@ -33,7 +33,7 @@
 /* image slider */
 .body-element .slider-wrapper {
     position: relative;
-    width: 300px;
+    width: 22.5rem;
     height: 300px;
     margin: 0 auto;
 }
