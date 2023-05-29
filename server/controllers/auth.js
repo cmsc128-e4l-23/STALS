@@ -91,14 +91,13 @@ const checkIfLoggedIn = async (req, res) => {
     //     return res.send({ isLoggedin: false, error: "No cookies found" });
     // }
     const req_details = req.body;
-    console.log(req_details);
     //verifies the cookies
     return jwt.verify(
-        req_details.authToken,
+        req_details.auth,
         process.env.SECRET,
         (err, tokenPayload) => {
             if (err) {
-                console.log(req.cookies);
+                //console.log(req.cookies);
                 return res.send({ isLoggedIn: false, error: err });
             }
 
@@ -111,7 +110,6 @@ const checkIfLoggedIn = async (req, res) => {
                     if (!document) {
                         return res.send({ isLoggedIn: false, error: "No user found" });
                     }
-
                     return res.send({ isLoggedIn: true, usertype: document.userType, email: document.email, name: document.firstName, msg: "User is logged in" });
                 }
             )
