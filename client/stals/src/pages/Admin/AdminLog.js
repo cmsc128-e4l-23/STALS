@@ -1,9 +1,11 @@
 import React, { useState,useEffect } from "react";
 import "./AdminLog.css"
 import ReportModal from "./ReportModal.js";
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminLog(){
 
+    let navigate = useNavigate();
     const [reports, setReports] = useState([]);
     const [accomRequests, setAccoms] = useState([]);
 
@@ -17,12 +19,13 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             setReports(data.result)
+            // console.log(data);
         });
 
         // Get accomodations that need approving
         
         fetch('http://localhost:3001/getPendApp', {
-        method: 'POST',
+        method: 'GET',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify()
         })
@@ -41,7 +44,7 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             if(!data.success){
-                alert(data.message);
+                // alert(data.message);
             }
         });
     }
@@ -55,7 +58,7 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             if(!data.success){
-                alert(data.message);
+                // alert(data.message);
             }
         });
     }
@@ -69,7 +72,7 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             if(!data.success){
-                alert(data.message);
+                // alert(data.message);
             }
         });
     }
