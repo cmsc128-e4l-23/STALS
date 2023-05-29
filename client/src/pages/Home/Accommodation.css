@@ -1,27 +1,17 @@
-.body-group {
-    display: flex;
-    flex-direction: row;
-    /* background-color: aqua; */
-    overflow-x: scroll;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-/* hide scrollbar */
-.body-group::-webkit-scrollbar {
-    display: none;
-}
 .img-container .images::-webkit-scrollbar {
     display: none;
 }
 
 .body-element {
     margin: 2%;
+    /* background-color: brown; */
     border-radius: 10%;
     position: relative;
     padding: 2% 1%;
-    padding-top: 1%;
-    background-color: rgba(0,0,0,0.02);
+    padding-top: 3%;
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+
     /* after hover */
     transition: 300ms;
 }
@@ -42,8 +32,6 @@
 
 /* image slider */
 .body-element .slider-wrapper {
-    background-color: rgba(0,0,0,0.075);
-    border-radius: 10%;
     position: relative;
     width: 300px;
     height: 300px;
