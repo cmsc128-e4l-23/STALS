@@ -5,7 +5,7 @@ import Image from "../models/Image.js";
 import Accommodation from "../models/Accommodation.js";
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        const savePath = "../client/stals/src/assets";
+        const savePath = "/test";
         cb(null,savePath)
     },
     filename: (req, file, cb) => {
@@ -46,7 +46,7 @@ const uploadImage = async (req, res) => {
             },
         });
         let savedImage = await image.save();
-        //fs.unlinkSync(file.path);
+        fs.unlinkSync(file.path);
         return image;
       });
       const uploadedImages = await Promise.all(imagePromises);
