@@ -48,7 +48,7 @@ export default function Header() {
             }
         }
 
-        if(window.innerWidth < 1200){
+        if(window.innerWidth < 1200 || isLoggedIn){
             setShowOptions(true);   
         }
       }, []);
@@ -107,8 +107,6 @@ export default function Header() {
             if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; setShowOptions(false); }
             if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');  setShowOptions(true); }
             if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
-        }else{
-            setShowOptions(true);
         }
     };
     window.addEventListener('resize',windowResize);
