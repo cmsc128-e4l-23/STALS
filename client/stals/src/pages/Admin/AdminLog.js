@@ -47,8 +47,15 @@ export default function AdminLog(){
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                let new_reports = reports.filter(function(matchreport) { 
+                    return matchreport !== report
+                });
+                setReports(new_reports);
+            }
+
             if(!data.success){
-                // alert(data.message);
+                alert(data.message);
             }
         });
     }
@@ -61,8 +68,15 @@ export default function AdminLog(){
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                let new_accoms = accomRequests.filter(function(matchaccom) { 
+                    return matchaccom !== accom
+                });
+                setAccoms(new_accoms);
+            }
+
             if(!data.success){
-                // alert(data.message);
+                alert(data.message);
             }
         });
     }
@@ -75,8 +89,14 @@ export default function AdminLog(){
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                let new_accoms = accomRequests.filter(function(matchaccom) { 
+                    return matchaccom !== accom
+                });
+                setAccoms(new_accoms);
+            }
             if(!data.success){
-                // alert(data.message);
+                alert(data.message);
             }
         });
     }
@@ -96,7 +116,7 @@ export default function AdminLog(){
                                     <>
                                         {modalOpen && <ReportModal setModalOpen={setModalOpen} report={report} />}
                                         <div className="report-item">
-                                            <span>{report.content}</span>
+                                            <span onClick={()=>{setModalOpen(true)}}>{report.content}</span>
                                             <button onClick={()=>{closeReport(report)}}>CLOSE</button>
                                         </div>
                                     </>
