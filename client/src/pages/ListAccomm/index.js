@@ -13,8 +13,8 @@ export default function AccommodationList(){
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState(true);
-
     const [isLoggedIn, setLoggedIn] = useState(null);
+    
     useEffect(() => {
         try{
             let credentials = {
