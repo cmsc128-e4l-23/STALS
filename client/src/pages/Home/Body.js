@@ -11,7 +11,6 @@ export default function Body({ isLoggedIn, email, data }) {
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'searchAccomm', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({ searchString: data }),
             headers: {
                 'Content-Type': "application/json"
