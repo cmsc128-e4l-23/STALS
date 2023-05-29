@@ -14,7 +14,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
-    cosnt [imageList, setImageList] = useState([]);
+    const [imageList, setImageList] = useState([]);
 
 
     const fetchOwner = () => {
