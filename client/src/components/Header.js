@@ -16,6 +16,7 @@ export default function Header() {
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
+    const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
         let credentials = {
@@ -35,6 +36,21 @@ export default function Header() {
             setUserType(data.usertype)
           }
         })
+
+        if(!isLoggedIn){
+            if(window.innerWidth < 1200){   
+                delete options['Log In'];   
+                handleOptions('Sign Up', '/signup'); 
+            }
+
+            if(window.innerWidth < 725){    
+                handleOptions('Log In', '/login');
+            }
+        }
+
+        if(window.innerWidth < 1200){
+            setShowOptions(true);   
+        }
       }, []);
 
     const logout = (e) => {
@@ -88,8 +104,8 @@ export default function Header() {
         optionsToggle(false);
 
         if(!isLoggedIn){
-            if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; }
-            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');    }
+            if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; setShowOptions(false); }
+            if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');  setShowOptions(true); }
             if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
         }
     };
@@ -114,7 +130,7 @@ export default function Header() {
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                {(isLoggedIn || Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
+                {(showOptions && Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
