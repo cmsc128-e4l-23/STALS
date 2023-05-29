@@ -92,8 +92,8 @@ const OwnerPage = ({ email }) => {
                         <input id="file-upload" type="file" style={{ display: "none" }} accept="image/*" onChange={handleImageChange}></input>
                     </div>
                     <ol>
-                    <li>{ user.name }</li>  
-                    <li>email</li>
+                    <li>name</li>  
+                    <li>{email}</li>
                     <li>number</li>
                     </ol>
                 </div>
