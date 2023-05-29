@@ -113,7 +113,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                     <div className="slider-wrapper">
                         <div className="images">
                             {accomm.photos.map((photo, index) => {
-                                var base64Image = photo.toString('base64');
+                                var base64Image = photo;
                                 return <img id={"image-"+ index} src={base64Image} alt='' />
                             })}
                         </div>
