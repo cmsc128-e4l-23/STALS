@@ -162,7 +162,7 @@ const getPendApp = async (req, res) => {
         let pendApps = [];
         for (let i = 0; i < pendAppsTemp.length; i++) {
             let doc = pendAppsTemp[i].toJSON();
-            delete doc._id;
+            //delete doc._id;
             delete doc.__v;
             const user = await User.findById(doc.owner)
             doc.owner = user.email;

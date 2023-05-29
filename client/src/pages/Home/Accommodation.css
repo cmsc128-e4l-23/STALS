@@ -1,16 +1,3 @@
-.body-group {
-    display: flex;
-    flex-direction: row;
-    /* background-color: aqua; */
-    overflow-x: scroll;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-/* hide scrollbar */
-.body-group::-webkit-scrollbar {
-    display: none;
-}
 .img-container .images::-webkit-scrollbar {
     display: none;
 }
@@ -21,7 +8,9 @@
     border-radius: 10%;
     position: relative;
     padding: 2% 1%;
-    padding-top: 1%;
+    padding-top: 3%;
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 
     /* after hover */
     transition: 300ms;
@@ -35,8 +24,8 @@
 }
 
 .body-element img {
-    width: 300px;
-    height: 300px;
+    width: 10rem;
+    height: 18rem;
     border-radius: 10%;
     object-fit: cover;
 }
@@ -44,7 +33,7 @@
 /* image slider */
 .body-element .slider-wrapper {
     position: relative;
-    width: 300px;
+    width: 22.5rem;
     height: 300px;
     margin: 0 auto;
 }

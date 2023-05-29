@@ -56,6 +56,7 @@ export default function AccommodationList(){
                         <div id='user-info'>
                             <h1>{name}'s Accommodations</h1>
                         </div>
+
                         <div id='list-container'>
                             <List email={email}/>
                         </div>

@@ -4,7 +4,7 @@ import "./Body.css";
 import Loading from '../../components/Loading';
 
 
-export default function Body({ isLoggedIn, email, data }) {
+export default function Body({ isLoggedIn, userType, email, data }) {
     const [loading, setLoading] = useState(true);
     const [accommList, updateAccommList] = useState([]);
 
@@ -40,6 +40,7 @@ export default function Body({ isLoggedIn, email, data }) {
                         <h1>Accommodations: </h1>
                         <AccommList 
                             isLoggedIn={isLoggedIn}
+                            userType={userType}
                             email={email}
                             accommList={accommList} 
                         />
