@@ -14,7 +14,7 @@ export default function ReviewList({ reviews }){
             <h1 className="review-title">Reviews</h1>
             {
                 reviews.length === 0 ? <h2 className="no-reviews">No Reviews</h2> : 
-                reviews.length < 2 ?
+                reviews.length < 3 ?
                 reviews.map((review) => 
                     <div className="show-review">
                         <ReviewBody reviewId={review}/>
