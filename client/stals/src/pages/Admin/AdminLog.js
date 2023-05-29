@@ -91,7 +91,10 @@ export default function AdminLog(){
                                 return(
                                     <>
                                         {modalOpen && <ReportModal setModalOpen={setModalOpen} report={report} />}
-                                        <div className="report-item"><span>{report.content}</span><button onClick={closeReport(report)}>CLOSE</button></div>
+                                        <div className="report-item">
+                                            <span>{report.content}</span>
+                                            <button onClick={()=>{closeReport(report)}}>CLOSE</button>
+                                        </div>
                                     </>
                                 )
                             })
@@ -112,7 +115,11 @@ export default function AdminLog(){
                             accomRequests.map((accommodation)=>{
                                 return(
                                     <>
-                                        <div onClick={() => {navigate("/accomm?id=" + accommodation._id)}} className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation)}>APPROVE</button><button onClick={rejectAccom(accommodation)}>DENY</button></div>
+                                        <div onClick={() => {navigate("/accomm?id=" + accommodation._id)}} className="add-requests-item">
+                                            <span>{accommodation.title}</span>
+                                            <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
+                                            <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
+                                        </div>
                                     </>
                                 )
                             })
