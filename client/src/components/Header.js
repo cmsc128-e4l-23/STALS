@@ -48,7 +48,7 @@ export default function Header() {
             }
         }
 
-        if(window.innerWidth < 1200 || isLoggedIn){
+        if(window.innerWidth < 1200){
             setShowOptions(true);   
         }
       }, []);
@@ -130,7 +130,7 @@ export default function Header() {
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                {(showOptions && Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
+                {((showOptions || isLoggedIn) && Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
