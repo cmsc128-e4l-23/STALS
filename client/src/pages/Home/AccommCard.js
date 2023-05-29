@@ -16,7 +16,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (isLoggedIn) {
-            fetch('http://localhost:3001/checkIfBookmarked', {
+            fetch(process.env.REACT_APP_API + 'checkIfBookmarked', {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify({
@@ -40,7 +40,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     
     
     const addBookmark = (accomm_id) => {
-        fetch('http://localhost:3001/bookmarkAccomm', {
+        fetch(process.env.REACT_APP_API + 'bookmarkAccomm', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({
@@ -62,7 +62,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
     }
 
     const removeBookmark = (accomm_id) => {
-        fetch('http://localhost:3001/removeBookmarkAccomm', {
+        fetch(process.env.REACT_APP_API + 'removeBookmarkAccomm', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({

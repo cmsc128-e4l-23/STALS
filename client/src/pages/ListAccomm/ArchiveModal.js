@@ -3,7 +3,7 @@ import "./Modal.css";
 
 export default function ArchiveModal({ setModalOpen, setLoading, accommodation }) {
     const archiveAccomm = () => {
-        fetch('http://localhost:3001/archiveAccomm', {
+        fetch(process.env.REACT_APP_API + 'archiveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(accommodation)

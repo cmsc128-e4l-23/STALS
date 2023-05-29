@@ -24,7 +24,7 @@ export default function ReviewForm({ accommId, email, userType, isLoggedIn }){
             content: content,
             rating: rating,
         }
-        fetch("http://localhost:3001/addReview", {
+        fetch(process.env.REACT_APP_API + 'addReview', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newReview),

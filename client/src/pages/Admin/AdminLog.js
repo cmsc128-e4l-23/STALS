@@ -8,7 +8,7 @@ export default function AdminLog(){
 
     // gets pending reports from the server
     useEffect(() => {
-        fetch('http://localhost:3001/viewReports', {
+        fetch(process.env.REACT_APP_API + 'viewReports', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({onlyPending: true})
@@ -20,7 +20,7 @@ export default function AdminLog(){
 
         // Get accomodations that need approving
         
-        fetch('http://localhost:3001/getPendApp', {
+        fetch(process.env.REACT_APP_API + 'getPendApp', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify()
@@ -32,7 +32,7 @@ export default function AdminLog(){
     })
 
     const closeReport = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+        fetch(process.env.REACT_APP_API + 'resolveReport', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({_id: _id})
@@ -46,7 +46,7 @@ export default function AdminLog(){
     }
 
     const approveAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+        fetch(process.env.REACT_APP_API + 'resolveReport', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({_id: _id})
@@ -60,7 +60,7 @@ export default function AdminLog(){
     }
 
     const rejectAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+        fetch(process.env.REACT_APP_API + 'resolveReport', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({_id: _id})

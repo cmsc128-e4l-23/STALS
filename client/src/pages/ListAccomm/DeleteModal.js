@@ -3,7 +3,7 @@ import "./Modal.css";
 
 export default function DeleteModal({ setModalOpen, setLoading, accommodation }) {
     const deleteAccomm = () => {
-        fetch('http://localhost:3001/deleteAccomm', {
+        fetch(process.env.REACT_APP_API + 'deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(accommodation)

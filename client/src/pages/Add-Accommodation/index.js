@@ -59,7 +59,7 @@ export default function AddAccommodation() {
   }, [navigate]);
   
   const submit = () => {
-    fetch("http://localhost:3001/addAccomm", {
+    fetch(process.env.REACT_APP_API + 'addAccomm', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(noPhotos),
@@ -75,7 +75,7 @@ export default function AddAccommodation() {
         for (let i = 0; i < photos.length; i++) {
           sendData.append("images", photos[i],photos[i].name);
         }
-        return fetch("http://localhost:3001/uploadImage", {
+        return fetch(process.env.REACT_APP_API + 'uploadImage', {
           method: 'POST',
           body: sendData,
         })

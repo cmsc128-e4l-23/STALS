@@ -16,7 +16,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
 
 
     const fetchOwner = () => {
-        fetch('http://localhost:3001/getAccommOwner', {
+        fetch(process.env.REACT_APP_API + 'getAccommOwner', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ _id: data }),
@@ -39,7 +39,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         }
     
     useEffect(() => {
-        fetch('http://localhost:3001/getAccommFullDetails', {
+        fetch(process.env.REACT_APP_API + 'getAccommFullDetails', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({_id: data})

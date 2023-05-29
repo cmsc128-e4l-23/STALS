@@ -9,7 +9,7 @@ export default function Body({ isLoggedIn, email, data }) {
     const [accommList, updateAccommList] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3001/searchAccomm', {
+        fetch(process.env.REACT_APP_API + 'searchAccomm', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({ searchString: data }),

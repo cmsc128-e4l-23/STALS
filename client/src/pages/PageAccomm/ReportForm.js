@@ -22,7 +22,7 @@ export default function ReportForm({ accommId, email, userType, isLoggedIn }){
             classification: "Accommodation",
             content: content,
         }
-        fetch("http://localhost:3001/reportAccomm", {
+        fetch(process.env.REACT_APP_API + 'reportAccomm', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newReport),

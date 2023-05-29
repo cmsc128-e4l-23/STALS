@@ -3,7 +3,7 @@ import "./Modal.css";
 
 export default function UnarchiveModal({ setModalOpen, setLoading, accommodation }) {
     const unarchiveAccomm = () => {
-        fetch('http://localhost:3001/unarchiveAccomm', {
+        fetch(process.env.REACT_APP_API + 'unarchiveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(accommodation)

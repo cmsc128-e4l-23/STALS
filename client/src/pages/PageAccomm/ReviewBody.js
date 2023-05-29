@@ -6,7 +6,7 @@ export default function ReviewBody({ reviewId }){
     const [user, setUser] = useState('');
 
     useEffect(() => {
-        fetch("http://localhost:3001/getReview?id=" + reviewId, {
+        fetch(process.env.REACT_APP_API + 'getReview?id=' + reviewId, {
             method: 'GET',
         })
         .then(res => res.json())

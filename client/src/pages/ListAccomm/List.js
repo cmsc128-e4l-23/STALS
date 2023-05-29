@@ -14,7 +14,7 @@ export default function List({email}){
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:3001/getOwnerAccomms', {
+        fetch(process.env.REACT_APP_API + 'getOwnerAccomms', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({email: email})
