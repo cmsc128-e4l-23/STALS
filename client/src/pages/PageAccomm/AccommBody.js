@@ -98,7 +98,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                 }
                                 </div>
                                 {/* slider buttons */}
-                                <div className="slider-btns">
+                                {/* <div className="slider-btns">
                                 {accommData.photos.length > 0 &&
                                     <>
                                         {accommData.photos.map((photo, index) => {
@@ -107,7 +107,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                         })}
                                     </>
                                 }
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

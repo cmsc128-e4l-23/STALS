@@ -126,7 +126,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                         }   
                         </div>
                         {/* slider buttons */}
-                        <div className="slider-btns">
+                        {/* <div className="slider-btns">
                         {accomm.photos.length > 0 &&
                             <>
                             {accomm.photos.map((photo, index) => {
@@ -135,7 +135,7 @@ export default function AccommCard({ isLoggedIn, email, accomm }) {
                             })}
                             </>
                         }
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {/* details */}
