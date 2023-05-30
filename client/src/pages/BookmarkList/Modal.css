@@ -38,6 +38,8 @@
     display: flex;
     justify-content: flex-end;
     font-size: 25px;
+    background-color: transparent;
+    border-width: 0px;
     transition: font-size 0.5s, color 0.5s;
   }
 

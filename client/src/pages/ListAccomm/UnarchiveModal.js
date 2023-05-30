@@ -28,7 +28,7 @@ export default function UnarchiveModal({ setModalOpen, setLoading, accommodation
                         onClick={() => {
                         setModalOpen(false);
                         }}
-                    >
+                        id="xBtn">
                         X
                     </button>
                 </div>
@@ -40,15 +40,14 @@ export default function UnarchiveModal({ setModalOpen, setLoading, accommodation
                         onClick={() => {
                             setModalOpen(false);
                         }}
-                        id="cancelBtn"
-                    >
+                        id="cancelBtn">
                         Cancel
                     </button>
                     <button
                         onClick={() => {
                             unarchiveAccomm();
                         }} 
-                    >
+                        id="continueBtn">
                         Continue
                     </button>
                 </div>
