@@ -3,6 +3,7 @@ import DeleteButton from "./DeleteButton";
 import ArchiveButton from "./ArchiveButton";
 import UnarchiveButton from "./UnarchiveButton";
 import './index.css'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,6 +11,7 @@ import './index.css'
 
 
 export default function List({email}){
+    let navigate = useNavigate();
     const [accomms, setAccomms] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,7 @@ export default function List({email}){
                                         (!accomm.archived && accomm.approved) &&
                                     
                                         <li>
-                                            <div id='li-container'>
+                                            <div id='li-container' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
                                                 <h3 id='accomm-name'>{accomm.name}</h3>
                                                 <ArchiveButton accommodation={accomm} setLoading={setLoading} />
                                                 <DeleteButton accommodation={accomm} setLoading={setLoading} />
@@ -64,7 +66,7 @@ export default function List({email}){
                             <ul>{
                                 (accomm.archived && accomm.approved) &&
                                 <li>
-                                    <div id='li-container'>
+                                    <div id='li-container' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
                                         <h3 id='accomm-name'>{accomm.name}</h3>
                                         <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
                                         <DeleteButton accommodation={accomm} setLoading={setLoading} />
@@ -85,7 +87,7 @@ export default function List({email}){
                             <ul>{
                                 accomm.approved === false &&
                                 <li>
-                                    <div id='li-container'>
+                                    <div id='li-container' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>
                                         <h3 id='accomm-name'>{accomm.name}</h3>
                                         <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                     </div>
