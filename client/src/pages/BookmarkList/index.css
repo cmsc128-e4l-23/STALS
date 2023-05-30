@@ -1,4 +1,4 @@
-* { border: 1px solid red; }
+/* * { border: 1px solid red; } */
 
 #accomm-list body{
     position: absolute;
@@ -17,6 +17,8 @@ ul {
 #lists {
     list-style-type: none;
     text-align: center;
+    margin: 0 auto;
+    width: 50%;
 }
 
 #accomm-name {
@@ -29,4 +31,5 @@ ul {
     box-shadow: 3px 3px rgb(200,200,200);
     margin: 0 auto;
     margin-bottom: 10px;
+
 }
