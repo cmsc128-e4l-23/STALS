@@ -14,12 +14,7 @@ ul {
     text-align: center;
 }
 
-#lists ul{
-    list-style-type: none;
-    text-align: center;
-}
-
-#lists li {
+#lists {
     list-style-type: none;
     text-align: center;
 }
@@ -33,4 +28,5 @@ ul {
     border-radius: 10px;
     box-shadow: 3px 3px rgb(200,200,200);
     margin: 0 auto;
+    margin-bottom: 10px;
 }
