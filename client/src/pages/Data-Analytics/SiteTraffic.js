@@ -12,9 +12,6 @@ export default function SiteTraffic(data) {
         )
     }
     else {
-        console.log(data);
-        console.log(Object.keys(data['data']));
-        console.log(Object.values(data['data']));
         return (
             <div id="site-traffic-graph">
                 <h1>SITE TRAFFIC</h1>

@@ -32,7 +32,6 @@ export default function UserStats() {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    console.log(body.return);
                     setUserData({ regUsers: body.return.numRegUsers, owners: body.return.numAccommOwners, students: body.return.numStudents });
                     setAppAccomm(body.return.numApprovedAccomm);
                     getPendAccomm();
