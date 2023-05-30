@@ -15,12 +15,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 // app.use(cors());
 
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST");
     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type");
     res.setHeader("Access-Control-Allow-Credentials","true");
     next();
 });
+app.use(cors({ origin: ["http://localhost:3000"], credentials: true}))
 
 app.use(cookieParser());
 app.use(routes);

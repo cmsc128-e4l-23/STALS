@@ -1,0 +1,64 @@
+
+.body-container h1 {
+    font-family: sans-serif;
+    font-size: 30px;
+    color: rgb(23, 23, 23);
+    line-height: 0;
+    text-align: left;
+    margin: 0;
+    margin-bottom: 0.5%;
+    margin-left: calc(50% - 35%);
+    /* background-color: blueviolet; */
+}
+
+.body-group {
+    margin: 10%;
+    margin-top: 3%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* hide scrollbar */
+.body-group::-webkit-scrollbar {
+    display: none;
+}
+.img-container .images::-webkit-scrollbar {
+    display: none;
+}
+
+.body-div #not-found {
+    margin: 10%;
+    font-size: 25px;
+}
+
+
+/* adjusting margins and fonts relative to the screen size */
+@media only screen and (max-width: 1200px) {
+    /* .body-div {
+        margin-top: 20%;
+        margin-bottom: 2%;
+    } */
+    .body-container h1 {
+        font-size: 30px;
+        line-height: 1%;
+    }
+    .body-div #not-found {
+        margin: 13%;
+        font-size: 25px;
+    }
+}
+
+@media only screen and ((max-width: 640px))  {
+    /* .body-div {
+        margin-top: 30%;
+    } */
+    .body-container h1 {
+        font-size: 30px;
+        margin-bottom: 1.5%;
+    }
+    .body-div #not-found {
+        margin: 20%;
+        font-size: 25px;
+    }
+}

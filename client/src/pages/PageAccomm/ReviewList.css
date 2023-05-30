@@ -1,0 +1,23 @@
+.review-title {
+    display: flex;
+    margin-left: 40%;
+    margin-bottom: 0;
+}
+
+.no-reviews {
+    display: flex;
+    margin-left: 39.6%;
+}
+
+.see-all-review {
+    height: 30px;
+    width: 200px;
+    margin-top: 1%;
+    margin-left: -12%;
+    background-color: white;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.show-review {
+    margin-left: 26%;
+}
