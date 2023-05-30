@@ -1,8 +1,11 @@
 import React, { useState,useEffect } from "react";
 import "./AdminLog.css"
+import ReportModal from "./ReportModal.js";
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminLog(){
 
+    let navigate = useNavigate();
     const [reports, setReports] = useState([]);
     const [accomRequests, setAccoms] = useState([]);
 
@@ -16,103 +19,148 @@ export default function AdminLog(){
         .then(res => res.json())
         .then(data => {
             setReports(data.result)
+            console.log(data);
         });
 
         // Get accomodations that need approving
         
         fetch('http://localhost:3001/getPendApp', {
-        method: 'POST',
+        method: 'GET',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify()
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
             setAccoms(data.pendApps)
-        });
-    })
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        ;
+    }, [])
 
-    const closeReport = (_id) => {
+    const closeReport = (report) => {
         fetch('http://localhost:3001/resolveReport', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify(report)
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                alert("Report is closed successfully.");
+
+                let new_reports = reports.filter(function(matchreport) { 
+                    return matchreport !== report
+                });
+                setReports(new_reports);
+            }
+
             if(!data.success){
                 alert(data.message);
             }
         });
     }
 
-    const approveAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+    const approveAccom = (accom) => {
+        fetch('http://localhost:3001/approveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify({accomm_id: accom._id})
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                alert("Accommodation is approved successfully.");
+                let new_accoms = accomRequests.filter(function(matchaccom) { 
+                    return matchaccom !== accom
+                });
+                setAccoms(new_accoms);
+            }
+
             if(!data.success){
                 alert(data.message);
             }
         });
     }
 
-    const rejectAccom = (_id) => {
-        fetch('http://localhost:3001/resolveReport', {
+    const rejectAccom = (accom) => {
+        fetch('http://localhost:3001/deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({_id: _id})
+            body: JSON.stringify(accom)
         })
         .then(res => res.json())
         .then(data => {
+            if(data.success){
+                alert("Accommodation is rejected successfully.");
+                let new_accoms = accomRequests.filter(function(matchaccom) { 
+                    return matchaccom !== accom
+                });
+                setAccoms(new_accoms);
+            }
             if(!data.success){
                 alert(data.message);
             }
         });
     }
+
+    const [modalOpen, setModalOpen] = useState(false);
 
     return(
         <>
-            <div className="reports-box">
-            {reports.length > 0 ? <div>
-                    <h2>Reports</h2>
-                    <div className="reports-container">
-                        {
-                            reports.map((report)=>{
-                                return(
-                                    <>
-                                        <div className="report-item"><span>{report.content}</span><button onClick={closeReport(report._id)}>CLOSE</button></div>
-                                    </>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-                : <h3>No reports found.</h3>
-            }
-            </div>
-            
+            <div className="admin-log-container">
+                <div className="reports-box">
+                <h2>Reports</h2>
+                        <div className="reports-container">
+                {reports.length > 0 ? <div>
 
-            <div className="add-requests-box">
-            {accomRequests.length > 0 ? 
-                <div>
-                    <h2>Add Requests</h2>
-                    <div className="add-requests-container">
-                        {
-                            accomRequests.map((accommodation)=>{
-                                return(
-                                    <>
-                                        <div className="add-requests-item"><span>{accommodation.title}</span><button onClick={approveAccom(accommodation._id)}>APPROVE</button><button onClick={rejectAccom(accommodation._id)}>DENY</button></div>
-                                    </>
-                                )
-                            })
-                        }
-                    </div>
+                            {
+                                reports.map((report)=>{
+                                    return(
+                                        <>
+                                            {modalOpen && <ReportModal setModalOpen={setModalOpen} report={report} />}
+                                            <div className="report-item">
+                                                <span onClick={()=>{setModalOpen(true)}}>{report.content}</span>
+                                                <button onClick={()=>{closeReport(report)}}>CLOSE</button>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                    : <h3 style={{fontSize:'14px'}}><i>No pending reports found.</i></h3>
+                }
                 </div>
-                : <h3>No accommodation requests found.</h3>
-            }
+
+                </div>
+                
+
+                <div className="add-requests-box">
+                    <div>
+                            <h2>Add Requests</h2>
+                {accomRequests.length > 0 ? 
+
+                        <div className="add-requests-container">
+                            {
+                                accomRequests.map((accommodation)=>{
+                                    return(
+                                        <>
+                                            <div  className="add-requests-item">
+                                                <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation.name}</span>
+                                                <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
+                                                <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                    : <h3 style={{fontSize:'14px'}}><i>No accommodation requests found.</i></h3>
+                }
+                </div>
+            </div>
             </div>
         </>
     )

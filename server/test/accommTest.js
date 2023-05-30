@@ -23,7 +23,7 @@ import mongoose from "mongoose";
 //       maxPrice: 10000
 //     },
 //     description: "A place to stay at!",
-//     photos: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+//     photos: [],
 //     restrictions: ["no visitors allowed"]
 //   };
 
