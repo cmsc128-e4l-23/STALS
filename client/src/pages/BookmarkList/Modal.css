@@ -1,18 +1,18 @@
 .modalBackground {
-    width: 100vw;
+    /* width: 100vw;
     height: 100vh;
     background-color: rgba(200, 200, 200, 0.84);
     position: absolute;
     top: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     z-index: 1;
   }
   
   .modalContainer {
     width: 500px;
-    height: 500px;
+    height: 250px;
     border-radius: 12px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -60,13 +60,31 @@
     height: 45px;
     margin: 10px;
     border: none;
-    background-color: cornflowerblue;
-    color: white;
     border-radius: 8px;
     font-size: 20px;
     cursor: pointer;
   }
-  
+/*   
   #cancelBtn {
     background-color: crimson;
+    color: white;
+    transition: background-color 0.5, color 0.5;
   }
+
+  #continueBtn {
+    background-color: cornflowerblue;
+    color: white;
+    transition: background-color 0.5, color 0.5;
+  }
+
+  #cancelBtn :hover {
+    background-color: white;
+    color: crimson;
+    transition: background-color 0.5, color 0.5;
+  }
+
+  #continueBtn :hover {
+    background-color: white;
+    color: cornflowerblue;
+    transition: background-color 0.5, color 0.5;
+  } */

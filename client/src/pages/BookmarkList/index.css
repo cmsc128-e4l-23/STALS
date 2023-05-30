@@ -1,5 +1,8 @@
 #accomm-list body{
-    margin-top: 70px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
 }
 
 #lists ul{
@@ -9,7 +12,7 @@
 #lists li {
     list-style-type: none;
     text-align: center;
-    width: 95%;
+    width: 90%;
 }
 
 #accomm-name {
@@ -19,6 +22,7 @@
 #li-container{
     background-color: rgb(240,240,240);
     border-radius: 10px;
-    padding: 10px;
-    box-shadow: 1px 1px rgb(200,200,200);
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 3px 3px rgb(200,200,200);
 }
