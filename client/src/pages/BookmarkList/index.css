@@ -1,0 +1,24 @@
+#accomm-list body{
+    margin-top: 70px;
+}
+
+#lists ul{
+    list-style-type: none;
+}
+
+#lists li {
+    list-style-type: none;
+    text-align: center;
+    width: 95%;
+}
+
+#accomm-name {
+    color: rgb(150,0,0);
+}
+
+#li-container{
+    background-color: rgb(240,240,240);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 1px 1px rgb(200,200,200);
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DeleteModal from './DeleteModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import "/../Button.css"
+import "./Button.css"
 import {BookmarkIcon} from '@mui/icons-material';
 
 
