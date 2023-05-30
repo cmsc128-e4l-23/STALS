@@ -1,9 +1,12 @@
+/* * { border: 1px solid red; } */
+
 .modalBackground {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(200, 200, 200, 0.84);
-    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(165, 165, 165, 0.80);
+    position: fixed;
     top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +18,7 @@
     height: 250px;
     border-radius: 12px;
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 5px 15px;
     display: flex;
     flex-direction: column;
     padding: 25px;
@@ -26,18 +29,23 @@
     text-align: center;
     margin-top: 10px;
   }
-  
-  .titleCloseBtn {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .titleCloseBtn button {
-    background-color: transparent;
-    border: none;
-    font-size: 25px;
+
+  button {
     cursor: pointer;
   }
+  
+  #xBtn {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 25px;
+    transition: font-size 0.5s, color 0.5s;
+  }
+
+  #xBtn:hover {
+    font-size: 35px;
+    color: rgb(150, 0, 0);
+  }
+  
   
   .modalContainer .body {
     flex: 50%;
@@ -65,26 +73,28 @@
     cursor: pointer;
   }
   
-  #cancelBtn {
-    background-color: crimson;
+ #cancelBtn {
+    background-color: rgb(150, 0, 0);
+    border: 1px solid rgb(150, 0, 0);
     color: white;
-    transition: background-color 0.5, color 0.5;
+    transition: background-color 0.5s, color 0.5s;
   }
 
-  #continueBtn {
-    background-color: cornflowerblue;
+ #continueBtn {
+    background-color: rgb(150, 0, 0);
+    border: 1px solid rgb(150, 0, 0);
     color: white;
-    transition: background-color 0.5, color 0.5;
+    transition: background-color 0.5s, color 0.5s;
   }
 
-  #cancelBtn :hover {
+ #cancelBtn:hover {
     background-color: white;
-    color: crimson;
-    transition: background-color 0.5, color 0.5;
+    color: rgb(150, 0, 0);
+    transition: background-color 0.5s, color 0.5s;
   }
 
-  #continueBtn :hover {
+ #continueBtn:hover {
     background-color: white;
-    color: cornflowerblue;
-    transition: background-color 0.5, color 0.5;
+    color: rgb(150, 0, 0);
+    transition: background-color 0.5s, color 0.5s;
   }

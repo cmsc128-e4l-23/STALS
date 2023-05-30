@@ -32,7 +32,7 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation, e
                         onClick={() => {
                         setModalOpen(false);
                         }}
-                    >
+                        id="xBtn">
                         X
                     </button>
                 </div>
