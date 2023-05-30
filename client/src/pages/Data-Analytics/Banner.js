@@ -1,6 +1,5 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Grid from '@mui/material/Grid';
 import { CircularProgress, IconButton } from "@mui/material";
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import './Analytics.css';
@@ -13,6 +12,7 @@ export default function AnalyticsBanner() {
     const year = today.getFullYear();
     const month = today.getMonth();
     const day = today.getDate();
+    const monthName = today.toLocaleString('default', { month: 'long' });
 
     const getVisits = () => {
         fetch('http://localhost:3001/getVisits', {
@@ -30,9 +30,7 @@ export default function AnalyticsBanner() {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    if (body.return.length == 0) setSiteTraffic(0);
-                    else setSiteTraffic(body.return[0].numVisits);
-                    console.log(body.return[0].numVisits);
+                    setSiteTraffic(body.return[year][monthName]);
                 }
         })
     }
@@ -51,9 +49,7 @@ export default function AnalyticsBanner() {
             .then(body => {
                 if (body.success) {
                     setData(body.return);
-                    console.log(body);
                     getVisits();
-                    console.log(siteTraffic);
             }
         })
     }, []);

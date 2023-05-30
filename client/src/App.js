@@ -9,6 +9,7 @@ import AdminPage from './pages/Admin';
 import Profile from './pages/Profile/index';
 import Header from './components/Header';
 import BookmarkList from './pages/BookmarkList';
+import DataAnalytics from './pages/Data-Analytics/index';
 
 import {HashRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -42,7 +43,7 @@ function App() {
   // runs twice because of these possible reasons: 
   // https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
   useEffect(() => {
-    if (timerStatus==false) {
+    if (!timerStatus) {
       setTimer(true);
       setTimeout(incNumVisits, 60000); // incNumVisits when user stayed for at least 1 minute
     }
