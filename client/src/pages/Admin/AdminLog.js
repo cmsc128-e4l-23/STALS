@@ -132,7 +132,7 @@ export default function AdminLog(){
                                 return(
                                     <>
                                         <div  className="add-requests-item">
-                                            <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation._id}</span>
+                                            <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation.name}</span>
                                             <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
                                             <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
                                         </div>
