@@ -24,12 +24,10 @@ export default function BookmarkBody({ bookmark_id, email, setLoading }){
     return(
             <>
             {accommData &&
-            <li>
-                <div id='li-container'>
+                <li id='li-container'>
                     <h3 id='accomm-name'>{accommData.name}</h3>
                     <DeleteButton accommodation={accommData} email={email} setLoading={setLoading} />
-                </div>
-            </li>
+                </li>
             }
             </>
     )

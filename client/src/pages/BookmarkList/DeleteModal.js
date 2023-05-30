@@ -32,12 +32,12 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation, e
                         onClick={() => {
                         setModalOpen(false);
                         }}
-                    >
+                        id="xBtn">
                         X
                     </button>
                 </div>
                 <div className="title">
-                    <h1>Are You Sure You Want to Delete?</h1>
+                    <h1>Are you sure you want to delete?</h1>
                 </div>
                 <div className="footer">
                     <button
@@ -52,7 +52,7 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation, e
                         onClick={() => {
                             deleteAccomm();
                         }} 
-                    >
+                        id="continueBtn">
                         Continue
                     </button>
                 </div>
