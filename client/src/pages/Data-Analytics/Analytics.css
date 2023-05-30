@@ -1,5 +1,5 @@
 #analytics-body {
-    margin-top: 10%;
+    margin-top: 3%;
 }
 
 #data-analytics-banner {
@@ -23,6 +23,11 @@
 #data-analytics-banner .container h2 {
     margin-top: 20px;
     font-size: 12px;
+}
+
+#up-graph #site-traffic-graph {
+    width: 70%;
+    margin: 0 auto 10%;
 }
 
 #graphs {

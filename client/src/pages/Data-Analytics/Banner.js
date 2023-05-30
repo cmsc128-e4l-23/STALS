@@ -1,7 +1,8 @@
-import { React, useState, useEffect, useCallback } from "react";
+import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress, IconButton } from "@mui/material";
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import { IconButton } from "@mui/material";
+import Loading from '../../components/Loading';
 import './Analytics.css';
 
 export default function AnalyticsBanner() {
@@ -57,19 +58,19 @@ export default function AnalyticsBanner() {
     return (
         <div id="data-analytics-banner">
             <div className="container">
-                {siteTraffic == null ? <CircularProgress /> : <><h2>SITE TRAFFIC: </h2>{ siteTraffic }</>}
+                {siteTraffic == null ? <Loading /> : <><h2>SITE TRAFFIC: </h2>{ siteTraffic }</>}
             </div>
             <div className="container">
-                {data == null ? <CircularProgress /> : <><h2>ACCOMMODATION OWNERS</h2> { data.numAccommOwners }</>}
+                {data == null ? <Loading /> : <><h2>ACCOMMODATION OWNERS</h2> { data.numAccommOwners }</>}
             </div>
             <div className="container">
-                {data == null ? <CircularProgress /> : <><h2>APPROVED ACCOMMODATIONS</h2> { data.numApprovedAccomm }</>}
+                {data == null ? <Loading /> : <><h2>APPROVED ACCOMMODATIONS</h2> { data.numApprovedAccomm }</>}
             </div>
             <div className="container">
-                {data == null ? <CircularProgress /> : <><h2>REGISTERED USERS</h2> { data.numRegUsers }</>}
+                {data == null ? <Loading /> : <><h2>REGISTERED USERS</h2> { data.numRegUsers }</>}
             </div>
             <div className="container">
-                {data == null ? <CircularProgress /> : <><h2>STUDENTS</h2> { data.numStudents }</>}
+                {data == null ? <Loading /> : <><h2>STUDENTS</h2> { data.numStudents }</>}
             </div>
             <IconButton onClick={goToPage}><ArrowForwardIosOutlinedIcon/></IconButton>
         </div>
