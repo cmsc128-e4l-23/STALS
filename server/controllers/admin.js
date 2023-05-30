@@ -154,7 +154,6 @@ const getVisits = async (req, res) => {
             returnVal[result[i].year][numToMonth(result[i].month)][result[i].day - 1] = result[i].numVisits;
         }
 
-        
         res.send({ success: true, msg: "getting Visits succeeded", return: returnVal});
 
     } catch (error) {

@@ -43,7 +43,7 @@ function App() {
   // runs twice because of these possible reasons: 
   // https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
   useEffect(() => {
-    if (!timerStatus) {
+    if (timerStatus==false) {
       setTimer(true);
       setTimeout(incNumVisits, 60000); // incNumVisits when user stayed for at least 1 minute
     }

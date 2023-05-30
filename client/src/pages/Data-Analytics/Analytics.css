@@ -5,10 +5,11 @@
 #analytics-body #back-button {
     /* background-color: aqua; */
     width: 10%;
-    margin: 3% 0% 0% 3%;
+    margin: 1% 0% 0% 3%;
+    position: absolute;
 }
 
-#analytics-body #back-button button {
+#analytics-body #back-button button, #site-traffic-graph button {
     border-color: rgb(230, 98, 76);
     color: rgb(151, 47, 28);
     border-style: solid;
@@ -20,7 +21,11 @@
     transition-delay: 100ms;
 }
 
-#analytics-body #back-button button:hover {
+#site-traffic-graph button {
+    margin: 5%;
+}
+
+#analytics-body #back-button button:hover, #site-traffic-graph button:hover {
     border-color: rgb(255, 255, 255);
     color: white;
     background-color: rgb(230, 98, 76);
@@ -52,7 +57,7 @@
 
 #up-graph #site-traffic-graph {
     width: 70%;
-    margin: 0 auto 10%;
+    margin: 5% auto 10%;
 }
 
 #graphs {

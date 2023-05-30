@@ -31,7 +31,8 @@ export default function AnalyticsBanner() {
             .then(res => res.json())
             .then(body => {
                 if (body.success) {
-                    setSiteTraffic(body.return[year][monthName]);
+                    setSiteTraffic(body.return[year][monthName][day-1]);
+                    console.log(siteTraffic);
                 }
         })
     }
