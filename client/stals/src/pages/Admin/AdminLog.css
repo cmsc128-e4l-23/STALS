@@ -10,6 +10,10 @@
     border-bottom: 1px rgb(45,45,45) solid;
 }
 
+.add-requests-item span:hover, .report-item span:hover{
+    cursor: pointer;
+}
+
 .add-requests-item span, .report-item span{
     float: left;
     text-align: left;
@@ -48,6 +52,26 @@
 }
 
 .reports-box, .add-requests-box{
-    width: 40%;
+    width: 45%;
     float: left;
+}
+
+.reports-box{
+    margin-right: 10%;
+}
+
+.admin-log-container{
+    margin-left: auto;
+    width: 70%;
+    margin-right: auto;
+    margin-top: 10vh;
+}
+
+@media only screen and (max-width: 725px) {
+    .reports-box, .add-requests-box{
+        width: 100%;
+        float: unset;
+        margin-right: unset;
+        margin-bottom: 5vh;
+    }
 }
