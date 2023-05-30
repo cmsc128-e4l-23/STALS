@@ -27,8 +27,8 @@ export default function BookmarkBody({ bookmark_id, email, setLoading }){
             <>
             {accommData &&
             <li>
-                <div id='bookmark-li-container' onClick={() => {navigate("/accomm?id=" + accommData._id)}}>
-                    <h3 id='accomm-name'>{accommData.name}</h3>
+                <div id='bookmark-li-container' >
+                    <h3 id='accomm-name' onClick={() => {navigate("/accomm?id=" + accommData._id)}}>{accommData.name}</h3>
                     <DeleteButton accommodation={accommData} email={email} setLoading={setLoading} />
                 </div>
             </li>

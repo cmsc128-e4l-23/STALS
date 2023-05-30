@@ -16,6 +16,7 @@
     margin-top: 0;
     margin-bottom: 1%;
     color: rgb(150,0,0);
+    cursor: pointer;
 }
 
 #li-container{
