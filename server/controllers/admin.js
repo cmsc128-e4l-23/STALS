@@ -139,15 +139,7 @@ const year_init = (year) =>{
 }
 
 
-//POST method for getting the number of visits on STALS 
-//Input
-/*
-{
-    year: a Number value of the year,
-    month: a Number value of the month,
-    day: a Number value of the day
-}
-*/
+//GET method for getting the number of visits on STALS 
 const getVisits = async (req, res) => {
     try {
         //retrieving the Visit object based on input
