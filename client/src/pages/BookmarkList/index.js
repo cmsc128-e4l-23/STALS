@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
 import List from './List';
 import Loading from '../../components/Loading';
 import Cookies from "universal-cookie";
 
 
 export default function BookmarkList(){
-    let navigate = useNavigate();
-    const cookies = new Cookies();
+    let cookies = new Cookies();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState('');
@@ -34,10 +32,29 @@ export default function BookmarkList(){
             }
             setLoading(false);
         })   
-    }, [navigate, isLoggedIn]);
+
+        if (isLoggedIn) {
+            fetch(process.env.REACT_APP_API + 'getUserBookmarks', {
+                method: 'POST',
+                body: JSON.stringify({
+                    user: email,
+                }),
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(body => {
+                if(body.success){
+                    console.log(body.bookmarks)
+                    setBookmarks(body.bookmarks)
+                }
+            })
+        }
+    }, [isLoggedIn]);
 
     return(
-        <body>
+        <div>
         {
             
             loading ?
@@ -47,8 +64,8 @@ export default function BookmarkList(){
                 {userType === "Student" ?
                     <>
                         {name}'s Bookmarks
-                        <div id='list-container'>
-                            <List email={email}/>
+                        <div>
+                            <List isLoggedIn={isLoggedIn} userType={userType} bookmarks={bookmarks} email={email}/>
                         </div>
                     </>
                     :
@@ -56,6 +73,6 @@ export default function BookmarkList(){
                 }
             </>
         }
-        </body>
+        </div>
     );
 }

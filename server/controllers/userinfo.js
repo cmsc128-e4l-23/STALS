@@ -104,10 +104,9 @@ const getUserReports = (req, res) => {
 const getUserBookmarks = (req, res) => {
     let user_details = req.body;
 
-    User.findOne({ email: user_details.email })
+     User.findOne({ email: user_details.email })
     .then((document) => {
         if(!document) throw "User not found"
-
         res.send({
             success: true,
             message: "Bookmarks successfully retrieved",
