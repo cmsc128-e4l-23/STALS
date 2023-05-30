@@ -9,7 +9,7 @@ export default function UnarchiveButton({ accommodation, setLoading }){
 
     return(
         <>
-        {modalOpen && <UnarchiveModal setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
+        {modalOpen && <UnarchiveModal modalOpen={modalOpen} setModalOpen={setModalOpen} setLoading={setLoading} accommodation={accommodation} />}
 
         <button className='unarchive-btn' onClick={() => setModalOpen(true)}>
             Unarchive
