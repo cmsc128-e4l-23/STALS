@@ -1,5 +1,5 @@
-#accomm-list body{
-    margin-top: 70px;
+.accomm-list-body{
+    margin-top: -70px;
 }
 
 #lists ul{
@@ -9,16 +9,27 @@
 #lists li {
     list-style-type: none;
     text-align: center;
-    width: 95%;
+    width: 30%;
+    padding-bottom: 1em;
+    margin-left: 34%;
 }
 
 #accomm-name {
+    margin-top: 0;
+    margin-bottom: 1%;
     color: rgb(150,0,0);
 }
 
 #li-container{
+    display: flex;
+    justify-content: space-between;
     background-color: rgb(240,240,240);
     border-radius: 10px;
     padding: 10px;
     box-shadow: 1px 1px rgb(200,200,200);
+}
+
+#user-info {
+    color: rgb(150,0,0);
+    font-size: 20px;
 }

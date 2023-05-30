@@ -26,39 +26,6 @@ export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accom
 
 
     return (
-        // <div className="modalBackground">
-        //     <div className="modalContainer">
-        //         <div className="titleCloseBtn">
-        //             <button
-        //                 onClick={() => {
-        //                 setModalOpen(false);
-        //                 }}
-        //             >
-        //                 X
-        //             </button>
-        //         </div>
-        //         <div className="title">
-        //             <h1>Are You Sure You Want to Delete?</h1>
-        //         </div>
-        //         <div className="footer">
-        //             <button
-        //                 onClick={() => {
-        //                     setModalOpen(false);
-        //                 }}
-        //                 id="cancelBtn"
-        //             >
-        //                 Cancel
-        //             </button>
-        //             <button
-        //                 onClick={() => {
-        //                     deleteAccomm();
-        //                 }} 
-        //             >
-        //                 Continue
-        //             </button>
-        //         </div>
-        //     </div>
-        // </div>
 
         <Dialog
             open={modalOpen}

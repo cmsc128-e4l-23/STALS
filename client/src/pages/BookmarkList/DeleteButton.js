@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import DeleteModal from './DeleteModal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Box } from '@mui/material'
 import "./Button.css"
-import {BookmarkIcon} from '@mui/icons-material';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 
 
@@ -16,10 +15,7 @@ export default function DeleteButton({ accommodation, email, setLoading }){
         {modalOpen && <DeleteModal setModalOpen={setModalOpen} setLoading={setLoading} email={email} accommodation={accommodation} />}
 
         <button className='delete-btn' onClick={() => setModalOpen(true)}>
-            Delete
-            <span className='btn-icon'>
-                <BookmarkIcon id={accommodation._id} />
-            </span>
+            Remove Bookmark
         </button>
 
         </>

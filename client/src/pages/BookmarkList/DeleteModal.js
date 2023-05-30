@@ -1,5 +1,5 @@
 import React from "react";
-import "./Modal.css";
+import { Dialog, DialogTitle, DialogContent, DialogContentText } from "@mui/material";
 
 export default function DeleteModal({ setModalOpen, setLoading, accommodation, email }) {
     const deleteAccomm = () => {
@@ -25,38 +25,36 @@ export default function DeleteModal({ setModalOpen, setLoading, accommodation, e
 
 
     return (
-        <div className="modalBackground">
-            <div className="modalContainer">
-                <div className="titleCloseBtn">
-                    <button
-                        onClick={() => {
-                        setModalOpen(false);
-                        }}
-                    >
-                        X
-                    </button>
-                </div>
-                <div className="title">
-                    <h1>Are You Sure You Want to Delete?</h1>
-                </div>
-                <div className="footer">
-                    <button
-                        onClick={() => {
-                            setModalOpen(false);
-                        }}
-                        id="cancelBtn"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={() => {
-                            deleteAccomm();
-                        }} 
-                    >
-                        Continue
-                    </button>
-                </div>
-            </div>
-        </div>
+        <Dialog
+            open={setModalOpen}
+            onClose={() => {setModalOpen(false)}}
+            aria-labelledby="delete-dialog-title"
+            aria-describedby="delete-dialog-description"
+        >
+            <DialogTitle id="delete-dialog-title">
+                {"Are you sure you want to remove this bookmark?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="delete-dialog-description">
+                    {accommodation.name}
+                    <div className="footer">
+                        <button className="delete-btn"
+                            onClick={() => {
+                                setModalOpen(false);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                        <button className="archive-btn"
+                            onClick={() => {
+                                deleteAccomm();
+                            }} 
+                        >
+                            Continue
+                        </button>
+                    </div>
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>
     );
 }

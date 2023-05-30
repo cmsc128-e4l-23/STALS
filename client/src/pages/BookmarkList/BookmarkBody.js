@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Loading from '../../components/Loading';
 import DeleteButton from './DeleteButton';
+import { useNavigate } from 'react-router-dom';
+import './index.css'
 
 export default function BookmarkBody({ bookmark_id, email, setLoading }){
+    let navigate = useNavigate();
     const [accommData, setAccommData] = useState(null);
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export default function BookmarkBody({ bookmark_id, email, setLoading }){
             <>
             {accommData &&
             <li>
-                <div id='li-container'>
+                <div id='li-container' onClick={() => {navigate("/accomm?id=" + accommData._id)}}>
                     <h3 id='accomm-name'>{accommData.name}</h3>
                     <DeleteButton accommodation={accommData} email={email} setLoading={setLoading} />
                 </div>
