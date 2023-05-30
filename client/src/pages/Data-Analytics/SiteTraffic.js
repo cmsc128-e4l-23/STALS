@@ -5,8 +5,8 @@ import "./Analytics.css"
 
 export default function SiteTraffic(data) {
     // data -> year: {month: number of visits, ...}
-    
-    if (data == null) {
+
+    if (data == null || data['data'] == null) {
         return (
             <Loading />
         )
@@ -16,7 +16,8 @@ export default function SiteTraffic(data) {
         console.log(Object.keys(data['data']));
         console.log(Object.values(data['data']));
         return (
-        <div id="site-traffic-graph">
+            <div id="site-traffic-graph">
+                <h1>SITE TRAFFIC</h1>
             <CChart
                 type="line"
                 data={{
@@ -24,9 +25,9 @@ export default function SiteTraffic(data) {
                     datasets: [
                         {
                             label: "Site Visits",
-                            backgroundColor: "rgba(151, 187, 205, 0.2)",
-                            borderColor: "rgba(151, 187, 205, 1)",
-                            pointBackgroundColor: "rgba(151, 187, 205, 1)",
+                            backgroundColor: "rgb(65, 184, 131)",
+                            borderColor: "rgb(65, 184, 131)",
+                            pointBackgroundColor: "rgb(65, 184, 131)",
                             pointBorderColor: "#fff",
                             data: Object.values(data['data'])
                         },

@@ -1,8 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './Analytics.css';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
-import { IconButton } from "@mui/material";
 import UserStats from "./UserStats";
 import AccommStats from "./AccommStats";
 import SiteTraffic from "./SiteTraffic";
@@ -14,11 +12,11 @@ export default function DataAnalytics() {
     const year = today.getFullYear();
     const month = today.getMonth();
     const day = today.getDate();
-    const monthName = today.toLocaleString('default', { month: 'long' });
     const [userData, setUserData] = useState(null);
     const [appAccomm, setAppAccomm] = useState(null);
     const [pendAccomm, setPendAccomm] = useState(null);
     const [siteTraffic, setSiteTraffic] = useState(null);
+
     
     const goBack = () => {
         navigate("/admin");
@@ -41,7 +39,6 @@ export default function DataAnalytics() {
             .then(body => {
                 if (body.success) {
                     setSiteTraffic(body.return[year]);
-                    console.log(Object.values(siteTraffic));
                 }
         })
     }
@@ -81,7 +78,10 @@ export default function DataAnalytics() {
     return (
         <>
             <div id="analytics-body">
-                <IconButton onClick={goBack}><ArrowBackIosNewOutlinedIcon /> <p>{ "ADMIN PAGE"}</p></IconButton>
+                <div id="back-button">
+                    <button onClick={goBack}>ADMIN PAGE</button>
+                </div>
+
                 <div id="up-graph">
                     <SiteTraffic data={siteTraffic} />
                 </div>
