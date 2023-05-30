@@ -85,9 +85,7 @@ export default function AddAccommodation() {
     })
     .then(response => response.json())
     .then(data =>{
-      console.log(data)
       navigate("/home")
-      navigate(0)
     })
     .catch(error => console.error(error));
   };
