@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //     res.setHeader("Access-Control-Allow-Credentials","true");
 //     next();
 // });
-app.use(cors({ origin: "*", credentials: true}))
+app.use(cors({ origin: ["http://localhost:3001", "https://e4l-frontend.onrender.com"], credentials: true}))
 
 app.use(cookieParser());
 app.use(routes);
