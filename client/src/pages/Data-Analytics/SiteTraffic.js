@@ -36,9 +36,8 @@ export default function SiteTraffic() {
     
 
     useEffect(() => {
-        fetch('http://localhost:3001/getVisits', {
+        fetch(process.env.REACT_APP_API + 'getVisits', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({
                 year: year,
                 month: month+1,
@@ -58,12 +57,12 @@ export default function SiteTraffic() {
     }, [])
 
     const changeData = () => {
-        if (dataType == 'YEAR') {
+        if (dataType === 'YEAR') {
             setNumOfVisits(data[monthName]); // change to per month
             setLabels(Object.keys(data[monthName]));
             setDataType('MONTH');
 
-        } else if (dataType == 'MONTH') {
+        } else if (dataType === 'MONTH') {
             updateData(data);
             setDataType('YEAR');
         }
