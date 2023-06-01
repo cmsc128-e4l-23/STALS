@@ -1,0 +1,79 @@
+#analytics-body {
+    margin-top: 3%;
+}
+
+#analytics-body #back-button {
+    /* background-color: aqua; */
+    width: 10%;
+    margin: 1% 0% 0% 3%;
+    position: absolute;
+}
+
+#analytics-body #back-button button, #site-traffic-graph button {
+    border-color: rgb(230, 98, 76);
+    color: rgb(151, 47, 28);
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    padding: 10px 15px;
+    background-color: white;
+    transition: 300ms;
+    transition-delay: 100ms;
+}
+
+#site-traffic-graph button {
+    margin: 5%;
+}
+
+#analytics-body #back-button button:hover, #site-traffic-graph button:hover {
+    border-color: rgb(255, 255, 255);
+    color: white;
+    background-color: rgb(230, 98, 76);
+    transition: 300ms;
+}
+
+#data-analytics-banner {
+    width: 100%;
+}
+
+#data-analytics-banner .container {
+    width: 200px;
+    height: 200px;
+
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+    vertical-align: middle;
+
+    border-radius: 10px;
+
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 1px 1px 1px;
+}
+
+#data-analytics-banner .container h2 {
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+#up-graph #site-traffic-graph {
+    width: 70%;
+    margin: 5% auto 10%;
+}
+
+#graphs {
+    vertical-align: center;
+}
+
+#polarChart {
+    float: left;
+    width: 40%;
+    margin-left: 5%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    #data-analytics-banner .container {
+    width: 100%;
+    margin-right: 0;
+    }
+}

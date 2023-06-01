@@ -103,45 +103,55 @@ const numToMonth = (num) => {
     }
 }
 
+
+//Return an array with <num> zeroes
+const zero_array = (num) => {
+    let arr = [];
+    for(let i=0; i<num; i++){
+        arr.push(0);
+    }
+    return arr;
+}
+
+
 //Returns an object with zero visits throughout all months
-const year_init = () =>{
-    return {
-        January: 0,
-        February: 0,
-        March: 0,
-        April: 0,
-        May: 0,
-        June: 0,
-        July: 0,
-        August: 0,
-        September: 0,
-        October: 0,
-        November: 0,
-        December: 0
+const year_init = (year) =>{
+    let year_obj = {
+        January: zero_array(31),
+        February: zero_array(28),
+        March: zero_array(31),
+        April: zero_array(30),
+        May: zero_array(31),
+        June: zero_array(30),
+        July: zero_array(31),
+        August: zero_array(31),
+        September: zero_array(30),
+        October: zero_array(31),
+        November: zero_array(30),
+        December: zero_array(31),
     };
+
+    if(year % 4 == 0){
+        year_obj.February.push(0)
+    }
+
+    return year_obj;
 }
 
 
-//POST method for getting the number of visits on STALS 
-//Input
-/*
-{
-    year: a Number value of the year,
-    month: a Number value of the month,
-    day: a Number value of the day
-}
-*/
+//GET method for getting the number of visits on STALS 
 const getVisits = async (req, res) => {
     try {
         //retrieving the Visit object based on input
         let result = await Visit.find({});
-        //removed the _id values
+
         let returnVal = {}
+
         for (let i = 0; i < result.length; i++) {
             if(!returnVal[result[i].year]){
-                returnVal[result[i].year] = year_init();
+                returnVal[result[i].year] = year_init(result[i].year);
             }
-            returnVal[result[i].year][numToMonth(result[i].month)] += result[i].numVisits;
+            returnVal[result[i].year][numToMonth(result[i].month)][result[i].day - 1] = result[i].numVisits;
         }
 
         res.send({ success: true, msg: "getting Visits succeeded", return: returnVal});
