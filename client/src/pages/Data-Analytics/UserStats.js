@@ -12,9 +12,8 @@ export default function UserStats() {
     const [pendAccomm, setPendAccomm] = useState(null);
 
     const getPendAccomm = () => {
-        fetch('http://localhost:3001/getPendApp', {
+        fetch(process.env.REACT_APP_API + 'getPendApp', {
             method: 'GET',
-            credentals: 'include'
         })
             .then(res => res.json())
             .then(body => {
@@ -25,9 +24,8 @@ export default function UserStats() {
     }
 
     useEffect(() => {
-        fetch('http://localhost:3001/dataAnalytics', {
+        fetch(process.env.REACT_APP_API + 'dataAnalytics', {
             method: 'GET',
-            credentials: 'include'
         })
             .then(res => res.json())
             .then(body => {

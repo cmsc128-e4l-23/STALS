@@ -108,7 +108,6 @@ export default function AddAccommodation() {
             <OtherInfo formData={formData} setFormData={setFormData} images={images} setImages={setImages} />
             <button
               style={{
-                position: "absolute",
                 bottom: 10,
                 left: 675,
                 width: "180px",
@@ -118,6 +117,8 @@ export default function AddAccommodation() {
                 borderRadius: "5px",
                 border: "none",
                 fontSize: "Larger",
+                margin: "5px",
+                marginRight: "20px",
                 padding: "5px",
                 cursor: "pointer",
               }}

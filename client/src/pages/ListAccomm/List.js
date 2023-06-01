@@ -29,6 +29,7 @@ export default function List({email}){
         setLoading(false)
     }, [email, loading])
 
+    
 
     return(
         <div id="lists">  

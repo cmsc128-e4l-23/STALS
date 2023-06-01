@@ -26,39 +26,6 @@ export default function ArchiveModal({ modalOpen, setModalOpen, setLoading, acco
 
 
     return (
-        // <div className="modalBackground">
-        //     <div className="modalContainer">
-        //         <div className="titleCloseBtn">
-        //             <button
-        //                 onClick={() => {
-        //                 setModalOpen(false);
-        //                 }}
-        //             >
-        //                 X
-        //             </button>
-        //         </div>
-        //         <div className="title">
-        //             <h1>Are You Sure You Want to Archive?</h1>
-        //         </div>
-                // <div className="footer">
-                //     <button
-                //         onClick={() => {
-                //             setModalOpen(false);
-                //         }}
-                //         id="cancelBtn"
-                //     >
-                //         Cancel
-                //     </button>
-                //     <button
-                //         onClick={() => {
-                //             archiveAccomm();
-                //         }} 
-                //     >
-                //         Continue
-                //     </button>
-                // </div>
-        //     </div>
-        // </div>
         <Dialog
             open={modalOpen}
             onClose={() => {setModalOpen(false)}}
@@ -71,14 +38,14 @@ export default function ArchiveModal({ modalOpen, setModalOpen, setLoading, acco
             <DialogContent>
                 <DialogContentText id="archive-dialog-description">
                     <div className="footer">
-                        <button className="delete-btn"
+                        <button className="archive-btn"
                             onClick={() => {
                                 setModalOpen(false);
                             }}
                         >
                             Cancel
                         </button>
-                        <button className="archive-btn"
+                        <button className="delete-btn"
                             onClick={() => {
                                 archiveAccomm();
                             }} 

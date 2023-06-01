@@ -20,7 +20,7 @@ function App() {
   const incNumVisits = () => {
     console.log("in incNumVisits");
     const date = new Date();
-    fetch('http://localhost:3001/incNumVisits', {
+    fetch(process.env.REACT_APP_API + 'incNumVisits', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({

@@ -23,9 +23,8 @@ export default function DataAnalytics() {
     }
 
     const getVisits = () => {
-        fetch('http://localhost:3001/getVisits', {
+        fetch(process.env.REACT_APP_API + 'getVisits', {
             method: 'POST',
-            credentials: 'include',
             body: JSON.stringify({
                 year: year,
                 month: month+1,
@@ -44,7 +43,7 @@ export default function DataAnalytics() {
     }
 
     const getPendAccomm = () => {
-        fetch('http://localhost:3001/getPendApp', {
+        fetch(process.env.REACT_APP_API + 'getPendApp', {
             method: 'GET',
             credentals: 'include'
         })
@@ -57,7 +56,7 @@ export default function DataAnalytics() {
     }
 
     useEffect(() => {
-        fetch('http://localhost:3001/dataAnalytics', {
+        fetch(process.env.REACT_APP_API + 'dataAnalytics', {
             method: 'GET',
             credentials: 'include'
         })

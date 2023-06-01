@@ -16,7 +16,7 @@ export default function AnalyticsBanner() {
     const monthName = today.toLocaleString('default', { month: 'long' });
 
     const getVisits = () => {
-        fetch('http://localhost:3001/getVisits', {
+        fetch(process.env.REACT_APP_API + 'getVisits', {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({
@@ -43,9 +43,8 @@ export default function AnalyticsBanner() {
 
     // get site traffic
     useEffect(() => {
-        fetch('http://localhost:3001/dataAnalytics', {
+        fetch(process.env.REACT_APP_API + 'dataAnalytics', {
             method: 'GET',
-            credentials: 'include'
         })
             .then(res => res.json())
             .then(body => {

@@ -39,32 +39,14 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
           width: "100%",
         }}
       >
-    <div style={{display:"flex", flexDirection:"column"}}>
-        <label style={{marginRight:"40px", marginBottom:"10px", color:"maroon"}}>ADD ADDITIONAL DETAILS</label>
-        <textarea
-          style={{
-            borderColor:"#751518",
-            width: "400px",
-            height: "400px",
-            marginBottom: "200px",
-            verticalAlign: "top",
-            marginRight:"40px",
-            borderRadius:"5px"
-          }}
-          type="textarea"
-          placeholder="Additional Rules and Descriptions..."
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
-    </div>
+    
         <uploaders style={{ display: "flex", flexDirection: "row"}}>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignContent: "center",
+              marginBottom: "30px"
             }}
           >
             {images.length > 0 ? (

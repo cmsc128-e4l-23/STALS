@@ -39,19 +39,19 @@ export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accom
             <DialogContent>
                 <DialogContentText id="delete-dialog-description">
                     <div className="footer">
-                        <button className="delete-btn"
+                        <button className="archive-btn"
                             onClick={() => {
                                 setModalOpen(false);
                             }}
                         >
                             Cancel
                         </button>
-                        <button className="archive-btn"
+                        <button className="delete-btn"
                             onClick={() => {
                                 deleteAccomm();
                             }} 
                         >
-                            Continue
+                            Delete
                         </button>
                     </div>
                 </DialogContentText>

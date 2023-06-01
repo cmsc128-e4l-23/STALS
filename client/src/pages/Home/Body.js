@@ -21,8 +21,9 @@ export default function Body({ isLoggedIn, userType, email, data }) {
                 if (data.success) {
                     updateAccommList(data.result);
                 }else throw Error
+                setLoading(false)
             })
-        setLoading(false)
+        
     }, [data])
 
     return(
