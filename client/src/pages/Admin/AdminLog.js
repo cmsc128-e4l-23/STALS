@@ -98,52 +98,55 @@ export default function AdminLog(){
 
     return(
         <>
-            <div className="reports-box">
-            {reports.length > 0 ? <div>
-                    <h2>Reports</h2>
-                    <div className="reports-container">
-                        {
-                            reports.map((report)=>{
-                                return(
-                                    <>
-                                        {modalOpen && <ReportModal setModalOpen={setModalOpen} report={report} />}
-                                        <div className="report-item">
-                                            <span onClick={()=>{setModalOpen(true)}}>{report.content}</span>
-                                            <button onClick={()=>{closeReport(report)}}>CLOSE</button>
-                                        </div>
-                                    </>
-                                )
-                            })
-                        }
+            <div className="admin-log-container">
+                <div className="reports-box">
+                <h2>Reports</h2>
+                        <div className="reports-container">
+                        {reports.length > 0 ? <div>
+                            {
+                                reports.map((report)=>{
+                                    return(
+                                        <>
+                                            {modalOpen && <ReportModal setModalOpen={setModalOpen} classification={report.classification} content={report.content} status={report.status}/>}
+                                            <div className="report-item">
+                                                <span onClick={()=>{setModalOpen(true)}}>{report.content}</span>
+                                                <button onClick={()=>{closeReport(report)}}>CLOSE</button>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                        : 
+                        <h3 style={{fontSize:'14px'}}><i>No pending reports found.</i></h3>
+                      }
                     </div>
                 </div>
-                : <h3>No reports found.</h3>
-            }
-            </div>
-            
+                
+                <div className="add-requests-box">
+                    <div>
+                            <h2>Add Requests</h2>
+                {accomRequests.length > 0 ? 
 
-            <div className="add-requests-box">
-            {accomRequests.length > 0 ? 
-                <div>
-                    <h2>Add Requests</h2>
-                    <div className="add-requests-container">
-                        {
-                            accomRequests.map((accommodation)=>{
-                                return(
-                                    <>
-                                        <div  className="add-requests-item">
-                                            <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation.name}</span>
-                                            <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
-                                            <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
-                                        </div>
-                                    </>
-                                )
-                            })
-                        }
-                    </div>
+                        <div className="add-requests-container">
+                            {
+                                accomRequests.map((accommodation)=>{
+                                    return(
+                                        <>
+                                            <div  className="add-requests-item">
+                                                <span onClick={() => {navigate("/accomm?id=" + accommodation._id)}} >{accommodation.name}</span>
+                                                <button onClick={()=>{approveAccom(accommodation)}}>APPROVE</button>
+                                                <button onClick={()=>{rejectAccom(accommodation)}}>DENY</button>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                    : <h3 style={{fontSize:'14px'}}><i>No accommodation requests found.</i></h3>
+                }
                 </div>
-                : <h3>No accommodation requests found.</h3>
-            }
+            </div>
             </div>
         </>
     )
