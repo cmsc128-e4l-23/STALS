@@ -3,8 +3,8 @@ import "../ListAccomm/Modal.css";
 
 export default function ReportModal({ setModalOpen, report }) {
     return (
-        <div className="modalBackground">
-            <div className="modalContainer">
+        <div className="modalBackground" style={{left:0}}>
+            <div className="modalContainer" style={{width:'unset', height:'unset', 'max-width': '80vw', 'min-height': '300px', 'max-height': '80vh', 'margin-top': '100px', 'min-width': '50vw'}}>
                 <div className="titleCloseBtn">
                     <button
                         onClick={() => {

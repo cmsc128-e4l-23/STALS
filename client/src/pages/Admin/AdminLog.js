@@ -9,6 +9,7 @@ export default function AdminLog(){
     const [reports, setReports] = useState([]);
     const [accomRequests, setAccoms] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
+    const [reportToView, setReportView] = useState({});
 
     // gets pending reports from the server
     useEffect(() => {
@@ -96,6 +97,11 @@ export default function AdminLog(){
         });
     }
 
+    const clickReport = (report) => {
+        setReportView(report);
+        setModalOpen(true);
+    }
+
     return(
         <>
             <div className="admin-log-container">
@@ -107,9 +113,9 @@ export default function AdminLog(){
                                 reports.map((report)=>{
                                     return(
                                         <>
-                                            {modalOpen && <ReportModal setModalOpen={setModalOpen} classification={report.classification} content={report.content} status={report.status}/>}
+                                            {modalOpen && <ReportModal setModalOpen={setModalOpen} report={reportToView}/>}
                                             <div className="report-item">
-                                                <span onClick={()=>{setModalOpen(true)}}>{report.content}</span>
+                                                <span onClick={()=>{clickReport(report)}}>{report.content}</span>
                                                 <button onClick={()=>{closeReport(report)}}>CLOSE</button>
                                             </div>
                                         </>
