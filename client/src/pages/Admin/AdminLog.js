@@ -102,8 +102,7 @@ export default function AdminLog(){
                 <div className="reports-box">
                 <h2>Reports</h2>
                         <div className="reports-container">
-                {reports.length > 0 ? <div>
-
+                        {reports.length > 0 ? <div>
                             {
                                 reports.map((report)=>{
                                     return(
@@ -118,13 +117,12 @@ export default function AdminLog(){
                                 })
                             }
                         </div>
-                    : <h3 style={{fontSize:'14px'}}><i>No pending reports found.</i></h3>
-                }
-                </div>
-
+                        : 
+                        <h3 style={{fontSize:'14px'}}><i>No pending reports found.</i></h3>
+                      }
+                    </div>
                 </div>
                 
-
                 <div className="add-requests-box">
                     <div>
                             <h2>Add Requests</h2>

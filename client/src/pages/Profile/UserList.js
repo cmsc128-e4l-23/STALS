@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import './index.css' 
+import DeleteButton from "../ListAccomm/DeleteButton";
+import '../ListAccomm/index.css' 
 import Loading from "../../components/Loading";
 import BookmarkBody from "./BookmarkBody";
 

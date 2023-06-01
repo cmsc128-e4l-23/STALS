@@ -24,7 +24,7 @@ export default function Description({description}){
                 <p ref={ref}>{description}</p>
             </div>
             {
-            seeMore === true ? 
+            seeMore &&
             <div>
                 <button className="see-all-button" onClick={() => {setDescOpen(true)}}>See More</button>
                 <Dialog
@@ -43,7 +43,6 @@ export default function Description({description}){
                     </DialogContent>
                 </Dialog>
             </div>
-            : console.log(seeMore)
             }
         </>
     )

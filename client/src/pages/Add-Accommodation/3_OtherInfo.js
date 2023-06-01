@@ -14,7 +14,9 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
   };
 
   const handleImageChange = (event) => {
-    setImages([...images, event.target.files[0]]);
+    if(event.target.files[0]){
+      setImages([...images, event.target.files[0]]);
+    }
     setFormData({...formData, photos: images});
   };
   const handlePdfChange = (event) => {

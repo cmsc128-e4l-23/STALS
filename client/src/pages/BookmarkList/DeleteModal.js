@@ -1,43 +1,42 @@
 import React from "react";
-import "./Modal.css";
-import "./Button.css"
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Dialog, DialogTitle, DialogContent, DialogContentText } from "@mui/material";
 
-export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accommodation }) {
+export default function DeleteModal({ setModalOpen, setLoading, accommodation, email }) {
     const deleteAccomm = () => {
-        fetch(process.env.REACT_APP_API + 'deleteAccomm', {
+        console.log(email)
+        fetch(process.env.REACT_APP_API +'removeBookmarkAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(accommodation)
+            body: JSON.stringify(
+                {
+                    accomm_id:accommodation._id,
+                    user:email
+                }
+            )
         })
         .then(res => res.json())
         .then(data => {
             if(data.success){
                 setModalOpen(false);
                 setLoading(true);
-            }else{
-                alert(data.message);
             }
         });
     }
 
 
     return (
-
         <Dialog
-            open={modalOpen}
+            open={setModalOpen}
             onClose={() => {setModalOpen(false)}}
             aria-labelledby="delete-dialog-title"
             aria-describedby="delete-dialog-description"
         >
             <DialogTitle id="delete-dialog-title">
-                {"Are You Sure You Want to Delete?"}
+                {"Are you sure you want to remove this bookmark?"}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="delete-dialog-description">
+                    {accommodation.name}
                     <div className="footer">
                         <button className="delete-btn"
                             onClick={() => {

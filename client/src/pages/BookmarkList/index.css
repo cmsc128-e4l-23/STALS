@@ -7,8 +7,10 @@
 }
 
 #lists li {
+    list-style-type: none;
     text-align: center;
     width: 30%;
+    padding-bottom: 1em;
     margin-left: 34%;
 }
 
@@ -16,10 +18,11 @@
     margin-top: 0;
     margin-bottom: 1%;
     color: rgb(150,0,0);
-    cursor: pointer;
 }
 
-#li-container{
+#bookmark-li-container{
+    display: flex;
+    justify-content: space-between;
     background-color: rgb(240,240,240);
     border-radius: 10px;
     padding: 10px;
