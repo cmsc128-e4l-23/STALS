@@ -5,7 +5,7 @@ import Image from "../models/Image.js";
 import Accommodation from "../models/Accommodation.js";
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        const savePath = "../client/stals/src/assets";
+        const savePath = "./test";
         cb(null,savePath)
     },
     filename: (req, file, cb) => {
@@ -46,14 +46,11 @@ const uploadImage = async (req, res) => {
             },
         });
         let savedImage = await image.save();
-        //fs.unlinkSync(file.path);
+        fs.unlinkSync(file.path);
         return image;
       });
       const uploadedImages = await Promise.all(imagePromises);
-      for(let i = 0; i < uploadedImages.length; i++){
-        imageIds[i] = uploadedImages[i].img.data.toString('base64');
-      }
-      let currAccomm = await Accommodation.findById(req.body.attachedTo);
+      const imageIds = uploadedImages.map((image) => image.img.data.toString('base64'));
       const updateObject = {
           $set: {photos: imageIds}
       };
