@@ -9,6 +9,7 @@ export default function Header() {
     let navigate = useNavigate();
 
     const [userName, setName] = useState(null);
+    const [email, setEmail] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
@@ -26,31 +27,51 @@ export default function Header() {
             if(data.isLoggedIn){
                 setId(localStorage.getItem('id'));
                 setName(localStorage.getItem('username'));
+                setEmail(localStorage.getItem('email'))
             }
         })
     }, []);
 
-    const generateReport = () => { 
+    const generateReport = () => {
         fetch('http://localhost:3001/generateRep', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({_id: userId}),
+            body: JSON.stringify({ user: email }),
             headers: {
-                'Content-Type': "application/json"
-            }
+                'Content-Type': 'application/json',
+            },
         })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    alert(body.msg);
-                }else{
-                    alert(body.msg);
+            .then((res) => {
+                // Check if the response was successful
+                if (res.ok) {
+                    // Convert the response to a blob
+                    return res.blob();
+                } else {
+                    throw new Error('PDF Report Generation Failed');
                 }
             })
-            .catch((error) => {
-                alert("An error has occurred");
+            .then((blob) => {
+                const now = new Date();                               
+                const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;
+                // Create a URL for the blob
+                const url = window.URL.createObjectURL(blob);
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                // Append the link to the document body
+                document.body.appendChild(link);
+                // Simulate a click event to trigger the download
+                link.click();
+                // Clean up the temporary link element
+                document.body.removeChild(link);
             })
-    }
+            .catch((error) => {
+                console.log(error);
+                alert('An error has occurred');
+            });
+    };
+    
 
     const logout = (e) => {
         e.preventDefault();
@@ -150,3 +171,4 @@ export default function Header() {
     </div>
     )
 }
+

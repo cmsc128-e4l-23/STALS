@@ -468,12 +468,12 @@ import mongoose from "mongoose";
 // );
 
 //========================== BOOKMARK ACCOMMODATION ==========================
-//user1 = "644cd8a4dad90ff1fc7d1513"
-//user2 = "644cd8a4dad90ff1fc7d1511"
-//user3 = "644cd8a4dad90ff1fc7d150f"
-//accomm1 = "644cdb964c5e0d977fa685ac"
-//accomm2= "644cdb964c5e0d977fa685af"
-//accomm3 = "644cdb964c5e0d977fa685b2"
+// let user1 = "647a1d9a13e50663c194130c"
+// // user2 = "644cd8a4dad90ff1fc7d1511"
+// // user3 = "644cd8a4dad90ff1fc7d150f"
+// let accomm1 = "647a1dd313e50663c194133b"
+// // accomm2= "644cdb964c5e0d977fa685af"
+// // accomm3 = "644cdb964c5e0d977fa685b2"
 // needle.post("http://localhost:3001/bookmarkAccomm",
 //     {
 //         user_id: user1,
