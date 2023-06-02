@@ -18,28 +18,6 @@ export default function Header() {
     const [searchInput, setInput] = useState("");
     const [showOptions, setShowOptions] = useState(true);
 
-    const generateReport = () => { 
-        fetch(process.env.REACT_APP_API + 'generateRep', {
-            method: 'POST',
-            body: JSON.stringify({user: email}),
-            headers: {
-                'Content-Type': "application/json"
-            }
-        })
-            .then(res => res.json())
-            .then(body => {
-                if (body.success) {
-                    alert(body.msg);
-                }else{
-                    alert(body.msg);
-                }
-            })
-            .catch((error) => {
-                alert("An error has occurred");
-            })
-    }
-
-
     useEffect(() => {
         let credentials = {
           auth: cookies.get("authToken")
@@ -74,6 +52,47 @@ export default function Header() {
             setShowOptions(true);   
         }
       }, []);
+
+    const generateReport = () => { 
+        fetch(process.env.REACT_APP_API + 'generateRep', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({user: email}),
+            headers: {
+                'Content-Type': "application/json"
+            },
+        })
+            .then((res) => {
+                // Check if the response was successful
+                if (res.ok) {
+                    // Convert the response to a blob
+                    return res.blob();
+                } else {
+                    throw new Error('PDF Report Generation Failed');
+                }
+            })
+            .then((blob) => {
+                const now = new Date();                               
+                const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;
+                // Create a URL for the blob
+                const url = window.URL.createObjectURL(blob);
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                // Append the link to the document body
+                document.body.appendChild(link);
+                // Simulate a click event to trigger the download
+                link.click();
+                // Clean up the temporary link element
+                document.body.removeChild(link);
+            })
+            .catch((error) => {
+                console.log(error);
+                alert('An error has occurred');
+            });
+    };
+
 
     const logout = (e) => {
         e.preventDefault();
