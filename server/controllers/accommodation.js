@@ -6,6 +6,7 @@ import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import Review from "../models/Review.js";
+import Image from "../models/Image.js";
 
 //Method for adding accommodations
 const addAccomm = async (req, res) => {
