@@ -16,6 +16,7 @@ export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accom
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
             if(data.success){
                 setModalOpen(false);
                 setLoading(true);
