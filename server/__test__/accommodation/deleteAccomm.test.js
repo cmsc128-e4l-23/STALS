@@ -188,7 +188,10 @@ describe("POST /deleteAccomm", () => {
         await request(app).post("/addAccomm").send(accomm_details1)
         await request(app).post("/addAccomm").send(accomm_details2)
 
+        
         const user = await User.findOne({email: "p1blank@up.edu.ph"})
+        const user2 = await User.findOne({email: "p2sora@up.edu.ph"})
+        const user3 = await User.findOne({email: "p3shiro@up.edu.ph"})
         const accomm = await Accommodation.findOne({name: "The House"})
 
         await request(app).post("/addReview").send({
@@ -208,16 +211,15 @@ describe("POST /deleteAccomm", () => {
         })
         
         const review = await Review.find({propertyId: accomm._id});
-        // console.log(review);
 
-        const response1 = await request(app).post("/reportAccomm").send({
+        await request(app).post("/reportAccomm").send({
             user: user.email,
             reported_id: accomm._id,
             classification: "Accommodation",
             content: "Bruh",
         })
 
-        const response2 = await request(app).post("/reportAccomm").send({
+        await request(app).post("/reportAccomm").send({
             user: user.email,
             reported_id: accomm._id,
             classification: "Accommodation",
@@ -225,6 +227,16 @@ describe("POST /deleteAccomm", () => {
         })
 
         const reports = await Report.find({reported: accomm._id});
+
+        const response1 = await request(app).post("/bookmarkAccomm").send({
+          email: user2.email,
+          accomm_id : accomm._id
+        })
+
+        const response2 = await request(app).post("/bookmarkAccomm").send({
+          email: user3.email,
+          accomm_id : accomm._id
+        })
     })
 
     test("test deleteAccomm", async () => {
@@ -240,7 +252,13 @@ describe("POST /deleteAccomm", () => {
         expect(accomm_before.name).toBe("The House");
         expect(reviews_before.length).toBe(2);
         expect(reports_before.length).toBe(2);
-        
+
+
+        const user2_before = await User.findOne({email: "p2sora@up.edu.ph"})      
+        const user3_before = await User.findOne({email: "p3shiro@up.edu.ph"})      
+        expect(user2_before.bookmarks.length).toBe(1);
+        expect(user3_before.bookmarks.length).toBe(1);
+
         const response2 = await request(app).post("/deleteAccomm").send({
             _id: accomm_before._id
         })
@@ -257,6 +275,11 @@ describe("POST /deleteAccomm", () => {
         expect(reports_after.length).toBe(0);
         expect(accomm_after).toBe(null);
         expect(owner_after.owner.propertiesList.length).toBe(0);
+
+        const user2_after = await User.findOne({email: "p2sora@up.edu.ph"})      
+        const user3_after = await User.findOne({email: "p3shiro@up.edu.ph"})      
+        expect(user2_after.bookmarks.length).toBe(0);
+        expect(user3_after.bookmarks.length).toBe(0);
     })
 })
 
