@@ -34,7 +34,6 @@ export default function AddAccommodation() {
     description: "",
     photos: [],
   });
-  const {photos, ...noPhotos} = formData;
   
   useEffect(() => {
     let credentials = {
@@ -62,18 +61,18 @@ export default function AddAccommodation() {
     fetch(process.env.REACT_APP_API + 'addAccomm', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(noPhotos),
+      body: JSON.stringify(formData),
     })
     .then((res) => res.json())
     .then((data) => {
       if(data.success){
-        const {accommId, userId, ...otherdata} = data;
+        const {accommId, userId} = data;
         alert(data.msg);
         const sendData = new FormData();
         sendData.append('userId', userId);
         sendData.append('attachedTo', accommId);
-        for (let i = 0; i < photos.length; i++) {
-          sendData.append("images", photos[i],photos[i].name);
+        for (let i = 0; i < images.length; i++) {
+          sendData.append("images", images[i],images[i].name);
         }
         return fetch(process.env.REACT_APP_API + 'uploadImage', {
           method: 'POST',
