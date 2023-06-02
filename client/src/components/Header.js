@@ -10,12 +10,35 @@ export default function Header() {
 
     const cookies = new Cookies();
     const [name, setName] = useState(null);
+    const [email, setEmail] = useState(null);
     const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
     const [showOptions, setShowOptions] = useState(true);
+
+    const generateReport = () => { 
+        fetch(process.env.REACT_APP_API + 'generateRep', {
+            method: 'POST',
+            body: JSON.stringify({user: email}),
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(body => {
+                if (body.success) {
+                    alert(body.msg);
+                }else{
+                    alert(body.msg);
+                }
+            })
+            .catch((error) => {
+                alert("An error has occurred");
+            })
+    }
+
 
     useEffect(() => {
         let credentials = {
@@ -31,6 +54,7 @@ export default function Header() {
           setLoggedIn(data.isLoggedIn);
           if(data.isLoggedIn){
             setName(data.name)
+            setEmail(data.email)
             setUserType(data.usertype)
           }
         })
@@ -136,6 +160,7 @@ export default function Header() {
                             <>
                                 <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
                                 <li id='option-btn' onClick={() => {navigate('/your-bookmarks')}}>YOUR BOOKMARKS</li>
+                                <li id='option-btn' onClick={generateReport}>GENERATE A REPORT</li>
                             </>
                         }
                         {   userType === "Accommodation Owner" && 
