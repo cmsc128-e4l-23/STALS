@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BasicInfo from "./1_BasicInfo";
 import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
+import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import Cookies from "universal-cookie";
@@ -10,6 +11,8 @@ import Cookies from "universal-cookie";
 export default function AddAccommodation() {
   let navigate = useNavigate();
   const cookies = new Cookies();
+
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [isAccommOwner, setAccommOwner] = useState(false);
   const [email, setEmail] = useState('');
@@ -54,6 +57,7 @@ export default function AddAccommodation() {
           setEmail(data.email)
           setFormData({ ...formData, owner: data.email })
         }
+        setLoading(false)
       });
   }, [navigate]);
   
@@ -138,7 +142,10 @@ export default function AddAccommodation() {
 
   return (
     <>
-      {
+    {loading ?
+      <Loading />
+      :
+      <>{
         isAccommOwner ? 
           <>
             <div
@@ -186,7 +193,8 @@ export default function AddAccommodation() {
         <div>
           <h1>404 not found</h1>
         </div>
-      }
+      }</>
+    }
     </>
   );
 }
