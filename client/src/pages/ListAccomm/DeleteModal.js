@@ -19,7 +19,7 @@ export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accom
                 setModalOpen(false);
                 setLoading(true);
             }else{
-                alert(data.message);
+                alert(data.msg);
             }
         });
     }
