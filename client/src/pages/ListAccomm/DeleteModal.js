@@ -8,7 +8,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accommodation }) {
     const deleteAccomm = () => {
-        console.log(accommodation);
         fetch(process.env.REACT_APP_API + 'deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -16,7 +15,6 @@ export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accom
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             if(data.success){
                 setModalOpen(false);
                 setLoading(true);
