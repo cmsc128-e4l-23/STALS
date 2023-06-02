@@ -72,6 +72,7 @@ export default function AddAccommodation() {
         const sendData = new FormData();
         sendData.append('userId', userId);
         sendData.append('attachedTo', accommId);
+        console.log(photos);
         for (let i = 0; i < photos.length; i++) {
           sendData.append("images", photos[i],photos[i].name);
         }

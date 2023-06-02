@@ -3,7 +3,12 @@ import makeDB from '../../mongoose';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import Accommodation from '../../models/Accommodation';
-
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import Image from '../../models/Image';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 beforeAll(() => makeDB('mongodb://0.0.0.0:27017/STALS_TEST'));
 
 const mockUser = {
@@ -61,14 +66,26 @@ const mockAccomm = {
 let newAccomm;
 
 describe("POST /deleteAccomm", () => {
+    const imgPath = path.resolve(__dirname, "./noot.png");
+    const imgPath2 = path.resolve(__dirname, "./sumeru.jpg");
     describe("Happy paths", () => {
         test("should successfully delete accommodation", async () => {
             //Initializing mock data
-            await request(app).post("/signup").send(mockUser);
-            await request(app).post("/addAccomm").send(mockAccomm);
+            const newUser = await request(app).post("/signup").send(mockUser);
+            newAccomm = await request(app).post("/addAccomm").send(mockAccomm);
+            await request(app).post("/uploadImage")
+            .field('userId', newUser.body.data._id)
+            .field('attachedTo', newAccomm.body.accommId)
+            .attach('images',imgPath, 'image1.jpg')
+            .attach('images', imgPath2, 'image2.jpg');
             newAccomm = await Accommodation.findOne({ name: mockAccomm.name });
-
+            //console.log(newAccomm);
+            const image_before = await Image.find({attahed_to: newAccomm._id});
+            console.log(image_before);
             const res = await request(app).post("/deleteAccomm").send({_id: newAccomm._id});
+            console.log(newAccomm);
+            const image_after = await Image.find({attahed_to: newAccomm._id});
+            console.log(image_after);
             expect(res.body.success).toBe(true);
         });
     })
