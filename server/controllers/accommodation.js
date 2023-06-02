@@ -140,8 +140,37 @@ const deleteAccomm = async (req, res) => {
         if (currAccomm) {
             const currUser = await User.findByIdAndUpdate(
                 currAccomm.owner,
-                { $pull: { "owner.propertiesList": accomm_details._id } }
+                { $pull: { 
+                    "owner.propertiesList": accomm_details._id
+                    // "reviews":accomm_details._id,
+                    // "reports":accomm_details._id
+                }}
             );
+
+            // console.log(currUser);
+
+            const accommReviews = await Review.find({propertyId: accomm_details._id});
+            for(let i=0;i<accommReviews.length; i++){
+                await Review.deleteOne({_id:accommReviews[i]._id});
+                await User.findByIdAndUpdate(
+                    accommReviews[i].userId,
+                    {$pull: {"reviews":accommReviews[i]._id} }
+                )
+            }
+
+            const accommReports = await Report.find({reported: accomm_details._id});
+            for(let i=0;i<accommReports.length; i++){
+                await Report.deleteOne({_id:accommReports[i]._id});
+                await User.findByIdAndUpdate(
+                    accommReports[i].user,
+                    {$pull: {"reports":accommReports[i]._id} }
+                )
+            }
+                
+            
+            const accommImages = await Image.find({attachedTo: accomm_details._id})
+            for(let i=0;i<accommImage.length; i++)
+                await Report.deleteOne({_id:accommImages[i]._id});
 
             if (currUser) {
                 res.send({ success: true, msg: "Successfully deleted accommodation" })
