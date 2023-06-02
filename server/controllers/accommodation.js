@@ -142,12 +142,18 @@ const deleteAccomm = async (req, res) => {
                 currAccomm.owner,
                 { $pull: { 
                     "owner.propertiesList": accomm_details._id
-                    // "reviews":accomm_details._id,
-                    // "reports":accomm_details._id
                 }}
             );
-
-            // console.log(currUser);
+            
+            const users = await User.find({});
+            for(let i=0;i<users.length; i++){
+                await User.findByIdAndUpdate(
+                    users[i]._id,
+                    {$pull: {
+                        "bookmarks" : accomm_details._id
+                    }}
+                )
+            }
 
             const accommReviews = await Review.find({propertyId: accomm_details._id});
             for(let i=0;i<accommReviews.length; i++){
