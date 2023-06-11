@@ -44,7 +44,8 @@ export default function ReportForm({ accommId, email, userType, isLoggedIn }){
 
         else if(userType === "Accommodation Owner")
             alert("Accommodation owners are not allowed to make reviews.")
-        
+        else if(userType === "Admin")
+            alert("Admins are not allowed to report accommodations.")
         else setDialogOpen(true)
     }
 
