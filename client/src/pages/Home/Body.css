@@ -47,6 +47,13 @@
         margin: 13%;
         font-size: 25px;
     }
+    .body-group {
+        margin: 10%;
+        margin-top: 3%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
 }
 
 @media only screen and ((max-width: 640px))  {
@@ -60,5 +67,12 @@
     .body-div #not-found {
         margin: 20%;
         font-size: 25px;
+    }
+    .body-group {
+        margin: 10%;
+        margin-top: 3%;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 25px;
     }
 }

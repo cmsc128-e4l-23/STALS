@@ -5,6 +5,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import "./Accommodation.css";
 import Loading from '../../components/Loading';
+import { red } from "@mui/material/colors";
 
 
 // the accommodation card
@@ -106,7 +107,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
             :
             <div className="body-element">
             {/* bookmark button */}
-            <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" disabled={clicked} >
+                    <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" disabled={clicked} >
                 {bookmarked ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
             </IconButton>
         
@@ -128,17 +129,6 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                             <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
                         }   
                         </div>
-                        {/* slider buttons */}
-                        {/* <div className="slider-btns">
-                        {accomm.photos.length > 0 &&
-                            <>
-                            {accomm.photos.map((photo, index) => {
-                                var base64Image = photo;
-                                return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
-                            })}
-                            </>
-                        }
-                        </div> */}
                     </div>
                 </div>
                 {/* details */}
