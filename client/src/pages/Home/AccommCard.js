@@ -12,6 +12,7 @@ import Loading from '../../components/Loading';
 //           details below
 export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
     let navigate = useNavigate();
+    const [clicked, setClicked] = useState(false);
     const [bookmarked, setBookmarked] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -76,12 +77,13 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
             if (body.success) {
                 setBookmarked(false);
             } else {
-                alert(body.msg);
+                console.info(body.msg);
             }
         })
     }
 
     const clickBtn = (id) => {
+        setClicked(true);
         if(isLoggedIn && userType === "Student"){
             if (bookmarked) {
                 removeBookmark(id);
@@ -93,6 +95,9 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
         else { // can't click the button
             alert("Only logged in students can bookmark accommodations.");
         }
+        setTimeout(() => {
+            setClicked(false);
+        }, 1000)
     }
     return (
         <>
@@ -101,7 +106,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
             :
             <div className="body-element">
             {/* bookmark button */}
-            <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" >
+            <IconButton key={accomm._id} onClick={() => clickBtn(accomm._id)} className="favorite" disabled={clicked} >
                 {bookmarked ? <BookmarkIcon id={accomm._id} /> : <BookmarkBorderIcon id={accomm._id} />}
             </IconButton>
         
