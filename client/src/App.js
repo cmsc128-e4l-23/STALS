@@ -10,6 +10,7 @@ import Profile from './pages/Profile/index';
 import Header from './components/Header';
 import BookmarkList from './pages/BookmarkList';
 import DataAnalytics from './pages/Data-Analytics/index';
+import PageNotFound from './pages/PageNotFound/PageNotFound';
 
 import {HashRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -64,7 +65,9 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/data-analytics" element={<DataAnalytics />} />
           <Route path="/profile" element={<Profile/>} />
-          <Route path="/your-bookmarks" element={<BookmarkList/>} />
+          <Route path="/your-bookmarks" element={<BookmarkList />} />
+          
+          <Route path="*" element={<PageNotFound />} />
         </Routes> 
       </Router>
     </div>
