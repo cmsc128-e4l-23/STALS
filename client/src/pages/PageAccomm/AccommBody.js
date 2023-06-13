@@ -115,7 +115,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                 <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
-                            <ReviewForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
+                            <ReviewForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn}/>
                             <ReportForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />
                    
                         </div>
