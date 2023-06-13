@@ -10,6 +10,23 @@ h1 {
   height: 67vh;
 } 
 
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink-red {
+  animation: blink 2s infinite;
+  color: red;
+}
+
 .signup-form {
   display: flex;
   flex-direction: column;

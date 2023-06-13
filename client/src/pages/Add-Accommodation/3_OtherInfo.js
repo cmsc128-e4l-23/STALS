@@ -96,6 +96,7 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
                   accept="image/*"
                   onChange={handleImageChange}
                   multiple
+                  required
                 />
               </>
             )}
@@ -112,6 +113,7 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
                   onChange={handlePdfChange}
                   multiple
                   style={{display:"none"}}
+                  required
                 />
               <ul class="list2">
                 {pdfs.map((pdf) => (

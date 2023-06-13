@@ -134,9 +134,17 @@ export default function Header() {
     };
 
     let auth_section;
-    if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
-    }else{
+    if (isLoggedIn) {
+        let displayName = name.length > 10 ? `${name.slice(0, 20)}...` : name;
+        auth_section = (
+          <>
+            <div id='auth-confirmed'>
+              Welcome back, <b>{displayName}!</b>
+            </div>
+          </>
+        );
+      }
+      else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
