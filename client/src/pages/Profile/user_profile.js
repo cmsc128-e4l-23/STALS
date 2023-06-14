@@ -51,25 +51,20 @@ const UserPage = ({ email, name, number }) => {
 
     //Render Page
     return (
-        <div style={{ display: "flex", flexDirection: "row"}}>
-                <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
-                    <div>
-                        <label for="file-upload">
-                            <img src={image} alt="Clickable Image" style={{ width: "90%", height: "100%", borderRadius: "50%" }}></img>
-                        </label>
-                        <input id="file-upload" type="file" style={{ display: "none" }} accept="image/*" onChange={handleImageChange}></input>
-                    </div>
-                    <ul>
-                    <li>Name: {name}</li>  
-                    <li>Email: {email}</li>
-                    <li>Number: {number}</li>
-                    </ul>
-                </div>
-                <div>
-                <div><h4>My Bookmarks</h4></div>
-                <List email = {email}/>
-                </div>
-                
+        <div>
+        <div className="container">
+          <div className="content">
+            <ul>
+              <li>Name: {name}</li>  
+              <li>Email: {email}</li>
+              <li>Number: {number}</li>
+            </ul>
+          </div>
+          <div className="accommodations">
+            <div className="accomm-title"><h4>My Bookmarks</h4></div>
+          </div>
+        </div>
+        <List email={email} />
         </div>
     );
 };

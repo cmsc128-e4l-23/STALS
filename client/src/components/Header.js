@@ -171,7 +171,8 @@ export default function Header() {
                 <form>
                     <input id='search-text' type='text' placeholder='What are you looking for?' onChange={handleInput} value={searchInput} />
                     <button id='search-submit' type='submit' onClick={search}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+
                     </button>
                 </form>
             </div>

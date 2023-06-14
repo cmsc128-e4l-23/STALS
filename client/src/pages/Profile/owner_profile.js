@@ -11,6 +11,8 @@ const OwnerPage = ({ email, name, number }) => {
     const [bookmarksArray, setBookmarks] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    
+
     //Getting fetched owned accommodations
     useEffect(() => {
         const fetchOwnedAccomms = async () => {
@@ -51,36 +53,22 @@ const OwnerPage = ({ email, name, number }) => {
 
     //Render Page
     return (
-        <div style={{ display: "flex", flexDirection: "row"}}>
-                <div style={{ display: "flex", flexDirection: "column", width: "400px"}}>
-                    <div>
-                        <label for="file-upload">
-                            <img src={image} alt="Clickable Image" style={{ width: "90%", height: "100%", borderRadius: "50%" }}></img>
-                        </label>
-                        <input id="file-upload" type="file" style={{ display: "none" }} accept="image/*" onChange={handleImageChange}></input>
-                    </div>
-                    <ul>
-                    <li>Name: {name}</li>  
-                    <li>Email: {email}</li>
-                    <li>Number: {number}</li>
-                    </ul>
-                </div>
-                <div>
-                <div><h4>My Accommodations</h4></div>
-                <div class="image-grid">
-                {imageArray.map((img,index)=>(
-                    <a href={"http://localhost:3000/home"}>
-                        <img src={img} alt="myFavorites"></img>
-                    </a>
-                    
-                )
-                )}
-                </div>
-                <List email = {email}/>
-                </div>
-                
+        <div>
+        <div className="container">
+          <div className="content">
+            <ul>
+              <li>Name: {name}</li>  
+              <li>Email: {email}</li>
+              <li>Number: {number}</li>
+            </ul>
+          </div>
+          <div className="accommodations">
+            <div className="accomm-title"><h4>My Accommodations</h4></div>
+          </div>
         </div>
-    );
+        <List email={email} />
+        </div>
+      );
 };
 
 export { OwnerPage };
