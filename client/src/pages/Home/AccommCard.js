@@ -5,7 +5,6 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import "./Accommodation.css";
 import Loading from '../../components/Loading';
-import { red } from "@mui/material/colors";
 
 
 // the accommodation card
@@ -16,6 +15,14 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
     const [clicked, setClicked] = useState(false);
     const [bookmarked, setBookmarked] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [priceRange, setPriceRange] = useState('');
+
+    const assignPriceRange = () => {
+        if (accomm.priceRange.minPrice == accomm.priceRange.maxPrice) {
+            setPriceRange(`₱${accomm.priceRange.minPrice}.00`);
+        }
+        else setPriceRange(`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`);
+    }
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -32,11 +39,13 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
             .then(res => res.json())
             .then(body => {
                 if(body.success){
-                    setBookmarked(body.bookmarked)
+                    setBookmarked(body.bookmarked);
                 }
                 setLoading(false)
             })
+            
         }
+        assignPriceRange();
         setLoading(false)
     }, [])
     
@@ -136,7 +145,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                     <h3>{ accomm.name}</h3>
                     <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
                     <p>{`Type: ${accomm.accommodationType}`}</p>
-                    <h4>{`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`}</h4>
+                    <h4>{priceRange}</h4>
                 </div>
             </div>
         </div>
