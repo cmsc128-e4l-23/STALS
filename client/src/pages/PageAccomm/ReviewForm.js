@@ -46,13 +46,16 @@ export default function ReviewForm({ accommId, email, userType, isLoggedIn }){
 
         else if(userType === "Accommodation Owner")
             alert("Accommodation owners are not allowed to make reviews.")
+
+        else if(userType === "Admin")
+            alert("Site Administrators are not allowed to make reviews.")
         
         else setDialogOpen(true)
     }
 
     return(
         <>
-            <button className="report-button" onClick={openDialog}><FaStar /> Review this listing</button>
+            <button className="report-button" onClick={openDialog} hidden={userType==="Admin"}><FaStar /> Review this listing</button>
             <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
                 <DialogTitle padding={5} lineHeight={.5}><h2>Review an accommodation</h2></DialogTitle>
                 <DialogContent>
