@@ -107,9 +107,8 @@ const getAccommReviews = (req, res) => {
 }
 
 const getAccommRating = (req, res) => {
-    let accomm_details = req.body;
 
-    Accommodation.findOne({ _id: accomm_details._id })
+    Accommodation.findOne({ _id: req.query.id })
     .then((document) => {
         if(!document) throw "Accommodation not found"
 
@@ -170,6 +169,7 @@ export default {
     getAccommBasicDetails,
     getAccommFullDetails,
     getAccommReviews,
+    getAccommRating,
     getAccommReports,
     checkIfBookmarked
 }
