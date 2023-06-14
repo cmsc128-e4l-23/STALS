@@ -7,11 +7,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export default function ArchiveModal({ modalOpen, setModalOpen, setLoading, accommodation }) {
+    const accommId = {
+        _id: accommodation._id
+    }
     const archiveAccomm = () => {
         fetch(process.env.REACT_APP_API + 'archiveAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(accommodation)
+            body: JSON.stringify(accommId)
         })
         .then(res => res.json())
         .then(data => {
