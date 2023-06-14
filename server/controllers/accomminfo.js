@@ -106,6 +106,33 @@ const getAccommReviews = (req, res) => {
     })
 }
 
+const getAccommRating = (req, res) => {
+    let accomm_details = req.body;
+
+    Accommodation.findOne({ _id: accomm_details._id })
+    .then((document) => {
+        if(!document) throw "Accommodation not found"
+
+        if (document.reviews.length === 0) throw "No reviews found"
+        
+        let accommrating = (document.reviews).reduce((total, review) => total + review)
+        accommrating = (accommrating / (document.reviews.length)).toFixed(2)
+
+        res.send({
+            success: true,
+            message: "Rating Calculated",
+            rating: accommrating
+        })
+    })
+    .catch((err) => {
+        res.send({
+            success: false,
+            message: "Failed to calculate rating",
+            error: err
+        })
+    })
+}
+
 const getAccommReports = (req, res) => {
     let accomm_details = req.body;
 
