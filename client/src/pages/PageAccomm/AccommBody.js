@@ -13,7 +13,7 @@ import Loading from "../../components/Loading";
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [accommOwner, setAccommOwner] = useState();
+    const [accommOwner, setAccommOwner] = useState({});
     const [imageList, setImageList] = useState([]);
     const [currentRating, setCurrentRating] = useState(0);
     const [priceRange, setPriceRange] = useState('');
@@ -62,7 +62,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                     }
                 })
                 .catch((error) => {
-                    alert("An error has occurred");
+                    alert("An error has occurred (Rating)");
                 })
             }
     
