@@ -104,7 +104,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         <h1>{accommData.name}</h1>
                     </div>
                     <div className="accomm-details-div">
-                        <p> <FaStar /> {currentRating} • { accommData.reviews.length } reviews • {` ${accommData.address.barangay}, ${accommData.address.city}`} </p>
+                        <p> <FaStar /> {currentRating.toFixed(2)} • { accommData.reviews.length } reviews • {` ${accommData.address.barangay}, ${accommData.address.city}`} </p>
                     </div>
                 </div>
                 {/* Accomm Images */}
