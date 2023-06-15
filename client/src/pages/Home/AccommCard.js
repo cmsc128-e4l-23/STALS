@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from '@mui/material';
+import { IconButton, Box, CircularProgress } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import "./Accommodation.css";
@@ -12,6 +12,8 @@ import Loading from '../../components/Loading';
 //           details below
 export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
     let navigate = useNavigate();
+    const [photos, setPhotos] = useState([]);
+    const [imageLoading, setImageLoading] = useState(true);
     const [clicked, setClicked] = useState(false);
     const [bookmarked, setBookmarked] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -43,10 +45,16 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                 }
                 setLoading(false)
             })
-            
         }
-        assignPriceRange();
-        setLoading(false)
+        setLoading(false);
+        fetch(process.env.REACT_APP_API + 'getAccommPhotos?id=' + accomm._id, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .then(body => {
+            setPhotos(body.photos)
+            setImageLoading(false)
+        })
     }, [])
     
     
@@ -127,16 +135,24 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                 <div className="img-container">
                     <div className="slider-wrapper">
                         <div className="images">
-                        {accomm.photos.length > 0 ?
-                            <>
-                            {accomm.photos.map((photo, index) => {
-                                var base64Image = photo;
-                                return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
-                            })}
-                            </>
+                        {imageLoading ?
+                            <Box alignItems={"center"} height="18rem">
+                                <CircularProgress />
+                            </Box>
                             :
-                            <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
-                        }   
+                            <>
+                            {photos.length > 0 ?
+                                <>
+                                {photos.map((photo, index) => {
+                                    var base64Image = photo;
+                                    return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
+                                })}
+                                </>
+                                :
+                                <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
+                            }
+                            </>
+                        }
                         </div>
                     </div>
                 </div>
