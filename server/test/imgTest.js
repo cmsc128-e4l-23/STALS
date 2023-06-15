@@ -17,10 +17,6 @@ formData.append('images', fs.createReadStream(imgPath), {
   filename: 'image1.jpg',
   contentType: 'image/jpeg',
 });
-formData.append('images', fs.createReadStream(imgPath2), {
-  filename: 'image2.jpg',
-  contentType: 'image/jpeg',
-});
 fetch(url, {
   method: 'POST',
   body: formData,
