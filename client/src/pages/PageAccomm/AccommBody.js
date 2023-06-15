@@ -13,7 +13,7 @@ import Loading from "../../components/Loading";
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [accommOwner, setAccommOwner] = useState();
+    const [accommOwner, setAccommOwner] = useState({});
     const [imageList, setImageList] = useState([]);
     const [currentRating, setCurrentRating] = useState(0);
     const [priceRange, setPriceRange] = useState('');
@@ -38,9 +38,9 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
             .then(body => {
                 if (body.success) {
                     setAccommOwner(body.owner)
-                    setLoading(false);
                 }else{
                     alert(body.message);
+                    console.log(body.error)
                 }
             })
             .catch((error) => {
@@ -56,13 +56,13 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 .then(body => {
                     if (body.success) {
                         setCurrentRating(body.rating)
-                        setLoading(false)
                     }else{
                         alert(body.message);
+                        console.log(body.error)
                     }
                 })
                 .catch((error) => {
-                    alert("An error has occurred");
+                    alert("An error has occurred (fetchRating)");
                 })
             }
     
@@ -76,6 +76,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         .then(body => {
             if (body.success){
                 setAccommData(body.accommodation)
+                setLoading(false)
                 assignPriceRange(body.accommodation);
                 fetchOwner(data);
                 fetchRating(data);
@@ -84,7 +85,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 alert(body.message)
             }
         })
-    }, []);
+    }, [data, accommData, accommOwner, currentRating]);
 
     if(loading === true){
         return (
