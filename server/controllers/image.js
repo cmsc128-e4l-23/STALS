@@ -18,7 +18,7 @@ const upload = multer({storage: storage});
 //upload Image
 const uploadImage = async (req, res) => {
   try {
-    let imageIds = [];
+    let imageStrings = [];
     //replace 'images' with whatever is in the frontend form's name/id. for example, 'upload-images'.
     upload.array('images')(req, res, async  (error) => {
       if (error instanceof multer.MulterError) {
@@ -35,35 +35,19 @@ const uploadImage = async (req, res) => {
       // Process the files and save them in the database
 
       // Example: Save file paths in the database
-      const imagePromises = files.map(async (file) => {
-        const image = new Image({
-            userId: req.body.userId,
-            attachedTo: req.body.attachedTo,
-            filename: file.filename,
-            img: {
-                data: fs.readFileSync(file.path),
-                contentType: file.mimetype,
-            },
-        });
-        let savedImage = await image.save();
+      const imagePromises = files.map((file) => {
+        let imageString = fs.readFileSync(file.path).toString('base64');
+        imageStrings.push(imageString);
         fs.unlinkSync(file.path);
-        return image;
       });
-      const uploadedImages = await Promise.all(imagePromises);
-      for(let i = 0; i < uploadedImages.length; i++){
-        imageIds[i] = uploadedImages[i].img.data.toString('base64');
-      }
       const updateObject = {
-          $set: {photos: imageIds}
+          $set: {photos: imageStrings}
       };
       await Accommodation.findByIdAndUpdate(
         {_id: req.body.attachedTo},
         updateObject
       );
-      for(let i = 0; i < uploadedImages.length; i++){
-        Image.deleteOne(uploadedImages[i]._id);
-      }
-      res.send({ success: true, msg: "Succesfully stored image to database", imageIds: imageIds});
+      res.send({ success: true, msg: "Succesfully stored image to database"});
     });
   } catch (error) {
     res.send({ success: false, msg: "Image upload unsuccessful.", error: error.message });
