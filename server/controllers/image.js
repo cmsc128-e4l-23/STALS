@@ -53,15 +53,16 @@ const uploadImage = async (req, res) => {
       for(let i = 0; i < uploadedImages.length; i++){
         imageIds[i] = uploadedImages[i].img.data.toString('base64');
       }
-      let currAccomm = await Accommodation.findById(req.body.attachedTo);
       const updateObject = {
           $set: {photos: imageIds}
       };
       await Accommodation.findByIdAndUpdate(
         {_id: req.body.attachedTo},
         updateObject
-    );
-
+      );
+      for(let i = 0; i < uploadedImages.length; i++){
+        Image.deleteOne(uploadedImages[i]._id);
+      }
       res.send({ success: true, msg: "Succesfully stored image to database", imageIds: imageIds});
     });
   } catch (error) {
