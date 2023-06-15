@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Slider } from "@mui/material";
 
 export default function AccommInfo({ formData, setFormData }) {
 
@@ -42,285 +43,84 @@ export default function AccommInfo({ formData, setFormData }) {
           <option value="Apartment">Apartment</option>
           <option value="House for rent">House for rent</option>
         </select>
+        <p style={{ fontSize: "larger", fontWeight: "bold", color: "#751518" }}>
+          Price Range:
+        </p>
+
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             alignContent: "center",
             justifyContent: "center",
+            marginBottom: "50px",
           }}
         >
-          <p
-            style={{
-              fontSize: "larger",
-              fontWeight: "bold",
-              color: "#751518",
-              marginRight: "10px",
-            }}
-          >
-            Max Price:
-          </p>
           <input
             style={{
               width: "100px",
               fontSize: "large",
               height: "20px",
               alignSelf: "center",
-              marginRight: "10px",
-            }}
-            type="number"
-            min={formData.priceRange.minPrice}
-            max="50000"
-            value={formData.priceRange.maxPrice} 
-                onChange={(e) =>
-                    setFormData({ ...formData, priceRange: { ...formData.priceRange, maxPrice: parseFloat(e.target.value) }})
-                }
-          />  
-          <input
-            style={{ width: "350px" }}
-            type="range"
-            min={formData.priceRange.minPrice}
-            max="50000"
-            value={formData.priceRange.maxPrice} 
-                onChange={(e) =>
-                    setFormData({ ...formData, priceRange: { ...formData.priceRange, maxPrice: parseFloat(e.target.value) }})
-                }
-          />
-          <p
-            style={{
-              fontSize: "larger",
-              fontWeight: "bold",
-              color: "#751518",
-              marginRight: "10px",
-            }}
-          >
-            Min Price:
-          </p>
-          <input
-            style={{
-              width: "100px",
-              fontSize: "large",
-              height: "20px",
-              alignSelf: "center",
-              marginRight: "10px",
-            }}
-            type="number"
-            min="1"
-            max={formData.priceRange.maxPrice}
-            value={formData.priceRange.minPrice} 
-                onChange={(e) =>
-                    setFormData({ ...formData, priceRange: { ...formData.priceRange, minPrice: parseFloat(e.target.value) }})
-                }
-          />
-          <input
-            style={{width: "350px"}}
-            type="range"
-            min="0"
-            max={formData.priceRange.maxPrice}
-            value={formData.priceRange.minPrice}
-            onChange={(e) =>
-              setFormData({ ...formData, priceRange: { ...formData.priceRange, minPrice: parseFloat(e.target.value) }})
-            }
-            />
-        </div>
-        <hr />
-      </div>
-      {/* FIXME:fix input responsiveness */}
-      {/* <label style={{ color: "#751518", padding: "10px" }}>Rules</label>
-      <div>
-        <select
-          value={selectedOption}
-          onChange={handleDropdownChange}
-          style={{
-            height: "40px",
-            marginRight: "20px",
-            border: "1px solid #751518",
-            borderRadius: "5px",
-          }}
-        >
-          <option value="">Select an option</option>
-          <option value="Option 1">Option 1</option>
-          <option value="Option 2">Option 2</option>
-          <option value="Option 3">Option 3</option>
-          <option value="Option 4">Option 4</option>
-          <option value="Option 5">Option 5</option>
-          <option value="Option 6">Option 6</option>
-          <option value="Option 7">Option 7</option>
-        </select>
-        <button
-          class="add"
-          onClick={handleAddToList}
-          style={{
-            color: "white",
-            backgroundColor: "#0a4424",
-            borderRadius: "5px",
-            height: "30px",
-            cursor: "pointer",
-            border: "none"
-          }}
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = "green";
-          }}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#0a4424")}
-        >
-          Add Rules
-        </button>
-        <ul
-          class="list"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            alignContent: "center",
-            justifyContent: "center",
-            alignItems: "center",
-            listStyle: "none",
-          }}
-        >
-          {selectedOptionsList.map((option, index) => (
-            <li
-              class="item"
-              style={{ marginRight: "10px", marginBottom: "10px" }}
-            >
-              {option}
-              <button
-                style={{
-                  marginLeft: "10px",
-                  backgroundColor: "maroon",
-                  borderRadius: "5px",
-                  color: "white",
-                  border:"none",
-                  cursor: "pointer"
-                }}
-                onClick={() => handleDeleteRules(index)}
-              >
-                {" "}
-                X
-              </button>
-            </li>
-          ))}
-        </ul>
-        <button
-          class="clear"
-          style={{
-            marginBottom: "30px",
-            marginTop:"50px",
-            backgroundColor: "#751518",
-            color: "white",
-            borderRadius: "5px",
-            height: "30px",
-            cursor: "pointer",
-            border: "none",
-          }}
-          onClick={handleClearList}
-          Clear
-          Rules
-          onMouseOver={(e) => {
-            e.target.style.backgroundColor = "red";
-          }}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#751518")}
-        >
-          CLEAR RULES
-        </button>
-        <hr />
-      </div>
-      <label style={{ color: "#751518", padding: "10px" }}>Amenities</label>
-      <div>
-        <div>
-          <select
-            style={{
-              height: "40px",
+              marginLeft: "10px",
               marginRight: "20px",
-              border: "1px solid #751518",
-              borderRadius: "5px",
             }}
-            value={selectedOption2}
-            onChange={handleDropdownChange2}
-          >
-            <option value="">Select an option</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-            <option value="Option 3">Option 3</option>
-            <option value="Option 4">Option 4</option>
-            <option value="Option 5">Option 5</option>
-            <option value="Option 6">Option 6</option>
-            <option value="Option 7">Option 7</option>
-          </select>
-          <button
-            class="add"
-            onClick={handleAddToList2}
+            value={"PHP " + formData.priceRange.minPrice}
+            disabled
+            required
+          />
+          <Slider
+            getAriaLabel={() => 'Price Range'}
+            value={[formData.priceRange.minPrice, formData.priceRange.maxPrice]}
+            onChange={(e) =>
+              setFormData({ ...formData, priceRange: { minPrice: parseFloat(e.target.value[0]), maxPrice: parseFloat(e.target.value[1]) } })
+            }
+            valueLabelDisplay="auto"
+            min={1}
+            max={50000}
+            disableSwap />
+          <input
             style={{
-              color: "white",
-              backgroundColor: "#0a4424",
-              borderRadius: "5px",
-              height: "30px",
-              cursor: "pointer",
+              width: "100px",
+              fontSize: "large",
+              height: "20px",
+              alignSelf: "center",
+              marginRight: "10px",
+              marginLeft: "20px"
             }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "green";
-            }}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#0a4424")}
-          >
-            Add Amenities
-          </button>
-          <ul
-            class="list"
-            style={{
-              flexWrap: "wrap",
-              display: "flex",
-              flexDirection: "row",
-              alignContent: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              listStyle: "none",
-              border:"none"
-            }}
-          >
-            {selectedOptionsList2.map((option, index) => (
-              <li
-                className="item"
-                style={{ marginRight: "10px", marginBottom: "10px" }}
-              >
-                {option}
-                <button
-                  style={{
-                    marginLeft: "10px",
-                    backgroundColor: "maroon",
-                    borderRadius: "5px",
-                    color: "white",
-                    border:"none",
-                    cursor: "pointer"
-                  }}
-                  onClick={() => handleDeleteAmenities(option)}
-                >
-                  {" "}
-                  X
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button
-            class="clear"
-            onClick={handleClearList2}
-            style={{
-              marginBottom: "160px",
-              marginTop:"50px",
-              backgroundColor: "#751518",
-              color: "white",
-              borderRadius: "5px",
-              border:"none",
-              height: "35px",
-              cursor: "pointer",
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = "red";
-            }}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#751518")}
-          >
-            CLEAR AMENITIES
-          </button>
+            value={"PHP " + formData.priceRange.maxPrice}
+            disabled
+            required
+          />
+
         </div>
-      </div> */}
+        <hr />
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "50px", marginBottom: "50px" }}>
+          <label style={{ marginRight: "40px", marginBottom: "10px", color: "maroon" }}>ADD ADDITIONAL DETAILS</label>
+          <textarea
+            style={{
+              borderColor: "#751518",
+              width: "80vw",
+              height: "400px",
+              alignSelf: "center",
+              marginRight: "40px",
+              borderRadius: "5px"
+            }}
+            type="textarea"
+            placeholder="Additional Rules and Descriptions..."
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            maxLength={250}
+          />
+          <div style={{ alignSelf: "flex-end", marginRight: "40px", color: "gray", fontSize: "12px" }}>
+            Character Count: {formData.description.length}/250
+          </div>
+        </div>
+
+        <hr />
+      </div>
     </div>
   );
 }

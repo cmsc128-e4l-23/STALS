@@ -14,8 +14,9 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
   };
 
   const handleImageChange = (event) => {
-    setImages([...images, event.target.files[0]]);
-    setFormData({...formData, photos: images});
+    if(event.target.files[0]){
+      setImages(images => [...images, event.target.files[0]]);
+    }
   };
   const handlePdfChange = (event) => {
     const newPdfs = [...pdfs];
@@ -37,32 +38,14 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
           width: "100%",
         }}
       >
-    <div style={{display:"flex", flexDirection:"column"}}>
-        <label style={{marginRight:"40px", marginBottom:"10px", color:"maroon"}}>ADD ADDITIONAL DETAILS</label>
-        <textarea
-          style={{
-            borderColor:"#751518",
-            width: "400px",
-            height: "400px",
-            marginBottom: "200px",
-            verticalAlign: "top",
-            marginRight:"40px",
-            borderRadius:"5px"
-          }}
-          type="textarea"
-          placeholder="Additional Rules and Descriptions..."
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
-    </div>
+    
         <uploaders style={{ display: "flex", flexDirection: "row"}}>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignContent: "center",
+              marginBottom: "30px"
             }}
           >
             {images.length > 0 ? (
@@ -113,6 +96,7 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
                   accept="image/*"
                   onChange={handleImageChange}
                   multiple
+                  required
                 />
               </>
             )}
@@ -129,6 +113,7 @@ export default function OtherInfo({ formData, setFormData, images, setImages }) 
                   onChange={handlePdfChange}
                   multiple
                   style={{display:"none"}}
+                  required
                 />
               <ul class="list2">
                 {pdfs.map((pdf) => (

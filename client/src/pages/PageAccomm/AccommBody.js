@@ -8,11 +8,21 @@ import ReportForm from "./ReportForm";
 import ReviewForm from "./ReviewForm";
 import ContactDetails from "./ContactDetails";
 import ReviewList from "./ReviewList";
+import Loading from "../../components/Loading";
 
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
+    const [imageList, setImageList] = useState([]);
+    const [priceRange, setPriceRange] = useState('');
+
+    const assignPriceRange = (accomm) => {
+        if (accomm.priceRange.minPrice == accomm.priceRange.maxPrice) {
+            setPriceRange(`₱${accomm.priceRange.minPrice}.00`);
+        }
+        else setPriceRange(`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`);
+    }
 
 
     const fetchOwner = () => {
@@ -33,7 +43,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 }
             })
             .catch((error) => {
-                alert("An error has occurred");
+                alert("An error has occurred (fetchOwner)");
             })
         }
     
@@ -46,8 +56,10 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         .then(res => res.json())
         .then(body => {
             if (body.success){
-                setAccommData(body.accommodation)
-                fetchOwner(data);
+                setAccommData(body.accommodation);
+                assignPriceRange(body.accommodation);
+                fetchOwner();
+                
             }
             else {
                 alert(body.message)
@@ -83,23 +95,36 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         <div className="img-container">
                             <div className="slider-wrapper">
                                 <div className="images">
-                                    {accommData.photos.map((photo, index) => {
-                                        //return <img id={"image-" + photo + "-" + index} src={require("../../assets/" + photo)} alt='' />
-                                    })}
+                                {accommData.photos.length > 0 ?
+                                    <>
+                                        {accommData.photos.map((photo, index) => {
+                                        var base64Image = photo;
+                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
+
+                                        })}
+                                    </>
+                                    :
+                                    <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
+                                }
                                 </div>
                                 {/* slider buttons */}
-                                <div className="slider-btns">
-                                    {accommData.photos.map((photo, index) => {
-                                        return <div href={"#image-" + photo + "-" + index}></div>
-                                    })}
-                                </div>
+                                {/* <div className="slider-btns">
+                                {accommData.photos.length > 0 &&
+                                    <>
+                                        {accommData.photos.map((photo, index) => {
+                                        var base64Image = photo;
+                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
+                                        })}
+                                    </>
+                                }
+                                </div> */}
                             </div>
                         </div>
                     </div>
                     <div className="accomm-book-owner">
                         <div className="accomm-book">
                             <div className="accomm-price">
-                                <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
+                                <h1>{priceRange} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
                             <ReviewForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />

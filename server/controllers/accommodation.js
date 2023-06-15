@@ -6,6 +6,7 @@ import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
 import Report from "../models/Report.js";
 import Review from "../models/Review.js";
+import Image from "../models/Image.js";
 
 //Method for adding accommodations
 const addAccomm = async (req, res) => {
@@ -140,8 +141,38 @@ const deleteAccomm = async (req, res) => {
         if (currAccomm) {
             const currUser = await User.findByIdAndUpdate(
                 currAccomm.owner,
-                { $pull: { "owner.propertiesList": accomm_details._id } }
+                { $pull: { 
+                    "owner.propertiesList": accomm_details._id
+                }}
             );
+            
+            const users = await User.find({});
+            for(let i=0;i<users.length; i++){
+                await User.findByIdAndUpdate(
+                    users[i]._id,
+                    {$pull: {
+                        "bookmarks" : accomm_details._id
+                    }}
+                )
+            }
+
+            const accommReviews = await Review.find({propertyId: accomm_details._id});
+            for(let i=0;i<accommReviews.length; i++){
+                await Review.deleteOne({_id:accommReviews[i]._id});
+                await User.findByIdAndUpdate(
+                    accommReviews[i].userId,
+                    {$pull: {"reviews":accommReviews[i]._id} }
+                )
+            }
+
+            const accommReports = await Report.find({reported: accomm_details._id});
+            for(let i=0;i<accommReports.length; i++){
+                await Report.deleteOne({_id:accommReports[i]._id});
+                await User.findByIdAndUpdate(
+                    accommReports[i].user,
+                    {$pull: {"reports":accommReports[i]._id} }
+                )
+            }
 
             if (currUser) {
                 res.send({ success: true, msg: "Successfully deleted accommodation" })
@@ -372,59 +403,55 @@ const writeToDoc = (doc, header, content, list) => {
 };
 //Input: Accepts an object containing a key named email with the user email of the user that will be used
 const generateRep = async (req, res) => {
+    console.log(req.body.user);
     try {
         const user = await User.findOne({ email: req.body.user });
         if (!user) throw new Error("User not found");
         const bookmarks = await fetchBookmarks(user._id);                         // Retrieve bookmarks given user id
         if (bookmarks.length == 0) {
+            console.log("User has no bookmarks, cannot generate PDF");
             res.send({ success: false, msg: "PDF Report Generation Failed.", error: "No bookmarks." })
         } else {
-            const downloadFolderPath = path.join(os.homedir(), 'Downloads');
-            const doc = new PDFDocument();
-            const now = new Date();                                    // Create pdf document
-            const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;                          // Set filename and path. Only for testing with needle
-            //adjusted to immediately head to the downloads folder of the user.
-            const filePath = path.join(downloadFolderPath, fileName);
-            doc.pipe(fs.createWriteStream(filePath));
-            // doc.pipe(res)       // Use instead if implemented on web browser already
-            // Edit the PDF file
-            doc.fontSize(20).text('Bookmarked Accommodations', { underline: true });
+            const doc = new PDFDocument();    
+            doc.fontSize(20).text('Bookmarked Accommodations', { underline: true});
             doc.moveDown();
             bookmarks.forEach((accommodation, index) => {
                 doc.fontSize(16).text(`#${index + 1}: ${accommodation.name}`);
                 doc.moveDown();
-                if (accommodation.landmarks) {
+                if(accommodation.landmarks){
                     writeToDoc(doc, `Landmarks:`, accommodation.landmarks.map(landmark => `${landmark}`), true);
                 }
-                writeToDoc(doc, `Address: `, `\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`, false);
-                writeToDoc(doc, `Accommodation Type: `, `\u0020 ${accommodation.accommodationType}`);
+                writeToDoc(doc,`Address: `,`\u0020 ${accommodation.address.street}, ${accommodation.address.barangay}, ${accommodation.address.city}, ${accommodation.address.province}, ${accommodation.address.region}, ${accommodation.address.postCode}`, false);
+                writeToDoc(doc,`Accommodation Type: `,`\u0020 ${accommodation.accommodationType}`);
 
-                if (accommodation.amenities) {
+                if(accommodation.amenities){
                     writeToDoc(doc, `Amenities:`, accommodation.amenities.map(amenity => `${amenity}`), true);
                 }
-                writeToDoc(doc, `Price Range:`, `\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`, false);
-                writeToDoc(doc, `Description:`, `\u0020 ${accommodation.description}`);
-                //Further Implementation
-                // if(accommodation.photos.length > 0){
-                //     for(let i=0; i<accommodation.photos.length; i++){
-                //         doc.image(accommodation.photos[i], 0, 15, {width: 300});
-                //     }
-                // }
-                if (accommodation.restrictions) {
+                writeToDoc(doc, `Price Range:`,`\u0020 P${accommodation.priceRange.minPrice} - P${accommodation.priceRange.maxPrice}`, false);
+                writeToDoc(doc,`Description:`,`\u0020 ${accommodation.description}`);
+
+                if(accommodation.restrictions){
                     writeToDoc(doc, `Restrictions:`, accommodation.restrictions.map(restriction => `${restriction}`), true);
                 }
-                doc.moveDown();
-                if (accommodation.security) {
+                doc.moveDown(); 
+                if(accommodation.security){
                     writeToDoc(doc, `Security:`, `\u0020 ${accommodation.security}`, false);
                 }
                 doc.moveDown();
+                //why cant i push
             });
-            // "Close" the PDF file and send it to where `pipe` specifies it to go
+            // "Close" the PDF file and send it as a response
             doc.end();
-            console.log(`PDF report saved to ${filePath}`);
-            res.send({ success: true, msg: "PDF Report Successfully Generated." })
+            const chunks = [];
+            doc.on('data', chunk => chunks.push(chunk));
+            doc.on('end', () => {
+                const pdfData = Buffer.concat(chunks);
+                res.send({ success: true, pdfData: pdfData.toString('base64') });
+            });
+            console.log(`PDF report generated`);
         }
     } catch (error) {
+        console.log(error);
         res.send({ success: false, msg: "PDF Report Generation Failed.", error: error.message })
     }
 };

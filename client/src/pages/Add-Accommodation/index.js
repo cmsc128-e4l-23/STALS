@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BasicInfo from "./1_BasicInfo";
 import AccommInfo from "./2_AccommInfo";
 import OtherInfo from "./3_OtherInfo";
+import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import FormData from "form-data";
 import Cookies from "universal-cookie";
@@ -10,6 +11,8 @@ import Cookies from "universal-cookie";
 export default function AddAccommodation() {
   let navigate = useNavigate();
   const cookies = new Cookies();
+
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [isAccommOwner, setAccommOwner] = useState(false);
   const [email, setEmail] = useState('');
@@ -34,7 +37,6 @@ export default function AddAccommodation() {
     description: "",
     photos: [],
   });
-  const {photos, ...noPhotos} = formData;
   
   useEffect(() => {
     let credentials = {
@@ -55,43 +57,55 @@ export default function AddAccommodation() {
           setEmail(data.email)
           setFormData({ ...formData, owner: data.email })
         }
+        setLoading(false)
       });
   }, [navigate]);
   
-  const submit = () => {
-    fetch(process.env.REACT_APP_API + 'addAccomm', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(noPhotos),
-    })
+const submit = () => {
+  // Check if any form fields are empty
+  if (
+    !formData.name ||
+    !formData.address.city ||
+    !formData.address.barangay ||
+    !formData.address.street ||
+    !formData.address.postCode ||
+    images.length === 0 
+  ) {
+    alert("Please fill in all the required fields and upload at least one image and one document.");
+    return;
+  }
+
+  fetch(process.env.REACT_APP_API + 'addAccomm', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  })
     .then((res) => res.json())
     .then((data) => {
-      if(data.success){
-        const {accommId, userId, ...otherdata} = data;
+      if (data.success) {
+        const { accommId, userId } = data;
         alert(data.msg);
         const sendData = new FormData();
         sendData.append('userId', userId);
         sendData.append('attachedTo', accommId);
-        console.log(photos);
-        for (let i = 0; i < photos.length; i++) {
-          sendData.append("images", photos[i],photos[i].name);
+        for (let i = 0; i < images.length; i++) {
+          sendData.append("images", images[i], images[i].name);
         }
         return fetch(process.env.REACT_APP_API + 'uploadImage', {
           method: 'POST',
           body: sendData,
-        })
-      }else{
-        alert(data.error)
+        });
+      } else {
+        alert(data.error);
       }
     })
     .then(response => response.json())
-    .then(data =>{
-      console.log(data)
-      navigate("/home")
-      navigate(0)
+    .then(data => {
+      navigate("/home");
     })
     .catch(error => console.error(error));
-  };
+};
+
 
   const FormTitles = [
     "Basic Information",
@@ -111,7 +125,6 @@ export default function AddAccommodation() {
             <OtherInfo formData={formData} setFormData={setFormData} images={images} setImages={setImages} />
             <button
               style={{
-                position: "absolute",
                 bottom: 10,
                 left: 675,
                 width: "180px",
@@ -121,6 +134,8 @@ export default function AddAccommodation() {
                 borderRadius: "5px",
                 border: "none",
                 fontSize: "Larger",
+                margin: "5px",
+                marginRight: "20px",
                 padding: "5px",
                 cursor: "pointer",
               }}
@@ -141,7 +156,10 @@ export default function AddAccommodation() {
 
   return (
     <>
-      {
+    {loading ?
+      <Loading />
+      :
+      <>{
         isAccommOwner ? 
           <>
             <div
@@ -189,7 +207,8 @@ export default function AddAccommodation() {
         <div>
           <h1>404 not found</h1>
         </div>
-      }
+      }</>
+    }
     </>
   );
 }

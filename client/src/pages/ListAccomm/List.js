@@ -3,6 +3,7 @@ import DeleteButton from "./DeleteButton";
 import ArchiveButton from "./ArchiveButton";
 import UnarchiveButton from "./UnarchiveButton";
 import './index.css'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,6 +11,7 @@ import './index.css'
 
 
 export default function List({email}){
+    let navigate = useNavigate();
     const [accomms, setAccomms] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -27,6 +29,7 @@ export default function List({email}){
         setLoading(false)
     }, [email, loading])
 
+    
 
     return(
         <div id="lists">  
@@ -41,8 +44,8 @@ export default function List({email}){
                                         (!accomm.archived && accomm.approved) &&
                                     
                                         <li>
-                                            <div id='li-container'>
-                                                <h3 id='accomm-name'>{accomm.name}</h3>
+                                            <div id='li-container' >
+                                                <h3 id='accomm-name' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>{accomm.name}</h3>
                                                 <ArchiveButton accommodation={accomm} setLoading={setLoading} />
                                                 <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                             </div>
@@ -65,7 +68,7 @@ export default function List({email}){
                                 (accomm.archived && accomm.approved) &&
                                 <li>
                                     <div id='li-container'>
-                                        <h3 id='accomm-name'>{accomm.name}</h3>
+                                        <h3 id='accomm-name' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>{accomm.name}</h3>
                                         <UnarchiveButton accommodation={accomm} setLoading={setLoading} />
                                         <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                     </div>
@@ -86,7 +89,7 @@ export default function List({email}){
                                 accomm.approved === false &&
                                 <li>
                                     <div id='li-container'>
-                                        <h3 id='accomm-name'>{accomm.name}</h3>
+                                        <h3 id='accomm-name' onClick={() => {navigate("/accomm?id=" + accomm._id)}}>{accomm.name}</h3>
                                         <DeleteButton accommodation={accomm} setLoading={setLoading} />
                                     </div>
                                 </li>

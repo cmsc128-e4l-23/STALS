@@ -47,6 +47,7 @@ describe("POST", () =>{
 
         const result = (await request(app).post("/getVisits").send({})).body
         console.log(result);
+        console.log(result.return);
     })
 })
 

@@ -9,20 +9,19 @@ export default function Header() {
     let navigate = useNavigate();
 
     const cookies = new Cookies();
-    console.log(cookies.get("authToken"));
     const [name, setName] = useState(null);
+    const [email, setEmail] = useState(null);
     const [userType, setUserType] = useState(null);
     const [optionsActive, optionsToggle] = useState(false);
     const [options, setOptions] = useState({});
     const [isLoggedIn, setLoggedIn] = useState(null);
     const [searchInput, setInput] = useState("");
-    const [showOptions, setShowOptions] = useState(false);
+    const [showOptions, setShowOptions] = useState(true);
 
     useEffect(() => {
         let credentials = {
           auth: cookies.get("authToken")
         }
-        console.log(credentials);
         fetch(process.env.REACT_APP_API + 'checkifloggedin', {
           method: 'POST',
           headers: { "Content-Type": "application/json" },
@@ -33,6 +32,7 @@ export default function Header() {
           setLoggedIn(data.isLoggedIn);
           if(data.isLoggedIn){
             setName(data.name)
+            setEmail(data.email)
             setUserType(data.usertype)
           }
         })
@@ -52,6 +52,55 @@ export default function Header() {
             setShowOptions(true);   
         }
       }, []);
+
+    const generateReport = () => {
+        fetch(process.env.REACT_APP_API + 'generateRep', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify({ user: email }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((res) => {
+            // Check if the response was successful
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error('PDF Report Generation Failed');
+            }
+        })
+        .then((data) => {
+            if (data.success) {
+                const now = new Date();                               
+                const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;
+                const pdfData = data.pdfData;
+                
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = `data:application/pdf;base64,${pdfData}`;
+                link.setAttribute('download', fileName);
+                link.style.display = 'none';
+                
+                // Append the link to the document body
+                document.body.appendChild(link);
+                
+                // Simulate a click event to trigger the download
+                link.click();
+                
+                // Clean up the temporary link element
+                document.body.removeChild(link);
+            } else {
+                alert('User has no bookmarks');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            alert('An error has occurred');
+        });
+    };
+    
+
 
     const logout = (e) => {
         e.preventDefault();
@@ -93,9 +142,17 @@ export default function Header() {
     };
 
     let auth_section;
-    if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
-    }else{
+    if (isLoggedIn) {
+        let displayName = name.length > 10 ? `${name.slice(0, 20)}...` : name;
+        auth_section = (
+          <>
+            <div id='auth-confirmed'>
+              Welcome back, <b>{displayName}!</b>
+            </div>
+          </>
+        );
+      }
+      else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 
@@ -107,7 +164,7 @@ export default function Header() {
             if(window.innerWidth > 1200){   delete options['Sign Up']; delete options['Log In']; setShowOptions(false); }
             if(window.innerWidth < 1200){   delete options['Log In'];   handleOptions('Sign Up', '/signup');  setShowOptions(true); }
             if(window.innerWidth < 725){    handleOptions('Log In', '/login');  }
-        }
+        }   
     };
     window.addEventListener('resize',windowResize);
 
@@ -130,7 +187,7 @@ export default function Header() {
         
         <div id='right-side-btns'>
             <div id='btn-container'>
-                {(showOptions && Object.keys(options).length !== 0) && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
+                {((showOptions && Object.keys(options).length !== 0) || isLoggedIn)  && <button id='more-options' onClick={ () => { optionsToggle(!optionsActive) }}><FontAwesomeIcon icon={faEllipsis}/></button>}
                 {optionsActive ? <div id='options-menu'>
                     {isLoggedIn ? 
                         <ul>
@@ -138,6 +195,7 @@ export default function Header() {
                             <>
                                 <li id='option-btn' onClick={() => {navigate('/profile')}}>YOUR PROFILE</li>
                                 <li id='option-btn' onClick={() => {navigate('/your-bookmarks')}}>YOUR BOOKMARKS</li>
+                                <li id='option-btn' onClick={generateReport}>GENERATE A REPORT</li>
                             </>
                         }
                         {   userType === "Accommodation Owner" && 
