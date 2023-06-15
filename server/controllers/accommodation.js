@@ -173,11 +173,6 @@ const deleteAccomm = async (req, res) => {
                     {$pull: {"reports":accommReports[i]._id} }
                 )
             }
-                
-            
-            const accommImages = await Image.find({attachedTo: accomm_details._id})
-            for(let i=0;i<accommImages.length; i++)
-                await Image.deleteOne({_id:accommImages[i]._id});
 
             if (currUser) {
                 res.send({ success: true, msg: "Successfully deleted accommodation" })
