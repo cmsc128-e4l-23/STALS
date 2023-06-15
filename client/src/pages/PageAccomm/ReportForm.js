@@ -49,37 +49,33 @@ export default function ReportForm({ accommId, email, userType, isLoggedIn }){
         else setDialogOpen(true)
     }
 
-    if(userType === "Admin"){
-        return(<></>)
-    } else {
-        return(
-            <>
-                <button className="report-button" onClick={openDialog}><FaFlag /> Report this listing</button>
-                <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
-                    <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Please enter detailed description of your report/experience.
-                        </DialogContentText>
-                        <br/>
-                        <br/>
-                        <TextField
-                        fullWidth
-                        id="outlined-multiline-flexible"
-                        label="Report Details"
-                        multiline
-                        maxRows={5}
-                        value={content}
-                        onChange={(e) => {setContent(e.target.value)}}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                            <Button onClick={() => {setDialogOpen(false)}}>Cancel</Button>
-                            <Button onClick={submitReport}>Report</Button>
-                    </DialogActions>
-                </Dialog>
-            </>
-            
-        )
-    }
+    return(
+        <>
+            <button className="report-button" onClick={openDialog} hidden={userType==="Admin"}><FaFlag /> Report this listing</button>
+            <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
+                <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Please enter detailed description of your report/experience.
+                    </DialogContentText>
+                    <br/>
+                    <br/>
+                    <TextField
+                    fullWidth
+                    id="outlined-multiline-flexible"
+                    label="Report Details"
+                    multiline
+                    maxRows={5}
+                    value={content}
+                    onChange={(e) => {setContent(e.target.value)}}
+                    />
+                </DialogContent>
+                <DialogActions>
+                        <Button onClick={() => {setDialogOpen(false)}}>Cancel</Button>
+                        <Button onClick={submitReport}>Report</Button>
+                </DialogActions>
+            </Dialog>
+        </>
+        
+    )
 }
