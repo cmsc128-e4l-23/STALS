@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AccommBody({accomm, email, setLoading }){
     const navigate = useNavigate()
-    console.log('THis is the accomm')
     console.log(accomm)
     
 

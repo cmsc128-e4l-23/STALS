@@ -40,7 +40,7 @@ export default function List({ email }) {
             </div>
 
             {/* Archived Tab */}
-            <div
+            <div 
               className={`tab ${activeTab === "archived" ? "active" : ""}`}
               onClick={() => handleTabClick("archived")}
             >
@@ -112,7 +112,7 @@ export default function List({ email }) {
           )}
         </div>
       ) : (
-        <div>No Accommodations found</div>
+        <div style={{marginTop:"200px"}}>No Accommodations found</div>
       )}
     </div>
   );

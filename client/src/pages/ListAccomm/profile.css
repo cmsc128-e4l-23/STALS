@@ -57,6 +57,10 @@
   color: #883636;
 }
 
+.tabs{
+  display: flex;
+  flex-direction: row;
+}
 
 .grid-container {
   margin-left: 65px;
@@ -66,50 +70,23 @@
 }
 
 
-.grid-item {
+.grid-item{
   width: 400px;
-  transition: transform 0.3s;
-}
-
-.grid-item:hover {
-  transform: scale(1.05);
 }
 
 
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.tab {
-  padding: 10px 20px;
+.tab{
+  padding-left: 200px;
+  padding-right: 200px;
   font-weight: bold;
-  background-color: #fdfdfd;
-  border: 0.5px solid black;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  width: 100%;
+  height: 30px;
 }
 
-.tab.active {
-  background-color: rgb(156, 41, 41);
-  color: #020202;
+.tabs .tab.active {
+  background-color: #883636; /* Set the desired background color for the active tab */
+  color: #fff; /* Set the desired text color for the active tab */
   /* Add any additional styles you want for the active tab */
-}
-
-.tab:hover {
-  background-color: #ddd;
-  color: #020202;
-}
-
-.bookmarks{
-  justify-self: center;
-}
-
-.details{
-  display: flex;
-  margin-left: 70px;
 }
 
 

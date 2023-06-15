@@ -30,3 +30,30 @@
     color: rgb(150,0,0);
     font-size: 20px;
 }
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    font-weight: bold;
+    background-color: #fdfdfd;
+    border: 0.5px solid black;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .tab.active {
+    background-color: rgb(156, 41, 41);
+    color: #020202;
+    /* Add any additional styles you want for the active tab */
+  }
+  
+  .tab:hover {
+    background-color: #ddd;
+    color: #020202;
+  }
+  
