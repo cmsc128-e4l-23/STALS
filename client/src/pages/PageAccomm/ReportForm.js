@@ -40,17 +40,18 @@ export default function ReportForm({ accommId, email, userType, isLoggedIn }){
     }
 
     const openDialog = () => {
-        if(!isLoggedIn) alert("Log in required to make a review.")
+        if(!isLoggedIn) alert("Log in required to report.")
 
         else if(userType === "Accommodation Owner")
-            alert("Accommodation owners are not allowed to make reviews.")
-        
+            alert("Accommodation owners are not allowed to report.")
+        else if(userType === "Admin")
+            alert("Admins are not allowed to report accommodations.")
         else setDialogOpen(true)
     }
 
     return(
         <>
-            <button className="report-button" onClick={openDialog}><FaFlag /> Report this listing</button>
+            <button className="report-button" onClick={openDialog} hidden={userType==="Admin"}><FaFlag /> Report this listing</button>
             <Dialog open={dialogOpen} onClose={() => {setDialogOpen(false)}}>
                 <DialogTitle padding={5} lineHeight={.5}><h2>Report an accommodation</h2></DialogTitle>
                 <DialogContent>

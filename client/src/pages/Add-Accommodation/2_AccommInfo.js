@@ -46,7 +46,7 @@ export default function AccommInfo({ formData, setFormData }) {
         <p style={{ fontSize: "larger", fontWeight: "bold", color: "#751518" }}>
           Price Range:
         </p>
-        
+
         <div
           style={{
             display: "flex",
@@ -65,19 +65,20 @@ export default function AccommInfo({ formData, setFormData }) {
               marginLeft: "10px",
               marginRight: "20px",
             }}
-            value={"PHP " + formData.priceRange.minPrice} 
+            value={"PHP " + formData.priceRange.minPrice}
             disabled
+            required
           />
           <Slider
-          getAriaLabel={() => 'Price Range'}
-          value={[formData.priceRange.minPrice, formData.priceRange.maxPrice]}
-          onChange={(e) => 
-            setFormData({ ...formData, priceRange: { minPrice: parseFloat(e.target.value[0]), maxPrice: parseFloat(e.target.value[1])}})
-          }
-          valueLabelDisplay="auto"
-          min={1}
-          max={50000}
-          disableSwap />
+            getAriaLabel={() => 'Price Range'}
+            value={[formData.priceRange.minPrice, formData.priceRange.maxPrice]}
+            onChange={(e) =>
+              setFormData({ ...formData, priceRange: { minPrice: parseFloat(e.target.value[0]), maxPrice: parseFloat(e.target.value[1]) } })
+            }
+            valueLabelDisplay="auto"
+            min={1}
+            max={50000}
+            disableSwap />
           <input
             style={{
               width: "100px",
@@ -87,31 +88,37 @@ export default function AccommInfo({ formData, setFormData }) {
               marginRight: "10px",
               marginLeft: "20px"
             }}
-            value={"PHP " + formData.priceRange.maxPrice} 
+            value={"PHP " + formData.priceRange.maxPrice}
             disabled
-          />  
-          
+            required
+          />
+
         </div>
         <hr />
-        <div style={{display:"flex", flexDirection:"column", marginTop: "50px", marginBottom: "50px"}}>
-          <label style={{marginRight:"40px", marginBottom:"10px", color:"maroon"}}>ADD ADDITIONAL DETAILS</label>
+        <div style={{ display: "flex", flexDirection: "column", marginTop: "50px", marginBottom: "50px" }}>
+          <label style={{ marginRight: "40px", marginBottom: "10px", color: "maroon" }}>ADD ADDITIONAL DETAILS</label>
           <textarea
-              style={{
-                borderColor:"#751518",
-                width: "80vw",
-                height: "400px",
-                alignSelf: "center",
-                marginRight:"40px",
-                borderRadius:"5px"
-              }}
-              type="textarea"
-              placeholder="Additional Rules and Descriptions..."
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
+            style={{
+              borderColor: "#751518",
+              width: "80vw",
+              height: "400px",
+              alignSelf: "center",
+              marginRight: "40px",
+              borderRadius: "5px"
+            }}
+            type="textarea"
+            placeholder="Additional Rules and Descriptions..."
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            maxLength={250}
           />
+          <div style={{ alignSelf: "flex-end", marginRight: "40px", color: "gray", fontSize: "12px" }}>
+            Character Count: {formData.description.length}/250
+          </div>
         </div>
+
         <hr />
       </div>
     </div>

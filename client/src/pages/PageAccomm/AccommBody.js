@@ -16,6 +16,15 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommOwner, setAccommOwner] = useState();
     const [imageList, setImageList] = useState([]);
     const [currentRating, setCurrentRating] = useState(0);
+    const [priceRange, setPriceRange] = useState('');
+
+    const assignPriceRange = (accomm) => {
+        if (accomm.priceRange.minPrice == accomm.priceRange.maxPrice) {
+            setPriceRange(`₱${accomm.priceRange.minPrice}.00`);
+        }
+        else setPriceRange(`₱${accomm.priceRange.minPrice}.00 - ${accomm.priceRange.maxPrice}.00`);
+    }
+
 
     const fetchOwner = () => {
         fetch(process.env.REACT_APP_API + 'getAccommOwner', {
@@ -35,7 +44,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 }
             })
             .catch((error) => {
-                alert("An error has occurred");
+                alert("An error has occurred (fetchOwner)");
             })
         }
 
@@ -67,7 +76,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         .then(body => {
             if (body.success){
                 setAccommData(body.accommodation)
-                console.log(accommData)
+                assignPriceRange(body.accommodation);
                 fetchOwner(data);
                 fetchRating(data);
             }
@@ -134,7 +143,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                     <div className="accomm-book-owner">
                         <div className="accomm-book">
                             <div className="accomm-price">
-                                <h1>₱{accommData.priceRange.minPrice} - ₱{accommData.priceRange.maxPrice} per month</h1>
+                                <h1>{priceRange} per month</h1>
                             </div>
                             <ContactDetails contact={accommOwner.contact} />
                             <ReviewForm accommId={data} email={email} userType={userType} isLoggedIn={isLoggedIn} />

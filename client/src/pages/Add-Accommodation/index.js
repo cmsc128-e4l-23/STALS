@@ -61,37 +61,51 @@ export default function AddAccommodation() {
       });
   }, [navigate]);
   
-  const submit = () => {
-    fetch(process.env.REACT_APP_API + 'addAccomm', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
+const submit = () => {
+  // Check if any form fields are empty
+  if (
+    !formData.name ||
+    !formData.address.city ||
+    !formData.address.barangay ||
+    !formData.address.street ||
+    !formData.address.postCode ||
+    images.length === 0 
+  ) {
+    alert("Please fill in all the required fields and upload at least one image and one document.");
+    return;
+  }
+
+  fetch(process.env.REACT_APP_API + 'addAccomm', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  })
     .then((res) => res.json())
     .then((data) => {
-      if(data.success){
-        const {accommId, userId} = data;
+      if (data.success) {
+        const { accommId, userId } = data;
         alert(data.msg);
         const sendData = new FormData();
         sendData.append('userId', userId);
         sendData.append('attachedTo', accommId);
         for (let i = 0; i < images.length; i++) {
-          sendData.append("images", images[i],images[i].name);
+          sendData.append("images", images[i], images[i].name);
         }
         return fetch(process.env.REACT_APP_API + 'uploadImage', {
           method: 'POST',
           body: sendData,
-        })
-      }else{
-        alert(data.error)
+        });
+      } else {
+        alert(data.error);
       }
     })
     .then(response => response.json())
-    .then(data =>{
-      navigate("/home")
+    .then(data => {
+      navigate("/home");
     })
     .catch(error => console.error(error));
-  };
+};
+
 
   const FormTitles = [
     "Basic Information",

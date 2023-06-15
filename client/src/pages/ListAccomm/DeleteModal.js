@@ -7,11 +7,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export default function DeleteModal({ modalOpen, setModalOpen, setLoading, accommodation }) {
+    const accommID = {
+        _id: accommodation._id
+    }
+
+
+
     const deleteAccomm = () => {
         fetch(process.env.REACT_APP_API + 'deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(accommodation)
+            body: JSON.stringify(accommID)
         })
         .then(res => res.json())
         .then(data => {

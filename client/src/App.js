@@ -19,7 +19,6 @@ function App() {
   const [timerStatus, setTimer] = useState(false);
 
   const incNumVisits = () => {
-    console.log("in incNumVisits");
     const date = new Date();
     fetch(process.env.REACT_APP_API + 'incNumVisits', {
       method: 'POST',
@@ -34,11 +33,6 @@ function App() {
       }
     })
       .then(res => res.json())
-      .then(body => {
-        if (body.success) {
-          console.info(body.msg);
-        } else console.error(body.error);
-      })
   }
   
   // runs twice because of these possible reasons: 

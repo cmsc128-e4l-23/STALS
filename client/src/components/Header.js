@@ -53,45 +53,53 @@ export default function Header() {
         }
       }, []);
 
-    const generateReport = () => { 
+    const generateReport = () => {
         fetch(process.env.REACT_APP_API + 'generateRep', {
             method: 'POST',
             credentials: 'include',
-            body: JSON.stringify({user: email}),
+            body: JSON.stringify({ user: email }),
             headers: {
-                'Content-Type': "application/json"
+                'Content-Type': 'application/json'
             },
         })
-            .then((res) => {
-                // Check if the response was successful
-                if (res.ok) {
-                    // Convert the response to a blob
-                    return res.blob();
-                } else {
-                    throw new Error('PDF Report Generation Failed');
-                }
-            })
-            .then((blob) => {
+        .then((res) => {
+            // Check if the response was successful
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error('PDF Report Generation Failed');
+            }
+        })
+        .then((data) => {
+            if (data.success) {
                 const now = new Date();                               
                 const fileName = `report-${now.toISOString().slice(0, 10)}.pdf`;
-                // Create a URL for the blob
-                const url = window.URL.createObjectURL(blob);
+                const pdfData = data.pdfData;
+                
                 // Create a temporary link element
                 const link = document.createElement('a');
-                link.href = url;
+                link.href = `data:application/pdf;base64,${pdfData}`;
                 link.setAttribute('download', fileName);
+                link.style.display = 'none';
+                
                 // Append the link to the document body
                 document.body.appendChild(link);
+                
                 // Simulate a click event to trigger the download
                 link.click();
+                
                 // Clean up the temporary link element
                 document.body.removeChild(link);
-            })
-            .catch((error) => {
-                console.log(error);
-                alert('An error has occurred');
-            });
+            } else {
+                alert('User has no bookmarks');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            alert('An error has occurred');
+        });
     };
+    
 
 
     const logout = (e) => {
@@ -134,9 +142,17 @@ export default function Header() {
     };
 
     let auth_section;
-    if(isLoggedIn){
-        auth_section = <><div id='auth-confirmed'>Welcome back, <b>{name}!</b></div></>
-    }else{
+    if (isLoggedIn) {
+        let displayName = name.length > 10 ? `${name.slice(0, 20)}...` : name;
+        auth_section = (
+          <>
+            <div id='auth-confirmed'>
+              Welcome back, <b>{displayName}!</b>
+            </div>
+          </>
+        );
+      }
+      else{
         auth_section = <><button id='btn-login' onClick={() => {navigate('/login')}}>LOG IN</button><button id='btn-signup' onClick={() => {navigate('/signup')}}>SIGN UP</button></>;
     };
 

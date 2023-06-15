@@ -173,11 +173,6 @@ const deleteAccomm = async (req, res) => {
                     {$pull: {"reports":accommReports[i]._id} }
                 )
             }
-                
-            
-            const accommImages = await Image.find({attachedTo: accomm_details._id})
-            for(let i=0;i<accommImages.length; i++)
-                await Image.deleteOne({_id:accommImages[i]._id});
 
             if (currUser) {
                 res.send({ success: true, msg: "Successfully deleted accommodation" })
@@ -414,6 +409,7 @@ const generateRep = async (req, res) => {
         if (!user) throw new Error("User not found");
         const bookmarks = await fetchBookmarks(user._id);                         // Retrieve bookmarks given user id
         if (bookmarks.length == 0) {
+            console.log("User has no bookmarks, cannot generate PDF");
             res.send({ success: false, msg: "PDF Report Generation Failed.", error: "No bookmarks." })
         } else {
             const doc = new PDFDocument();    
@@ -444,15 +440,15 @@ const generateRep = async (req, res) => {
                 doc.moveDown();
                 //why cant i push
             });
-            // "Close" the PDF file and send it to where `pipe` specifies it to go
-            // var stream = doc.pipe(blobStream())
+            // "Close" the PDF file and send it as a response
             doc.end();
-            // stream.on('finish', function(){iframe.src = stream.toBlobURL('application/pdf')});
-            res.setHeader('Content-Type', 'application/pdf');
-            // res.setHeader('Content-Length', 'application/pdf');
-            res.setHeader('Content-Disposition', `attachment; filename=report.pdf`);
-            doc.pipe(res);
-            console.log(`PDF report sent to client`);
+            const chunks = [];
+            doc.on('data', chunk => chunks.push(chunk));
+            doc.on('end', () => {
+                const pdfData = Buffer.concat(chunks);
+                res.send({ success: true, pdfData: pdfData.toString('base64') });
+            });
+            console.log(`PDF report generated`);
         }
     } catch (error) {
         console.log(error);
