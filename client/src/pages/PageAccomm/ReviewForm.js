@@ -15,7 +15,7 @@ import {
 export default function ReviewForm({ accommId, email, userType, isLoggedIn }){
     const [dialogOpen, setDialogOpen] = useState(false)
     const [content, setContent] = useState('')
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(5)
     
     const submitReview = () => {
         let newReview = {
