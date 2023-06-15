@@ -15,6 +15,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [loading, setLoading] = useState(true);
     const [accommOwner, setAccommOwner] = useState();
     const [imageList, setImageList] = useState([]);
+    const [currentRating, setCurrentRating] = useState(0);
     const [priceRange, setPriceRange] = useState('');
 
     const assignPriceRange = (accomm) => {
@@ -46,6 +47,24 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 alert("An error has occurred (fetchOwner)");
             })
         }
+
+    const fetchRating = () => {
+            fetch(process.env.REACT_APP_API + 'getAccommRating?id=' + data, {
+                method: 'GET',
+            })
+                .then(res => res.json())
+                .then(body => {
+                    if (body.success) {
+                        setCurrentRating(body.rating)
+                        setLoading(false)
+                    }else{
+                        alert(body.message);
+                    }
+                })
+                .catch((error) => {
+                    alert("An error has occurred");
+                })
+            }
     
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'getAccommFullDetails', {
@@ -56,10 +75,10 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         .then(res => res.json())
         .then(body => {
             if (body.success){
-                setAccommData(body.accommodation);
+                setAccommData(body.accommodation)
                 assignPriceRange(body.accommodation);
-                fetchOwner();
-                
+                fetchOwner(data);
+                fetchRating(data);
             }
             else {
                 alert(body.message)
@@ -85,7 +104,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         <h1>{accommData.name}</h1>
                     </div>
                     <div className="accomm-details-div">
-                        <p> <FaStar /> 4.62 • { accommData.reviews.length } reviews • {` ${accommData.address.barangay}, ${accommData.address.city}`} </p>
+                        <p> <FaStar /> {currentRating} • { accommData.reviews.length } reviews • {` ${accommData.address.barangay}, ${accommData.address.city}`} </p>
                     </div>
                 </div>
                 {/* Accomm Images */}
