@@ -47,6 +47,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 .then(body => {
                     if (body.success) {
                         setCurrentRating(body.rating)
+                        setLoading(false)
                     }else{
                         alert(body.message);
                     }
@@ -68,7 +69,7 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 setAccommData(body.accommodation)
                 console.log(accommData)
                 fetchOwner(data);
-                // fetchRating(data);
+                fetchRating(data);
             }
             else {
                 alert(body.message)

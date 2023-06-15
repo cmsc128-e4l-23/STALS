@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Accommodation from "../models/Accommodation.js";
+import Review from "../models/Review.js";
 
 const getAccommOwner = (req, res) => {
     let accomm_details = req.body;
@@ -108,20 +109,27 @@ const getAccommReviews = (req, res) => {
 
 const getAccommRating = (req, res) => {
 
-    Accommodation.findOne({ _id: req.query.id })
-    .then((document) => {
+    Accommodation.findById(req.query.id)
+    .then(async (document) => {
+        let accommrating = 0;
+
         if(!document) throw "Accommodation not found"
 
-        if (document.reviews.length === 0) throw "No reviews found"
-        
-        let accommrating = (document.reviews).reduce((total, review) => total + review)
-        accommrating = (accommrating / (document.reviews.length)).toFixed(2)
+        if (document.reviews.length > 0) {
+            let sum = 0;
+            for (let rev of document.reviews) {
+                let actualrev = await Review.findById(rev._id);
+                sum += actualrev.rating;
+            }
 
-        res.send({
-            success: true,
-            message: "Rating Calculated",
-            rating: accommrating
-        })
+            accommrating = parseFloat((sum / (document.reviews.length)).toFixed(2))
+
+            res.send({
+                success: true,
+                message: "Rating Calculated",
+                rating: accommrating
+            })
+        }
     })
     .catch((err) => {
         res.send({

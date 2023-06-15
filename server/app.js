@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST");
+    res.setHeader("Access-Control-Allow-Methods", "POST,GET");
     res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type");
     res.setHeader("Access-Control-Allow-Credentials","true");
     next();
