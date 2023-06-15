@@ -221,9 +221,10 @@ const searchAccomm = (req, res) => {
             { name: searchString },
             ...addressArgs]
     })
+        .select("-photos")
         .limit(returnLength)
         .then((result) => {
-            res.send({ success: true, msg: "Search Accommodation Successful", result: result });
+            res.send({ success: true, msg: "Search Accommodation Success", result: result});
         })
         .catch((error) => {
             console.log(error);

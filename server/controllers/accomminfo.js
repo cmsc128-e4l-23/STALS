@@ -172,6 +172,24 @@ const checkIfBookmarked = (req, res) => {
     })
 }
 
+const getAccommPhotos = async (req, res) => {
+    const accommId = req.query.id
+    
+    try {
+        let accomm = await Accommodation.findById(accommId).select("photos");
+
+        if(accomm){
+            res.send({ 
+                success: true, 
+                msg: "Photos retrieved successfully", 
+                photos: accomm.photos
+            });
+        }
+    } catch(err) {
+        res.send({ success: false, msg: "Failed to get accommodation photos", error: err.message })
+    }
+}
+
 export default {
     getAccommOwner,
     getAccommBasicDetails,
@@ -179,5 +197,6 @@ export default {
     getAccommReviews,
     getAccommRating,
     getAccommReports,
-    checkIfBookmarked
+    checkIfBookmarked,
+    getAccommPhotos
 }
