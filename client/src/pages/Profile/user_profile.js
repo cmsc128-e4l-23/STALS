@@ -61,7 +61,7 @@ const UserPage = ({ email, name, number }) => {
             </ul>
           </div>
           <div className="accommodations">
-            <div className="accomm-title"><h4>My Bookmarks</h4></div>
+            <div className="accomm-title"><h2>My Bookmarks</h2></div>
           </div>
         </div>
         <List email={email} />

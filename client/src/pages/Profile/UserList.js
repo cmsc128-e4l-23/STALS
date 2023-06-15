@@ -24,30 +24,29 @@ export default function List({email}){
         
     }, [email, loading])
 
-    return(
-        <div>  
-        { !loading ? 
-        <>
-        {bookmarks.length > 0 ?
-                <div>
-                    <h2>Bookmarked Acommodations:</h2>
-                    <ul id="lists">
-                    {
-                        bookmarks.map(
-                            (bookmark) => {
-                                return <BookmarkBody bookmark_id={bookmark} email={email} setLoading={setLoading} />
-                            }
-                        )
-                    }
-                    </ul>
-                   
+    return (
+        <div>
+          {!loading ? (
+            <>
+              {bookmarks.length > 0 ? (
+                <div style={{ marginTop: "30px" }}>
+                  <h2 style={{marginBottom:"100px"}}>Bookmarked Accommodations:</h2>
+                  <div className="grid-container">
+                    {bookmarks.map((bookmark) => (
+                      <div key={bookmark} className="grid-item">
+                        <BookmarkBody bookmark_id={bookmark} email={email} setLoading={setLoading} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                 : <div>No Bookmarked accommodations found</div>
-            }
-        </>    
-        :
-        <Loading />
-    }
+              ) : (
+                <div>No Bookmarked accommodations found</div>
+              )}
+            </>
+          ) : (
+            <Loading />
+          )}
         </div>
-    )
+      );
+      
 }
