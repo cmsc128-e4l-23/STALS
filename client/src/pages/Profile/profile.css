@@ -20,4 +20,75 @@
     height: 100%;
     object-fit: cover;
   }
+
+  .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  width: 1;
+}
+
+.content ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  justify-content: space-between;
+  width: 900px;
+}
+
+.content ul li{
+  font-weight: bold;
+  font-size: larger;
+}
+
+.accommodations{
+  width: 500px;
+}
+
+.accomm-title{
+  font-size: 25px;
+  color: #883636;
+}
+
+.tabs{
+  display: flex;
+  flex-direction: row;
+}
+
+.grid-container {
+  margin-left: 65px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+
+.grid-item{
+  width: 400px;
+}
+
+
+.tab{
+  padding-left: 200px;
+  padding-right: 200px;
+  font-weight: bold;
+  width: 100%;
+  height: 30px;
+}
+
+.tabs .tab.active {
+  background-color: #883636; /* Set the desired background color for the active tab */
+  color: #fff; /* Set the desired text color for the active tab */
+  /* Add any additional styles you want for the active tab */
+}
+
+
+
   
