@@ -79,10 +79,11 @@ export default function AdminLog(){
     }
 
     const rejectAccom = (accom) => {
+        const accom_id = {_id: accom._id}
         fetch(process.env.REACT_APP_API + 'deleteAccomm', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(accom)
+            body: JSON.stringify(accom_id)
         })
         .then(res => res.json())
         .then(data => {
