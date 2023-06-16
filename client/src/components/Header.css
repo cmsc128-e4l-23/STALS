@@ -155,7 +155,7 @@
 
 #auth-confirmed{
     margin-top: 1em;
-    color: white;
+    color: rgb(152, 38, 38);
     line-height: 40px;
     user-select: none;
 
@@ -169,15 +169,18 @@
 #more-options:hover{
     cursor: pointer;
     background-color: rgb(34, 98, 34);
-    transition: 300ms;;
+    transition: 300ms;
 }
 
 #options-menu{
-    background-color: rgb(18, 18, 18);
+    background-color: rgb(255, 255, 255);
     position: absolute;
     right: 1%;
     margin-top: 55px;
     border-radius: 0 0px 10px 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(152, 38, 38);
 }
 
 #options-menu ul{
@@ -190,12 +193,18 @@
     margin-top: 10px;
     padding: 10px;
     border-radius: 5px;
-    color: white;
+    color: rgb(152, 38, 38);
+    font-family: 'PT Sans', sans-serif;
+    font-weight: regular;
     user-select: none;
+
+    transition: 300ms;
 }
 
 #options-menu li:hover{
-    background-color: rgb(101, 101, 101);
+    background-color: rgb(34, 98, 34);
+    color: white;
+    transition: 300ms;
     cursor: pointer;
 
 }

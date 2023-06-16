@@ -64,16 +64,16 @@ export default function Login() {
 
 
   return (
-    <body>
+    <body id="login">
       <div className="login-container">
-        <h1>Log In</h1>
+        <h1>LOG IN</h1>
         <form className="login-form" onSubmit={handleSubmit}>
-          
-          <label htmlFor="email">Email:</label>
+          {/* <label htmlFor="email">Email:</label> */}
           <input type="email" id="email" name="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-          <label htmlFor="password">Password:</label>
+          {/* <label htmlFor="password">Password:</label> */}
           <input type="password" id="password" name="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
           
           <button type="submit">Login</button>
         </form>
