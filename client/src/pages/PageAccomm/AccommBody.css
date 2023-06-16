@@ -285,26 +285,10 @@
         margin-top: 10%;
         margin-bottom: 2%;
     }
-    /* .body-container h1 {
-        font-size: 30px;
-        line-height: 1%;
-    }
-    .body-div #not-found {
-        margin: 13%;
-        font-size: 25px;
-    } */
 }
 
 @media only screen and ((max-width: 640px))  {
     .accomm-page-div {
         margin-top: 15%;
     }
-    /* .body-container h1 {
-        font-size: 30px;
-        margin-bottom: 1.5%;
-    }
-    .body-div #not-found {
-        margin: 20%;
-        font-size: 25px;
-    } */
 }
