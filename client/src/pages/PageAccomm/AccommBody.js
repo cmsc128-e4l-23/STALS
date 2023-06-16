@@ -10,6 +10,10 @@ import ContactDetails from "./ContactDetails";
 import ReviewList from "./ReviewList";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
+import UnarchiveButton from "../ListAccomm/UnarchiveButton";
+import ArchiveButton from "../ListAccomm/ArchiveButton";
+import DeleteButton from "./DeleteButton";
+import ApproveButton from "./ApproveButton";
 
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     let navigate = useNavigate();
@@ -40,9 +44,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
             .then(body => {
                 if (body.success) {
                     setAccommOwner(body.owner)
-                }else{
-                    alert(body.message);
-                    console.log(body.error)
                 }
             })
         }
@@ -55,9 +56,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 .then(body => {
                     if (body.success) {
                         setCurrentRating(body.rating)
-                    }else{
-                        alert(body.message);
-                        console.log(body.error)
                     }
                 })
             }
@@ -78,18 +76,14 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 setLoading(false)
             }
             else {
-                alert(body.message)
+                navigate('/home')
             }
         })
-    }, [accommData]);
+    }, [accommData, loading]);
 
     if(loading === true){
         return (
-            <div className="accomm-page-div">
-                <Box alignItems={"center"}>
-                    <CircularProgress />
-                </Box>
-            </div>
+            <Loading />
         );
     } else {
         return(
@@ -102,6 +96,28 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 <>
                     <div className="accomm-page-div">
                         {/* Accomm Name and Details */}
+                        <>
+                        {userType === "Admin" &&
+                            <div className="admin-buttons">
+                                <>
+                                {
+                                accommData.approved ?
+                                <>
+                                {
+                                    accommData.archived ?
+                                    <UnarchiveButton accommodation={{_id: accommData._id}} setLoading={setLoading} />
+                                    :
+                                    <ArchiveButton accommodation={{_id: accommData._id}} setLoading={setLoading} />
+                                }
+                                </>
+                                :
+                                <ApproveButton accommodation={{_id: accommData._id}} setLoading={setLoading} />
+                                }
+                                </>
+                                <DeleteButton accommodation={{_id: accommData._id}} />
+                            </div>
+                        }
+                        </>
                         <div className="accomm-name-details">
                             <div className="accomm-name-div">              
                                 <h1>{accommData.name}</h1>
