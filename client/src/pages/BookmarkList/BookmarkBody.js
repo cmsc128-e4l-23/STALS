@@ -10,15 +10,13 @@ export default function BookmarkBody({ bookmark_id, email, setLoading }) {
   const [loading, setLoadingState] = useState(true);
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API + 'getAccommFullDetails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ _id: bookmark_id }),
+    fetch(process.env.REACT_APP_API + 'getBookmarkDetails?id=' + bookmark_id, {
+      method: 'GET'
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setAccommData(data.accommodation);
+          setAccommData(data.accomm);
         }
         setLoadingState(false);
       });

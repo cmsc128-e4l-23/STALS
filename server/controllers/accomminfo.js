@@ -85,6 +85,24 @@ const getAccommFullDetails = (req, res) => {
     })
 }
 
+const getBookmarkDetails = async (req, res) => {
+    const accommId = req.query.id
+    
+    try {
+        let accomm = await Accommodation.findById(accommId).select("_id name");
+
+        if(accomm){
+            res.send({ 
+                success: true, 
+                msg: "Bookmark details retrieved successfully", 
+                accomm: accomm
+            });
+        }
+    } catch(err) {
+        res.send({ success: false, msg: "Failed to get accommodation photos", error: err.message })
+    }
+}
+
 const getAccommReviews = (req, res) => {
     let accomm_details = req.body;
 
@@ -194,9 +212,10 @@ export default {
     getAccommOwner,
     getAccommBasicDetails,
     getAccommFullDetails,
+    getBookmarkDetails,
     getAccommReviews,
     getAccommRating,
     getAccommReports,
     checkIfBookmarked,
-    getAccommPhotos
+    getAccommPhotos,
 }
