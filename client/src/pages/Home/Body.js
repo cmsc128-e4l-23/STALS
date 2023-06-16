@@ -38,7 +38,6 @@ export default function Body({ isLoggedIn, userType, email, data }) {
                     <h3 id="not-found">Accommodations not found</h3>
                     :
                     <div className="body-container">
-                        <h1>Accommodations: </h1>
                         <AccommList 
                             isLoggedIn={isLoggedIn}
                             userType={userType}

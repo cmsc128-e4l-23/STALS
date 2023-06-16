@@ -159,7 +159,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                 </div>
                 {/* details */}
                 <div className="details">
-                    <h3>{ accomm.name}</h3>
+                    <h2>{ accomm.name}</h2>
                     <p>{`${accomm.address.street } ${accomm.address.barangay}, ${accomm.address.city}`}</p>
                     <p>{`Type: ${accomm.accommodationType}`}</p>
                     <h4>{priceRange}</h4>
