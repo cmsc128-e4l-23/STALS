@@ -281,14 +281,23 @@
 
 /* adjusting margins and fonts relative to the screen size */
 @media only screen and (max-width: 1200px) {
+    .accomm-image-book {
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+    }
     .accomm-page-div {
-        margin-top: 10%;
+        margin-top: 0%;
         margin-bottom: 2%;
     }
 }
 
-@media only screen and ((max-width: 640px))  {
+@media only screen and ((max-width: 850px))  {
+    .accomm-image-book {
+        display: flex;
+        flex-direction: column;
+    }
     .accomm-page-div {
-        margin-top: 15%;
+        margin-top: 5%;
     }
 }

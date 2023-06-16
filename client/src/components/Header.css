@@ -1,7 +1,9 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=PT+Sans&display=swap');
 
 #header{
-    background-color: rgb(18, 18, 18);
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
     height: 70px;
     width: 100%;
     /* sticky header */
@@ -17,12 +19,20 @@
 }
 
 #logo h1{
+    font-family: 'Open Sans', sans-serif;
     cursor: pointer;
-    color: white;
+    color: rgb(152, 38, 38);
     font-size: 3em;
     line-height: 7px;
-    font-weight: 600;
+    font-weight: bold;
     user-select: none;
+
+    transition: 300ms;
+}
+
+#logo h1:hover {
+    color: rgb(34, 98, 34);
+    transition: 300ms;
 }
 
 #search-section{
@@ -44,6 +54,10 @@
 
 #search-bar{
     margin-top: 1em;
+
+    border-style: solid;
+    border-radius: 10px;
+    border-color: rgb(121, 93, 93);
 }
 
 #search-text:focus{
@@ -51,12 +65,8 @@
 }
 
 #search-submit{
-    border-radius: 0em 20em 20em 0em;
-    height: 40px;
-    width: 50px;
-    border: none;
-    position: relative;
-    top: -1px;
+    all: unset;
+    cursor: pointer;
 }
 
 #right-side-btns{
@@ -93,7 +103,9 @@
 }
 
 .auth-sect button{
-    background-color: rgb(153, 2, 2);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    background-color: rgb(152, 38, 38);
     color: white;
     height: 40px;
     width: 95px;
@@ -102,17 +114,21 @@
     border: none;
     padding-left: 1.5em;
     padding-right: 1.5em;
+
+    transition: 300ms;
 }
 
 .auth-sect button:hover{
     cursor: pointer;
+    background-color: rgb(34, 98, 34);
+    transition: 300ms;
 }
 
 #auth-confirmed:hover ul{
     margin-top: 10px;
     display: block;
     list-style-type: none;
-    background-color: rgb(18, 18, 18);;
+    background-color: rgb(18, 18, 18);
     text-align: center;
     padding: 0px 10px 10px 10px;
     border-radius: 0 0px 10px 10px;
@@ -145,16 +161,18 @@
 }
 
 #more-options{
-    background-color: rgb(153, 2, 2);
+    background-color: rgb(152, 38, 38);
     color: white;
 }
 
 #more-options:hover{
     cursor: pointer;
+    background-color: rgb(34, 98, 34);
+    transition: 300ms;;
 }
 
 #options-menu{
-    background-color: rgb(18, 18, 18);;
+    background-color: rgb(18, 18, 18);
     position: absolute;
     right: 1%;
     margin-top: 55px;
