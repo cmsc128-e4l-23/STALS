@@ -46,6 +46,7 @@ export default function AccommCard({ isLoggedIn, userType, email, accomm }) {
                 setLoading(false)
             })
         }
+        assignPriceRange();
         setLoading(false);
         fetch(process.env.REACT_APP_API + 'getAccommPhotos?id=' + accomm._id, {
             method: 'GET'
