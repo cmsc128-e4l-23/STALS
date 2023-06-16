@@ -13,7 +13,7 @@ import Loading from "../../components/Loading";
 export default function AccommBody({ data, email, userType, isLoggedIn }) {
     const [accommData, setAccommData] = useState({});
     const [loading, setLoading] = useState(true);
-    const [accommOwner, setAccommOwner] = useState();
+    const [accommOwner, setAccommOwner] = useState({});
     const [imageList, setImageList] = useState([]);
     const [currentRating, setCurrentRating] = useState(0);
     const [priceRange, setPriceRange] = useState('');
@@ -38,13 +38,10 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
             .then(body => {
                 if (body.success) {
                     setAccommOwner(body.owner)
-                    setLoading(false);
                 }else{
                     alert(body.message);
+                    console.log(body.error)
                 }
-            })
-            .catch((error) => {
-                alert("An error has occurred (fetchOwner)");
             })
         }
 
@@ -56,13 +53,10 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                 .then(body => {
                     if (body.success) {
                         setCurrentRating(body.rating)
-                        setLoading(false)
                     }else{
                         alert(body.message);
+                        console.log(body.error)
                     }
-                })
-                .catch((error) => {
-                    alert("An error has occurred");
                 })
             }
     
@@ -73,18 +67,19 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         body: JSON.stringify({_id: data})
         })
         .then(res => res.json())
-        .then(body => {
+        .then((body) => {
             if (body.success){
                 setAccommData(body.accommodation)
                 assignPriceRange(body.accommodation);
                 fetchOwner(data);
                 fetchRating(data);
+                setLoading(false)
             }
             else {
                 alert(body.message)
             }
         })
-    }, []);
+    }, [accommData]);
 
     if(loading === true){
         return (
@@ -126,17 +121,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                     <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
                                 }
                                 </div>
-                                {/* slider buttons */}
-                                {/* <div className="slider-btns">
-                                {accommData.photos.length > 0 &&
-                                    <>
-                                        {accommData.photos.map((photo, index) => {
-                                        var base64Image = photo;
-                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
-                                        })}
-                                    </>
-                                }
-                                </div> */}
                             </div>
                         </div>
                     </div>
