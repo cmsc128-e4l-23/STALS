@@ -106,16 +106,19 @@ export default function Signup() {
       })
   }
   return (
-    <body>
-
-
+    <body id="signup">
       <div className="signup-container">
         <h1>SIGNUP</h1>
         <form className="signup-form" onSubmit={handleSubmit}>
-          <select id="type" name="type" value={usertype} onChange={(e) => setUserType(e.target.value)} required>
-            <option value="Student">Student</option>
-            <option value="Accommodation Owner">Accommodation Owner</option>
-          </select>
+
+          <div id="acc-type">
+            <label htmlFor="type">Account Type:</label>
+            <select id="type" name="type" value={usertype} onChange={(e) => setUserType(e.target.value)} required>
+              <option value="Student">Student</option>
+              <option value="Accommodation Owner">Accommodation Owner</option>
+            </select>
+          </div>
+          
 
           <label htmlFor="name">First Name:</label>
           <input type="text" id="fname" name="fname" placeholder="Enter your name" maxLength={30} pattern="[A-Za-z\s]+" value={fname} onChange={(e) => setFName(e.target.value)} required />
@@ -137,11 +140,14 @@ export default function Signup() {
           <label htmlFor="password">Contact Number:</label>
           <input type="number" id="contact" name="contact" placeholder="Enter your contact number" value={contact} onChange={(e) => setContact(e.target.value)} required />
 
-          <label htmlFor="sex">Sex:</label>
-          <select id="type" name="type" value={sex} style={{ marginBottom: '15px' }} onChange={(e) => setSex(e.target.value)} required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+          <div id="sex">
+            <label htmlFor="sex">Sex:</label>
+            <select id="type" name="type" value={sex} style={{ marginBottom: '15px' }} onChange={(e) => setSex(e.target.value)} required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          
 
           <label htmlFor="password">Birthday:</label>
           <input type="date" id="birthday" name="birthday" placeholder="Enter your birthday" style={{ marginBottom: '0px' }} value={birthday} onChange={handleBirthdayChange} required />

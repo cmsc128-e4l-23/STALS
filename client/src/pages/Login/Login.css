@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=PT+Sans&display=swap');
+
 h1 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
     color: maroon;
 }
 
@@ -9,48 +12,77 @@ h1 {
     justify-content: center;
     align-items: center;
     height: 50vh;
+
+    border: 1.5px solid rgb(121, 93, 94);
+    padding: 5px;
+    border-radius: 50px;
+    width: 50%;
+
+    margin: auto;
 } 
-  
+
 .login-form {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 50%;
+
+    width: 80%;
     height: auto;
-    background-color: rgb(233, 232, 232);
-    border: 5px solid maroon;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 8px 8px 8px #505050; /* add the box-shadow property with the desired values */
+    background-color: rgb(255, 255, 255);
 }
-  
+
+.login-form label {
+    color: rgb(38, 38, 38)
+}
+
+.login-form div {
+    display: inherit;
+    flex-direction: row;
+    width: 100%;
+}
+
 label {
     display: flex;
     flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-weight: bold;
-
 }
-  
+
 .login-form input {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 13px;
     background-color: #f7f7f7;
     border: .5px solid black;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 15px;
     width: 80%;
+    margin-left: 10%;
 }
 
 .login-form button {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+
+    margin: auto;
     margin-top: 10px;
     background-color: rgb(153, 2, 2);
     color: white;
     padding: 10px 20px;
 
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    width: 30%;
-    height: 15%;
+    width: 20%;
+    height: auto;
+
+    transition: 300ms;
+}
+
+.login-form button:hover {
+    background-color: rgb(34, 98, 34);
+    transition: 300ms;
 }
