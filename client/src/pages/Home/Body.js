@@ -20,7 +20,6 @@ export default function Body({ isLoggedIn, userType, email, data }) {
             .then(data => {
                 if (data.success) {
                     updateAccommList(data.result);
-                    console.log(data.result);
                 }else throw Error
                 setLoading(false)
             })
