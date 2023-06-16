@@ -43,9 +43,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                     console.log(body.error)
                 }
             })
-            .catch((error) => {
-                alert("An error has occurred (fetchOwner)");
-            })
         }
 
     const fetchRating = () => {
@@ -61,9 +58,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                         console.log(body.error)
                     }
                 })
-                .catch((error) => {
-                    alert("An error has occurred (fetchRating)");
-                })
             }
     
     useEffect(() => {
@@ -73,19 +67,19 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
         body: JSON.stringify({_id: data})
         })
         .then(res => res.json())
-        .then(body => {
+        .then((body) => {
             if (body.success){
                 setAccommData(body.accommodation)
-                setLoading(false)
                 assignPriceRange(body.accommodation);
                 fetchOwner(data);
                 fetchRating(data);
+                setLoading(false)
             }
             else {
                 alert(body.message)
             }
         })
-    }, [data, accommData, accommOwner, currentRating]);
+    }, [accommData]);
 
     if(loading === true){
         return (
@@ -127,17 +121,6 @@ export default function AccommBody({ data, email, userType, isLoggedIn }) {
                                     <img id={"image-no-picture"} src={require("../../assets/nopicture.jpg")} alt=''/>
                                 }
                                 </div>
-                                {/* slider buttons */}
-                                {/* <div className="slider-btns">
-                                {accommData.photos.length > 0 &&
-                                    <>
-                                        {accommData.photos.map((photo, index) => {
-                                        var base64Image = photo;
-                                        return <img id={"image-"+ index} src={`data:image/*;base64,${base64Image}`} alt='' />
-                                        })}
-                                    </>
-                                }
-                                </div> */}
                             </div>
                         </div>
                     </div>
