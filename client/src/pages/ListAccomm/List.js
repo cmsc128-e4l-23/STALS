@@ -5,6 +5,7 @@ import UnarchiveButton from "./UnarchiveButton";
 import './index.css'
 import { useNavigate } from "react-router-dom";
 import './profile.css'
+import Loading from "../../components/Loading";
 
 export default function List({email}){
     let navigate = useNavigate();
@@ -24,9 +25,9 @@ export default function List({email}){
         .then(res => res.json())
         .then(data => {
             setAccomms(data.accommodations)
+            setLoading(false)
         });
-        setLoading(false)
-    }, [email, loading])
+    }, [email])
 
     // Filter accommodations based on the selected tab
     const filteredAccomms = accomms.filter(accomm => {
@@ -67,7 +68,11 @@ export default function List({email}){
               Pending
             </div>
           </div>
-            
+        {
+            loading ?
+            <Loading />
+            :
+            <>
             {filteredAccomms.length > 0 ? (
                 <div>
                     <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Accommodations:</h2>
@@ -99,6 +104,8 @@ export default function List({email}){
             ) : (
                 <div>No Accommodations found</div>
             )}
+            </>    
+        }
         </div>
     )
 }
